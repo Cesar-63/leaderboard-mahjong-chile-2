@@ -37,6 +37,13 @@ class PaipuAuthRequired(PaipuError):
     pass
 
 
+def _rpc_error_detail(error: Any) -> str:
+    detail = f"código {error.code}"
+    if getattr(error, "json_param", ""):
+        detail += f", detalle {error.json_param}"
+    return detail
+
+
 def has_yostar_credentials() -> bool:
     return all(os.environ.get(name) for name in (
         "MAJSOUL_UID", "MAJSOUL_TOKEN", "MAJSOUL_DEVICE_ID",
@@ -140,11 +147,11 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
         auth = pb.ReqOauth2Auth(type=22, code=refreshed_token, uid=uid, client_version_string=client_version)
         auth_response = await lobby.oauth2_auth(auth)
         if auth_response.HasField("error") and auth_response.error.code:
-            raise PaipuAuthRequired(f"oauth2Auth falló (código {auth_response.error.code})")
+            raise PaipuAuthRequired(f"oauth2Auth falló ({_rpc_error_detail(auth_response.error)})")
         check = pb.ReqOauth2Check(type=22, access_token=auth_response.access_token)
         check_response = await lobby.oauth2_check(check)
         if check_response.HasField("error") and check_response.error.code:
-            raise PaipuAuthRequired(f"oauth2Check falló (código {check_response.error.code})")
+            raise PaipuAuthRequired(f"oauth2Check falló ({_rpc_error_detail(check_response.error)})")
 
         login = pb.ReqOauth2Login(
             type=22, access_token=auth_response.access_token, reconnect=True,
@@ -159,7 +166,7 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
         login.currency_platforms.extend([2, 6, 8, 10, 11])
         login_response = await lobby.oauth2_login(login)
         if login_response.HasField("error") and login_response.error.code:
-            raise PaipuAuthRequired(f"oauth2Login falló (código {login_response.error.code})")
+            raise PaipuAuthRequired(f"oauth2Login falló ({_rpc_error_detail(login_response.error)})")
 
         cache_dir.mkdir(parents=True, exist_ok=True)
         for record_id, record_uuid in records:
