@@ -410,9 +410,14 @@ def main() -> int:
         for division, rule in config["divisions"].items():
             histories.update(parse_history(workbook, division, rule["historySheet"], rule))
         if not args.offline:
-            downloaded = prefetch_authenticated_records(submissions, ROOT / "data" / "raw-paipu")
-            if downloaded:
-                print(f"Paipus descargados con la sesión técnica: {downloaded}")
+            # Una falla de la sesión técnica no debe frenar la publicación de
+            # standings; los paipus quedan REQUIERE_AUTH y se reintenta luego.
+            try:
+                downloaded = prefetch_authenticated_records(submissions, ROOT / "data" / "raw-paipu")
+                if downloaded:
+                    print(f"Paipus descargados con la sesión técnica: {downloaded}")
+            except PaipuError as exc:
+                print(f"AVISO: la descarga autenticada de paipus falló: {exc}", file=sys.stderr)
         parsed_games, status = merge_paipus(submissions, histories, ROOT / "data" / "raw-paipu", args.offline)
         if args.strict_paipu:
             failures = [item for item in status["submissions"] if item["status"] == "ERROR"]

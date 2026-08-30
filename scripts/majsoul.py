@@ -17,10 +17,15 @@ from typing import Any
 PAIPU_RE = re.compile(r"(?P<uuid>\d{6}-[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12})(?P<trailer>_a\d+)?")
 RECORD_URL = "https://record-v2.maj-soul.com:5333/majsoul/game_record/{uuid}"
 MS_HOST = "https://mahjongsoul.game.yo-star.com"
-MS_GATEWAY_FALLBACKS = (
-    "wss://engs.mahjongsoul.com/gateway",
-    "wss://engsbk.mahjongsoul.com/gateway",
+MS_GATEWAY_HOSTS = (
+    "https://engs.mahjongsoul.com",
+    "https://engsbk.mahjongsoul.com",
 )
+MS_ROUTE_FALLBACKS = (
+    ("en-1", "wss://engs.mahjongsoul.com:443/gateway"),
+    ("en-2", "wss://engsbk.mahjongsoul.com:443/gateway"),
+)
+MS_CURRENCY_PLATFORMS = (1, 4, 5, 9, 12)
 YOSTAR_QUICK_LOGIN = "https://en-sdk-api.yostarplat.com/user/quick-login"
 YOSTAR_SDK_VERSION = "4.16.0"
 YOSTAR_SIGNING_SALT = bytes([
@@ -35,6 +40,13 @@ class PaipuError(RuntimeError):
 
 class PaipuAuthRequired(PaipuError):
     pass
+
+
+def _rpc_error_detail(error: Any) -> str:
+    detail = f"código {error.code}"
+    if getattr(error, "json_param", ""):
+        detail += f", detalle {error.json_param}"
+    return detail
 
 
 def has_yostar_credentials() -> bool:
@@ -79,19 +91,56 @@ async def _refresh_yostar_token(session: Any, uid: str, token: str, device_id: s
     return str(refreshed)
 
 
-async def _discover_gateways(session: Any, resource_version: str) -> list[str]:
-    discovered: list[str] = []
+async def _fetch_product_version(session: Any) -> str:
+    async with session.get(f"{MS_HOST}/index.html", timeout=20) as response:
+        html = await response.text()
+    match = re.search(r"productVersion\s*:\s*[\"']([^\"']+)[\"']", html)
+    if not match:
+        raise PaipuError("No se encontró productVersion en el index.html de Mahjong Soul")
+    return match.group(1)
+
+
+async def _discover_routes(session: Any, product_version: str) -> list[tuple[str, str]]:
+    discovered: list[tuple[str, str]] = []
+    for gateway in MS_GATEWAY_HOSTS:
+        try:
+            async with session.get(
+                f"{gateway}/api/clientgate/routes",
+                params={"platform": "Web", "version": product_version, "lang": "en"},
+                timeout=20,
+            ) as response:
+                payload = await response.json(content_type=None)
+            for route in payload.get("data", {}).get("routes", []):
+                route_id = str(route.get("id", ""))
+                domain = str(route.get("domain", ""))
+                if route_id and domain:
+                    discovered.append((route_id, f"wss://{domain}/gateway"))
+            if discovered:
+                break
+        except Exception:
+            continue
+    return list(dict.fromkeys([*discovered, *MS_ROUTE_FALLBACKS]))
+
+
+async def _open_route(pb: Any, channel_class: Any, route_id: str, endpoint: str) -> Any:
+    channel = channel_class(endpoint)
+    await channel.connect(MS_HOST)
     try:
-        async with session.get(f"{MS_HOST}/v{resource_version}.w/config.json", timeout=20) as response:
-            config = await response.json(content_type=None)
-        player = next((item for item in config.get("ip", []) if item.get("name") == "player"), {})
-        for gateway in player.get("gateways", []):
-            url = str(gateway.get("url", "")).rstrip("/")
-            if url.startswith("https://"):
-                discovered.append(f"wss://{url[8:]}/gateway")
+        request = pb.ReqRequestConnection(type=1, route_id=route_id, timestamp=int(time.time() * 1000))
+        # El proto pineado no declara platform (campo 6); se agrega serializado.
+        raw = request.SerializeToString() + b"\x32\x03Web"
+        response = pb.ResRequestConnection()
+        response.ParseFromString(await channel.send_request(".lq.Route.requestConnection", raw))
+        if response.HasField("error") and response.error.code:
+            raise PaipuError(f"requestConnection en {route_id} falló ({_rpc_error_detail(response.error)})")
+        heartbeat = pb.ResHeartbeat()
+        heartbeat.ParseFromString(
+            await channel.send_request(".lq.Route.heartbeat", pb.ReqHeartbeat(platform=11).SerializeToString())
+        )
+        return channel
     except Exception:
-        pass
-    return list(dict.fromkeys([*discovered, *MS_GATEWAY_FALLBACKS]))
+        await channel.close()
+        raise
 
 
 async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cache_dir: Path) -> int:
@@ -106,87 +155,87 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
     uid = os.environ["MAJSOUL_UID"]
     token = os.environ["MAJSOUL_TOKEN"]
     device_id = os.environ["MAJSOUL_DEVICE_ID"]
-    async with aiohttp.ClientSession() as http:
-        refreshed_token = await _refresh_yostar_token(http, uid, token, device_id)
-        async with http.get(f"{MS_HOST}/version.json", timeout=20) as response:
-            text = await response.text()
-            try:
-                version_payload = json.loads(text)
-            except json.JSONDecodeError as exc:
-                raise PaipuError(
-                    f"Mahjong Soul version.json respondió HTTP {response.status} con {response.content_type or 'contenido desconocido'}"
-                ) from exc
-        resource_version = str(version_payload["version"]).replace(".w", "")
-        gateways = await _discover_gateways(http, resource_version)
-    client_version = f"web-{resource_version}"
-
-    channel = None
-    lobby = None
-    last_connection_error: Exception | None = None
-    for endpoint in gateways:
-        candidate = MSRPCChannel(endpoint)
-        try:
-            await candidate.connect(MS_HOST)
-            channel = candidate
-            lobby = Lobby(channel)
-            break
-        except Exception as exc:
-            last_connection_error = exc
-    if channel is None or lobby is None:
-        detail = type(last_connection_error).__name__ if last_connection_error else "sin candidatos"
-        raise PaipuError(f"No se pudo conectar a ningún gateway de Mahjong Soul ({detail})")
     downloaded = 0
-    try:
-        auth = pb.ReqOauth2Auth(type=22, code=refreshed_token, uid=uid, client_version_string=client_version)
-        auth_response = await lobby.oauth2_auth(auth)
-        if auth_response.HasField("error") and auth_response.error.code:
-            raise PaipuAuthRequired(f"oauth2Auth falló (código {auth_response.error.code})")
-        check = pb.ReqOauth2Check(type=22, access_token=auth_response.access_token)
-        check_response = await lobby.oauth2_check(check)
-        if check_response.HasField("error") and check_response.error.code:
-            raise PaipuAuthRequired(f"oauth2Check falló (código {check_response.error.code})")
+    async with aiohttp.ClientSession() as http:
+        product_version = await _fetch_product_version(http)
+        client_version = f"WebGL_2022-{product_version}"
+        routes = await _discover_routes(http, product_version)
 
-        login = pb.ReqOauth2Login(
-            type=22, access_token=auth_response.access_token, reconnect=True,
-            random_key=str(uuid_lib.uuid4()), client_version_string=client_version,
-            gen_access_token=True, version=0, tag="majsoul-hk-client",
-        )
-        login.device.is_browser = True
-        login.device.platform = "pc"
-        login.device.os = "mac"
-        login.device.software = "Chrome"
-        login.client_version.resource = resource_version
-        login.currency_platforms.extend([2, 6, 8, 10, 11])
-        login_response = await lobby.oauth2_login(login)
-        if login_response.HasField("error") and login_response.error.code:
-            raise PaipuAuthRequired(f"oauth2Login falló (código {login_response.error.code})")
+        # El gateway ahora es un router: sin requestConnection aceptado en la
+        # ruta, el lobby rechaza oauth2Auth (código 151).
+        channel = None
+        connection_errors: list[str] = []
+        for route_id, endpoint in routes:
+            try:
+                channel = await _open_route(pb, MSRPCChannel, route_id, endpoint)
+                break
+            except Exception as exc:
+                connection_errors.append(f"{route_id}: {exc}")
+        if channel is None:
+            raise PaipuError("No se pudo abrir ninguna ruta de Mahjong Soul (" + "; ".join(connection_errors) + ")")
+        lobby = Lobby(channel)
+        try:
+            auth = pb.ReqOauth2Auth(type=22, code=token, uid=uid, client_version_string=client_version)
+            auth_response = await lobby.oauth2_auth(auth)
+            if auth_response.HasField("error") and auth_response.error.code:
+                stored_detail = _rpc_error_detail(auth_response.error)
+                refreshed_token = await _refresh_yostar_token(http, uid, token, device_id)
+                auth = pb.ReqOauth2Auth(type=22, code=refreshed_token, uid=uid, client_version_string=client_version)
+                auth_response = await lobby.oauth2_auth(auth)
+                if auth_response.HasField("error") and auth_response.error.code:
+                    raise PaipuAuthRequired(
+                        f"oauth2Auth rechazó el token guardado ({stored_detail}) "
+                        f"y el token renovado ({_rpc_error_detail(auth_response.error)})"
+                    )
+            check = pb.ReqOauth2Check(type=22, access_token=auth_response.access_token)
+            check_response = await lobby.oauth2_check(check)
+            if check_response.HasField("error") and check_response.error.code:
+                raise PaipuAuthRequired(f"oauth2Check falló ({_rpc_error_detail(check_response.error)})")
 
-        cache_dir.mkdir(parents=True, exist_ok=True)
-        for record_id, record_uuid in records:
-            destination = cache_dir / f"{record_uuid}.pb"
-            if destination.exists() and not destination.read_bytes().lstrip().startswith(b"<?xml"):
-                continue
-            request = pb.ReqGameRecord(game_uuid=record_id, client_version_string=client_version)
-            response = await lobby.fetch_game_record(request)
-            if response.HasField("error") and response.error.code == 151:
-                await lobby.read_game_record(request)
+            login = pb.ReqOauth2Login(
+                type=22, access_token=auth_response.access_token, reconnect=False,
+                random_key=str(uuid_lib.uuid4()), client_version_string=client_version,
+                currency_platforms=list(MS_CURRENCY_PLATFORMS), tag="en",
+            )
+            login.device.platform = "pc"
+            login.device.hardware = "pc"
+            login.device.os = "Windows"
+            login.device.os_version = "Windows 10"
+            login.device.is_browser = True
+            login.device.software = "Chrome"
+            login.device.sale_platform = "web"
+            login.client_version.resource = product_version
+            login.client_version.package = product_version
+            login_response = await lobby.oauth2_login(login)
+            if login_response.HasField("error") and login_response.error.code:
+                raise PaipuAuthRequired(f"oauth2Login falló ({_rpc_error_detail(login_response.error)})")
+
+            cache_dir.mkdir(parents=True, exist_ok=True)
+            for record_id, record_uuid in records:
+                destination = cache_dir / f"{record_uuid}.pb"
+                if destination.exists() and not destination.read_bytes().lstrip().startswith(b"<?xml"):
+                    continue
+                request = pb.ReqGameRecord(game_uuid=record_id, client_version_string=client_version)
                 response = await lobby.fetch_game_record(request)
-            if response.HasField("error") and response.error.code:
-                raise PaipuError(f"Mahjong Soul rechazó {record_uuid} (código {response.error.code})")
-            raw = bytes(response.data)
-            if not raw and response.data_url:
-                url_request = urllib.request.Request(
-                    response.data_url,
-                    headers={"User-Agent": "LigaMahjongChile/1.0 (+paipu-importer)"},
-                )
-                with urllib.request.urlopen(url_request, timeout=30) as remote:
-                    raw = remote.read()
-            if not raw:
-                raise PaipuError(f"Mahjong Soul devolvió vacío el paipu {record_uuid}")
-            destination.write_bytes(raw)
-            downloaded += 1
-    finally:
-        await channel.close()
+                if response.HasField("error") and response.error.code == 151:
+                    await lobby.read_game_record(request)
+                    response = await lobby.fetch_game_record(request)
+                if response.HasField("error") and response.error.code:
+                    raise PaipuError(f"Mahjong Soul rechazó {record_uuid} ({_rpc_error_detail(response.error)})")
+                raw = bytes(response.data)
+                if not raw and response.data_url:
+                    url_request = urllib.request.Request(
+                        response.data_url,
+                        headers={"User-Agent": "LigaMahjongChile/1.0 (+paipu-importer)"},
+                    )
+                    with urllib.request.urlopen(url_request, timeout=30) as remote:
+                        raw = remote.read()
+                if not raw:
+                    raise PaipuError(f"Mahjong Soul devolvió vacío el paipu {record_uuid}")
+                destination.write_bytes(raw)
+                downloaded += 1
+        finally:
+            await channel.close()
     return downloaded
 
 
