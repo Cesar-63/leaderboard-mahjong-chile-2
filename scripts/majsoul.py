@@ -61,7 +61,13 @@ async def _refresh_yostar_token(session: Any, uid: str, token: str, device_id: s
         json=body,
         timeout=20,
     ) as response:
-        payload = await response.json(content_type=None)
+        text = await response.text()
+        try:
+            payload = json.loads(text)
+        except json.JSONDecodeError as exc:
+            raise PaipuAuthRequired(
+                f"YoStar quick-login respondió HTTP {response.status} con {response.content_type or 'contenido desconocido'}"
+            ) from exc
     refreshed = payload.get("Data", {}).get("UserInfo", {}).get("Token", "")
     if payload.get("Code") != 200 or not refreshed:
         raise PaipuAuthRequired(
@@ -84,8 +90,14 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
     device_id = os.environ["MAJSOUL_DEVICE_ID"]
     async with aiohttp.ClientSession() as http:
         refreshed_token = await _refresh_yostar_token(http, uid, token, device_id)
-        async with http.get(f"{MS_HOST}/1/version.json", timeout=20) as response:
-            version_payload = await response.json(content_type=None)
+        async with http.get(f"{MS_HOST}/version.json", timeout=20) as response:
+            text = await response.text()
+            try:
+                version_payload = json.loads(text)
+            except json.JSONDecodeError as exc:
+                raise PaipuError(
+                    f"Mahjong Soul version.json respondió HTTP {response.status} con {response.content_type or 'contenido desconocido'}"
+                ) from exc
     resource_version = str(version_payload["version"]).replace(".w", "")
     client_version = f"web-{resource_version}"
 
