@@ -1,0 +1,174 @@
+# Liga Mahjong Chile — Scoreboard Web
+
+Instrucciones de repo para Claude Code. Leer junto con `DESIGN.md`.
+
+## Contexto
+
+Sitio público de standings, perfiles y jornadas para una liga chilena de riichi
+mahjong, jugada en sala de torneo de MahjongSoul. Estático, sin backend, sin auth.
+
+## Modelo de liga
+
+- **Dos divisiones:** A y B, 24 jugadores cada una (48 en total).
+- **Temporada:** 7 sesiones. Cada sesión son 2 hanchan → 14 hanchan por jugador.
+- **Por sesión:** se sortean 6 mesas de 4 jugadores. Cada jugador aparece
+  exactamente una vez por sesión, en una sola mesa, y juega los 2 hanchan de esa
+  mesa con los mismos rivales.
+- **No es round robin real.** El emparejamiento es por sorteo; sobre 7 sesiones un
+  jugador enfrenta como máximo 21 de sus 23 rivales. No asumir cobertura completa
+  en ninguna vista (ej. head-to-head puede estar vacío entre dos jugadores).
+- **Ascenso/descenso:** hay serie de promoción entre A 21-24 y B 1-4.
+
+## Reglas de puntaje
+
+- Puntos iniciales: 30.000 por hanchan.
+- **Uma: +15 / +5 / −5 / −15.**
+- **Sin oka.** Puntos de retorno = puntos iniciales, por lo tanto cada mesa suma
+  cero en puntos de liga.
+- Fórmula: `puntos = (scoreFinal − 30000) / 1000 + uma`.
+- Sin akadora (dora rojo).
+- Penalización por ausencia: PENDIENTE DE CONFIRMAR (la planilla dice −20 en una
+  hoja y −30 en otra). No hardcodear hasta que César lo resuelva.
+
+**El Excel manda.** El script no recalcula reglas: lee los resultados ya
+procesados y solo valida consistencia. Si el JSON y el Excel discrepan, gana el
+Excel y el script falla ruidosamente.
+
+## Pipeline de datos
+
+1. `scripts/import.py` lee el `.xlsx` (openpyxl) → emite `data/liga.json`.
+2. Un script aparte parsea logs de partidas → emite `data/stats.json` con métricas
+   avanzadas (win rate, deal-in, riichi, manos abiertas, yaku).
+3. El sitio se genera 100% estático desde esos dos JSON.
+4. Actualizar resultados = reemplazar Excel → correr script → commit + push →
+   Vercel redespliega solo.
+
+**Los dos datasets van separados y se unen por ID de jugador.** Cadencias
+distintas: el Excel manda para clasificación, y una corrida a medias del parser de
+logs no debe poder ensuciar la tabla.
+
+## Esquema de `data/liga.json`
+
+```json
+{
+  "liga": { "nombre": "Liga Mahjong Chile", "temporada": 3, "sesionesTotales": 7 },
+  "reglas": { "puntosIniciales": 30000, "uma": [15, 5, -5, -15], "oka": 0 },
+  "divisiones": [
+    {
+      "id": "A",
+      "jugadores": [{ "id": "A01", "nombre": "..." }],
+      "sesiones": [
+        {
+          "n": 1,
+          "fecha": "2026-03-15",
+          "mesas": [
+            {
+              "mesa": 1,
+              "hanchans": [
+                {
+                  "n": 1,
+                  "resultados": [
+                    {
+                      "jugador": "A01",
+                      "scoreRaw": 45000,
+                      "uma": 15,
+                      "puntos": 30.0,
+                      "puesto": 1,
+                      "sustitutoDe": null
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "penalizaciones": [{ "jugador": "A07", "sesion": 3, "puntos": -20, "motivo": "ausencia" }]
+}
+```
+
+- Mesas sin jugar emiten `hanchans: []` y se muestran como fixture pendiente.
+- Resultados de sustitutos llevan `sustitutoDe`; entran en el historial de mesas
+  pero **no** en el cálculo de standings.
+- Standings, promedios y rachas se derivan en build. **Nunca duplicar datos
+  calculados dentro del JSON.**
+
+## Validaciones del parser
+
+El script falla con mensaje que indique **división, sesión y mesa**:
+
+1. Roster: 24 jugadores por división, IDs únicos y estables.
+2. Cobertura: cada jugador exactamente una vez por sesión.
+3. Por hanchan: 4 jugadores, puestos 1–4 sin repetir, scores múltiplos de 100,
+   suma de scores crudos = 120.000.
+4. Suma de puntos de liga por mesa = 0 (se sostiene solo si no hay oka).
+5. Sustitutos: cada `sustitutoDe` apunta a un jugador válido del roster.
+6. Orden: no puede existir hanchan 2 sin hanchan 1 en la misma mesa.
+7. Crosscheck contra la hoja de clasificación: totales de uma, conteo de puestos y
+   partidas jugadas. Se salta si (1)–(6) fallaron, para mostrar causa raíz.
+
+## Arquitectura
+
+```
+src/
+├── app/            páginas (App Router, SSG)
+├── components/     presentación pura
+├── lib/
+│   ├── liga.ts       tipos + carga de JSON
+│   ├── standings.ts  funciones puras: puntos, promedio, distribución, racha, forma
+│   └── stats.ts      métricas derivadas de logs
+└── styles/globals.css  tokens
+```
+
+**Lógica separada de presentación.** `standings.ts` no importa JSX y tiene tests
+contra un fixture escrito a mano. Los componentes solo pintan.
+
+## Vistas
+
+1. **Tabla** — clasificación por división, columnas ordenables, sparkline de forma,
+   zonas de playoff/ascenso/descenso. Rail lateral: próxima sesión, últimas
+   hanchan, progreso de temporada, top 4 de la otra división.
+2. **Jugador** — rango, puntos, banner de zona, stats clave, distribución de
+   puestos, radar de estilo, curva de evolución, yaku más jugados.
+3. **Comparador** — dos jugadores cara a cara, cruzando divisiones. Dos radars y
+   métricas en barras espejadas.
+4. **Historial** — log de hanchan filtrable por sesión, con los 4 resultados y
+   deltas.
+5. **Calendario** — próximos eventos por división, serie de promoción, strip de
+   sesiones jugadas.
+6. **Records** — Hall of Fame, 6 récords por división.
+
+## Reglas de trabajo
+
+- **Código completo y copy-paste-ready.** Nunca placeholders (`// tu lógica aquí`,
+  `# resto sin cambios`). Si una omisión es inevitable, avisarla de forma
+  prominente ANTES del bloque.
+- **Validar el parser contra el Excel real antes de tocar UI.**
+- Mobile-first: la liga se mira desde el teléfono.
+- Commits chicos, uno por feature.
+- Jornadas sin jugar se muestran como fixture pendiente, no se ocultan.
+- **No inventar datos.** Si una métrica del diseño no se puede alimentar con los
+  datos disponibles, parar y avisar en vez de mockear.
+- **No copiar rangos numéricos del mockup.** Fue maquetado con uma ±30/±10 y datos
+  sintéticos; ejes, umbrales y valores de ejemplo están al doble de escala.
+  Recalibrar contra datos reales.
+
+## Estados que hay que manejar
+
+- Sesión 7 pendiente (fixture, no ocultar).
+- Jugador con 0 hanchan jugados.
+- Jugador con muestra chica: un radar o una curva con 2 hanchan es ruido. Decidir
+  umbral mínimo y degradar visualmente, no mostrar como si fuera dato firme.
+- `stats.json` ausente o incompleto para un jugador: el perfil se ve bien sin el
+  radar, no roto.
+- Penalización por ausencia aplicada.
+
+## Abierto
+
+- Penalización por ausencia: −20 o −30.
+- Umbral de muestra mínima para métricas avanzadas.
+- Colisión de rojo en tema Neon: rojo = División A y también = líder / pestaña
+  activa / valor ganador. Necesita separación (ej. división solo en bordes y
+  avatares, estado en relleno).

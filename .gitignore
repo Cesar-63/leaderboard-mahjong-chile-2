@@ -1,0 +1,12 @@
+# Planilla fuente de la liga: contiene datos de jugadores reales.
+# El pipeline la lee localmente; no se versiona.
+*.xlsx
+~$*.xlsx
+
+# Config local de Claude Code (preferencias de esta máquina)
+.claude/settings.local.json
+
+# Artefactos del SO
+Thumbs.db
+Desktop.ini
+.DS_Store
