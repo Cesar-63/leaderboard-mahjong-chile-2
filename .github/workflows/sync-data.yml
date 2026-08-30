@@ -22,7 +22,12 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt
-      - run: python scripts/sync.py
+      - name: Sincronizar planilla y paipus
+        env:
+          MAJSOUL_UID: ${{ secrets.MAJSOUL_UID }}
+          MAJSOUL_TOKEN: ${{ secrets.MAJSOUL_TOKEN }}
+          MAJSOUL_DEVICE_ID: ${{ secrets.MAJSOUL_DEVICE_ID }}
+        run: python scripts/sync.py
       - name: Publicar cambios de datos
         run: |
           if git diff --quiet -- data; then

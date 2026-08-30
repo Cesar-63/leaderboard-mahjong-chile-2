@@ -21,7 +21,7 @@ from openpyxl.utils import get_column_letter
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts.majsoul import PaipuAuthRequired, PaipuError, extract_record_id, extract_uuid, fetch_record, parse_record
+from scripts.majsoul import PaipuAuthRequired, PaipuError, extract_record_id, extract_uuid, fetch_record, parse_record, prefetch_authenticated_records
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -409,6 +409,10 @@ def main() -> int:
         histories: dict[str, dict[str, Any]] = {}
         for division, rule in config["divisions"].items():
             histories.update(parse_history(workbook, division, rule["historySheet"], rule))
+        if not args.offline:
+            downloaded = prefetch_authenticated_records(submissions, ROOT / "data" / "raw-paipu")
+            if downloaded:
+                print(f"Paipus descargados con la sesión técnica: {downloaded}")
         parsed_games, status = merge_paipus(submissions, histories, ROOT / "data" / "raw-paipu", args.offline)
         if args.strict_paipu:
             failures = [item for item in status["submissions"] if item["status"] == "ERROR"]

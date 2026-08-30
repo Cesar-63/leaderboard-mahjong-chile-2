@@ -63,3 +63,14 @@ enlace de replay sea compartible. En ese caso la tabla y el historial continúan
 sincronizándose desde `Game History`; las estadísticas avanzadas quedan como
 pendientes hasta configurar una cuenta técnica o colocar el protobuf en
 `data/raw-paipu/<uuid>.pb`.
+
+Para Mahjong Soul Global, el workflow usa una sesión técnica de YoStar guardada
+exclusivamente en GitHub Actions Secrets:
+
+- `MAJSOUL_UID`
+- `MAJSOUL_TOKEN`
+- `MAJSOUL_DEVICE_ID`
+
+El sincronizador renueva la sesión mediante `quick-login`, inicia el flujo
+OAuth2 de Mahjong Soul y descarga todos los registros en una única conexión.
+Los valores nunca se escriben en logs ni en archivos versionados.

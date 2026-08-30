@@ -1,6 +1,7 @@
 import unittest
+from unittest.mock import patch
 
-from scripts.majsoul import PaipuError, extract_record_id, extract_uuid
+from scripts.majsoul import PaipuError, extract_record_id, extract_uuid, has_yostar_credentials
 from scripts.sync import CALENDAR_VALUE_COLS, SESSION_G1_ROWS, normalize_nat
 
 
@@ -21,6 +22,14 @@ class SyncTests(unittest.TestCase):
         self.assertEqual(normalize_nat("Brasil/Brazil/Brasileira"), "BR")
         self.assertEqual(normalize_nat("Méxicana"), "MX")
         self.assertEqual(normalize_nat("Chileno"), "CL")
+
+    def test_yostar_credentials_require_all_three_values(self):
+        with patch.dict("os.environ", {"MAJSOUL_UID": "uid", "MAJSOUL_TOKEN": "token"}, clear=True):
+            self.assertFalse(has_yostar_credentials())
+        with patch.dict("os.environ", {
+            "MAJSOUL_UID": "uid", "MAJSOUL_TOKEN": "token", "MAJSOUL_DEVICE_ID": "device",
+        }, clear=True):
+            self.assertTrue(has_yostar_credentials())
 
 
 if __name__ == "__main__":
