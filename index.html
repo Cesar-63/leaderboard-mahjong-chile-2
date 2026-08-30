@@ -19,12 +19,14 @@
 <body>
   <div id="root"></div>
 
-  <script src="data.js"></script>
-  <script type="text/babel" src="tweaks-panel.jsx"></script>
-  <script type="text/babel" src="flags.jsx"></script>
-  <script type="text/babel" src="charts.jsx"></script>
-  <script type="text/babel" src="components-standings.jsx"></script>
-  <script type="text/babel" src="components-detail.jsx"></script>
-  <script type="text/babel" src="app.jsx"></script>
+  <script src="data.js?v=gsheet"></script>
+  <!-- generated.js reemplaza el mock cuando se ha ejecutado scripts/sync.py -->
+  <script src="data/generated.js?v=gsheet"></script>
+  <script type="text/babel" src="tweaks-panel.jsx?v=gsheet"></script>
+  <script type="text/babel" src="flags.jsx?v=gsheet"></script>
+  <script type="text/babel" src="charts.jsx?v=gsheet"></script>
+  <script type="text/babel" src="components-standings.jsx?v=gsheet"></script>
+  <script type="text/babel" src="components-detail.jsx?v=gsheet"></script>
+  <script type="text/babel" src="app.jsx?v=gsheet"></script>
 </body>
 </html>

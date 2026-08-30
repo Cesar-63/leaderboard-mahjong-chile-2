@@ -1,0 +1,11 @@
+{
+  "spreadsheetId": "1esmc9UiDCRLurAJpVkxegvA75xXO2aGtAOeQjqLlKQc",
+  "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1esmc9UiDCRLurAJpVkxegvA75xXO2aGtAOeQjqLlKQc/edit?usp=sharing",
+  "seasonLabel": "Temporada 2026",
+  "sessionsTotal": 7,
+  "minimumAdvancedStatsHands": 8,
+  "divisions": {
+    "A": { "uma": [15, 5, -5, -15], "initialPoints": 30000, "rosterSheet": "Jugadores Liga A", "historySheet": "Game History A" },
+    "B": { "uma": [35, 5, -10, -30], "initialPoints": 30000, "rosterSheet": "Jugadores Liga B", "historySheet": "Game History B" }
+  }
+}

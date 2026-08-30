@@ -1,0 +1,1036 @@
+{
+  "submissions": [
+    {
+      "key": "A-S1-M1-G1",
+      "cell": "Calendario!C11",
+      "uuid": "260719-0d302d99-6b53-44eb-b444-c56301f7258e",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "A-S1-M1-G2",
+      "cell": "Calendario!C12",
+      "uuid": "260719-2b0533f9-d09e-4473-ae79-e353f3827021",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "A-S1-M2-G1",
+      "cell": "Calendario!F11",
+      "uuid": "260710-5681ec16-0333-4423-be2b-24caafb15c3a",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "A-S1-M2-G2",
+      "cell": "Calendario!F12",
+      "uuid": "260710-6b5572a1-54d3-40fe-b9c7-bd6ee60e9d3b",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "A-S1-M3-G1",
+      "cell": "Calendario!I11",
+      "uuid": "260710-5971bfd0-4b7f-4c2f-87a8-0facba9037b7",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "A-S1-M3-G2",
+      "cell": "Calendario!I12",
+      "uuid": "260710-09fad1eb-a1c3-4a6b-9e6c-7c647484cd83",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "A-S1-M4-G1",
+      "cell": "Calendario!L11",
+      "uuid": "260712-81ac1fe1-36fa-44f6-814e-b069eb7f526c",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "A-S1-M4-G2",
+      "cell": "Calendario!L12",
+      "uuid": "260712-818fe435-4e24-4e86-b3df-e14905c24f3d",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "A-S1-M5-G1",
+      "cell": "Calendario!O11",
+      "uuid": "260715-95ea1b3c-6f05-4ce1-b286-c6b02853c75f",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "A-S1-M5-G2",
+      "cell": "Calendario!O12",
+      "uuid": "260715-5f46e5f3-f9b0-43d4-82b2-84fbb0615c5f",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "A-S1-M6-G1",
+      "cell": "Calendario!R11",
+      "uuid": "260713-2107123a-5da3-4bdd-af8c-0c288e9620a7",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "A-S1-M6-G2",
+      "cell": "Calendario!R12",
+      "uuid": "260713-fb9408c9-1e25-4a6c-9c91-a5c62032df2f",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "A-S2-M1-G1",
+      "cell": "Calendario!C19",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S2-M1-G2",
+      "cell": "Calendario!C20",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S2-M2-G1",
+      "cell": "Calendario!F19",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S2-M2-G2",
+      "cell": "Calendario!F20",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S2-M3-G1",
+      "cell": "Calendario!I19",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S2-M3-G2",
+      "cell": "Calendario!I20",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S2-M4-G1",
+      "cell": "Calendario!L19",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S2-M4-G2",
+      "cell": "Calendario!L20",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S2-M5-G1",
+      "cell": "Calendario!O19",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S2-M5-G2",
+      "cell": "Calendario!O20",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S2-M6-G1",
+      "cell": "Calendario!R19",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S2-M6-G2",
+      "cell": "Calendario!R20",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S3-M1-G1",
+      "cell": "Calendario!C27",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S3-M1-G2",
+      "cell": "Calendario!C28",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S3-M2-G1",
+      "cell": "Calendario!F27",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S3-M2-G2",
+      "cell": "Calendario!F28",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S3-M3-G1",
+      "cell": "Calendario!I27",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S3-M3-G2",
+      "cell": "Calendario!I28",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S3-M4-G1",
+      "cell": "Calendario!L27",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S3-M4-G2",
+      "cell": "Calendario!L28",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S3-M5-G1",
+      "cell": "Calendario!O27",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S3-M5-G2",
+      "cell": "Calendario!O28",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S3-M6-G1",
+      "cell": "Calendario!R27",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S3-M6-G2",
+      "cell": "Calendario!R28",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S4-M1-G1",
+      "cell": "Calendario!C35",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S4-M1-G2",
+      "cell": "Calendario!C36",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S4-M2-G1",
+      "cell": "Calendario!F35",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S4-M2-G2",
+      "cell": "Calendario!F36",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S4-M3-G1",
+      "cell": "Calendario!I35",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S4-M3-G2",
+      "cell": "Calendario!I36",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S4-M4-G1",
+      "cell": "Calendario!L35",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S4-M4-G2",
+      "cell": "Calendario!L36",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S4-M5-G1",
+      "cell": "Calendario!O35",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S4-M5-G2",
+      "cell": "Calendario!O36",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S4-M6-G1",
+      "cell": "Calendario!R35",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S4-M6-G2",
+      "cell": "Calendario!R36",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S5-M1-G1",
+      "cell": "Calendario!C43",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S5-M1-G2",
+      "cell": "Calendario!C44",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S5-M2-G1",
+      "cell": "Calendario!F43",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S5-M2-G2",
+      "cell": "Calendario!F44",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S5-M3-G1",
+      "cell": "Calendario!I43",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S5-M3-G2",
+      "cell": "Calendario!I44",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S5-M4-G1",
+      "cell": "Calendario!L43",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S5-M4-G2",
+      "cell": "Calendario!L44",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S5-M5-G1",
+      "cell": "Calendario!O43",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S5-M5-G2",
+      "cell": "Calendario!O44",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S5-M6-G1",
+      "cell": "Calendario!R43",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S5-M6-G2",
+      "cell": "Calendario!R44",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S6-M1-G1",
+      "cell": "Calendario!C51",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S6-M1-G2",
+      "cell": "Calendario!C52",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S6-M2-G1",
+      "cell": "Calendario!F51",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S6-M2-G2",
+      "cell": "Calendario!F52",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S6-M3-G1",
+      "cell": "Calendario!I51",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S6-M3-G2",
+      "cell": "Calendario!I52",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S6-M4-G1",
+      "cell": "Calendario!L51",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S6-M4-G2",
+      "cell": "Calendario!L52",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S6-M5-G1",
+      "cell": "Calendario!O51",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S6-M5-G2",
+      "cell": "Calendario!O52",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S6-M6-G1",
+      "cell": "Calendario!R51",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S6-M6-G2",
+      "cell": "Calendario!R52",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S7-M1-G1",
+      "cell": "Calendario!C59",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S7-M1-G2",
+      "cell": "Calendario!C60",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S7-M2-G1",
+      "cell": "Calendario!F59",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S7-M2-G2",
+      "cell": "Calendario!F60",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S7-M3-G1",
+      "cell": "Calendario!I59",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S7-M3-G2",
+      "cell": "Calendario!I60",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S7-M4-G1",
+      "cell": "Calendario!L59",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S7-M4-G2",
+      "cell": "Calendario!L60",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S7-M5-G1",
+      "cell": "Calendario!O59",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S7-M5-G2",
+      "cell": "Calendario!O60",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S7-M6-G1",
+      "cell": "Calendario!R59",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "A-S7-M6-G2",
+      "cell": "Calendario!R60",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S1-M1-G1",
+      "cell": "Calendario!V11",
+      "uuid": "260713-96730fd4-bcbe-4a82-bec8-a9f661e912e8",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "B-S1-M1-G2",
+      "cell": "Calendario!V12",
+      "uuid": "260713-021764e3-c70b-4537-a94a-971d7525a9d6",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "B-S1-M2-G1",
+      "cell": "Calendario!Y11",
+      "uuid": "260713-d34824b5-94b1-411c-915e-473ea28434f9",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "B-S1-M2-G2",
+      "cell": "Calendario!Y12",
+      "uuid": "260713-e9405608-6c0d-43d7-86d2-a2149b990ee3",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "B-S1-M3-G1",
+      "cell": "Calendario!AB11",
+      "uuid": "260713-3c9db6eb-0eea-426b-af5d-a8d6b5aba764",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "B-S1-M3-G2",
+      "cell": "Calendario!AB12",
+      "uuid": "260713-2051770f-4f30-4f0c-a55e-ec37dbad3ffc",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "B-S1-M4-G1",
+      "cell": "Calendario!AE11",
+      "uuid": "260714-58f336f2-3446-4279-a2cf-cac422079be3",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "B-S1-M4-G2",
+      "cell": "Calendario!AE12",
+      "uuid": "260714-93b3ac04-bb99-49e3-88b9-969ada0b06bd",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "B-S1-M5-G1",
+      "cell": "Calendario!AH11",
+      "uuid": "260713-02c6d821-d4d4-4f0d-8b71-049fd300845b",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "B-S1-M5-G2",
+      "cell": "Calendario!AH12",
+      "uuid": "260713-07a424bb-8a8d-4ebe-b6a1-e22625aab473",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "B-S1-M6-G1",
+      "cell": "Calendario!AK11",
+      "uuid": "260717-a38c14f9-8d03-4437-ad93-509b9cf7e35c",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "B-S1-M6-G2",
+      "cell": "Calendario!AK12",
+      "uuid": "260717-8c54b447-5fa5-4e36-9775-c7c77f11f9fa",
+      "status": "REQUIERE_AUTH",
+      "message": "El registro reciente requiere una sesión técnica de Mahjong Soul"
+    },
+    {
+      "key": "B-S2-M1-G1",
+      "cell": "Calendario!V19",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S2-M1-G2",
+      "cell": "Calendario!V20",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S2-M2-G1",
+      "cell": "Calendario!Y19",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S2-M2-G2",
+      "cell": "Calendario!Y20",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S2-M3-G1",
+      "cell": "Calendario!AB19",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S2-M3-G2",
+      "cell": "Calendario!AB20",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S2-M4-G1",
+      "cell": "Calendario!AE19",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S2-M4-G2",
+      "cell": "Calendario!AE20",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S2-M5-G1",
+      "cell": "Calendario!AH19",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S2-M5-G2",
+      "cell": "Calendario!AH20",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S2-M6-G1",
+      "cell": "Calendario!AK19",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S2-M6-G2",
+      "cell": "Calendario!AK20",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S3-M1-G1",
+      "cell": "Calendario!V27",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S3-M1-G2",
+      "cell": "Calendario!V28",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S3-M2-G1",
+      "cell": "Calendario!Y27",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S3-M2-G2",
+      "cell": "Calendario!Y28",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S3-M3-G1",
+      "cell": "Calendario!AB27",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S3-M3-G2",
+      "cell": "Calendario!AB28",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S3-M4-G1",
+      "cell": "Calendario!AE27",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S3-M4-G2",
+      "cell": "Calendario!AE28",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S3-M5-G1",
+      "cell": "Calendario!AH27",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S3-M5-G2",
+      "cell": "Calendario!AH28",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S3-M6-G1",
+      "cell": "Calendario!AK27",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S3-M6-G2",
+      "cell": "Calendario!AK28",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S4-M1-G1",
+      "cell": "Calendario!V35",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S4-M1-G2",
+      "cell": "Calendario!V36",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S4-M2-G1",
+      "cell": "Calendario!Y35",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S4-M2-G2",
+      "cell": "Calendario!Y36",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S4-M3-G1",
+      "cell": "Calendario!AB35",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S4-M3-G2",
+      "cell": "Calendario!AB36",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S4-M4-G1",
+      "cell": "Calendario!AE35",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S4-M4-G2",
+      "cell": "Calendario!AE36",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S4-M5-G1",
+      "cell": "Calendario!AH35",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S4-M5-G2",
+      "cell": "Calendario!AH36",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S4-M6-G1",
+      "cell": "Calendario!AK35",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S4-M6-G2",
+      "cell": "Calendario!AK36",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S5-M1-G1",
+      "cell": "Calendario!V43",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S5-M1-G2",
+      "cell": "Calendario!V44",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S5-M2-G1",
+      "cell": "Calendario!Y43",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S5-M2-G2",
+      "cell": "Calendario!Y44",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S5-M3-G1",
+      "cell": "Calendario!AB43",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S5-M3-G2",
+      "cell": "Calendario!AB44",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S5-M4-G1",
+      "cell": "Calendario!AE43",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S5-M4-G2",
+      "cell": "Calendario!AE44",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S5-M5-G1",
+      "cell": "Calendario!AH43",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S5-M5-G2",
+      "cell": "Calendario!AH44",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S5-M6-G1",
+      "cell": "Calendario!AK43",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S5-M6-G2",
+      "cell": "Calendario!AK44",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S6-M1-G1",
+      "cell": "Calendario!V51",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S6-M1-G2",
+      "cell": "Calendario!V52",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S6-M2-G1",
+      "cell": "Calendario!Y51",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S6-M2-G2",
+      "cell": "Calendario!Y52",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S6-M3-G1",
+      "cell": "Calendario!AB51",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S6-M3-G2",
+      "cell": "Calendario!AB52",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S6-M4-G1",
+      "cell": "Calendario!AE51",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S6-M4-G2",
+      "cell": "Calendario!AE52",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S6-M5-G1",
+      "cell": "Calendario!AH51",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S6-M5-G2",
+      "cell": "Calendario!AH52",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S6-M6-G1",
+      "cell": "Calendario!AK51",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S6-M6-G2",
+      "cell": "Calendario!AK52",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S7-M1-G1",
+      "cell": "Calendario!V59",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S7-M1-G2",
+      "cell": "Calendario!V60",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S7-M2-G1",
+      "cell": "Calendario!Y59",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S7-M2-G2",
+      "cell": "Calendario!Y60",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S7-M3-G1",
+      "cell": "Calendario!AB59",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S7-M3-G2",
+      "cell": "Calendario!AB60",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S7-M4-G1",
+      "cell": "Calendario!AE59",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S7-M4-G2",
+      "cell": "Calendario!AE60",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S7-M5-G1",
+      "cell": "Calendario!AH59",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S7-M5-G2",
+      "cell": "Calendario!AH60",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S7-M6-G1",
+      "cell": "Calendario!AK59",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    },
+    {
+      "key": "B-S7-M6-G2",
+      "cell": "Calendario!AK60",
+      "status": "PENDIENTE",
+      "message": "Falta paipu"
+    }
+  ]
+}
