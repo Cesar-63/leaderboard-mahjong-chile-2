@@ -17,7 +17,10 @@ from typing import Any
 PAIPU_RE = re.compile(r"(?P<uuid>\d{6}-[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12})(?P<trailer>_a\d+)?")
 RECORD_URL = "https://record-v2.maj-soul.com:5333/majsoul/game_record/{uuid}"
 MS_HOST = "https://mahjongsoul.game.yo-star.com"
-MS_GATEWAY = "wss://mjusgs.mahjongsoul.com:4501"
+MS_GATEWAY_FALLBACKS = (
+    "wss://engs.mahjongsoul.com/gateway",
+    "wss://engsbk.mahjongsoul.com/gateway",
+)
 YOSTAR_QUICK_LOGIN = "https://en-sdk-api.yostarplat.com/user/quick-login"
 YOSTAR_SDK_VERSION = "4.16.0"
 YOSTAR_SIGNING_SALT = bytes([
@@ -76,6 +79,21 @@ async def _refresh_yostar_token(session: Any, uid: str, token: str, device_id: s
     return str(refreshed)
 
 
+async def _discover_gateways(session: Any, resource_version: str) -> list[str]:
+    discovered: list[str] = []
+    try:
+        async with session.get(f"{MS_HOST}/v{resource_version}.w/config.json", timeout=20) as response:
+            config = await response.json(content_type=None)
+        player = next((item for item in config.get("ip", []) if item.get("name") == "player"), {})
+        for gateway in player.get("gateways", []):
+            url = str(gateway.get("url", "")).rstrip("/")
+            if url.startswith("https://"):
+                discovered.append(f"wss://{url[8:]}/gateway")
+    except Exception:
+        pass
+    return list(dict.fromkeys([*discovered, *MS_GATEWAY_FALLBACKS]))
+
+
 async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cache_dir: Path) -> int:
     try:
         import aiohttp
@@ -98,12 +116,25 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
                 raise PaipuError(
                     f"Mahjong Soul version.json respondió HTTP {response.status} con {response.content_type or 'contenido desconocido'}"
                 ) from exc
-    resource_version = str(version_payload["version"]).replace(".w", "")
+        resource_version = str(version_payload["version"]).replace(".w", "")
+        gateways = await _discover_gateways(http, resource_version)
     client_version = f"web-{resource_version}"
 
-    channel = MSRPCChannel(MS_GATEWAY)
-    lobby = Lobby(channel)
-    await channel.connect(MS_HOST)
+    channel = None
+    lobby = None
+    last_connection_error: Exception | None = None
+    for endpoint in gateways:
+        candidate = MSRPCChannel(endpoint)
+        try:
+            await candidate.connect(MS_HOST)
+            channel = candidate
+            lobby = Lobby(channel)
+            break
+        except Exception as exc:
+            last_connection_error = exc
+    if channel is None or lobby is None:
+        detail = type(last_connection_error).__name__ if last_connection_error else "sin candidatos"
+        raise PaipuError(f"No se pudo conectar a ningún gateway de Mahjong Soul ({detail})")
     downloaded = 0
     try:
         auth = pb.ReqOauth2Auth(type=22, code=refreshed_token, uid=uid, client_version_string=client_version)
