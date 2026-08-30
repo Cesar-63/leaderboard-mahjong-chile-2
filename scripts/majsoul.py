@@ -211,11 +211,13 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
                 raise PaipuAuthRequired(f"oauth2Login falló ({_rpc_error_detail(login_response.error)})")
 
             cache_dir.mkdir(parents=True, exist_ok=True)
-            for record_id, record_uuid in records:
+            for _record_id, record_uuid in records:
                 destination = cache_dir / f"{record_uuid}.pb"
                 if destination.exists() and not destination.read_bytes().lstrip().startswith(b"<?xml"):
                     continue
-                request = pb.ReqGameRecord(game_uuid=record_id, client_version_string=client_version)
+                # game_uuid es el UUID limpio; el sufijo _a<cuenta> del enlace
+                # compartido es solo el ancla de vista y el servidor lo rechaza (1203).
+                request = pb.ReqGameRecord(game_uuid=record_uuid, client_version_string=client_version)
                 response = await lobby.fetch_game_record(request)
                 if response.HasField("error") and response.error.code == 151:
                     await lobby.read_game_record(request)
@@ -270,7 +272,7 @@ def fetch_record(record_id: str, cache_dir: Path, uuid: str | None = None) -> by
     if destination.exists():
         return destination.read_bytes()
     request = urllib.request.Request(
-        RECORD_URL.format(uuid=record_id),
+        RECORD_URL.format(uuid=uuid),
         headers={"User-Agent": "LigaMahjongChile/1.0 (+paipu-importer)"},
     )
     try:
