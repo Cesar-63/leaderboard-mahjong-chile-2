@@ -4,6 +4,9 @@ const { useState, useEffect, useRef, useMemo } = React;
 
 function fmtPts(n) { return (n >= 0 ? '+' : '') + n.toFixed(1); }
 function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+function fmtAdvanced(player, key, suffix = '', decimals = 1) {
+  return player.statsSample > 0 ? player[key].toFixed(decimals) + suffix : '—';
+}
 
 function HoverPreview({ player, anchor }) {
   if (!player || !anchor) return null;
@@ -19,10 +22,10 @@ function HoverPreview({ player, anchor }) {
       <div className="hp-stats">
         <div className="hp-stat"><div className="v">{fmtPts(player.points)}</div><div className="l">Puntos</div></div>
         <div className="hp-stat"><div className="v">{player.avgRank.toFixed(2)}</div><div className="l">Avg Rank</div></div>
-        <div className="hp-stat"><div className="v">{player.winRate.toFixed(1)}%</div><div className="l">Win Rate</div></div>
-        <div className="hp-stat"><div className="v">{player.dealInRate.toFixed(1)}%</div><div className="l">Deal-in</div></div>
-        <div className="hp-stat"><div className="v">{player.riichiRate.toFixed(1)}%</div><div className="l">Riichi</div></div>
-        <div className="hp-stat"><div className="v">{player.openRate.toFixed(1)}%</div><div className="l">Open</div></div>
+        <div className="hp-stat"><div className="v">{fmtAdvanced(player, 'winRate', '%')}</div><div className="l">Win Rate</div></div>
+        <div className="hp-stat"><div className="v">{fmtAdvanced(player, 'dealInRate', '%')}</div><div className="l">Deal-in</div></div>
+        <div className="hp-stat"><div className="v">{fmtAdvanced(player, 'riichiRate', '%')}</div><div className="l">Riichi</div></div>
+        <div className="hp-stat"><div className="v">{fmtAdvanced(player, 'openRate', '%')}</div><div className="l">Open</div></div>
       </div>
       <div style={{ marginTop: 14, height: 32 }}>
         <Sparkline values={player.cum} width={248} height={32} color={player.div === 'B' ? 'var(--accent-2)' : 'var(--accent)'} />
@@ -124,10 +127,10 @@ function StandingsView({ data, div, layout, onSelectPlayer }) {
                   <td>{p.games}</td>
                   <td><span className={`points-big ${p.points >= 0 ? 'pos' : 'neg'}`}>{fmtPts(p.points)}</span></td>
                   <td>{p.avgRank.toFixed(2)}</td>
-                  <td>{p.winRate.toFixed(1)}</td>
-                  <td>{p.dealInRate.toFixed(1)}</td>
-                  <td>{p.riichiRate.toFixed(1)}</td>
-                  <td>{p.openRate.toFixed(1)}</td>
+                  <td>{fmtAdvanced(p, 'winRate')}</td>
+                  <td>{fmtAdvanced(p, 'dealInRate')}</td>
+                  <td>{fmtAdvanced(p, 'riichiRate')}</td>
+                  <td>{fmtAdvanced(p, 'openRate')}</td>
                   <td><Sparkline values={p.cum} color={p.div === 'B' ? 'var(--accent-2)' : 'var(--accent)'} /></td>
                 </tr>
               ))}

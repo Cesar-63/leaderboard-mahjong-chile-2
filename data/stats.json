@@ -1,0 +1,436 @@
+{
+  "players": {
+    "A01": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A02": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A03": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A04": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A05": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A06": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A07": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A08": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A09": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A10": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A11": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A12": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A13": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A14": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A15": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A16": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A17": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A18": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A19": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A20": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A21": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A22": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A23": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "A24": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B01": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B02": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B03": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B04": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B05": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B06": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B07": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B08": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B09": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B10": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B11": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B12": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B13": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B14": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B15": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B16": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B17": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B18": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B19": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B20": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B21": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B22": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B23": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    },
+    "B24": {
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
+    }
+  }
+}

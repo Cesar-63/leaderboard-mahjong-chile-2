@@ -10,3 +10,7 @@
 Thumbs.db
 Desktop.ini
 .DS_Store
+data/raw-paipu/*.pb
+*.xlsx
+__pycache__/
+.venv/

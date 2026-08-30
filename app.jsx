@@ -115,7 +115,7 @@ function App() {
         </div>
         <div className="live-pill">
           <span className="dot"></span>
-          <span>EN VIVO</span>
+          <span>DATOS OFICIALES</span>
         </div>
       </header>
 
@@ -135,7 +135,9 @@ function App() {
               </div>
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)', textAlign: 'right' }}>
                 <div>Sesión {L.sessionsPlayed} de {L.sessionsTotal} · {L.hanchanPerSession} hanchan por sesión</div>
-                <div style={{ color: 'var(--ink-faint)' }}>uma/oka +30 / +10 / −10 / −30</div>
+                <div style={{ color: 'var(--ink-faint)' }}>
+                  uma {L.rules[div].uma.map(v => v >= 0 ? `+${v}` : `−${Math.abs(v)}`).join(' / ')}
+                </div>
               </div>
             </div>
             <StandingsView data={data} div={div} layout={t.layout} onSelectPlayer={selectPlayer} />

@@ -3,11 +3,12 @@
 function accentFor(div) { return div === 'B' ? 'var(--accent-2)' : 'var(--accent)'; }
 
 function metricsToRadar(p) {
+  const hasStats = p.statsSample > 0;
   return [
-    { label: 'WIN', display: p.winRate.toFixed(0) + '%', value: clamp01(p.winRate / 30) },
-    { label: 'DEF', display: (100 - p.dealInRate).toFixed(0) + '%', value: clamp01((20 - p.dealInRate) / 14) },
-    { label: 'RIICHI', display: p.riichiRate.toFixed(0) + '%', value: clamp01(p.riichiRate / 32) },
-    { label: 'OPEN', display: p.openRate.toFixed(0) + '%', value: clamp01(p.openRate / 50) },
+    { label: 'WIN', display: hasStats ? p.winRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.winRate / 30) : 0 },
+    { label: 'DEF', display: hasStats ? (100 - p.dealInRate).toFixed(0) + '%' : '—', value: hasStats ? clamp01((20 - p.dealInRate) / 14) : 0 },
+    { label: 'RIICHI', display: hasStats ? p.riichiRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.riichiRate / 32) : 0 },
+    { label: 'OPEN', display: hasStats ? p.openRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.openRate / 50) : 0 },
     { label: 'AVG#', display: p.avgRank.toFixed(2), value: clamp01((4 - p.avgRank) / 1.5) },
     { label: 'PTS', display: fmtPts(p.avgPoints), value: clamp01((p.avgPoints + 12) / 30) },
   ];
@@ -39,11 +40,12 @@ function PlayerDetail({ playerId, data, onPick }) {
   const divSize = data.divisions[p.div].players.length;
   const color = accentFor(p.div);
 
+  const hasStats = p.statsSample > 0;
   const radar = [
-    { label: 'WIN',     display: p.winRate.toFixed(1) + '%', value: clamp01(p.winRate / 30) },
-    { label: 'DEFENSE', display: (100 - p.dealInRate).toFixed(1) + '%', value: clamp01((20 - p.dealInRate) / 14) },
-    { label: 'RIICHI',  display: p.riichiRate.toFixed(1) + '%', value: clamp01(p.riichiRate / 32) },
-    { label: 'OPEN',    display: p.openRate.toFixed(1) + '%', value: clamp01(p.openRate / 50) },
+    { label: 'WIN',     display: hasStats ? p.winRate.toFixed(1) + '%' : '—', value: hasStats ? clamp01(p.winRate / 30) : 0 },
+    { label: 'DEFENSE', display: hasStats ? (100 - p.dealInRate).toFixed(1) + '%' : '—', value: hasStats ? clamp01((20 - p.dealInRate) / 14) : 0 },
+    { label: 'RIICHI',  display: hasStats ? p.riichiRate.toFixed(1) + '%' : '—', value: hasStats ? clamp01(p.riichiRate / 32) : 0 },
+    { label: 'OPEN',    display: hasStats ? p.openRate.toFixed(1) + '%' : '—', value: hasStats ? clamp01(p.openRate / 50) : 0 },
     { label: 'AVG #',   display: p.avgRank.toFixed(2), value: clamp01((4 - p.avgRank) / 1.5) },
     { label: 'POINTS',  display: fmtPts(p.avgPoints), value: clamp01((p.avgPoints + 12) / 30) },
   ];
@@ -106,10 +108,10 @@ function PlayerDetail({ playerId, data, onPick }) {
           <div className="stat-block">
             <div className="stat-cell"><div className="l">Avg Rank · 平均順位</div><div className="v">{p.avgRank.toFixed(2)}</div></div>
             <div className="stat-cell"><div className="l">Avg ± · 平均得点</div><div className="v" style={{ color: p.avgPoints >= 0 ? 'var(--good)' : 'var(--bad)' }}>{fmtPts(p.avgPoints)}</div></div>
-            <div className="stat-cell"><div className="l">Win Rate · 和了率</div><div className="v">{p.winRate.toFixed(1)}%</div></div>
-            <div className="stat-cell"><div className="l">Deal-in · 放銃率</div><div className="v" style={{ color: 'var(--bad)' }}>{p.dealInRate.toFixed(1)}%</div></div>
-            <div className="stat-cell"><div className="l">Riichi · 立直率</div><div className="v">{p.riichiRate.toFixed(1)}%</div></div>
-            <div className="stat-cell"><div className="l">Open · 副露率</div><div className="v">{p.openRate.toFixed(1)}%</div></div>
+            <div className="stat-cell"><div className="l">Win Rate · 和了率</div><div className="v">{fmtAdvanced(p, 'winRate', '%')}</div></div>
+            <div className="stat-cell"><div className="l">Deal-in · 放銃率</div><div className="v" style={{ color: 'var(--bad)' }}>{fmtAdvanced(p, 'dealInRate', '%')}</div></div>
+            <div className="stat-cell"><div className="l">Riichi · 立直率</div><div className="v">{fmtAdvanced(p, 'riichiRate', '%')}</div></div>
+            <div className="stat-cell"><div className="l">Open · 副露率</div><div className="v">{fmtAdvanced(p, 'openRate', '%')}</div></div>
           </div>
 
           <div>
@@ -402,6 +404,7 @@ function HanchanLog({ data, div }) {
               <div className="code">{m.code}</div>
               <div className="date">{m.sessionCode} · H{m.hanchan}</div>
               <div className="table">Mesa {m.table} · {m.date}</div>
+              {m.paipuUrl && <a href={m.paipuUrl.replace(/^Mahjong Soul Game Log:/, '')} target="_blank" rel="noopener noreferrer" className="paipu-link">Ver paipu ↗</a>}
             </div>
             <div className="four-results">
               {m.players.map((pl, i) => (

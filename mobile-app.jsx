@@ -530,7 +530,7 @@ function MobileApp() {
 
   const HEAD = {
     standings: { title: `División ${div}`, jp: '順位表', aside: `Sesión ${L.sessionsPlayed}/${L.sessionsTotal}
-uma +30/+10/−10/−30` },
+uma ${L.rules[div].uma.map(v => v >= 0 ? '+' + v : '−' + Math.abs(v)).join('/')}` },
     detail: { title: 'Perfil', jp: '選手詳細', aside: null },
     compare: { title: 'Cara a Cara', jp: '対戦比較', aside: null },
     log: { title: 'Hanchan', jp: '半荘記録', aside: `${data.divisions[div].matches.length} registros` },

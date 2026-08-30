@@ -1,0 +1,41 @@
+name: Sincronizar Google Sheets y paipus
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-mahjong-data
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Sincronizar planilla y paipus
+        env:
+          MAJSOUL_UID: ${{ secrets.MAJSOUL_UID }}
+          MAJSOUL_TOKEN: ${{ secrets.MAJSOUL_TOKEN }}
+          MAJSOUL_DEVICE_ID: ${{ secrets.MAJSOUL_DEVICE_ID }}
+        run: python scripts/sync.py
+      - name: Publicar cambios de datos
+        run: |
+          if git diff --quiet -- data; then
+            echo "No hay cambios"
+            exit 0
+          fi
+          git config user.name "mahjong-chile-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/liga.json data/stats.json data/sync-status.json data/generated.js
+          git commit -m "data: sincronizar resultados"
+          git push
