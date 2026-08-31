@@ -684,22 +684,64 @@
       "statsReliable": true
     },
     "B01": {
-      "hands": 0,
-      "winRate": 0.0,
-      "dealInRate": 0.0,
-      "riichiRate": 0.0,
-      "openRate": 0.0,
-      "topYaku": [],
-      "statsReliable": false
+      "hands": 23,
+      "winRate": 21.7,
+      "dealInRate": 17.4,
+      "riichiRate": 13.0,
+      "openRate": 34.8,
+      "topYaku": [
+        {
+          "name": "Honitsu",
+          "count": 3
+        },
+        {
+          "name": "Hotei Raoyui",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Haku",
+          "count": 1
+        },
+        {
+          "name": "Iipeiko",
+          "count": 1
+        },
+        {
+          "name": "Junchan",
+          "count": 1
+        }
+      ],
+      "statsReliable": true
     },
     "B02": {
-      "hands": 0,
-      "winRate": 0.0,
-      "dealInRate": 0.0,
-      "riichiRate": 0.0,
-      "openRate": 0.0,
-      "topYaku": [],
-      "statsReliable": false
+      "hands": 23,
+      "winRate": 34.8,
+      "dealInRate": 13.0,
+      "riichiRate": 26.1,
+      "openRate": 21.7,
+      "topYaku": [
+        {
+          "name": "Junchan",
+          "count": 5
+        },
+        {
+          "name": "Honitsu",
+          "count": 4
+        },
+        {
+          "name": "Riichi",
+          "count": 4
+        },
+        {
+          "name": "Chinitsu",
+          "count": 4
+        },
+        {
+          "name": "Yakuhai Este",
+          "count": 3
+        }
+      ],
+      "statsReliable": true
     },
     "B03": {
       "hands": 0,
@@ -795,13 +837,34 @@
       "statsReliable": false
     },
     "B11": {
-      "hands": 0,
-      "winRate": 0.0,
-      "dealInRate": 0.0,
-      "riichiRate": 0.0,
-      "openRate": 0.0,
-      "topYaku": [],
-      "statsReliable": false
+      "hands": 23,
+      "winRate": 13.0,
+      "dealInRate": 8.7,
+      "riichiRate": 13.0,
+      "openRate": 26.1,
+      "topYaku": [
+        {
+          "name": "Honitsu",
+          "count": 3
+        },
+        {
+          "name": "Riichi",
+          "count": 2
+        },
+        {
+          "name": "Chinitsu",
+          "count": 2
+        },
+        {
+          "name": "Hotei Raoyui",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Oeste",
+          "count": 1
+        }
+      ],
+      "statsReliable": true
     },
     "B12": {
       "hands": 10,
@@ -940,13 +1003,34 @@
       "statsReliable": false
     },
     "B21": {
-      "hands": 0,
-      "winRate": 0.0,
-      "dealInRate": 0.0,
-      "riichiRate": 0.0,
-      "openRate": 0.0,
-      "topYaku": [],
-      "statsReliable": false
+      "hands": 23,
+      "winRate": 13.0,
+      "dealInRate": 34.8,
+      "riichiRate": 17.4,
+      "openRate": 56.5,
+      "topYaku": [
+        {
+          "name": "Junchan",
+          "count": 2
+        },
+        {
+          "name": "Honitsu",
+          "count": 2
+        },
+        {
+          "name": "Pinfu",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Este",
+          "count": 1
+        },
+        {
+          "name": "Riichi",
+          "count": 1
+        }
+      ],
+      "statsReliable": true
     },
     "B22": {
       "hands": 0,

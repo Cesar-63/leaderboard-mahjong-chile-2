@@ -20,7 +20,13 @@ python scripts/sync.py --xlsx planilla.xlsx --offline
 ```
 
 El modo `--offline` no realiza descargas. Los logs previamente descargados se
-leen desde `data/raw-paipu/` y nunca se versionan.
+leen desde `data/raw-paipu/`.
+
+**Los paipus descargados se versionan.** Antes no se hacía y cada corrida volvía
+a pedirle los 24 registros a Mahjong Soul; ese ritmo hizo que la API respondiera
+540 a todo y terminó bloqueando la cuenta técnica. Al versionarlos, cada paipu se
+pide una sola vez en su vida y una caída de la API ya no borra las estadísticas
+que ya estaban publicadas.
 
 ## Archivos generados
 
@@ -72,5 +78,8 @@ exclusivamente en GitHub Actions Secrets:
 - `MAJSOUL_DEVICE_ID`
 
 El sincronizador renueva la sesión mediante `quick-login`, inicia el flujo
-OAuth2 de Mahjong Soul y descarga todos los registros en una única conexión.
+OAuth2 de Mahjong Soul y descarga los registros faltantes en una única conexión,
+respetando el límite de la API: como máximo `MAX_RECORDS_PER_RUN` (6) por corrida,
+espaciados `PAIPU_REQUEST_DELAY_SECONDS` (3 s), y cortando la tanda ante dos
+rechazos seguidos con código 540. El resto queda para las corridas siguientes.
 Los valores nunca se escriben en logs ni en archivos versionados.
