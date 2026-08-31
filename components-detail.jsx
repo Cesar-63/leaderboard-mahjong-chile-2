@@ -427,6 +427,9 @@ function HanchanLog({ data, div }) {
 
 function CalendarView({ data }) {
   const played = data.divisions.A.sessions;
+  // Solo mostramos partidas con horario definido; las sesiones sin ninguna
+  // partida programada quedan ocultas (aún no inician).
+  const scheduled = data.calendar.filter(c => c.date !== 'Por definir' && c.time !== 'Por definir');
   return (
     <div className="tab-panel">
       <div className="section-head">
@@ -442,10 +445,10 @@ function CalendarView({ data }) {
 
       <div className="block-label" style={{ marginBottom: 12 }}>Próximo · 次回</div>
       <div className="cal-grid">
-        {data.calendar.map((c, i) => (
+        {scheduled.map((c, i) => (
           <div className={`cal-card ${c.status === 'highlight' ? 'highlight' : ''} div-${c.div}`} key={i}
                style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 30}ms` }}>
-            {c.status === 'highlight' && <div className="ribbon">FINAL</div>}
+            {c.status === 'highlight' && <div className="ribbon">FINALIZADO</div>}
             <div className="badge"><span className={`div-chip ${c.div}`}>{c.div === 'AB' ? 'A+B' : c.div === 'CL' ? 'CHILE' : 'DIV ' + c.div}</span>{c.div === 'CL' && <Flag nat="CL" size={16} />}</div>
             <div className="date-row">
               <span className="d">{c.date.split(' ')[0]}</span>
