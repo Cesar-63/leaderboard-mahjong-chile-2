@@ -125,6 +125,11 @@ window.I18N = {
     next_cal: 'Próximo',
     played_sessions: 'Sesiones Jugadas',
     metrics_note: 'Barra más larga = mejor, escalada al rango de la liga',
+    timezone: 'Zona horaria',
+    partida_n: 'Partida de {n} jugadores',
+    hora_local: 'Hora local',
+    all_times: 'Todos los horarios',
+    por_definir: 'Por definir',
   },
 
   en: {
@@ -244,6 +249,11 @@ window.I18N = {
     next_cal: 'Next',
     played_sessions: 'Played Sessions',
     metrics_note: 'Longer bar = better, scaled to league range',
+    timezone: 'Time zone',
+    partida_n: 'Game of {n} players',
+    hora_local: 'Local time',
+    all_times: 'All times',
+    por_definir: 'To be defined',
   },
 
   pt: {
@@ -363,10 +373,62 @@ window.I18N = {
     next_cal: 'Próximo',
     played_sessions: 'Sessões Jogadas',
     metrics_note: 'Barra mais longa = melhor, escalada à faixa da liga',
+    timezone: 'Fuso horário',
+    partida_n: 'Partida de {n} jogadores',
+    hora_local: 'Hora local',
+    all_times: 'Todos os horários',
+    por_definir: 'A definir',
   },
 };
 
-window.LANG = 'es';
+// ── Zonas horarias de la liga (agrupadas por país) ──
+// La base del torneo es America/Santiago (Chile). Para cada país se listan
+// las zonas elegibles; el usuario elige la suya desde la barra superior.
+window.TZ_OPTIONS = [
+  { code: 'CL', label: 'Chile', zones: [
+    { tz: 'America/Santiago', label: 'Santiago (UTC-3/-4)' },
+    { tz: 'Pacific/Easter', label: 'Isla de Pascua (UTC-5/-6)' },
+  ]},
+  { code: 'UY', label: 'Uruguay', zones: [{ tz: 'America/Montevideo', label: 'Montevideo (UTC-3)' }]},
+  { code: 'AR', label: 'Argentina', zones: [
+    { tz: 'America/Argentina/Buenos_Aires', label: 'Buenos Aires (UTC-3)' },
+    { tz: 'America/Argentina/Cordoba', label: 'Córdoba (UTC-3)' },
+    { tz: 'America/Argentina/Mendoza', label: 'Mendoza (UTC-3)' },
+  ]},
+  { code: 'PE', label: 'Perú', zones: [{ tz: 'America/Lima', label: 'Lima (UTC-5)' }]},
+  { code: 'BR', label: 'Brasil', zones: [
+    { tz: 'America/Sao_Paulo', label: 'São Paulo / Brasília (UTC-3)' },
+    { tz: 'America/Manaus', label: 'Manaus (UTC-4)' },
+    { tz: 'America/Recife', label: 'Recife (UTC-3)' },
+    { tz: 'America/Rio_Branco', label: 'Rio Branco (UTC-5)' },
+  ]},
+  { code: 'MX', label: 'México', zones: [
+    { tz: 'America/Mexico_City', label: 'Ciudad de México (UTC-6)' },
+    { tz: 'America/Monterrey', label: 'Monterrey (UTC-6)' },
+    { tz: 'America/Tijuana', label: 'Tijuana (UTC-8)' },
+    { tz: 'America/Mazatlan', label: 'Mazatlán (UTC-7)' },
+  ]},
+];
+
+// País → zona horaria por defecto (para mostrar la hora local de cada participante).
+window.NAT_TZ = {
+  CL: 'America/Santiago', UY: 'America/Montevideo', AR: 'America/Argentina/Buenos_Aires',
+  PE: 'America/Lima', BR: 'America/Sao_Paulo', MX: 'America/Mexico_City',
+};
+
+window.LANG = localStorage.getItem('mjc-lang') || 'es';
+window.TZ = localStorage.getItem('mjc-tz') || 'America/Santiago';
+window.setLang = function (l) {
+  window.LANG = l;
+  localStorage.setItem('mjc-lang', l);
+  window.dispatchEvent(new CustomEvent('langchange'));
+};
+window.setTZ = function (tz) {
+  window.TZ = tz;
+  localStorage.setItem('mjc-tz', tz);
+  window.dispatchEvent(new CustomEvent('tzchange'));
+};
+
 window.tr = function (key, vars) {
   const table = window.I18N[window.LANG] || window.I18N.es;
   let s = table[key] !== undefined ? table[key] : (window.I18N.es[key] !== undefined ? window.I18N.es[key] : key);
@@ -376,4 +438,31 @@ window.tr = function (key, vars) {
     }
   }
   return s;
+};
+
+// Convierte una hora ("23 ago", "22:00") de la base (America/Santiago) a la
+// zona horaria destino y devuelve "22:00" (o "—" si no se puede).
+window.fmtTzTime = function (dateStr, timeStr, toTZ) {
+  const MONTHS = { ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5, jul: 6, ago: 7, sep: 8, oct: 9, nov: 10, dic: 11 };
+  const parts = String(dateStr || '').split(' ');
+  const day = parseInt(parts[0], 10), mon = MONTHS[parts[1]];
+  const tm = String(timeStr || '').split(':');
+  const h = parseInt(tm[0], 10), mi = parseInt(tm[1], 10);
+  if (isNaN(day) || mon === undefined || isNaN(h)) return timeStr || 'Por definir';
+  const year = new Date().getFullYear();
+  const fromTZ = 'America/Santiago';
+  // instante UTC cuya hora de pared en fromTZ es (day, mon, h:mi) — 2 pasos sufren
+  let utc = Date.UTC(year, mon, day, h, mi);
+  const dtf = new Intl.DateTimeFormat('en-CA', { timeZone: fromTZ, year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false });
+  for (let i = 0; i < 3; i++) {
+    const p = Object.fromEntries(dtf.formatToParts(new Date(utc)).map(x => [x.type, x.value]));
+    const wall = Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour % 24, +p.minute);
+    utc += (Date.UTC(year, mon, day, h, mi) - wall);
+  }
+  try {
+    const out = new Intl.DateTimeFormat('en-GB', { timeZone: toTZ || fromTZ, hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(utc));
+    return out;
+  } catch (e) {
+    return timeStr;
+  }
 };

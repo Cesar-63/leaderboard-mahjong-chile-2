@@ -425,11 +425,89 @@ function HanchanLog({ data, div }) {
   );
 }
 
+function CalModal({ entry, onClose }) {
+  const players = entry.players || [];
+  const baseTz = 'America/Santiago';
+  const natTz = window.NAT_TZ || {};
+  const tzOptions = window.TZ_OPTIONS || [];
+  const allZones = tzOptions.flatMap(g => g.zones.map(z => z));
+  const cityShort = (label) => String(label || '').split(' (')[0];
+  return (
+    <div className="cal-modal-backdrop" onClick={onClose}>
+      <div className="cal-modal" onClick={e => e.stopPropagation()}>
+        <div className="cm-head">
+          <div>
+            <div className="cm-title">{entry.round} · {entry.mesa}</div>
+            {entry.date !== 'Por definir' && <div className="cm-sub">{entry.date} · {entry.day} · {window.fmtTzTime(entry.date, entry.time, window.TZ)} · {window.TZ}</div>}
+          </div>
+          <button className="cm-close" onClick={onClose} aria-label="Cerrar">✕</button>
+        </div>
+
+        {players.length > 0 && (
+          <div className="cm-players">
+            <div className="cm-block">{tr('hora_local')} · {tr('jugadores')}</div>
+            {players.map((pl, i) => {
+              const tz = natTz[pl.nat] || baseTz;
+              const local = window.fmtTzTime(entry.date, entry.time, tz);
+              return (
+                <div className="cm-player" key={i}>
+                  <div className="cm-name"><Flag nat={pl.nat} size={15} />{pl.name}</div>
+                  <div className="cm-tz"><b>{local}</b><span>{tz}</span></div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        <div className="cm-players">
+          <div className="cm-block">{tr('all_times')} · {window.fmtTzTime(entry.date, entry.time, window.TZ)} · {window.TZ}</div>
+          <div className="cm-grid cm-grid3">
+            {allZones.map(z => (
+              <div className="cm-tzcell" key={z.tz} title={z.label + ' · ' + z.tz}>
+                <span className="ctz-city">{cityShort(z.label)}</span>
+                <span className="ctz-time">{window.fmtTzTime(entry.date, entry.time, z.tz)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function CalendarView({ data }) {
   const played = data.divisions.A.sessions;
-  // Solo mostramos partidas con horario definido; las sesiones sin ninguna
-  // partida programada quedan ocultas (aún no inician).
-  const scheduled = data.calendar.filter(c => c.date !== 'Por definir' && c.time !== 'Por definir');
+  const [modal, setModal] = React.useState(null);
+  const MONTHS = { ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5, jul: 6, ago: 7, sep: 8, oct: 9, nov: 10, dic: 11 };
+  const toDate = (s) => {
+    const parts = String(s || '').split(' ');
+    const day = parseInt(parts[0], 10), mon = MONTHS[parts[1]];
+    if (isNaN(day) || mon === undefined) return null;
+    const d = new Date(new Date().getFullYear(), mon, day);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  };
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const sessNum = (c) => c.session || parseInt((c.round || '').replace(/\D/g, ''), 10) || 0;
+  const byDate = (a, b) => (toDate(a.date) - toDate(b.date)) || (a.div === 'B' ? 1 : 0) - (b.div === 'B' ? 1 : 0);
+  // Próximas: con fecha válida y no pasada (>= hoy). Pasadas quedan ocultas.
+  const upcoming = data.calendar.filter(c => { const d = toDate(c.date); return d && d >= today; }).sort(byDate);
+  // Por definir: sin fecha.
+  const porDef = data.calendar.filter(c => !toDate(c.date)).sort((a, b) => sessNum(a) - sessNum(b) || (a.table || 0) - (b.table || 0));
+  const renderCard = (c, i) => (
+    <button className={`cal-card ${c.status === 'highlight' ? 'highlight' : ''} div-${c.div}`} key={c.round + c.mesa + c.div}
+         onClick={() => setModal(c)}
+         style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 30}ms`, textAlign: 'left', cursor: 'pointer', font: 'inherit', color: 'inherit', width: '100%' }}>
+      <div className="badge"><span className={`div-chip ${c.div}`}>{c.div === 'AB' ? 'A+B' : c.div === 'CL' ? 'CHILE' : 'DIV ' + c.div}</span>{c.div === 'CL' && <Flag nat="CL" size={16} />}</div>
+      <div className="date-row">
+        <span className="d">{c.date.split(' ')[0]}</span>
+        <span className="dy">{c.date.split(' ')[1]} · {c.day}</span>
+      </div>
+      <div className="round-l">{c.round}</div>
+      <div className="meta-l">{c.mesa}</div>
+      <div className="meta-l">{c.date === 'Por definir' ? tr('por_definir') : window.fmtTzTime(c.date, c.time, window.TZ) + ' · ' + window.TZ}</div>
+    </button>
+  );
   return (
     <div className="tab-panel">
       <div className="section-head">
@@ -443,23 +521,19 @@ function CalendarView({ data }) {
         </div>
       </div>
 
-      <div className="block-label" style={{ marginBottom: 12 }}>{tr('next_cal')} · 次回</div>
-      <div className="cal-grid">
-        {scheduled.map((c, i) => (
-          <div className={`cal-card ${c.status === 'highlight' ? 'highlight' : ''} div-${c.div}`} key={i}
-               style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 30}ms` }}>
-            {c.status === 'highlight' && <div className="ribbon">FINALIZADO</div>}
-            <div className="badge"><span className={`div-chip ${c.div}`}>{c.div === 'AB' ? 'A+B' : c.div === 'CL' ? 'CHILE' : 'DIV ' + c.div}</span>{c.div === 'CL' && <Flag nat="CL" size={16} />}</div>
-            <div className="date-row">
-              <span className="d">{c.date.split(' ')[0]}</span>
-              <span className="dy">{c.date.split(' ')[1]} · {c.day}</span>
-            </div>
-            <div className="round-l">{c.round}</div>
-            <div className="meta-l">{c.mesa}</div>
-            <div className="meta-l">{c.time} · Santiago</div>
-          </div>
-        ))}
-      </div>
+      {upcoming.length > 0 && (
+        <React.Fragment>
+          <div className="block-label" style={{ marginBottom: 12 }}>{tr('next_cal')} · 次回</div>
+          <div className="cal-grid">{upcoming.map(renderCard)}</div>
+        </React.Fragment>
+      )}
+      {porDef.length > 0 && (
+        <React.Fragment>
+          <div className="block-label" style={{ margin: '28px 0 12px' }}>{tr('por_definir')} · 未定</div>
+          <div className="cal-grid">{porDef.map(renderCard)}</div>
+        </React.Fragment>
+      )}
+      {modal && <CalModal entry={modal} onClose={() => setModal(null)} />}
 
       <div className="block-label" style={{ margin: '28px 0 12px' }}>{tr('played_sessions')} · 実施済み</div>
       <div className="session-strip">
