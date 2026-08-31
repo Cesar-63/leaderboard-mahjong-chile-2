@@ -17,6 +17,23 @@ from typing import Any
 
 PAIPU_RE = re.compile(r"(?P<uuid>\d{6}-[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12})(?P<trailer>_a\d+)?")
 RECORD_URL = "https://record-v2.maj-soul.com:5333/majsoul/game_record/{uuid}"
+# Enumerado estándar de "fans" de Mahjong Soul (el id viene en el paipu y, si
+# falta el nombre, lo resolvemos acá). Verificado contra ids observados:
+# 2=Riichi, 9=Pinfu, 14=Yakuhai Oeste, 31=Junchan, 33=Chinitsu.
+YAKU_NAMES = {
+    1: "Menzen Tsumo", 2: "Riichi", 3: "Ippatsu", 4: "Chankan", 5: "Rinshan Kaihou",
+    6: "Haitei Raoyue", 7: "Hotei Raoyui", 8: "Tsumo", 9: "Pinfu", 10: "Tanyao",
+    11: "Iipeiko", 12: "Yakuhai Este", 13: "Yakuhai Sur", 14: "Yakuhai Oeste",
+    15: "Yakuhai Norte", 16: "Yakuhai Haku", 17: "Yakuhai Hatsu", 18: "Yakuhai Chun",
+    19: "Daburu Riichi", 20: "Chiitoitsu", 21: "Chanta", 22: "Ittsu",
+    23: "Sanshoku Doujun", 24: "Sanshoku Doukou", 25: "Sankantsu", 26: "Toitoi",
+    27: "Sanankou", 28: "Shousangen", 29: "Honroutou", 30: "Ryanpeikou",
+    31: "Junchan", 32: "Honitsu", 33: "Chinitsu", 34: "Renhou", 35: "Tenhou",
+    36: "Chiihou", 37: "Daisangen", 38: "Suuankou", 39: "Suukantsu", 40: "Tsuuiisou",
+    41: "Ryuuiisou", 42: "Chinroutou", 43: "Kokushi Musou", 44: "Kokushi 13-men",
+    45: "Daisuushii", 46: "Shousuushii", 47: "Chuuren Poutou", 48: "Junsei Chuuren",
+    49: "Suuankou Tanki",
+}
 MS_HOST = "https://mahjongsoul.game.yo-star.com"
 MS_GATEWAY_HOSTS = (
     "https://engs.mahjongsoul.com",
@@ -439,7 +456,8 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                 if not hule.zimo and last_discard is not None and last_discard < 4:
                     stats[last_discard]["dealIns"] += 1
                 for fan in hule.fans:
-                    yaku = (fan.name or f"Yaku #{fan.id}").strip()
+                    yaku = YAKU_NAMES.get(fan.id) or fan.name or f"Yaku #{fan.id}"
+                    yaku = str(yaku).strip()
                     if yaku:
                         stats[seat]["yaku"][yaku] += 1
         elif name == "RecordNoTile" and message.scores:
