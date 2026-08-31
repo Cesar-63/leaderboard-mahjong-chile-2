@@ -533,7 +533,7 @@ function CalendarView({ data }) {
           <div className="cal-grid">{porDef.map(renderCard)}</div>
         </React.Fragment>
       )}
-      {modal && <CalModal entry={modal} onClose={() => setModal(null)} />}
+      {modal && ReactDOM.createPortal(<CalModal entry={modal} onClose={() => setModal(null)} />, document.body)}
 
       <div className="block-label" style={{ margin: '28px 0 12px' }}>{tr('played_sessions')} · 実施済み</div>
       <div className="session-strip">
