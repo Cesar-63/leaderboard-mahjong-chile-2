@@ -30,13 +30,15 @@ jobs:
         run: python scripts/sync.py
       - name: Publicar cambios de datos
         run: |
-          if git diff --quiet -- data; then
+          git config user.name "mahjong-chile-bot"
+          git config user.email "actions@users.noreply.github.com"
+          # Los .pb descargados TAMBIEN se versionan: sin esto cada corrida los
+          # vuelve a pedir a Mahjong Soul y el lote pendiente nunca converge.
+          git add data/liga.json data/stats.json data/sync-status.json data/generated.js data/raw-paipu
+          if git diff --cached --quiet; then
             echo "No hay cambios"
             exit 0
           fi
-          git config user.name "mahjong-chile-bot"
-          git config user.email "actions@users.noreply.github.com"
-          git add data/liga.json data/stats.json data/sync-status.json data/generated.js
           git commit -m "data: sincronizar resultados"
           git push
       - name: Auditar estadísticas avanzadas
