@@ -128,6 +128,7 @@ window.I18N = {
     timezone: 'Zona horaria',
     partida_n: 'Partida de {n} jugadores',
     hora_local: 'Hora local',
+    all_times: 'Todos los horarios',
   },
 
   en: {
@@ -250,6 +251,7 @@ window.I18N = {
     timezone: 'Time zone',
     partida_n: 'Game of {n} players',
     hora_local: 'Local time',
+    all_times: 'All times',
   },
 
   pt: {
@@ -372,6 +374,7 @@ window.I18N = {
     timezone: 'Fuso horário',
     partida_n: 'Partida de {n} jogadores',
     hora_local: 'Hora local',
+    all_times: 'Todos os horários',
   },
 };
 

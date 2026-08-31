@@ -109,6 +109,8 @@ select{font:inherit;color:inherit}
 .cal-modal .cm-tz{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--ink-soft)}
 .cal-modal .cm-tz b{color:var(--ink);font-size:13px}
 .cal-modal .cm-note{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint);margin-top:12px;line-height:1.5}
+.cal-modal .cm-block{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);padding:10px 0 4px}
+.cal-modal .cm-players + .cm-players{margin-top:8px;border-top:1px solid var(--line)}
 .paipu-link{display:inline-block;margin-top:6px;color:var(--accent);font-family:var(--font-mono);font-size:10px;text-decoration:none}
 .paipu-link:hover{text-decoration:underline}
 @keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in oklab,var(--accent) 55%,transparent)}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
