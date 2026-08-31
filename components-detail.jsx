@@ -506,6 +506,13 @@ function CalendarView({ data }) {
       <div className="round-l">{c.round}</div>
       <div className="meta-l">{c.mesa}</div>
       <div className="meta-l">{c.date === 'Por definir' ? tr('por_definir') : window.fmtTzTime(c.date, c.time, window.TZ) + ' · ' + window.TZ}</div>
+      {c.players && c.players.length > 0 && (
+        <div className="cal-players">
+          {c.players.map(pl => (
+            <span className="cal-p" key={pl.name}><Flag nat={pl.nat} size={10} />{pl.name}</span>
+          ))}
+        </div>
+      )}
     </button>
   );
   return (
@@ -533,7 +540,7 @@ function CalendarView({ data }) {
           <div className="cal-grid">{porDef.map(renderCard)}</div>
         </React.Fragment>
       )}
-      {modal && <CalModal entry={modal} onClose={() => setModal(null)} />}
+      {modal && ReactDOM.createPortal(<CalModal entry={modal} onClose={() => setModal(null)} />, document.body)}
 
       <div className="block-label" style={{ margin: '28px 0 12px' }}>{tr('played_sessions')} · 実施済み</div>
       <div className="session-strip">
