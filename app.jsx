@@ -21,6 +21,35 @@ const TABS = [
 // tabs that are scoped to a single division
 const DIV_SCOPED = ['standings', 'log'];
 
+// ── Rutas por hash: #/<tab>/<div|jugador> ──
+// Cada pestaña x división tiene su propia URL (funciona en estático, sin server).
+const ROUTE_TABS = TABS.map(t => t.id);
+const ROUTE_RE = /^#\/([a-z]+)(?:\/([A-Za-z0-9_!.\-]+))?/;
+
+function parseRoute() {
+  const m = window.location.hash.match(ROUTE_RE);
+  let tab = m && ROUTE_TABS.includes(m[1]) ? m[1] : 'standings';
+  let div = 'A';
+  let playerId = null;
+  if (m && m[2]) {
+    const second = m[2];
+    if (tab === 'detail') {
+      playerId = second;
+      div = second[0] === 'B' ? 'B' : 'A';
+    } else if (second === 'A' || second === 'B') {
+      div = second;
+    } else {
+      playerId = second;
+    }
+  }
+  return { tab, div, playerId };
+}
+
+function routeToHash(tab, div, playerId) {
+  const pid = playerId || (div === 'B' ? 'B01' : 'A01');
+  return '#/' + (tab === 'detail' ? `detail/${pid}` : `${tab}/${div}`);
+}
+
 function TabBar({ active, onChange, lang }) {
   const refs = React.useRef({});
   const [ind, setInd] = React.useState({ left: 0, width: 0 });
@@ -76,11 +105,23 @@ function DivisionSwitch({ div, onChange, data, disabled }) {
 
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-  const [tab, setTab] = React.useState('standings');
-  const [div, setDiv] = React.useState('A');
-  const [playerId, setPlayerId] = React.useState(null);
+  const [route, setRoute] = React.useState(parseRoute);
   const data = window.MJC_DATA;
   const L = data.league;
+  const { tab, div, playerId } = route;
+
+  React.useEffect(() => {
+    if (!window.location.hash) window.location.hash = routeToHash(tab, div, playerId);
+    const onHash = () => setRoute(parseRoute());
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+
+  const navigate = (next) => {
+    const hash = routeToHash(next.tab ?? tab, next.div ?? div, next.playerId ?? playerId);
+    if (window.location.hash !== hash) window.location.hash = hash;
+    else setRoute(parseRoute());
+  };
 
   React.useEffect(() => {
     const el = document.documentElement;
@@ -91,7 +132,7 @@ function App() {
     el.setAttribute('data-div', div);
   }, [t.theme, t.dark, t.density, t.lang, div]);
 
-  const selectPlayer = (p) => { setPlayerId(p.id); setTab('detail'); };
+  const selectPlayer = (p) => navigate({ tab: 'detail', playerId: p.id });
   const currentPlayerId = playerId || data.divisions[div].players[0].id;
   const scoped = DIV_SCOPED.includes(tab);
 
@@ -120,8 +161,8 @@ function App() {
       </header>
 
       <div className="control-bar">
-        <DivisionSwitch div={div} onChange={setDiv} data={data} disabled={!scoped} />
-        <TabBar active={tab} onChange={setTab} lang={t.lang} />
+        <DivisionSwitch div={div} onChange={(d) => navigate({ div: d })} data={data} disabled={!scoped} />
+        <TabBar active={tab} onChange={(id) => navigate({ tab: id })} lang={t.lang} />
       </div>
 
       <main className="main">
@@ -143,7 +184,7 @@ function App() {
             <StandingsView data={data} div={div} layout={t.layout} onSelectPlayer={selectPlayer} />
           </React.Fragment>
         )}
-        {tab === 'detail' && <PlayerDetail playerId={currentPlayerId} data={data} onPick={setPlayerId} />}
+        {tab === 'detail' && <PlayerDetail playerId={currentPlayerId} data={data} onPick={(id) => navigate({ playerId: id })} />}
         {tab === 'compare' && <Comparator data={data} />}
         {tab === 'log' && <HanchanLog data={data} div={div} />}
         {tab === 'iormc' && <IORMCView data={data} onPick={selectPlayer} />}
