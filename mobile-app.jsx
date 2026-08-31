@@ -15,6 +15,34 @@ const MOB_TABS = [
 ];
 const MOB_DIV_SCOPED = ['standings', 'log'];
 
+// ── Rutas por hash: #/<tab>/<div|jugador> (mismo esquema que la vista desktop) ──
+const MOB_ROUTE_TABS = MOB_TABS.map(t => t.id);
+const MOB_ROUTE_RE = /^#\/([a-z]+)(?:\/([A-Za-z0-9_!.\-]+))?/;
+
+function parseRoute() {
+  const m = window.location.hash.match(MOB_ROUTE_RE);
+  let tab = m && MOB_ROUTE_TABS.includes(m[1]) ? m[1] : 'standings';
+  let div = 'A';
+  let pid = null;
+  if (m && m[2]) {
+    const second = m[2];
+    if (tab === 'detail') {
+      pid = second;
+      div = second[0] === 'B' ? 'B' : 'A';
+    } else if (second === 'A' || second === 'B') {
+      div = second;
+    } else {
+      pid = second;
+    }
+  }
+  return { tab, div, pid };
+}
+
+function routeToHash(tab, div, pid) {
+  const val = pid || (div === 'B' ? 'B01' : 'A01');
+  return '#/' + (tab === 'detail' ? `detail/${val}` : `${tab}/${div}`);
+}
+
 // Two-series radar for the mobile comparator — one chart instead of two
 function DualRadar({ a, b, size = 250, color = 'var(--accent)' }) {
   const cx = size / 2, cy = size / 2, radius = size * 0.33, N = a.length;
@@ -505,12 +533,24 @@ function MobMore({ data, onPick }) {
 
 function MobileApp() {
   const [t, setTweak] = useTweaks(MOB_TWEAKS);
-  const [tab, setTab] = React.useState('standings');
-  const [div, setDiv] = React.useState('A');
-  const [pid, setPid] = React.useState(null);
+  const [route, setRoute] = React.useState(parseRoute);
   const data = window.MJC_DATA;
   const L = data.league;
   const bodyRef = React.useRef(null);
+  const { tab, div, pid } = route;
+
+  React.useEffect(() => {
+    if (!window.location.hash) window.location.hash = routeToHash(tab, div, pid);
+    const onHash = () => setRoute(parseRoute());
+    window.addEventListener('hashchange', onHash);
+    return () => window.removeEventListener('hashchange', onHash);
+  }, []);
+
+  const navigate = (next) => {
+    const hash = routeToHash(next.tab ?? tab, next.div ?? div, next.pid ?? pid);
+    if (window.location.hash !== hash) window.location.hash = hash;
+    else setRoute(parseRoute());
+  };
 
   React.useEffect(() => {
     const el = document.documentElement;
@@ -523,7 +563,7 @@ function MobileApp() {
 
   React.useEffect(() => { if (bodyRef.current) bodyRef.current.scrollTop = 0; }, [tab]);
 
-  const pick = (p) => { setPid(p.id); setTab('detail'); };
+  const pick = (p) => navigate({ tab: 'detail', pid: p.id });
   const currentPid = pid || data.divisions[div].players[0].id;
   const scoped = MOB_DIV_SCOPED.includes(tab);
   const lang = t.lang;
@@ -543,12 +583,12 @@ uma ${L.rules[div].uma.map(v => v >= 0 ? '+' + v : '−' + Math.abs(v)).join('/'
         <div className="mob">
           <div className="mob-bg"></div>
           <MobHeader title={HEAD.title} jp={HEAD.jp} aside={HEAD.aside}>
-            <MobDivSwitch div={div} onChange={setDiv} data={data} disabled={!scoped} />
+            <MobDivSwitch div={div} onChange={(d) => navigate({ div: d })} data={data} disabled={!scoped} />
           </MobHeader>
 
           <div className="mob-body" ref={bodyRef}>
             {tab === 'standings' && <MobStandings data={data} div={div} onPick={pick} />}
-            {tab === 'detail' && <MobDetail data={data} playerId={currentPid} onPick={setPid} />}
+            {tab === 'detail' && <MobDetail data={data} playerId={currentPid} onPick={(id) => navigate({ pid: id })} />}
             {tab === 'compare' && <MobCompare data={data} />}
             {tab === 'log' && <MobLog data={data} div={div} />}
             {tab === 'more' && <MobMore data={data} onPick={pick} />}
@@ -556,7 +596,7 @@ uma ${L.rules[div].uma.map(v => v >= 0 ? '+' + v : '−' + Math.abs(v)).join('/'
 
           <nav className="mob-tabbar">
             {MOB_TABS.map(mt => (
-              <button key={mt.id} className={`mob-tab ${tab === mt.id ? 'active' : ''}`} onClick={() => setTab(mt.id)}>
+              <button key={mt.id} className={`mob-tab ${tab === mt.id ? 'active' : ''}`} onClick={() => navigate({ tab: mt.id })}>
                 <span className="ji">{mt.ji}</span>
                 <span className="tl">{lang === 'jp' ? mt.jp : lang === 'en' ? mt.en : lang === 'pt' ? mt.pt : mt.es}</span>
               </button>
