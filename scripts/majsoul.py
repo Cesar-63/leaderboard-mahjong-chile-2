@@ -54,7 +54,6 @@ RECORD_THROTTLED_CODE = 540
 PAIPU_REQUEST_DELAY_SECONDS = 20.0
 MAX_RECORDS_PER_RUN = 3
 THROTTLE_STREAK_LIMIT = 1
-THROTTLE_COOLDOWN_HOURS = 6
 YOSTAR_QUICK_LOGIN = "https://en-sdk-api.yostarplat.com/user/quick-login"
 YOSTAR_SDK_VERSION = "4.16.0"
 YOSTAR_SIGNING_SALT = bytes([
@@ -177,7 +176,7 @@ async def _open_route(pb: Any, channel_class: Any, route_id: str, endpoint: str)
         raise
 
 
-async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cache_dir: Path) -> dict[str, Any]:
+async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cache_dir: Path) -> int:
     try:
         import aiohttp
         from ms import protocol_pb2 as pb  # type: ignore
@@ -190,7 +189,6 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
     token = os.environ["MAJSOUL_TOKEN"]
     device_id = os.environ["MAJSOUL_DEVICE_ID"]
     downloaded = 0
-    limitado = False
     async with aiohttp.ClientSession() as http:
         product_version = await _fetch_product_version(http)
         client_version = f"WebGL_2022-{product_version}"
@@ -303,12 +301,11 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
                 except PaipuThrottled as exc:
                     racha_limitada += 1
                     failures.append(f"{record_uuid}: {exc}")
-                    limitado = True
                     if racha_limitada >= THROTTLE_STREAK_LIMIT:
                         aplazados = tanda[indice + 1:] + aplazados
                         print(
                             f"Corte por límite de la API (540); quedan {len(aplazados)} paipus "
-                            f"para más adelante y se enfría {THROTTLE_COOLDOWN_HOURS} h.",
+                            f"para la próxima corrida.",
                             file=sys.stderr,
                         )
                         break
@@ -329,12 +326,12 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
                 )
         finally:
             await channel.close()
-    return {"downloaded": downloaded, "throttled": limitado}
+    return downloaded
 
 
-def prefetch_authenticated_records(submissions: list[dict[str, Any]], cache_dir: Path) -> dict[str, Any]:
+def prefetch_authenticated_records(submissions: list[dict[str, Any]], cache_dir: Path) -> int:
     if not has_yostar_credentials():
-        return {"downloaded": 0, "throttled": False}
+        return 0
     records = [
         (item["recordId"], item["uuid"])
         for item in submissions if item.get("recordId") and item.get("uuid")
