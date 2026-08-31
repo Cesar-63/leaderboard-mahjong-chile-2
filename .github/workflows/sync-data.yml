@@ -39,3 +39,19 @@ jobs:
           git add data/liga.json data/stats.json data/sync-status.json data/generated.js
           git commit -m "data: sincronizar resultados"
           git push
+      - name: Auditar estadísticas avanzadas
+        run: |
+          python3 - <<'EOF'
+          import json, sys
+          from scripts.sync import advanced_stats_health
+          stats = json.load(open('data/stats.json'))
+          status = json.load(open('data/sync-status.json'))
+          health = advanced_stats_health(stats, status)
+          print('Estadísticas avanzadas:', health['summary'])
+          for issue in health['issues']:
+              print(f"::warning::Paipu {issue['status']} en {issue['cell']}: {issue['message']}")
+          if health['submitted'] and not health['with_hands']:
+              print('::error::Hay paipus enviados pero ninguno aportó manos. La sesión técnica no está decodificando registros (REQUIERE_AUTH/ERROR).', file=sys.stderr)
+              sys.exit(1)
+          print('OK')
+          EOF

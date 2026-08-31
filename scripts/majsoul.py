@@ -237,6 +237,11 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
                             raw = remote.read()
                     if not raw:
                         raise PaipuError(f"Mahjong Soul devolvió vacío el paipu {record_uuid}")
+                    if raw.lstrip().startswith(b"<?xml"):
+                        raise PaipuAuthRequired(
+                            f"La sesión técnica devolvió XML en vez del paipu {record_uuid}; "
+                            f"el acceso autorizado a este registro sigue fallando"
+                        )
                 except Exception as exc:
                     failures.append(f"{record_uuid}: {exc}")
                     continue
