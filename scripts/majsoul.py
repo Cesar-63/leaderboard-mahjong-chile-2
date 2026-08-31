@@ -124,8 +124,11 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
                     f"Mahjong Soul version.json respondió HTTP {response.status} con {response.content_type or 'contenido desconocido'}"
                 ) from exc
         resource_version = str(version_payload["version"]).replace(".w", "")
+        forced_version = str(version_payload.get("force_version", "")).replace(".w", "")
         gateways = await _discover_gateways(http, resource_version)
-    client_version = f"web-{resource_version}"
+    version_candidates = list(dict.fromkeys(
+        value for value in (resource_version, forced_version) if value
+    ))
 
     channel = None
     lobby = None
@@ -144,10 +147,21 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
         raise PaipuError(f"No se pudo conectar a ningún gateway de Mahjong Soul ({detail})")
     downloaded = 0
     try:
-        auth = pb.ReqOauth2Auth(type=22, code=refreshed_token, uid=uid, client_version_string=client_version)
-        auth_response = await lobby.oauth2_auth(auth)
+        auth_response = None
+        selected_version = resource_version
+        for candidate_version in version_candidates:
+            auth = pb.ReqOauth2Auth(
+                type=22, code=refreshed_token, uid=uid,
+                client_version_string=f"web-{candidate_version}",
+            )
+            auth_response = await lobby.oauth2_auth(auth)
+            selected_version = candidate_version
+            if not (auth_response.HasField("error") and auth_response.error.code == 151):
+                break
+        assert auth_response is not None
         if auth_response.HasField("error") and auth_response.error.code:
             raise PaipuAuthRequired(f"oauth2Auth falló ({_rpc_error_detail(auth_response.error)})")
+        client_version = f"web-{selected_version}"
         check = pb.ReqOauth2Check(type=22, access_token=auth_response.access_token)
         check_response = await lobby.oauth2_check(check)
         if check_response.HasField("error") and check_response.error.code:
@@ -162,24 +176,28 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
         login.device.platform = "pc"
         login.device.os = "mac"
         login.device.software = "Chrome"
-        login.client_version.resource = resource_version
+        login.client_version.resource = selected_version
         login.currency_platforms.extend([2, 6, 8, 10, 11])
         login_response = await lobby.oauth2_login(login)
         if login_response.HasField("error") and login_response.error.code:
             raise PaipuAuthRequired(f"oauth2Login falló ({_rpc_error_detail(login_response.error)})")
 
         cache_dir.mkdir(parents=True, exist_ok=True)
-        for record_id, record_uuid in records:
-            destination = cache_dir / f"{record_uuid}.pb"
-            if destination.exists() and not destination.read_bytes().lstrip().startswith(b"<?xml"):
-                continue
+        missing = [
+            (record_id, record_uuid)
+            for record_id, record_uuid in records
+            if not (cache_dir / f"{record_uuid}.pb").exists()
+            or (cache_dir / f"{record_uuid}.pb").read_bytes().lstrip().startswith(b"<?xml")
+        ]
+        for index, (record_id, record_uuid) in enumerate(missing):
             request = pb.ReqGameRecord(game_uuid=record_id, client_version_string=client_version)
             response = await lobby.fetch_game_record(request)
             if response.HasField("error") and response.error.code == 151:
                 await lobby.read_game_record(request)
                 response = await lobby.fetch_game_record(request)
             if response.HasField("error") and response.error.code:
-                raise PaipuError(f"Mahjong Soul rechazó {record_uuid} (código {response.error.code})")
+                detail = _rpc_error_detail(response.error)
+                raise PaipuAuthRequired(f"La sesión técnica no puede leer {record_uuid} (código {response.error.code}: {detail})")
             raw = bytes(response.data)
             if not raw and response.data_url:
                 url_request = urllib.request.Request(
@@ -189,9 +207,17 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
                 with urllib.request.urlopen(url_request, timeout=30) as remote:
                     raw = remote.read()
             if not raw:
-                raise PaipuError(f"Mahjong Soul devolvió vacío el paipu {record_uuid}")
+                raise PaipuAuthRequired(f"Mahjong Soul devolvió vacío el paipu {record_uuid}")
+            if raw.lstrip().startswith(b"<?xml"):
+                raise PaipuAuthRequired(
+                    f"La sesión técnica devolvió XML en vez del paipu {record_uuid}; "
+                    f"el acceso autorizado a este registro sigue fallando"
+                )
+            destination = cache_dir / f"{record_uuid}.pb"
             destination.write_bytes(raw)
             downloaded += 1
+            if index == 0 and len(missing) > 1:
+                print(f"Sesión técnica validada: {downloaded} registro(s) descargado(s) de {len(missing)} pendientes")
     finally:
         await channel.close()
     return downloaded
@@ -204,7 +230,13 @@ def prefetch_authenticated_records(submissions: list[dict[str, Any]], cache_dir:
         (item["recordId"], item["uuid"])
         for item in submissions if item.get("recordId") and item.get("uuid")
     ]
-    return asyncio.run(_fetch_authenticated_records_async(records, cache_dir))
+    if not records:
+        return 0
+    try:
+        return asyncio.run(_fetch_authenticated_records_async(records, cache_dir))
+    except Exception as exc:
+        print(f"AVISO: la sesión técnica no pudo descargar los paipus ({type(exc).__name__}: {exc})", file=sys.stderr)
+        return 0
 
 
 def extract_uuid(value: str) -> str:

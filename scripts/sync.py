@@ -21,7 +21,7 @@ from openpyxl.utils import get_column_letter
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts.majsoul import PaipuAuthRequired, PaipuError, extract_record_id, extract_uuid, fetch_record, parse_record, prefetch_authenticated_records
+from scripts.majsoul import PaipuAuthRequired, PaipuError, extract_record_id, extract_uuid, fetch_record, has_yostar_credentials, parse_record, prefetch_authenticated_records
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -376,6 +376,38 @@ def add_hall_of_fame(data: dict[str, Any]) -> None:
         data["divisions"][division]["hallOfFame"] = records
 
 
+def advanced_stats_health(stats: dict[str, Any], status: dict[str, Any]) -> dict[str, Any]:
+    submissions = status.get("submissions", [])
+    counter = Counter(item.get("status") for item in submissions)
+    players_map = stats["players"] if "players" in stats else stats
+    players = list(players_map.values())
+    reliable = sum(1 for p in players if p.get("statsReliable"))
+    with_hands = sum(1 for p in players if (p.get("hands") or 0) > 0)
+    issues = [
+        {"status": item.get("status"), "cell": item.get("cell"), "message": item.get("message", "")}
+        for item in submissions if item.get("status") in ("REQUIERE_AUTH", "ERROR")
+    ]
+    published = counter.get("PUBLICADO", 0)
+    validated = counter.get("VALIDADO", 0)
+    pendiente = counter.get("PENDIENTE", 0)
+    requiere_auth = counter.get("REQUIERE_AUTH", 0)
+    errores = counter.get("ERROR", 0)
+    submitted = len(submissions) - pendiente
+    summary = (
+        f"{with_hands}/{len(players)} jugadores con datos avanzados; "
+        f"paipus: {published} publicado, {validated} validado, "
+        f"{requiere_auth} requiere auth, {errores} error, "
+        f"{pendiente} pendiente"
+    )
+    return {
+        "reliable": reliable, "with_hands": with_hands, "issues": issues,
+        "publicado": published, "validado": validated,
+        "requiere_auth": requiere_auth, "errores": errores,
+        "pendiente": pendiente, "submitted": submitted,
+        "summary": summary,
+    }
+
+
 def write_outputs(data: dict[str, Any], stats: dict[str, Any], status: dict[str, Any], output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     for name, payload in (("liga.json", data), ("stats.json", stats), ("sync-status.json", status)):
@@ -390,6 +422,7 @@ def main() -> int:
     parser.add_argument("--xlsx", type=Path, help="Usa una copia local del Sheet en vez de descargarlo")
     parser.add_argument("--offline", action="store_true", help="No descarga paipus; usa solo data/raw-paipu")
     parser.add_argument("--strict-paipu", action="store_true", help="Falla si algún paipu presente no se puede validar")
+    parser.add_argument("--require-stats", action="store_true", help="Falla si ningún jugador tiene estadísticas avanzadas confiables")
     parser.add_argument("--output", type=Path, default=ROOT / "data")
     args = parser.parse_args()
     config = load_config(args.config)
@@ -410,6 +443,9 @@ def main() -> int:
         for division, rule in config["divisions"].items():
             histories.update(parse_history(workbook, division, rule["historySheet"], rule))
         if not args.offline:
+            submitted = sum(1 for item in submissions if item.get("uuid"))
+            if submitted and not has_yostar_credentials():
+                print("AVISO: hay paipus que requieren sesión técnica pero no hay credenciales MAJSOUL_UID/TOKEN/DEVICE_ID. Las estadísticas avanzadas quedarán como pendientes.", file=sys.stderr)
             downloaded = prefetch_authenticated_records(submissions, ROOT / "data" / "raw-paipu")
             if downloaded:
                 print(f"Paipus descargados con la sesión técnica: {downloaded}")
@@ -419,10 +455,18 @@ def main() -> int:
             if failures:
                 raise SyncError("Paipus con error:\n" + "\n".join(f"- {item['cell']}: {item['message']}" for item in failures))
         data, stats = build_public_data(config, rosters, fixtures, submissions, histories, parsed_games)
+        health = advanced_stats_health(stats, status)
+        if args.require_stats and health["submitted"] and not health["with_hands"]:
+            raise SyncError("Estadísticas avanzadas ausentes: hay paipus enviados pero ninguno aportó manos (REQUIERE_AUTH/ERROR). Revisa la sesión técnica.")
+        if (health["submitted"] and not health["with_hands"]) or health["requiere_auth"] or health["errores"]:
+            print(f"AVISO: estadísticas avanzadas incompletas — {health['summary']}", file=sys.stderr)
+            for issue in health["issues"]:
+                print(f"  {issue['status']} en {issue['cell']}: {issue['message']}", file=sys.stderr)
         write_outputs(data, stats, status, args.output)
         counts = Counter(item["status"] for item in status["submissions"])
         print(f"Sincronización lista: {len(histories)} resultados oficiales, {len(parsed_games)} paipus procesados")
         print("Estados paipu: " + ", ".join(f"{key}={value}" for key, value in sorted(counts.items())))
+        print(f"Stats avanzadas: {health['summary']}")
         print(f"Salida: {args.output}")
         return 0
     except (SyncError, PaipuError, KeyError, ValueError) as exc:

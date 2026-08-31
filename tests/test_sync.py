@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 
 from scripts.majsoul import PaipuError, extract_record_id, extract_uuid, has_yostar_credentials
-from scripts.sync import CALENDAR_VALUE_COLS, SESSION_G1_ROWS, normalize_nat
+from scripts.sync import CALENDAR_VALUE_COLS, SESSION_G1_ROWS, advanced_stats_health, normalize_nat
 
 
 class SyncTests(unittest.TestCase):
@@ -30,6 +30,30 @@ class SyncTests(unittest.TestCase):
             "MAJSOUL_UID": "uid", "MAJSOUL_TOKEN": "token", "MAJSOUL_DEVICE_ID": "device",
         }, clear=True):
             self.assertTrue(has_yostar_credentials())
+
+    def _status(self, *statuses):
+        return {"submissions": [{"key": f"K{i}", "cell": f"Calendario!C{i}", "status": s, "message": ""} for i, s in enumerate(statuses, start=1)]}
+
+    def _stats(self, with_hands_per_player: list[bool]):
+        return {"players": {f"P{i}": {"hands": 4 if h else 0, "statsReliable": False} for i, h in enumerate(with_hands_per_player, start=1)}}
+
+    def test_health_flags_submitted_paipus_without_hands(self):
+        health = advanced_stats_health(self._stats([False, False]), self._status("REQUIERE_AUTH", "REQUIERE_AUTH", "PENDIENTE"))
+        self.assertEqual(health["with_hands"], 0)
+        self.assertEqual(health["submitted"], 2)
+        self.assertEqual(health["requiere_auth"], 2)
+        self.assertTrue(health["submitted"] and not health["with_hands"])
+
+    def test_health_reports_partial_stats(self):
+        health = advanced_stats_health(self._stats([True, False]), self._status("PUBLICADO", "REQUIERE_AUTH"))
+        self.assertEqual(health["with_hands"], 1)
+        self.assertEqual(health["publicado"], 1)
+        self.assertEqual(len(health["issues"]), 1)
+
+    def test_health_not_failing_early_season_with_hands(self):
+        health = advanced_stats_health(self._stats([True]), self._status("PUBLICADO"))
+        self.assertGreater(health["with_hands"], 0)
+        self.assertFalse(health["submitted"] and not health["with_hands"])
 
 
 if __name__ == "__main__":
