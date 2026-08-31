@@ -7,13 +7,15 @@ function clamp01(v) { return Math.max(0, Math.min(1, v)); }
 function fmtAdvanced(player, key, suffix = '', decimals = 1) {
   return player.statsSample > 0 ? player[key].toFixed(decimals) + suffix : '—';
 }
+// Dos primeras letras para el círculo del avatar (el handle completo se desborda)
+function initials(h) { return (h || '').slice(0, 2); }
 
 function HoverPreview({ player, anchor }) {
   if (!player || !anchor) return null;
   return (
     <div className="hover-preview visible" style={{ left: anchor.x + 18, top: Math.max(80, anchor.y - 80) }}>
       <div className="hp-head">
-        <div className={`avatar div-${player.div}`}>{player.handle}</div>
+        <div className={`avatar div-${player.div}`}>{initials(player.handle)}</div>
         <div>
           <div className="hp-name">{player.shortName}{player.iormc === 'qualified' && <span className="iormc-star">★</span>}</div>
           <div className="hp-handle nat-line"><Flag nat={player.nat} size={14} /><span>{COUNTRIES[player.nat].name}</span><span className="dot-sep">·</span><span>Div {player.div} #{player.rank}</span></div>
@@ -109,7 +111,7 @@ function StandingsView({ data, div, layout, onSelectPlayer }) {
                   <td className="left"><span className="rank-cell"><span className="rank-num">{p.rank}</span></span></td>
                   <td className="left">
                     <div className="player-cell">
-                      <div className={`avatar div-${p.div} nat-ring`}>{p.handle}</div>
+                      <div className={`avatar div-${p.div} nat-ring`}>{initials(p.handle)}</div>
                       <div style={{ minWidth: 0 }}>
                         <div className="player-name">
                           {p.shortName}
@@ -157,24 +159,51 @@ function SideRail({ data, div }) {
   const L = data.league;
   const pct = Math.round((L.sessionsPlayed / L.sessionsTotal) * 100);
 
+  const MONTHS = { ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5, jul: 6, ago: 7, sep: 8, oct: 9, nov: 10, dic: 11 };
+  const toDate = (s) => {
+    if (!s || s === 'Por definir') return null;
+    const parts = s.split(' ');
+    const day = parseInt(parts[0], 10), mon = MONTHS[parts[1]];
+    if (isNaN(day) || mon === undefined) return null;
+    const d = new Date(new Date().getFullYear(), mon, day);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  };
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const nextDate = toDate(next.date);
+  const past = nextDate && nextDate < today;
+  const sessNum = parseInt((next.round || '').replace(/[^0-9]/g, ''), 10);
+  const sess = divData.sessions.find(s => s.n === sessNum);
+  const sessionDone = sess && sess.status === 'played';
+  const seasonDone = L.sessionsPlayed >= L.sessionsTotal;
+  const state = (seasonDone || sessionDone) ? 'waiting' : (past || !nextDate ? 'unscheduled' : 'ready');
+
   return (
     <div className="side-rail">
       <div className="rail-card">
         <div className="rc-head">
-          <h3>Próxima Sesión <span style={{ fontFamily: 'var(--font-jp)', opacity: 0.5 }}>次回</span></h3>
+          <h3>Próxima Partida <span style={{ fontFamily: 'var(--font-jp)', opacity: 0.5 }}>次回</span></h3>
           <span className={`div-chip ${div}`}>DIV {div}</span>
         </div>
-        <div className="next-match">
-          <div className="date-block">
-            <div className="day-num">{next.date.split(' ')[0]}</div>
-            <div className="day-mon">{next.date.split(' ')[1]}</div>
+        {state === 'unscheduled' && (
+          <div className="next-empty">Próxima sesión no programada</div>
+        )}
+        {state === 'waiting' && (
+          <div className="next-empty">Esperando inicio de próxima sesión</div>
+        )}
+        {state === 'ready' && (
+          <div className="next-match">
+            <div className="date-block">
+              <div className="day-num">{next.date.split(' ')[0]}</div>
+              <div className="day-mon">{next.date.split(' ')[1]}</div>
+            </div>
+            <div>
+              <div className="label">{next.round}</div>
+              <div className="meta-line">{next.mesa}</div>
+              <div className="meta-line">{next.time} · {next.day} · {L.hanchanPerSession} hanchan</div>
+            </div>
           </div>
-          <div>
-            <div className="label">{next.round}</div>
-            <div className="meta-line">{next.mesa}</div>
-            <div className="meta-line">{next.time} · {next.day} · {L.hanchanPerSession} hanchan</div>
-          </div>
-        </div>
+        )}
       </div>
 
       <div className="rail-card">

@@ -217,6 +217,7 @@ select{font:inherit;color:inherit}
 .next-match .date-block .day-mon{font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-top:3px}
 .next-match .label{font-weight:600;font-size:14px}
 .next-match .meta-line{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-soft);margin-top:3px}
+.next-empty{font-family:var(--font-mono);font-size:11px;color:var(--ink-soft);line-height:1.5;padding:4px 2px 2px;min-height:44px;display:flex;align-items:center}
 
 .recent-list{display:flex;flex-direction:column;gap:9px}
 .recent-row{display:grid;grid-template-columns:52px 1fr;gap:10px;padding:9px 10px;border-radius:9px;background:var(--bg-sunk);font-size:12px}
