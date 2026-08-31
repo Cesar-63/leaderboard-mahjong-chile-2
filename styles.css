@@ -89,6 +89,10 @@ select{font:inherit;color:inherit}
 .live-pill{display:inline-flex;align-items:center;gap:8px;padding:6px 11px 6px 9px;border:1px solid var(--line-strong);border-radius:999px;font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);flex-shrink:0}
 [data-theme="neon"] .live-pill{border-color:color-mix(in oklab,var(--accent) 45%,transparent);color:var(--ink);box-shadow:0 0 16px -6px color-mix(in oklab,var(--accent) 55%,transparent)}
 .live-pill .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 1.8s ease-out infinite}
+.lang-switch{display:inline-flex;align-items:center;gap:2px;border:1px solid var(--line-strong);border-radius:999px;padding:3px;flex-shrink:0}
+.lang-btn{appearance:none;border:0;background:transparent;color:var(--ink-soft);font-family:var(--font-mono);font-size:11px;font-weight:600;padding:4px 9px;border-radius:999px;cursor:pointer;letter-spacing:.04em}
+.lang-btn:hover{color:var(--ink)}
+.lang-btn.active{background:var(--accent);color:var(--bg);}
 .paipu-link{display:inline-block;margin-top:6px;color:var(--accent);font-family:var(--font-mono);font-size:10px;text-decoration:none}
 .paipu-link:hover{text-decoration:underline}
 @keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in oklab,var(--accent) 55%,transparent)}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}

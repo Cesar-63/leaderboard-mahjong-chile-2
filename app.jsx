@@ -103,6 +103,20 @@ function DivisionSwitch({ div, onChange, data, disabled }) {
   );
 }
 
+function LangSwitch({ value, onChange }) {
+  const langs = [
+    { v: 'es', l: 'ES' }, { v: 'en', l: 'EN' }, { v: 'pt', l: 'PT' },
+  ];
+  return (
+    <div className="lang-switch" role="group" aria-label={tr('idioma')}>
+      {langs.map(x => (
+        <button key={x.v} className={`lang-btn ${value === x.v ? 'active' : ''}`}
+          onClick={() => onChange(x.v)}>{x.l}</button>
+      ))}
+    </div>
+  );
+}
+
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
   window.LANG = t.lang;
@@ -159,6 +173,7 @@ function App() {
           <span className="dot"></span>
           <span>{tr('official_data')}</span>
         </div>
+        <LangSwitch value={t.lang} onChange={(v) => setTweak('lang', v)} />
       </header>
 
       <div className="control-bar">
