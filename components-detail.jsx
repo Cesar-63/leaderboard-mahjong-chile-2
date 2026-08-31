@@ -478,17 +478,36 @@ function CalModal({ entry, onClose }) {
 function CalendarView({ data }) {
   const played = data.divisions.A.sessions;
   const [modal, setModal] = React.useState(null);
-  const curCode = data.league.nextSession && data.league.nextSession.code;
-  const currentSession = parseInt(String(curCode || '').replace(/\D/g, ''), 10) || 0;
+  const MONTHS = { ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5, jul: 6, ago: 7, sep: 8, oct: 9, nov: 10, dic: 11 };
+  const toDate = (s) => {
+    const parts = String(s || '').split(' ');
+    const day = parseInt(parts[0], 10), mon = MONTHS[parts[1]];
+    if (isNaN(day) || mon === undefined) return null;
+    const d = new Date(new Date().getFullYear(), mon, day);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  };
+  const today = new Date(); today.setHours(0, 0, 0, 0);
   const sessNum = (c) => c.session || parseInt((c.round || '').replace(/\D/g, ''), 10) || 0;
-  const inGrid = data.calendar
-    .filter(c => {
-      const n = sessNum(c);
-      if (n < currentSession) return false;                 // pasadas/finalizadas
-      if (n === currentSession) return true;                // sesión actual: se muestra todo
-      return c.date !== 'Por definir' && c.time !== 'Por definir'; // futuras: solo programadas
-    })
-    .sort((a, b) => sessNum(a) - sessNum(b) || (a.table || 0) - (b.table || 0) || (a.div === 'B' ? 1 : 0) - (b.div === 'B' ? 1 : 0));
+  const byDate = (a, b) => (toDate(a.date) - toDate(b.date)) || (a.div === 'B' ? 1 : 0) - (b.div === 'B' ? 1 : 0);
+  // Próximas: con fecha válida y no pasada (>= hoy). Pasadas quedan ocultas.
+  const upcoming = data.calendar.filter(c => { const d = toDate(c.date); return d && d >= today; }).sort(byDate);
+  // Por definir: sin fecha.
+  const porDef = data.calendar.filter(c => !toDate(c.date)).sort((a, b) => sessNum(a) - sessNum(b) || (a.table || 0) - (b.table || 0));
+  const renderCard = (c, i) => (
+    <button className={`cal-card ${c.status === 'highlight' ? 'highlight' : ''} div-${c.div}`} key={c.round + c.mesa + c.div}
+         onClick={() => setModal(c)}
+         style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 30}ms`, textAlign: 'left', cursor: 'pointer', font: 'inherit', color: 'inherit', width: '100%' }}>
+      <div className="badge"><span className={`div-chip ${c.div}`}>{c.div === 'AB' ? 'A+B' : c.div === 'CL' ? 'CHILE' : 'DIV ' + c.div}</span>{c.div === 'CL' && <Flag nat="CL" size={16} />}</div>
+      <div className="date-row">
+        <span className="d">{c.date.split(' ')[0]}</span>
+        <span className="dy">{c.date.split(' ')[1]} · {c.day}</span>
+      </div>
+      <div className="round-l">{c.round}</div>
+      <div className="meta-l">{c.mesa}</div>
+      <div className="meta-l">{c.date === 'Por definir' ? tr('por_definir') : window.fmtTzTime(c.date, c.time, window.TZ) + ' · ' + window.TZ}</div>
+    </button>
+  );
   return (
     <div className="tab-panel">
       <div className="section-head">
@@ -502,24 +521,18 @@ function CalendarView({ data }) {
         </div>
       </div>
 
-      <div className="block-label" style={{ marginBottom: 12 }}>{tr('next_cal')} · 次回</div>
-      <div className="cal-grid">
-        {inGrid.map((c, i) => (
-          <button className={`cal-card ${c.status === 'highlight' ? 'highlight' : ''} div-${c.div}`} key={i}
-               onClick={() => setModal(c)}
-               style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 30}ms`, textAlign: 'left', cursor: 'pointer', font: 'inherit', color: 'inherit', width: '100%' }}>
-            {c.status === 'highlight' && <div className="ribbon">{tr('next_cal')}</div>}
-            <div className="badge"><span className={`div-chip ${c.div}`}>{c.div === 'AB' ? 'A+B' : c.div === 'CL' ? 'CHILE' : 'DIV ' + c.div}</span>{c.div === 'CL' && <Flag nat="CL" size={16} />}</div>
-            <div className="date-row">
-              <span className="d">{c.date.split(' ')[0]}</span>
-              <span className="dy">{c.date.split(' ')[1]} · {c.day}</span>
-            </div>
-            <div className="round-l">{c.round}</div>
-            <div className="meta-l">{c.mesa}</div>
-            <div className="meta-l">{window.fmtTzTime(c.date, c.time, window.TZ)} · {window.TZ}</div>
-          </button>
-        ))}
-      </div>
+      {upcoming.length > 0 && (
+        <React.Fragment>
+          <div className="block-label" style={{ marginBottom: 12 }}>{tr('next_cal')} · 次回</div>
+          <div className="cal-grid">{upcoming.map(renderCard)}</div>
+        </React.Fragment>
+      )}
+      {porDef.length > 0 && (
+        <React.Fragment>
+          <div className="block-label" style={{ margin: '28px 0 12px' }}>{tr('por_definir')} · 未定</div>
+          <div className="cal-grid">{porDef.map(renderCard)}</div>
+        </React.Fragment>
+      )}
       {modal && <CalModal entry={modal} onClose={() => setModal(null)} />}
 
       <div className="block-label" style={{ margin: '28px 0 12px' }}>{tr('played_sessions')} · 実施済み</div>

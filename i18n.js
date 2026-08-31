@@ -129,6 +129,7 @@ window.I18N = {
     partida_n: 'Partida de {n} jugadores',
     hora_local: 'Hora local',
     all_times: 'Todos los horarios',
+    por_definir: 'Por definir',
   },
 
   en: {
@@ -252,6 +253,7 @@ window.I18N = {
     partida_n: 'Game of {n} players',
     hora_local: 'Local time',
     all_times: 'All times',
+    por_definir: 'To be defined',
   },
 
   pt: {
@@ -375,6 +377,7 @@ window.I18N = {
     partida_n: 'Partida de {n} jogadores',
     hora_local: 'Hora local',
     all_times: 'Todos os horários',
+    por_definir: 'A definir',
   },
 };
 
