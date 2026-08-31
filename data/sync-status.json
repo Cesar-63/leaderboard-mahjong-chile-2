@@ -520,57 +520,57 @@
       "key": "B-S1-M1-G1",
       "cell": "Calendario!V11",
       "uuid": "260713-96730fd4-bcbe-4a82-bec8-a9f661e912e8",
-      "status": "ERROR",
-      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado (identidad de asientos)"
     },
     {
       "key": "B-S1-M1-G2",
       "cell": "Calendario!V12",
       "uuid": "260713-021764e3-c70b-4537-a94a-971d7525a9d6",
-      "status": "ERROR",
-      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado (identidad de asientos)"
     },
     {
       "key": "B-S1-M2-G1",
       "cell": "Calendario!Y11",
       "uuid": "260713-d34824b5-94b1-411c-915e-473ea28434f9",
       "status": "ERROR",
-      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
+      "message": "Sin caché local; omite --offline para descargarlo"
     },
     {
       "key": "B-S1-M2-G2",
       "cell": "Calendario!Y12",
       "uuid": "260713-e9405608-6c0d-43d7-86d2-a2149b990ee3",
       "status": "ERROR",
-      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
+      "message": "Sin caché local; omite --offline para descargarlo"
     },
     {
       "key": "B-S1-M3-G1",
       "cell": "Calendario!AB11",
       "uuid": "260713-3c9db6eb-0eea-426b-af5d-a8d6b5aba764",
       "status": "ERROR",
-      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
+      "message": "Sin caché local; omite --offline para descargarlo"
     },
     {
       "key": "B-S1-M3-G2",
       "cell": "Calendario!AB12",
       "uuid": "260713-2051770f-4f30-4f0c-a55e-ec37dbad3ffc",
       "status": "ERROR",
-      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
+      "message": "Sin caché local; omite --offline para descargarlo"
     },
     {
       "key": "B-S1-M4-G1",
       "cell": "Calendario!AE11",
       "uuid": "260714-58f336f2-3446-4279-a2cf-cac422079be3",
       "status": "ERROR",
-      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
+      "message": "Sin caché local; omite --offline para descargarlo"
     },
     {
       "key": "B-S1-M4-G2",
       "cell": "Calendario!AE12",
       "uuid": "260714-93b3ac04-bb99-49e3-88b9-969ada0b06bd",
       "status": "ERROR",
-      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
+      "message": "Sin caché local; omite --offline para descargarlo"
     },
     {
       "key": "B-S1-M5-G1",
@@ -584,21 +584,21 @@
       "cell": "Calendario!AH12",
       "uuid": "260713-07a424bb-8a8d-4ebe-b6a1-e22625aab473",
       "status": "ERROR",
-      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
+      "message": "Sin caché local; omite --offline para descargarlo"
     },
     {
       "key": "B-S1-M6-G1",
       "cell": "Calendario!AK11",
       "uuid": "260717-a38c14f9-8d03-4437-ad93-509b9cf7e35c",
       "status": "ERROR",
-      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
+      "message": "Sin caché local; omite --offline para descargarlo"
     },
     {
       "key": "B-S1-M6-G2",
       "cell": "Calendario!AK12",
       "uuid": "260717-8c54b447-5fa5-4e36-9775-c7c77f11f9fa",
       "status": "ERROR",
-      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
+      "message": "Sin caché local; omite --offline para descargarlo"
     },
     {
       "key": "B-S2-M1-G1",

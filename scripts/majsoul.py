@@ -44,6 +44,13 @@ MS_ROUTE_FALLBACKS = (
     ("en-2", "wss://engsbk.mahjongsoul.com:443/gateway"),
 )
 MS_CURRENCY_PLATFORMS = (1, 4, 5, 9, 12)
+# Mahjong Soul limita el ritmo de fetchGameRecord: pedir los 24 paipus de una
+# tanda hizo que rechazara todo con 540 y terminó bloqueando la cuenta. Se pide
+# de a pocos, espaciado, y se corta al primer indicio de límite.
+RECORD_THROTTLED_CODE = 540
+PAIPU_REQUEST_DELAY_SECONDS = 3.0
+MAX_RECORDS_PER_RUN = 6
+THROTTLE_STREAK_LIMIT = 2
 YOSTAR_QUICK_LOGIN = "https://en-sdk-api.yostarplat.com/user/quick-login"
 YOSTAR_SDK_VERSION = "4.16.0"
 YOSTAR_SIGNING_SALT = bytes([
@@ -57,6 +64,11 @@ class PaipuError(RuntimeError):
 
 
 class PaipuAuthRequired(PaipuError):
+    pass
+
+
+class PaipuThrottled(PaipuError):
+    """Mahjong Soul rechazó el registro por ritmo de peticiones (código 540)."""
     pass
 
 
@@ -230,19 +242,36 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
 
             cache_dir.mkdir(parents=True, exist_ok=True)
             failures: list[str] = []
+            pendientes = []
             for _record_id, record_uuid in records:
                 destination = cache_dir / f"{record_uuid}.pb"
                 if destination.exists() and not destination.read_bytes().lstrip().startswith(b"<?xml"):
                     continue
+                pendientes.append(record_uuid)
+            # Tope por corrida: el cron completa el resto en las siguientes.
+            tanda, aplazados = pendientes[:MAX_RECORDS_PER_RUN], pendientes[MAX_RECORDS_PER_RUN:]
+            racha_limitada = 0
+            for indice, record_uuid in enumerate(tanda):
+                if indice:
+                    await asyncio.sleep(PAIPU_REQUEST_DELAY_SECONDS)
+                destination = cache_dir / f"{record_uuid}.pb"
                 # game_uuid es el UUID limpio; el sufijo _a<cuenta> del enlace
                 # compartido es solo el ancla de vista y el servidor lo rechaza (1203).
                 request = pb.ReqGameRecord(game_uuid=record_uuid, client_version_string=client_version)
                 try:
                     response = await lobby.fetch_game_record(request)
                     if response.HasField("error") and response.error.code:
+                        # readGameRecord marca el registro como visto y es lo que
+                        # habilita la descarga; también va espaciado.
+                        await asyncio.sleep(PAIPU_REQUEST_DELAY_SECONDS)
                         await lobby.read_game_record(request)
+                        await asyncio.sleep(PAIPU_REQUEST_DELAY_SECONDS)
                         response = await lobby.fetch_game_record(request)
                     if response.HasField("error") and response.error.code:
+                        if response.error.code == RECORD_THROTTLED_CODE:
+                            raise PaipuThrottled(
+                                f"Mahjong Soul limitó {record_uuid} ({_rpc_error_detail(response.error)})"
+                            )
                         raise PaipuError(f"Mahjong Soul rechazó {record_uuid} ({_rpc_error_detail(response.error)})")
                     raw = bytes(response.data)
                     if not raw and response.data_url:
@@ -266,11 +295,26 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
                     container.data = raw
                     if response.HasField("head"):
                         container.head.CopyFrom(response.head)
+                except PaipuThrottled as exc:
+                    racha_limitada += 1
+                    failures.append(f"{record_uuid}: {exc}")
+                    if racha_limitada >= THROTTLE_STREAK_LIMIT:
+                        aplazados = tanda[indice + 1:] + aplazados
+                        print(
+                            f"Corte por límite de la API tras {racha_limitada} rechazos seguidos; "
+                            f"quedan {len(aplazados)} paipus para la próxima corrida.",
+                            file=sys.stderr,
+                        )
+                        break
+                    continue
                 except Exception as exc:
                     failures.append(f"{record_uuid}: {exc}")
                     continue
                 destination.write_bytes(container.SerializeToString())
                 downloaded += 1
+                racha_limitada = 0
+            if aplazados:
+                print(f"Aplazados {len(aplazados)} paipus para próximas corridas (tope {MAX_RECORDS_PER_RUN} por ejecución)")
             if failures:
                 print(
                     f"AVISO: {len(failures)} paipus no se pudieron descargar con la sesión técnica:\n"
