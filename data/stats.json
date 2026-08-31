@@ -1,64 +1,22 @@
 {
   "players": {
     "A01": {
-      "hands": 18,
-      "winRate": 16.7,
-      "dealInRate": 27.8,
-      "riichiRate": 11.1,
-      "openRate": 16.7,
-      "topYaku": [
-        {
-          "name": "Riichi",
-          "count": 2
-        },
-        {
-          "name": "Chinitsu",
-          "count": 2
-        },
-        {
-          "name": "Pinfu",
-          "count": 1
-        },
-        {
-          "name": "Iipeiko",
-          "count": 1
-        },
-        {
-          "name": "Yakuhai Este",
-          "count": 1
-        }
-      ],
-      "statsReliable": true
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
     },
     "A02": {
-      "hands": 18,
-      "winRate": 38.9,
-      "dealInRate": 16.7,
-      "riichiRate": 16.7,
-      "openRate": 61.1,
-      "topYaku": [
-        {
-          "name": "Pinfu",
-          "count": 2
-        },
-        {
-          "name": "Junchan",
-          "count": 2
-        },
-        {
-          "name": "Hotei Raoyui",
-          "count": 2
-        },
-        {
-          "name": "Yakuhai Este",
-          "count": 1
-        },
-        {
-          "name": "Iipeiko",
-          "count": 1
-        }
-      ],
-      "statsReliable": true
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
     },
     "A03": {
       "hands": 0,
@@ -133,34 +91,13 @@
       "statsReliable": false
     },
     "A11": {
-      "hands": 18,
-      "winRate": 11.1,
+      "hands": 0,
+      "winRate": 0.0,
       "dealInRate": 0.0,
-      "riichiRate": 22.2,
-      "openRate": 33.3,
-      "topYaku": [
-        {
-          "name": "Sanankou",
-          "count": 1
-        },
-        {
-          "name": "Tanyao",
-          "count": 1
-        },
-        {
-          "name": "Pinfu",
-          "count": 1
-        },
-        {
-          "name": "Riichi",
-          "count": 1
-        },
-        {
-          "name": "Chinitsu",
-          "count": 1
-        }
-      ],
-      "statsReliable": true
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
     },
     "A12": {
       "hands": 0,
@@ -244,34 +181,13 @@
       "statsReliable": false
     },
     "A21": {
-      "hands": 18,
-      "winRate": 22.2,
-      "dealInRate": 16.7,
-      "riichiRate": 33.3,
-      "openRate": 16.7,
-      "topYaku": [
-        {
-          "name": "Riichi",
-          "count": 3
-        },
-        {
-          "name": "Chinitsu",
-          "count": 3
-        },
-        {
-          "name": "Yakuhai Haku",
-          "count": 1
-        },
-        {
-          "name": "Ryanpeikou",
-          "count": 1
-        },
-        {
-          "name": "Junchan",
-          "count": 1
-        }
-      ],
-      "statsReliable": true
+      "hands": 0,
+      "winRate": 0.0,
+      "dealInRate": 0.0,
+      "riichiRate": 0.0,
+      "openRate": 0.0,
+      "topYaku": [],
+      "statsReliable": false
     },
     "A22": {
       "hands": 0,
