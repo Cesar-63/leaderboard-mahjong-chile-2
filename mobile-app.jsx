@@ -14,6 +14,8 @@ const MOB_TABS = [
   { id: 'more',      ji: '殿', es: 'Más', en: 'More', pt: 'Mais', jp: 'その他' },
 ];
 const MOB_DIV_SCOPED = ['standings', 'log'];
+// Dos primeras letras para el círculo del avatar (el handle completo se desborda)
+function initials(h) { return (h || '').slice(0, 2); }
 
 // ── Rutas por hash: #/<tab>/<div|jugador> (mismo esquema que la vista desktop) ──
 const MOB_ROUTE_TABS = MOB_TABS.map(t => t.id);
@@ -162,7 +164,7 @@ function MobStandings({ data, div, onPick }) {
         {order.map((p, i) => (
           <button key={p.id} className={`mob-pod p${p.rank} div-${div}`} onClick={() => onPick(p)} style={{ '--nat': COUNTRIES[p.nat].accent }}>
             <span className="medal">{p.rank}°</span>
-            <div className={`avatar div-${div}`} style={{ width: p.rank === 1 ? 38 : 32, height: p.rank === 1 ? 38 : 32, borderRadius: 11, fontSize: 9 }}>{p.handle}</div>
+            <div className={`avatar div-${div}`} style={{ width: p.rank === 1 ? 38 : 32, height: p.rank === 1 ? 38 : 32, borderRadius: 11, fontSize: 9 }}>{initials(p.handle)}</div>
             <Flag nat={p.nat} size={17} />
             <span className="nm">{p.shortName}{p.iormc === 'qualified' && <span className="iormc-star">★</span>}</span>
             <span className={`pt ${p.points >= 0 ? 'pos' : 'neg'}`}>{fmtPts(p.points)}</span>
@@ -191,7 +193,7 @@ function MobStandings({ data, div, onPick }) {
           <button key={p.id} className={`mob-row ${p.rank <= 3 ? 'top' + p.rank : ''} ${p.zone ? 'zone-' + p.zone : ''} ${p.iormc === 'qualified' ? 'iormc-q' : ''}`}
             style={{ animationDelay: `${Math.min(i, 18) * 20}ms`, '--nat': COUNTRIES[p.nat].accent }} onClick={() => onPick(p)}>
             <span className="rk">{p.rank}</span>
-            <div className={`avatar div-${div}`} style={{ width: 34, height: 34, borderRadius: 10, fontSize: 9 }}>{p.handle}</div>
+            <div className={`avatar div-${div}`} style={{ width: 34, height: 34, borderRadius: 10, fontSize: 9 }}>{initials(p.handle)}</div>
             <div className="who">
               <div className="n">{p.shortName}{p.iormc === 'qualified' && <span className="iormc-star">★</span>}</div>
               <div className="s"><Flag nat={p.nat} size={14} /><span>{COUNTRIES[p.nat].name}</span><span>{secondary(p)}</span></div>
@@ -224,14 +226,14 @@ function MobDetail({ data, playerId, onPick }) {
   return (
     <div className="mob-screen">
       <div className="mob-picker">
-        <div className={`avatar div-${p.div}`}>{p.handle}</div>
+        <div className={`avatar div-${p.div}`}>{initials(p.handle)}</div>
         <PlayerSelect value={p.id} onChange={onPick} data={data} />
       </div>
 
       <div className={`mob-card div-${p.div}`} style={{ '--nat': COUNTRIES[p.nat].accent, '--nat-alt': COUNTRIES[p.nat].alt }}>
         <div className="nat-wash"></div>
         <div className="mob-hero">
-          <div className={`avatar div-${p.div}`}>{p.handle}</div>
+          <div className={`avatar div-${p.div}`}>{initials(p.handle)}</div>
           <div style={{ minWidth: 0 }}>
             <div className="hn">{p.shortName}</div>
             <div className="hs nat-line"><Flag nat={p.nat} size={16} /><span>{COUNTRIES[p.nat].name}</span><span className="dot-sep">·</span><span>Div {p.div}</span><span className="dot-sep">·</span><span>{p.arch.toUpperCase()}</span></div>
@@ -334,7 +336,7 @@ function MobCompare({ data }) {
     <div className="mob-screen">
       {[{ p: a, set: setAId }, { p: b, set: setBId }].map(({ p, set }, i) => (
         <div className="mob-picker" key={i}>
-          <div className={`avatar div-${p.div}`}>{p.handle}</div>
+          <div className={`avatar div-${p.div}`}>{initials(p.handle)}</div>
           <PlayerSelect value={p.id} onChange={set} data={data} />
           <Flag nat={p.nat} size={18} />
           <span className={`div-chip ${p.div}`}>{p.div}</span>
@@ -346,14 +348,14 @@ function MobCompare({ data }) {
       <div className="mob-card">
         <div className="mob-vsbar">
           <div className="side">
-            <div className={`avatar div-${a.div}`} style={{ width: 38, height: 38, borderRadius: 11, fontSize: 9 }}>{a.handle}</div>
+            <div className={`avatar div-${a.div}`} style={{ width: 38, height: 38, borderRadius: 11, fontSize: 9 }}>{initials(a.handle)}</div>
             <Flag nat={a.nat} size={18} />
             <span className="nm" style={{ color: 'var(--accent)' }}>{a.shortName}</span>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--ink-faint)' }}>#{a.rank} Div {a.div}</span>
           </div>
           <span className="vs">VS</span>
           <div className="side">
-            <div className={`avatar div-${b.div}`} style={{ width: 38, height: 38, borderRadius: 11, fontSize: 9 }}>{b.handle}</div>
+            <div className={`avatar div-${b.div}`} style={{ width: 38, height: 38, borderRadius: 11, fontSize: 9 }}>{initials(b.handle)}</div>
             <Flag nat={b.nat} size={18} />
             <span className="nm" style={{ color: 'var(--accent-2)' }}>{b.shortName}</span>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--ink-faint)' }}>#{b.rank} Div {b.div}</span>
@@ -515,7 +517,7 @@ function MobMore({ data, onPick }) {
               <div className="vl" style={{ color: accentFor(d) }}>{h.value}</div>
               <div className="sb">{h.sub}</div>
               <div className="pl">
-                <div className={`avatar div-${d}`}>{h.player.handle}</div>
+                <div className={`avatar div-${d}`}>{initials(h.player.handle)}</div>
                 <div>
                   <div style={{ fontWeight: 600, fontSize: 12.5 }}>{h.player.shortName}</div>
                   <div className="nat-line" style={{ fontFamily: 'var(--font-mono)', fontSize: 9.5, color: 'var(--ink-soft)' }}>

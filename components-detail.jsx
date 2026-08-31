@@ -1,6 +1,8 @@
 // components-detail.jsx — player detail, comparator, hanchan log, calendar, hall of fame
 
 function accentFor(div) { return div === 'B' ? 'var(--accent-2)' : 'var(--accent)'; }
+// Dos primeras letras para el círculo del avatar (el handle completo se desborda)
+function initials(h) { return (h || '').slice(0, 2); }
 
 function metricsToRadar(p) {
   const hasStats = p.statsSample > 0;
@@ -69,7 +71,7 @@ function PlayerDetail({ playerId, data, onPick }) {
         <div className={`detail-hero div-${p.div}`} style={{ '--nat': COUNTRIES[p.nat].accent, '--nat-alt': COUNTRIES[p.nat].alt }}>
           <div className="nat-wash"></div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 18, position: 'relative' }}>
-            <div className={`avatar div-${p.div}`} style={{ width: 80, height: 80, fontSize: 22, borderRadius: 18 }}>{p.handle}</div>
+            <div className={`avatar div-${p.div}`} style={{ width: 80, height: 80, fontSize: 22, borderRadius: 18 }}>{initials(p.handle)}</div>
             <div>
               <div className="name">{p.shortName}</div>
               <div className="sub nat-line"><Flag nat={p.nat} size={18} /><span>{COUNTRIES[p.nat].name}</span><span className="dot-sep">·</span><span>Div {p.div}</span><span className="dot-sep">·</span><span>{p.arch.toUpperCase()}</span></div>
@@ -191,7 +193,7 @@ function IORMCView({ data, onPick }) {
             style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 60}ms` }}>
             <div className="iq-flagwash"></div>
             <div className="iq-slot">Cupo {i + 1}</div>
-            <div className="iq-av"><div className="avatar div-A" style={{ width: 52, height: 52, borderRadius: 14, fontSize: 12 }}>{p.handle}</div></div>
+            <div className="iq-av"><div className="avatar div-A" style={{ width: 52, height: 52, borderRadius: 14, fontSize: 12 }}>{initials(p.handle)}</div></div>
             <div className="iq-nm">{p.shortName}</div>
             <div className="iq-meta">#{p.rank} División A · {p.games} hanchan</div>
             <div className="iq-pts">{fmtPts(p.points)}</div>
@@ -213,7 +215,7 @@ function IORMCView({ data, onPick }) {
                   {isCut && <div className="race-cut"><span>Corte · {fmtPts(io.cutPoints)}</span></div>}
                   <button className={`race-row ${p.iormc}`} onClick={() => onPick(p)}>
                     <span className="rr-pos">{p.natRank}</span>
-                    <div className="avatar div-A" style={{ width: 28, height: 28, borderRadius: 9, fontSize: 8.5 }}>{p.handle}</div>
+                    <div className="avatar div-A" style={{ width: 28, height: 28, borderRadius: 9, fontSize: 8.5 }}>{initials(p.handle)}</div>
                     <span className="rr-nm">{p.shortName}<span className="rr-sub">#{p.rank} liga</span></span>
                     <div className="rr-bar">
                       <div style={{ width: `${(Math.abs(p.points) / maxAbs) * 100}%`, marginLeft: p.points < 0 ? 'auto' : 0, background: p.points >= 0 ? cl.accent : 'var(--ink-faint)' }} />
@@ -323,7 +325,7 @@ function Comparator({ data }) {
         {[{ p: a, side: 'a', set: setAId }, { p: b, side: 'b', set: setBId }].map(({ p, side, set }) => (
           <div className={`comp-col ${side} div-${p.div}`} key={side}>
             <div className="comp-pick">
-              <div className={`avatar div-${p.div}`} style={{ width: 48, height: 48, fontSize: 13, borderRadius: 12 }}>{p.handle}</div>
+              <div className={`avatar div-${p.div}`} style={{ width: 48, height: 48, fontSize: 13, borderRadius: 12 }}>{initials(p.handle)}</div>
               <PlayerSelect value={p.id} onChange={set} data={data} />
             </div>
             <div className="comp-sub">
@@ -504,7 +506,7 @@ function HallOfFame({ data }) {
                 <div className="value" style={{ color: accentFor(d) }}>{h.value}</div>
                 <div className="sub">{h.sub}</div>
                 <div className="player-line">
-                  <div className={`avatar div-${d}`}>{h.player.handle}</div>
+                  <div className={`avatar div-${d}`}>{initials(h.player.handle)}</div>
                   <div>
                     <div style={{ fontWeight: 600, fontSize: 14 }}>{h.player.shortName}</div>
                     <div className="nat-line" style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)' }}>
