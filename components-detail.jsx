@@ -431,6 +431,7 @@ function CalModal({ entry, onClose }) {
   const natTz = window.NAT_TZ || {};
   const tzOptions = window.TZ_OPTIONS || [];
   const allZones = tzOptions.flatMap(g => g.zones.map(z => z));
+  const cityShort = (label) => String(label || '').split(' (')[0];
   return (
     <div className="cal-modal-backdrop" onClick={onClose}>
       <div className="cal-modal" onClick={e => e.stopPropagation()}>
@@ -450,7 +451,7 @@ function CalModal({ entry, onClose }) {
               const local = window.fmtTzTime(entry.date, entry.time, tz);
               return (
                 <div className="cm-player" key={i}>
-                  <div className="cm-name"><Flag nat={pl.nat} size={16} />{pl.name}</div>
+                  <div className="cm-name"><Flag nat={pl.nat} size={15} />{pl.name}</div>
                   <div className="cm-tz"><b>{local}</b><span>{tz}</span></div>
                 </div>
               );
@@ -460,11 +461,11 @@ function CalModal({ entry, onClose }) {
 
         <div className="cm-players">
           <div className="cm-block">{tr('all_times')} · {window.fmtTzTime(entry.date, entry.time, window.TZ)} · {window.TZ}</div>
-          <div className="cm-grid">
+          <div className="cm-grid cm-grid3">
             {allZones.map(z => (
-              <div className="cm-player" key={z.tz}>
-                <div className="cm-name">{z.label}</div>
-                <div className="cm-tz"><b>{window.fmtTzTime(entry.date, entry.time, z.tz)}</b><span>{z.tz}</span></div>
+              <div className="cm-tzcell" key={z.tz} title={z.label + ' · ' + z.tz}>
+                <span className="ctz-city">{cityShort(z.label)}</span>
+                <span className="ctz-time">{window.fmtTzTime(entry.date, entry.time, z.tz)}</span>
               </div>
             ))}
           </div>

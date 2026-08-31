@@ -112,6 +112,10 @@ select{font:inherit;color:inherit}
 .cal-modal .cm-block{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);padding:7px 0 3px}
 .cal-modal .cm-players + .cm-players{margin-top:6px;border-top:1px solid var(--line)}
 .cal-modal .cm-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.cal-modal .cm-grid3{grid-template-columns:repeat(3,1fr);gap:6px 8px;padding-top:2px}
+.cal-modal .cm-tzcell{display:flex;align-items:baseline;justify-content:space-between;gap:6px;padding:7px 8px;border:1px solid var(--line);border-radius:8px;background:var(--bg-sunk);overflow:hidden}
+.cal-modal .ctz-city{font-size:11px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cal-modal .ctz-time{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--ink);flex-shrink:0}
 .paipu-link{display:inline-block;margin-top:6px;color:var(--accent);font-family:var(--font-mono);font-size:10px;text-decoration:none}
 .paipu-link:hover{text-decoration:underline}
 @keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in oklab,var(--accent) 55%,transparent)}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
