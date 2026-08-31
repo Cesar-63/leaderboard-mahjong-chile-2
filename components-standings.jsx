@@ -22,12 +22,12 @@ function HoverPreview({ player, anchor }) {
         </div>
       </div>
       <div className="hp-stats">
-        <div className="hp-stat"><div className="v">{fmtPts(player.points)}</div><div className="l">Puntos</div></div>
-        <div className="hp-stat"><div className="v">{player.avgRank.toFixed(2)}</div><div className="l">Avg Rank</div></div>
-        <div className="hp-stat"><div className="v">{fmtAdvanced(player, 'winRate', '%')}</div><div className="l">Win Rate</div></div>
-        <div className="hp-stat"><div className="v">{fmtAdvanced(player, 'dealInRate', '%')}</div><div className="l">Deal-in</div></div>
-        <div className="hp-stat"><div className="v">{fmtAdvanced(player, 'riichiRate', '%')}</div><div className="l">Riichi</div></div>
-        <div className="hp-stat"><div className="v">{fmtAdvanced(player, 'openRate', '%')}</div><div className="l">Open</div></div>
+        <div className="hp-stat"><div className="v">{fmtPts(player.points)}</div><div className="l">{tr('points')}</div></div>
+        <div className="hp-stat"><div className="v">{player.avgRank.toFixed(2)}</div><div className="l">{tr('avg_rank')}</div></div>
+        <div className="hp-stat"><div className="v">{fmtAdvanced(player, 'winRate', '%')}</div><div className="l">{tr('win_rate')}</div></div>
+        <div className="hp-stat"><div className="v">{fmtAdvanced(player, 'dealInRate', '%')}</div><div className="l">{tr('deal_in')}</div></div>
+        <div className="hp-stat"><div className="v">{fmtAdvanced(player, 'riichiRate', '%')}</div><div className="l">{tr('riichi')}</div></div>
+        <div className="hp-stat"><div className="v">{fmtAdvanced(player, 'openRate', '%')}</div><div className="l">{tr('open')}</div></div>
       </div>
       <div style={{ marginTop: 14, height: 32 }}>
         <Sparkline values={player.cum} width={248} height={32} color={player.div === 'B' ? 'var(--accent-2)' : 'var(--accent)'} />
@@ -68,7 +68,7 @@ function StandingsView({ data, div, layout, onSelectPlayer }) {
       <div>
         <div className="nat-filter">
           <button className={`nf-btn ${!natFilter ? 'active' : ''}`} onClick={() => setNatFilter(null)}>
-            <span className="nf-name">Todas</span><span className="nf-n">{divData.players.length}</span>
+            <span className="nf-name">{tr('all')}</span><span className="nf-n">{divData.players.length}</span>
           </button>
           {COUNTRY_ORDER.filter(c => natCounts[c]).map(c => (
             <button key={c} className={`nf-btn ${natFilter === c ? 'active' : ''}`}
@@ -85,15 +85,15 @@ function StandingsView({ data, div, layout, onSelectPlayer }) {
             <thead>
               <tr>
                 <th className="left" style={{ width: 56 }}>#</th>
-                <th className="left">Jugador <span style={{ fontFamily: 'var(--font-jp)', opacity: 0.5 }}>選手</span></th>
-                <th style={{ width: 56 }} title="Partidas jugadas">PJ</th>
-                {th('rank', 'Puntos', 88)}
-                {th('avgRank', 'Avg #', 74)}
-                {th('win', 'Win%', 74)}
-                {th('dealin', 'Deal-in%', 82)}
-                <th style={{ width: 74 }}>Riichi%</th>
-                <th style={{ width: 74 }}>Open%</th>
-                <th style={{ width: 96 }}>Forma</th>
+                <th className="left">{tr('th_player')} <span style={{ fontFamily: 'var(--font-jp)', opacity: 0.5 }}>選手</span></th>
+                <th style={{ width: 56 }} title={tr('th_pj')}>{tr('th_pj')}</th>
+                {th('rank', tr('th_points'), 88)}
+                {th('avgRank', tr('th_avg'), 74)}
+                {th('win', tr('th_win'), 74)}
+                {th('dealin', tr('th_dealin'), 82)}
+                <th style={{ width: 74 }}>{tr('th_riichi')}</th>
+                <th style={{ width: 74 }}>{tr('th_open')}</th>
+                <th style={{ width: 96 }}>{tr('th_form')}</th>
               </tr>
             </thead>
             <tbody>
@@ -121,7 +121,7 @@ function StandingsView({ data, div, layout, onSelectPlayer }) {
                           <Flag nat={p.nat} size={15} />
                           <span>{COUNTRIES[p.nat].name}</span>
                           <span className="dot-sep">·</span>
-                          <span>{p.arch}</span>
+                          <span>{p.arch === 'con datos' ? tr('con_datos') : tr('stats_pending')}</span>
                         </div>
                       </div>
                     </div>
@@ -140,8 +140,8 @@ function StandingsView({ data, div, layout, onSelectPlayer }) {
           </table>
           <div className="zone-key">
             {div === 'A'
-              ? <React.Fragment><span className="zk title">1-4 Playoff Título</span><span className="zk iormc">★ Top 4 chileno → IORMC</span><span className="zk releg">21-24 Descenso</span></React.Fragment>
-              : <React.Fragment><span className="zk promo">1-4 Promoción a División A</span><span className="zk">21-24 Zona baja</span></React.Fragment>}
+              ? <React.Fragment><span className="zk title">{tr('zone_title_playoff')}</span><span className="zk iormc">{tr('zone_iormc')}</span><span className="zk releg">{tr('zone_relegation')}</span></React.Fragment>
+              : <React.Fragment><span className="zk promo">{tr('zone_promotion')}</span><span className="zk">{tr('zone_bottom')}</span></React.Fragment>}
           </div>
         </div>
       </div>
@@ -182,14 +182,14 @@ function SideRail({ data, div }) {
     <div className="side-rail">
       <div className="rail-card">
         <div className="rc-head">
-          <h3>Próxima Partida <span style={{ fontFamily: 'var(--font-jp)', opacity: 0.5 }}>次回</span></h3>
+          <h3>{tr('next_match')} <span style={{ fontFamily: 'var(--font-jp)', opacity: 0.5 }}>次回</span></h3>
           <span className={`div-chip ${div}`}>DIV {div}</span>
         </div>
         {state === 'unscheduled' && (
-          <div className="next-empty">Próxima sesión no programada</div>
+          <div className="next-empty">{tr('next_unscheduled')}</div>
         )}
         {state === 'waiting' && (
-          <div className="next-empty">Esperando inicio de próxima sesión</div>
+          <div className="next-empty">{tr('next_waiting')}</div>
         )}
         {state === 'ready' && (
           <div className="next-match">
@@ -200,7 +200,7 @@ function SideRail({ data, div }) {
             <div>
               <div className="label">{next.round}</div>
               <div className="meta-line">{next.mesa}</div>
-              <div className="meta-line">{next.time} · {next.day} · {L.hanchanPerSession} hanchan</div>
+              <div className="meta-line">{next.time} · {next.day} · {L.hanchanPerSession} {tr('hanchan')}</div>
             </div>
           </div>
         )}
@@ -208,7 +208,7 @@ function SideRail({ data, div }) {
 
       <div className="rail-card">
         <div className="rc-head">
-          <h3>Últimas Hanchan <span style={{ fontFamily: 'var(--font-jp)', opacity: 0.5 }}>結果</span></h3>
+          <h3>{tr('last_hanchan')} <span style={{ fontFamily: 'var(--font-jp)', opacity: 0.5 }}>結果</span></h3>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-faint)' }}>DIV {div}</span>
         </div>
         <div className="recent-list">
@@ -233,37 +233,37 @@ function SideRail({ data, div }) {
 
       <div className="rail-card">
         <div className="rc-head">
-          <h3>Temporada <span style={{ fontFamily: 'var(--font-jp)', opacity: 0.5 }}>リーグ</span></h3>
+          <h3>{tr('season')} <span style={{ fontFamily: 'var(--font-jp)', opacity: 0.5 }}>リーグ</span></h3>
         </div>
         <div className="mini-grid">
           <div>
-            <div className="ml">Sesiones</div>
+            <div className="ml">{tr('sessions_lbl')}</div>
             <div className="mv">{L.sessionsPlayed}<span className="mf">/{L.sessionsTotal}</span></div>
           </div>
           <div>
-            <div className="ml">Hanchan Div {div}</div>
+            <div className="ml">{tr('hanchan_div', { div })}</div>
             <div className="mv">{divData.matches.length}</div>
           </div>
           <div>
-            <div className="ml">Jugadores</div>
+            <div className="ml">{tr('players_lbl')}</div>
             <div className="mv">{L.playersPerDiv}<span className="mf">×2</span></div>
           </div>
           <div>
-            <div className="ml">Por sesión</div>
-            <div className="mv">{L.hanchanPerSession}<span className="mf"> hanchan</span></div>
+            <div className="ml">{tr('per_session')}</div>
+            <div className="mv">{L.hanchanPerSession}<span className="mf"> {tr('hanchan')}</span></div>
           </div>
         </div>
         <div style={{ marginTop: 14 }}>
           <div className="prog-track"><div className={`prog-fill div-${div}`} style={{ width: pct + '%' }}></div></div>
           <div style={{ marginTop: 6, fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-soft)' }}>
-            SESIÓN {L.sessionsPlayed} DE {L.sessionsTotal} · {pct}%
+            {tr('season_progress', { played: L.sessionsPlayed, total: L.sessionsTotal, pct })}
           </div>
         </div>
       </div>
 
       <div className="rail-card">
         <div className="rc-head">
-          <h3>Selección IORMC <span style={{ fontFamily: 'var(--font-jp)', opacity: .5 }}>代表</span></h3>
+          <h3>{tr('iormc_selection')} <span style={{ fontFamily: 'var(--font-jp)', opacity: .5 }}>代表</span></h3>
           <Flag nat="CL" size={18} />
         </div>
         <div className="iormc-mini">
@@ -274,13 +274,13 @@ function SideRail({ data, div }) {
               <span className="im-pt">{fmtPts(p.points)}</span>
             </div>
           ))}
-          <div className="im-cut">Corte {fmtPts(data.iormc.cutPoints)} · margen {data.iormc.gap.toFixed(1)}</div>
+          <div className="im-cut">{tr('cut_margin', { cut: fmtPts(data.iormc.cutPoints), gap: data.iormc.gap.toFixed(1) })}</div>
         </div>
       </div>
 
       <div className="rail-card">
         <div className="rc-head">
-          <h3>Otra División <span style={{ fontFamily: 'var(--font-jp)', opacity: 0.5 }}>他部門</span></h3>
+          <h3>{tr('other_division')} <span style={{ fontFamily: 'var(--font-jp)', opacity: 0.5 }}>他部門</span></h3>
         </div>
         <div className="recent-list">
           {data.divisions[div === 'A' ? 'B' : 'A'].players.slice(0, 4).map(p => (
