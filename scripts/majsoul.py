@@ -311,6 +311,7 @@ class ParsedPaipu:
     final_scores: list[int]
     hands: int
     seat_stats: list[dict[str, Any]]
+    players: list[dict[str, Any]]
     sha256: str
 
 
@@ -354,6 +355,8 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
     round_index = -1
     opened: set[tuple[int, int]] = set()
     last_discard: int | None = None
+    seat_identity: dict[int, dict[str, Any]] = {}
+    record_game_points: dict[int, int] = {}
 
     for payload in payloads:
         item = pb.Wrapper()
@@ -365,7 +368,16 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
         message = message_type()
         message.ParseFromString(item.data)
 
-        if name == "RecordNewRound":
+        if name == "RecordGame" and hasattr(message, "accounts"):
+            # El inicio del registro declara los 4 jugadores y el resultado final.
+            for account in message.accounts:
+                if account.seat < 4:
+                    seat_identity[int(account.seat)] = {"account_id": int(account.account_id), "nickname": account.nickname}
+            for player in message.result.players:
+                record_game_points[int(player.seat)] = int(player.total_point)
+            if len(record_game_points) == 4:
+                final_scores = [record_game_points[seat] for seat in range(4)]
+        elif name == "RecordNewRound":
             round_index += 1
             last_discard = None
             for seat in range(min(4, len(message.scores))):
@@ -410,10 +422,23 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
     normalized = []
     for seat in stats:
         normalized.append({**seat, "yaku": dict(seat["yaku"].most_common())})
+    # Identidad por asiento (account_id/nickname/puntaje final) cuando el
+    # registro la declara; sirve para asociar cada asiento a su jugador sin
+    # depender del orden de la planilla.
+    players = []
+    for seat in range(4):
+        identity = seat_identity.get(seat, {})
+        players.append({
+            "seat": seat,
+            "account_id": identity.get("account_id"),
+            "nickname": identity.get("nickname"),
+            "point": record_game_points.get(seat),
+        })
     return ParsedPaipu(
         uuid=uuid,
         final_scores=[int(score) for score in final_scores],
         hands=max((seat["hands"] for seat in stats), default=0),
         seat_stats=normalized,
+        players=players,
         sha256=hashlib.sha256(raw).hexdigest(),
     )
