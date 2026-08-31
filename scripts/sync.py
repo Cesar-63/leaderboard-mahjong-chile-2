@@ -197,40 +197,18 @@ def merge_paipus(submissions: list[dict[str, Any]], histories: dict[str, dict[st
                 raise PaipuError("Sin caché local; omite --offline para descargarlo")
             raw = cache_file.read_bytes() if cache_file.exists() else fetch_record(submission["recordId"], cache_dir, uuid)
             parsed = parse_record(uuid, raw)
-            expected = submission["players"]
-            if any(not name for name in expected):
+            if any(not name for name in submission["players"]):
                 raise PaipuError("El fixture todavía no contiene cuatro jugadores")
-            seat_scores = dict(zip(expected, parsed.final_scores))
-            ranked = sorted(seat_scores.items(), key=lambda item: item[1], reverse=True)
-            history = histories.get(submission["key"])
-            state = "VALIDADO"
-            message = "Paipu procesado; Game History aún está vacío"
-            if history:
-                fixture_by_lower = {name.lower(): name for name in expected}
-                aligned = []
-                unmatched = []
-                matched_names = set()
-                for item in history["results"]:
-                    canonical = fixture_by_lower.get(item["name"].lower())
-                    if canonical:
-                        aligned.append((canonical, item["scoreRaw"]))
-                        matched_names.add(canonical)
-                    else:
-                        unmatched.append(item)
-                missing = [name for name in expected if name not in matched_names]
-                if len(unmatched) == len(missing):
-                    for item, replaced in zip(unmatched, missing):
-                        aligned.append((replaced, item["scoreRaw"]))
-                aligned.sort(key=lambda item: item[1], reverse=True)
-                official = [(item["name"], item["scoreRaw"]) for item in history["results"]]
-                if ranked != aligned:
-                    raise PaipuError(f"No coincide con {history['sourceCell']}: paipu={ranked}, oficial={official}")
-                state = "PUBLICADO"
-                message = "Coincide con Game History"
+            # El paipu manda sobre Game History (que es un duplicado). Si el
+            # registro declara la identidad de los 4 asientos, lo aceptamos
+            # como fuente; si no, se conserva Game History como respaldo.
+            has_players = len(parsed.players) == 4 and all(p.get("account_id") for p in parsed.players)
+            state = "PUBLICADO" if has_players else "VALIDADO"
+            message = "Paipu decodificado (identidad de asientos)" if has_players else "Paipu decodificado sin identidad de asientos"
             parsed_games[submission["key"]] = {
                 "uuid": uuid, "url": submission["url"], "sha256": parsed.sha256,
                 "finalScoresBySeat": parsed.final_scores, "seatStats": parsed.seat_stats,
-                "hands": parsed.hands, "status": state,
+                "players": parsed.players, "hands": parsed.hands, "status": state,
             }
             status.append({"key": submission["key"], "cell": submission["cell"], "uuid": uuid, "status": state, "message": message})
         except PaipuAuthRequired as exc:
@@ -245,55 +223,121 @@ def pct(value: int, total: int) -> float:
     return round(value * 100 / total, 1) if total else 0.0
 
 
+def key_sort_key(key: str) -> tuple[int, int, int]:
+    match = re.match(r"^[AB]-S(\d+)-M(\d+)-G(\d+)$", key)
+    return tuple(int(part) for part in match.groups()) if match else (0, 0, 0)
+
+
+def match_paipu_seats(parsed_players: list[dict[str, Any]], players: list[dict[str, Any]]) -> dict[int, dict[str, Any]] | None:
+    """Mapa asiento→jugador por account_id (o nickname), sin depender del orden del fixture."""
+    by_account = {p["accountId"]: p for p in players if p.get("accountId") is not None}
+    by_name = {p["name"].lower(): p for p in players}
+    seat_map: dict[int, dict[str, Any]] = {}
+    for seat, entry in enumerate(parsed_players):
+        account_id = entry.get("account_id")
+        player = by_account.get(account_id) if account_id is not None else None
+        if player is None and entry.get("nickname"):
+            player = by_name.get(str(entry["nickname"]).strip().lower())
+        if player is not None:
+            seat_map[seat] = player
+    if len(seat_map) == 4 and len({p["id"] for p in seat_map.values()}) == 4:
+        return seat_map
+    return None
+
+
+def build_paipu_results(seat_map: dict[int, dict[str, Any]], final_scores: list[int], rule: dict[str, Any]) -> list[dict[str, Any]]:
+    """Resultados de liga (puesto, delta, puntos) a partir de los datos del paipu."""
+    pairs = [(seat_map[seat], final_scores[seat]) for seat in range(4)]
+    ranked = sorted(pairs, key=lambda item: item[1], reverse=True)
+    results = []
+    for place, (player, score) in enumerate(ranked, start=1):
+        delta = round((score - int(rule["initialPoints"])) / 1000 + float(rule["uma"][place - 1]), 1)
+        results.append({
+            "id": player["id"], "name": player["name"], "handle": player["handle"],
+            "nat": player["nat"], "scoreRaw": int(score), "place": place, "delta": delta,
+        })
+    return results
+
+
+def build_excel_results(official: dict[str, Any], fixture_players: list[str], players: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Resultados de respaldo cuando la división/game no tiene paipu con identidad."""
+    by_name = {p["name"].lower(): p for p in players}
+    known = {item["name"].lower() for item in official["results"] if item["name"].lower() in by_name}
+    missing = [name for name in fixture_players if name.lower() not in known]
+    results = []
+    for item in official["results"]:
+        player = by_name.get(item["name"].lower())
+        if player:
+            results.append({
+                "id": player["id"], "name": player["name"], "handle": player["handle"],
+                "nat": player["nat"], "scoreRaw": item["scoreRaw"], "place": item["place"],
+                "delta": item["delta"],
+            })
+            continue
+        replaced_name = missing.pop(0) if missing else None
+        replaced = by_name.get(replaced_name.lower()) if replaced_name else None
+        results.append({
+            "id": f"sub-{official['key']}-{item['place']}", "name": item["name"],
+            "handle": item["name"], "nat": "OT", "scoreRaw": item["scoreRaw"],
+            "place": item["place"], "delta": item["delta"],
+            "sustitutoDe": replaced["id"] if replaced else None,
+        })
+    return results
+
+
 def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, Any]]], fixtures: list[dict[str, Any]], submissions: list[dict[str, Any]], histories: dict[str, dict[str, Any]], parsed_games: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
     divisions: dict[str, Any] = {}
     all_players: list[dict[str, Any]] = []
     stats_output: dict[str, Any] = {"players": {}}
     submission_by_key = {item["key"]: item for item in submissions if item.get("url")}
     for division in ("A", "B"):
+        rule = config["divisions"][division]
         players = [{**player, "games": 0, "points": 0.0, "history": [], "cum": [], "counts": [0, 0, 0, 0], "hands": 0, "wins": 0, "dealIns": 0, "riichis": 0, "openHands": 0, "yakuCounts": Counter()} for player in rosters[division]]
-        by_name = {player["name"].lower(): player for player in players}
+        by_id = {player["id"]: player for player in players}
         matches = []
-        for key, official in sorted(histories.items(), key=lambda item: (item[1]["session"], item[1]["table"], item[1]["game"])):
-            if not key.startswith(f"{division}-"):
-                continue
-            fixture = next((item for item in fixtures if item["division"] == division and item["session"] == official["session"] and item["table"] == official["table"]), None)
-            match_players = []
-            fixture_names = fixture["players"] if fixture else []
-            known_result_names = {item["name"].lower() for item in official["results"] if item["name"].lower() in by_name}
-            missing_fixture = [name for name in fixture_names if name.lower() not in known_result_names]
-            for result in official["results"]:
-                player = by_name.get(result["name"].lower())
-                if not player:
-                    replaced_name = missing_fixture.pop(0) if missing_fixture else None
-                    replaced = by_name.get(replaced_name.lower()) if replaced_name else None
-                    match_players.append({
-                        "id": f"sub-{key}-{result['place']}", "name": result["name"], "handle": result["name"],
-                        "nat": "OT", **result, "sustitutoDe": replaced["id"] if replaced else None,
-                    })
-                    continue
-                player["games"] += 1
-                player["points"] = round(player["points"] + result["delta"], 1)
-                player["history"].append(result["delta"])
-                player["counts"][result["place"] - 1] += 1
-                match_players.append({"id": player["id"], "name": player["name"], "handle": player["handle"], "nat": player["nat"], **result})
+        keys = {key for key in histories if key.startswith(f"{division}-")} | {key for key in parsed_games if key.startswith(f"{division}-")}
+        for key in sorted(keys, key=key_sort_key):
+            official = histories.get(key)
             parsed = parsed_games.get(key)
             submission = submission_by_key.get(key)
-            if parsed and fixture:
-                for seat, seat_stats in enumerate(parsed["seatStats"]):
-                    player = by_name.get(fixture["players"][seat].lower())
-                    if not player:
-                        continue
+            session, table, game = key_sort_key(key)
+            fixture = next((item for item in fixtures if item["division"] == division and item["session"] == session and item["table"] == table), None)
+            fixture_names = fixture["players"] if fixture else []
+            source = "sin resultado"
+            seat_map = None
+            if parsed and len(parsed.get("players", [])) == 4:
+                seat_map = match_paipu_seats(parsed["players"], players)
+            if parsed and seat_map and len(parsed["finalScoresBySeat"]) == 4:
+                results = build_paipu_results(seat_map, parsed["finalScoresBySeat"], rule)
+                source = "paipu"
+            elif official:
+                results = build_excel_results(official, fixture_names, players)
+                source = "excel"
+            else:
+                continue
+            match_players = []
+            for result in results:
+                player = by_id.get(result["id"])
+                if player and not result["id"].startswith("sub-"):
+                    player["games"] += 1
+                    player["points"] = round(player["points"] + result["delta"], 1)
+                    player["history"].append(result["delta"])
+                    player["counts"][result["place"] - 1] += 1
+                match_players.append({k: result[k] for k in ("id", "name", "handle", "nat", "scoreRaw", "place", "delta")} | {"sustitutoDe": result.get("sustitutoDe")})
+            if parsed and seat_map:
+                for seat, player in seat_map.items():
+                    seat_stats = parsed["seatStats"][seat]
                     for field in ("hands", "wins", "dealIns", "riichis", "openHands"):
                         player[field] += int(seat_stats[field])
                     player["yakuCounts"].update(seat_stats["yaku"])
             date_display = fixture["date"] if fixture else "—"
             matches.append({
-                "id": key, "code": key, "div": division, "session": official["session"],
-                "sessionCode": f"S{official['session']}", "hanchan": official["game"],
+                "id": key, "code": key, "div": division, "session": session,
+                "sessionCode": f"S{session}", "hanchan": game,
                 "date": date_display, "weekday": fixture["weekday"] if fixture else "—",
-                "table": official["table"], "players": match_players,
-                "paipuUrl": submission["url"] if submission else None, "verified": bool(parsed and parsed["status"] == "PUBLICADO"),
+                "table": table, "players": match_players,
+                "paipuUrl": submission["url"] if submission else None,
+                "verified": source == "paipu", "source": source,
             })
         for player in players:
             running = 0.0
