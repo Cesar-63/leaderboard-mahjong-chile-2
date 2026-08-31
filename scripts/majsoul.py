@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 import re
+import sys
 import time
 import urllib.request
 import uuid as uuid_lib
@@ -211,6 +212,7 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
                 raise PaipuAuthRequired(f"oauth2Login falló ({_rpc_error_detail(login_response.error)})")
 
             cache_dir.mkdir(parents=True, exist_ok=True)
+            failures: list[str] = []
             for _record_id, record_uuid in records:
                 destination = cache_dir / f"{record_uuid}.pb"
                 if destination.exists() and not destination.read_bytes().lstrip().startswith(b"<?xml"):
@@ -218,24 +220,34 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
                 # game_uuid es el UUID limpio; el sufijo _a<cuenta> del enlace
                 # compartido es solo el ancla de vista y el servidor lo rechaza (1203).
                 request = pb.ReqGameRecord(game_uuid=record_uuid, client_version_string=client_version)
-                response = await lobby.fetch_game_record(request)
-                if response.HasField("error") and response.error.code == 151:
-                    await lobby.read_game_record(request)
+                try:
                     response = await lobby.fetch_game_record(request)
-                if response.HasField("error") and response.error.code:
-                    raise PaipuError(f"Mahjong Soul rechazó {record_uuid} ({_rpc_error_detail(response.error)})")
-                raw = bytes(response.data)
-                if not raw and response.data_url:
-                    url_request = urllib.request.Request(
-                        response.data_url,
-                        headers={"User-Agent": "LigaMahjongChile/1.0 (+paipu-importer)"},
-                    )
-                    with urllib.request.urlopen(url_request, timeout=30) as remote:
-                        raw = remote.read()
-                if not raw:
-                    raise PaipuError(f"Mahjong Soul devolvió vacío el paipu {record_uuid}")
+                    if response.HasField("error") and response.error.code:
+                        await lobby.read_game_record(request)
+                        response = await lobby.fetch_game_record(request)
+                    if response.HasField("error") and response.error.code:
+                        raise PaipuError(f"Mahjong Soul rechazó {record_uuid} ({_rpc_error_detail(response.error)})")
+                    raw = bytes(response.data)
+                    if not raw and response.data_url:
+                        url_request = urllib.request.Request(
+                            response.data_url,
+                            headers={"User-Agent": "LigaMahjongChile/1.0 (+paipu-importer)"},
+                        )
+                        with urllib.request.urlopen(url_request, timeout=30) as remote:
+                            raw = remote.read()
+                    if not raw:
+                        raise PaipuError(f"Mahjong Soul devolvió vacío el paipu {record_uuid}")
+                except Exception as exc:
+                    failures.append(f"{record_uuid}: {exc}")
+                    continue
                 destination.write_bytes(raw)
                 downloaded += 1
+            if failures:
+                print(
+                    f"AVISO: {len(failures)} paipus no se pudieron descargar con la sesión técnica:\n"
+                    + "\n".join(f"- {item}" for item in failures),
+                    file=sys.stderr,
+                )
         finally:
             await channel.close()
     return downloaded
@@ -323,7 +335,8 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
     details.ParseFromString(wrapper.data)
     payloads = list(details.records)
     if not payloads and details.actions:
-        payloads = [action.data for action in details.actions]
+        # Formato nuevo: cada GameAction lleva el registro serializado en result.
+        payloads = [action.result for action in details.actions if action.result]
     if not payloads:
         raise PaipuError("El paipu no contiene acciones")
 
