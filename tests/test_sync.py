@@ -147,6 +147,7 @@ class SyncTests(unittest.TestCase):
         self.assertEqual([p["account_id"] for p in parsed.players], [1111, 2222, 3333, 4444])
         self.assertEqual(parsed.players[0]["nickname"], "A-P1")
         self.assertEqual(parsed.players[3]["point"], 4500)
+        self.assertTrue(parsed.record_game_seen)
 
     def test_match_paipu_seats_is_order_agnostic(self):
         players = _rosters()["A"]
@@ -189,6 +190,26 @@ class SyncTests(unittest.TestCase):
         match = data["divisions"]["A"]["matches"][0]
         self.assertEqual(match["source"], "paipu")
         self.assertEqual(match["players"][0]["id"], "A03")
+
+    def test_build_public_data_uses_fixture_order_when_paipu_has_no_identity(self):
+        config = _division_config()
+        rosters = _rosters()
+        fixtures = [{"division": "A", "session": 1, "table": 1, "players": ["Bodoque", "Mon_96", "Meme000", "Twining1999"], "date": "12 abr", "weekday": "sáb", "dateISO": "2026-04-12", "time": None}]
+        submissions = [{"key": "A-S1-M1-G1", "division": "A", "session": 1, "table": 1, "players": ["Bodoque", "Mon_96", "Meme000", "Twining1999"], "game": 1, "cell": "Calendario!C11", "url": "https://x/paipu", "uuid": "u", "recordId": "u"}]
+        game = _paipu_game()
+        for player in game["players"]:
+            player["account_id"] = None
+            player["nickname"] = None
+            player["point"] = None
+        data, _ = build_public_data(config, rosters, fixtures, submissions, {}, {"A-S1-M1-G1": game})
+        by_id = {p["id"]: p for p in data["divisions"]["A"]["players"]}
+        self.assertEqual(by_id["A01"]["points"], 30.0)
+        self.assertEqual(by_id["A02"]["points"], 13.5)
+        self.assertEqual(by_id["A03"]["points"], -3.0)
+        self.assertEqual(by_id["A04"]["points"], -40.5)
+        self.assertEqual(by_id["A01"]["hands"], 7)
+        self.assertEqual(data["divisions"]["A"]["matches"][0]["source"], "paipu")
+        self.assertEqual(data["divisions"]["A"]["matches"][0]["players"][0]["id"], "A01")
 
     def test_build_public_data_falls_back_to_excel_without_paipu(self):
         config = _division_config()

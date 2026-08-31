@@ -204,7 +204,11 @@ def merge_paipus(submissions: list[dict[str, Any]], histories: dict[str, dict[st
             # como fuente; si no, se conserva Game History como respaldo.
             has_players = len(parsed.players) == 4 and all(p.get("account_id") for p in parsed.players)
             state = "PUBLICADO" if has_players else "VALIDADO"
-            message = "Paipu decodificado (identidad de asientos)" if has_players else "Paipu decodificado sin identidad de asientos"
+            identity_count = sum(1 for p in parsed.players if p.get("account_id"))
+            message = (
+                "Paipu decodificado (identidad de asientos)" if has_players
+                else f"Paipu sin identidad de asientos (record_game={parsed.record_game_seen}, {identity_count}/4 con account_id)"
+            )
             parsed_games[submission["key"]] = {
                 "uuid": uuid, "url": submission["url"], "sha256": parsed.sha256,
                 "finalScoresBySeat": parsed.final_scores, "seatStats": parsed.seat_stats,
@@ -238,6 +242,19 @@ def match_paipu_seats(parsed_players: list[dict[str, Any]], players: list[dict[s
         player = by_account.get(account_id) if account_id is not None else None
         if player is None and entry.get("nickname"):
             player = by_name.get(str(entry["nickname"]).strip().lower())
+        if player is not None:
+            seat_map[seat] = player
+    if len(seat_map) == 4 and len({p["id"] for p in seat_map.values()}) == 4:
+        return seat_map
+    return None
+
+
+def match_fixture_order(fixture_players: list[str], players: list[dict[str, Any]]) -> dict[int, dict[str, Any]] | None:
+    """Mapa asiento→jugador según el orden del fixture (fallback cuando el paipu no trae identidad)."""
+    by_name = {p["name"].lower(): p for p in players}
+    seat_map: dict[int, dict[str, Any]] = {}
+    for seat, name in enumerate(fixture_players[:4]):
+        player = by_name.get(name.strip().lower())
         if player is not None:
             seat_map[seat] = player
     if len(seat_map) == 4 and len({p["id"] for p in seat_map.values()}) == 4:
@@ -307,6 +324,8 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
             seat_map = None
             if parsed and len(parsed.get("players", [])) == 4:
                 seat_map = match_paipu_seats(parsed["players"], players)
+            if parsed and seat_map is None and fixture_names:
+                seat_map = match_fixture_order(fixture_names, players)
             if parsed and seat_map and len(parsed["finalScoresBySeat"]) == 4:
                 results = build_paipu_results(seat_map, parsed["finalScoresBySeat"], rule)
                 source = "paipu"
