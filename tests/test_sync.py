@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from scripts.majsoul import PaipuError, extract_record_id, extract_uuid, has_yostar_credentials, parse_record
+from scripts.majsoul import PaipuError, YAKU_NAMES, extract_record_id, extract_uuid, has_yostar_credentials, parse_record
 from scripts.sync import (
     CALENDAR_VALUE_COLS, SESSION_G1_ROWS, advanced_stats_health, build_excel_results,
     build_paipu_results, build_public_data, match_paipu_seats, normalize_nat,
@@ -148,6 +148,14 @@ class SyncTests(unittest.TestCase):
         self.assertEqual(parsed.players[0]["nickname"], "A-P1")
         self.assertEqual(parsed.players[3]["point"], 4500)
         self.assertTrue(parsed.record_game_seen)
+    def test_yaku_names_map_known_ids(self):
+        self.assertEqual(YAKU_NAMES[2], "Riichi")
+        self.assertEqual(YAKU_NAMES[9], "Pinfu")
+        self.assertEqual(YAKU_NAMES[14], "Yakuhai Oeste")
+        self.assertEqual(YAKU_NAMES[31], "Junchan")
+        self.assertEqual(YAKU_NAMES[33], "Chinitsu")
+        self.assertIsNotNone(YAKU_NAMES.get(999) or "Yaku #999")
+
     def test_parse_record_reads_head_identity_from_res_game_record(self):
         from ms import protocol_pb2 as pb
         head = pb.RecordGame()

@@ -84,7 +84,7 @@ function StandingsView({ data, div, layout, onSelectPlayer }) {
               <tr>
                 <th className="left" style={{ width: 56 }}>#</th>
                 <th className="left">Jugador <span style={{ fontFamily: 'var(--font-jp)', opacity: 0.5 }}>選手</span></th>
-                <th style={{ width: 56 }}>G</th>
+                <th style={{ width: 56 }} title="Partidas jugadas">PJ</th>
                 {th('rank', 'Puntos', 88)}
                 {th('avgRank', 'Avg #', 74)}
                 {th('win', 'Win%', 74)}
