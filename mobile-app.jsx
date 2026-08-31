@@ -535,7 +535,13 @@ function MobMore({ data, onPick }) {
 
 function MobileApp() {
   const [t, setTweak] = useTweaks(MOB_TWEAKS);
-  window.LANG = t.lang;
+  const [, setTick] = React.useState(0);
+  React.useEffect(() => {
+    const bump = () => setTick(x => x + 1);
+    window.addEventListener('langchange', bump);
+    window.addEventListener('tzchange', bump);
+    return () => { window.removeEventListener('langchange', bump); window.removeEventListener('tzchange', bump); };
+  }, []);
   const [route, setRoute] = React.useState(parseRoute);
   const data = window.MJC_DATA;
   const L = data.league;
@@ -560,16 +566,16 @@ function MobileApp() {
     el.setAttribute('data-theme', t.theme);
     el.setAttribute('data-dark', String(!!t.dark));
     el.setAttribute('data-density', 'regular');
-    el.setAttribute('data-lang', t.lang);
+    el.setAttribute('data-lang', window.LANG);
     el.setAttribute('data-div', div);
-  }, [t.theme, t.dark, t.lang, div]);
+  }, [t.theme, t.dark, div]);
 
   React.useEffect(() => { if (bodyRef.current) bodyRef.current.scrollTop = 0; }, [tab]);
 
   const pick = (p) => navigate({ tab: 'detail', pid: p.id });
   const currentPid = pid || data.divisions[div].players[0].id;
   const scoped = MOB_DIV_SCOPED.includes(tab);
-  const lang = t.lang;
+  const lang = window.LANG;
 
   const HEAD = {
     standings: { title: tr('division', { d: div }), jp: '順位表', aside: `Sesión ${L.sessionsPlayed}/${L.sessionsTotal}
@@ -620,14 +626,13 @@ uma ${L.rules[div].uma.map(v => v >= 0 ? '+' + v : '−' + Math.abs(v)).join('/'
           onChange={v => setTweak('theme', v)} />
         <TweakToggle label="Modo oscuro" value={t.dark} onChange={v => setTweak('dark', v)} />
         <TweakSection label="Idioma" />
-        <TweakRadio label="Display" value={t.lang}
+        <TweakRadio label="Display" value={window.LANG}
           options={[
             { value: 'es', label: 'ES · Español' },
             { value: 'en', label: 'EN · English' },
             { value: 'pt', label: 'PT · Português (BR)' },
-            { value: 'jp', label: 'JP · 日本語' },
           ]}
-          onChange={v => setTweak('lang', v)} />
+          onChange={v => setLang(v)} />
       </TweaksPanel>
     </div>
   );

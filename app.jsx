@@ -117,9 +117,30 @@ function LangSwitch({ value, onChange }) {
   );
 }
 
+function TzSwitch({ value, onChange }) {
+  return (
+    <label className="lang-switch tz-switch" title={tr('timezone')}>
+      <span className="tz-label">🕓</span>
+      <select value={value || 'America/Santiago'} onChange={(e) => onChange(e.target.value)}>
+        {window.TZ_OPTIONS.map(g => (
+          <optgroup key={g.code} label={g.label}>
+            {g.zones.map(z => <option key={z.tz} value={z.tz}>{z.label}</option>)}
+          </optgroup>
+        ))}
+      </select>
+    </label>
+  );
+}
+
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-  window.LANG = t.lang;
+  const [, setTick] = React.useState(0);
+  React.useEffect(() => {
+    const bump = () => setTick(x => x + 1);
+    window.addEventListener('langchange', bump);
+    window.addEventListener('tzchange', bump);
+    return () => { window.removeEventListener('langchange', bump); window.removeEventListener('tzchange', bump); };
+  }, []);
   const [route, setRoute] = React.useState(parseRoute);
   const data = window.MJC_DATA;
   const L = data.league;
@@ -143,9 +164,9 @@ function App() {
     el.setAttribute('data-theme', t.theme);
     el.setAttribute('data-dark', String(!!t.dark));
     el.setAttribute('data-density', t.density);
-    el.setAttribute('data-lang', t.lang);
+    el.setAttribute('data-lang', window.LANG);
     el.setAttribute('data-div', div);
-  }, [t.theme, t.dark, t.density, t.lang, div]);
+  }, [t.theme, t.dark, t.density, div]);
 
   const selectPlayer = (p) => navigate({ tab: 'detail', playerId: p.id });
   const currentPlayerId = playerId || data.divisions[div].players[0].id;
@@ -173,12 +194,13 @@ function App() {
           <span className="dot"></span>
           <span>{tr('official_data')}</span>
         </div>
-        <LangSwitch value={t.lang} onChange={(v) => setTweak('lang', v)} />
+        <LangSwitch value={window.LANG} onChange={(v) => setLang(v)} />
+        <TzSwitch value={window.TZ} onChange={(v) => setTZ(v)} />
       </header>
 
       <div className="control-bar">
         <DivisionSwitch div={div} onChange={(d) => navigate({ div: d })} data={data} disabled={!scoped} />
-        <TabBar active={tab} onChange={(id) => navigate({ tab: id })} lang={t.lang} />
+        <TabBar active={tab} onChange={(id) => navigate({ tab: id })} lang={window.LANG} />
       </div>
 
       <main className="main">
@@ -222,13 +244,13 @@ function App() {
           options={[{ value: 'compact', label: tr('compacta') }, { value: 'regular', label: tr('normal') }, { value: 'comfy', label: tr('amplia') }]}
           onChange={(v) => setTweak('density', v)} />
         <TweakSection label={tr('idioma')} />
-        <TweakRadio label={tr('display')} value={t.lang}
+        <TweakRadio label={tr('display')} value={window.LANG}
           options={[
             { value: 'es', label: 'ES · Español' },
             { value: 'en', label: 'EN · English' },
             { value: 'pt', label: 'PT · Português (BR)' },
           ]}
-          onChange={(v) => setTweak('lang', v)} />
+          onChange={(v) => setLang(v)} />
       </TweaksPanel>
     </div>
   );

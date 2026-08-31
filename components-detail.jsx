@@ -425,11 +425,54 @@ function HanchanLog({ data, div }) {
   );
 }
 
+function CalModal({ entry, onClose }) {
+  const players = entry.players || [];
+  const baseTz = 'America/Santiago';
+  const natTz = window.NAT_TZ || {};
+  return (
+    <div className="cal-modal-backdrop" onClick={onClose}>
+      <div className="cal-modal" onClick={e => e.stopPropagation()}>
+        <div className="cm-head">
+          <div>
+            <div className="cm-title">{tr('partida_n', { n: players.length || 4 })}</div>
+            <div className="cm-sub">{entry.round} · {entry.mesa}</div>
+            {entry.date !== 'Por definir' && <div className="cm-sub">{window.fmtTzTime(entry.date, entry.time, window.TZ)} · {entry.day} · {window.TZ}</div>}
+          </div>
+          <button className="cm-close" onClick={onClose} aria-label="Cerrar">✕</button>
+        </div>
+        <div className="cm-players">
+          {players.map((pl, i) => {
+            const tz = natTz[pl.nat] || baseTz;
+            const local = window.fmtTzTime(entry.date, entry.time, tz);
+            return (
+              <div className="cm-player" key={i}>
+                <div className="cm-name"><Flag nat={pl.nat} size={16} />{pl.name}</div>
+                <div className="cm-tz"><b>{local}</b><span>{tz}</span></div>
+              </div>
+            );
+          })}
+          {!players.length && <div className="cm-note">{tr('hora_local')}: {entry.time || 'Por definir'} · {baseTz}</div>}
+        </div>
+        {players.length > 0 && <div className="cm-note">{tr('hora_local')} {window.fmtTzTime(entry.date, entry.time, window.TZ)} · {window.TZ}</div>}
+      </div>
+    </div>
+  );
+}
+
 function CalendarView({ data }) {
   const played = data.divisions.A.sessions;
-  // Solo mostramos partidas con horario definido; las sesiones sin ninguna
-  // partida programada quedan ocultas (aún no inician).
-  const scheduled = data.calendar.filter(c => c.date !== 'Por definir' && c.time !== 'Por definir');
+  const [modal, setModal] = React.useState(null);
+  const curCode = data.league.nextSession && data.league.nextSession.code;
+  const currentSession = parseInt(String(curCode || '').replace(/\D/g, ''), 10) || 0;
+  const sessNum = (c) => c.session || parseInt((c.round || '').replace(/\D/g, ''), 10) || 0;
+  const inGrid = data.calendar
+    .filter(c => {
+      const n = sessNum(c);
+      if (n < currentSession) return false;                 // pasadas/finalizadas
+      if (n === currentSession) return true;                // sesión actual: se muestra todo
+      return c.date !== 'Por definir' && c.time !== 'Por definir'; // futuras: solo programadas
+    })
+    .sort((a, b) => sessNum(a) - sessNum(b) || (a.table || 0) - (b.table || 0) || (a.div === 'B' ? 1 : 0) - (b.div === 'B' ? 1 : 0));
   return (
     <div className="tab-panel">
       <div className="section-head">
@@ -445,10 +488,11 @@ function CalendarView({ data }) {
 
       <div className="block-label" style={{ marginBottom: 12 }}>{tr('next_cal')} · 次回</div>
       <div className="cal-grid">
-        {scheduled.map((c, i) => (
-          <div className={`cal-card ${c.status === 'highlight' ? 'highlight' : ''} div-${c.div}`} key={i}
-               style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 30}ms` }}>
-            {c.status === 'highlight' && <div className="ribbon">FINALIZADO</div>}
+        {inGrid.map((c, i) => (
+          <button className={`cal-card ${c.status === 'highlight' ? 'highlight' : ''} div-${c.div}`} key={i}
+               onClick={() => setModal(c)}
+               style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 30}ms`, textAlign: 'left', cursor: 'pointer', font: 'inherit', color: 'inherit', width: '100%' }}>
+            {c.status === 'highlight' && <div className="ribbon">{tr('next_cal')}</div>}
             <div className="badge"><span className={`div-chip ${c.div}`}>{c.div === 'AB' ? 'A+B' : c.div === 'CL' ? 'CHILE' : 'DIV ' + c.div}</span>{c.div === 'CL' && <Flag nat="CL" size={16} />}</div>
             <div className="date-row">
               <span className="d">{c.date.split(' ')[0]}</span>
@@ -456,10 +500,11 @@ function CalendarView({ data }) {
             </div>
             <div className="round-l">{c.round}</div>
             <div className="meta-l">{c.mesa}</div>
-            <div className="meta-l">{c.time} · Santiago</div>
-          </div>
+            <div className="meta-l">{window.fmtTzTime(c.date, c.time, window.TZ)} · {window.TZ}</div>
+          </button>
         ))}
       </div>
+      {modal && <CalModal entry={modal} onClose={() => setModal(null)} />}
 
       <div className="block-label" style={{ margin: '28px 0 12px' }}>{tr('played_sessions')} · 実施済み</div>
       <div className="session-strip">

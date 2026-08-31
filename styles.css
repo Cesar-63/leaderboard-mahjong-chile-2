@@ -93,6 +93,22 @@ select{font:inherit;color:inherit}
 .lang-btn{appearance:none;border:0;background:transparent;color:var(--ink-soft);font-family:var(--font-mono);font-size:11px;font-weight:600;padding:4px 9px;border-radius:999px;cursor:pointer;letter-spacing:.04em}
 .lang-btn:hover{color:var(--ink)}
 .lang-btn.active{background:var(--accent);color:var(--bg);}
+.tz-switch{padding:2px 10px;gap:6px;cursor:default}
+.tz-switch select{appearance:none;border:0;background:transparent;color:var(--ink);font:inherit;font-family:var(--font-mono);font-size:11px;cursor:pointer;padding:3px 0;outline:0}
+.tz-switch .tz-label{font-size:12px}
+/* modal de partida del calendario */
+.cal-modal-backdrop{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.45);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:20px}
+.cal-modal{width:min(440px,100%);max-height:86vh;overflow:auto;background:var(--bg);border:1px solid var(--line-strong);border-radius:16px;padding:22px;box-shadow:0 24px 60px rgba(0,0,0,.35);animation:rowin .22s ease both}
+.cal-modal .cm-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+.cal-modal .cm-title{font-family:var(--font-display);font-size:18px;font-weight:700}
+.cal-modal .cm-sub{font-family:var(--font-mono);font-size:11px;color:var(--ink-soft);margin-top:4px}
+.cal-modal .cm-close{appearance:none;border:0;background:var(--bg-sunk);color:var(--ink);width:30px;height:30px;border-radius:9px;cursor:pointer;font-size:14px}
+.cal-modal .cm-player{display:grid;grid-template-columns:1fr auto;gap:8px 14px;align-items:center;padding:9px 0;border-top:1px solid var(--line)}
+.cal-modal .cm-player:first-of-type{border-top:0}
+.cal-modal .cm-name{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600}
+.cal-modal .cm-tz{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--ink-soft)}
+.cal-modal .cm-tz b{color:var(--ink);font-size:13px}
+.cal-modal .cm-note{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint);margin-top:12px;line-height:1.5}
 .paipu-link{display:inline-block;margin-top:6px;color:var(--accent);font-family:var(--font-mono);font-size:10px;text-decoration:none}
 .paipu-link:hover{text-decoration:underline}
 @keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in oklab,var(--accent) 55%,transparent)}70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
@@ -369,7 +385,9 @@ select{font:inherit;color:inherit}
 
 /* ─── calendar ─── */
 .cal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
-.cal-card{background:var(--bg-elev);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:7px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.cal-card{background:var(--bg-elev);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:7px;position:relative;overflow:hidden;box-shadow:var(--shadow);appearance:none;text-align:left;font:inherit;color:inherit}
+.cal-card:hover{box-shadow:var(--shadow-strong);transform:translateY(-1px)}
+.cal-card:active{transform:translateY(0)}
 .cal-card.div-A{border-left:3px solid var(--accent)}
 .cal-card.div-B{border-left:3px solid var(--accent-2)}
 .cal-card.div-AB{border-left:3px solid var(--ink-faint)}

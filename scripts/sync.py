@@ -408,11 +408,21 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
         group = [p for p in all_players if p["nat"] == code]
         best = max(group, key=lambda p: p["points"])
         nationalities.append({"code": code, "count": len(group), "inA": sum(p["div"] == "A" for p in group), "inB": sum(p["div"] == "B" for p in group), "avgPoints": round(sum(p["points"] for p in group) / len(group), 1), "avgRank": round(sum(p["avgRank"] for p in group) / len(group), 2), "best": best})
+    player_nat = {p["name"].lower(): p["nat"] for p in all_players}
     calendar = []
     for fixture in fixtures:
         if fixture["session"] < next_session_number:
             continue
-        calendar.append({"date": fixture["date"], "day": fixture["weekday"], "round": f"Sesión {fixture['session']}", "mesa": f"División {fixture['division']} — Mesa {fixture['table']}", "time": fixture["time"] or "Por definir", "div": fixture["division"], "status": "highlight" if fixture["session"] == next_session_number else "scheduled"})
+        calendar.append({
+            "date": fixture["date"], "day": fixture["weekday"],
+            "round": f"Sesión {fixture['session']}", "session": fixture["session"],
+            "table": fixture["table"],
+            "mesa": f"División {fixture['division']} — Mesa {fixture['table']}",
+            "time": fixture["time"] or "Por definir",
+            "div": fixture["division"],
+            "players": [{"name": n, "nat": player_nat.get(n.lower(), "OT")} for n in fixture["players"]],
+            "status": "highlight" if fixture["session"] == next_session_number else "scheduled",
+        })
     data = {
         "divisions": divisions, "allPlayers": all_players, "nationalities": nationalities,
         "iormc": iormc, "calendar": calendar,
