@@ -17533,324 +17533,1044 @@
       "date": "23 ago",
       "day": "dom",
       "round": "Sesión 5",
+      "session": 5,
+      "table": 1,
       "mesa": "División A — Mesa 1",
       "time": "22:00",
       "div": "A",
+      "players": [
+        {
+          "name": "DiosioわTensai",
+          "nat": "MX"
+        },
+        {
+          "name": "Bodoque",
+          "nat": "CL"
+        },
+        {
+          "name": "furanchizuko2",
+          "nat": "CL"
+        },
+        {
+          "name": "UnChano",
+          "nat": "MX"
+        }
+      ],
       "status": "highlight"
     },
     {
       "date": "23 ago",
       "day": "dom",
       "round": "Sesión 5",
+      "session": 5,
+      "table": 2,
       "mesa": "División A — Mesa 2",
       "time": "20:00",
       "div": "A",
+      "players": [
+        {
+          "name": "YotsugiNagi",
+          "nat": "CL"
+        },
+        {
+          "name": "Xuxe",
+          "nat": "CL"
+        },
+        {
+          "name": "Kychiel",
+          "nat": "AR"
+        },
+        {
+          "name": "Mon_96",
+          "nat": "CL"
+        }
+      ],
       "status": "highlight"
     },
     {
       "date": "22 ago",
       "day": "sáb",
       "round": "Sesión 5",
+      "session": 5,
+      "table": 3,
       "mesa": "División A — Mesa 3",
       "time": "19:00",
       "div": "A",
+      "players": [
+        {
+          "name": "MasterFofo",
+          "nat": "AR"
+        },
+        {
+          "name": "asmirnov",
+          "nat": "UY"
+        },
+        {
+          "name": "AuroraShine",
+          "nat": "BR"
+        },
+        {
+          "name": "Haruzen",
+          "nat": "MX"
+        }
+      ],
       "status": "highlight"
     },
     {
       "date": "21 ago",
       "day": "vie",
       "round": "Sesión 5",
+      "session": 5,
+      "table": 4,
       "mesa": "División A — Mesa 4",
       "time": "19:00",
       "div": "A",
+      "players": [
+        {
+          "name": "KillerHUD",
+          "nat": "CL"
+        },
+        {
+          "name": "Meme000",
+          "nat": "UY"
+        },
+        {
+          "name": "Tobippi",
+          "nat": "CL"
+        },
+        {
+          "name": "KaijuHead",
+          "nat": "CL"
+        }
+      ],
       "status": "highlight"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 5",
+      "session": 5,
+      "table": 5,
       "mesa": "División A — Mesa 5",
       "time": "Por definir",
       "div": "A",
+      "players": [
+        {
+          "name": "Twining1999",
+          "nat": "CL"
+        },
+        {
+          "name": "Uznaiker",
+          "nat": "MX"
+        },
+        {
+          "name": "Chubi!",
+          "nat": "CL"
+        },
+        {
+          "name": "FS525",
+          "nat": "AR"
+        }
+      ],
       "status": "highlight"
     },
     {
       "date": "24 ago",
       "day": "lun",
       "round": "Sesión 5",
+      "session": 5,
+      "table": 6,
       "mesa": "División A — Mesa 6",
       "time": "21:00",
       "div": "A",
+      "players": [
+        {
+          "name": "SentryPeru",
+          "nat": "PE"
+        },
+        {
+          "name": "Sh1rome",
+          "nat": "UY"
+        },
+        {
+          "name": "caballo",
+          "nat": "CL"
+        },
+        {
+          "name": "ikanajin",
+          "nat": "CL"
+        }
+      ],
       "status": "highlight"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 6",
+      "session": 6,
+      "table": 1,
       "mesa": "División A — Mesa 1",
       "time": "Por definir",
       "div": "A",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 6",
+      "session": 6,
+      "table": 2,
       "mesa": "División A — Mesa 2",
       "time": "Por definir",
       "div": "A",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 6",
+      "session": 6,
+      "table": 3,
       "mesa": "División A — Mesa 3",
       "time": "Por definir",
       "div": "A",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 6",
+      "session": 6,
+      "table": 4,
       "mesa": "División A — Mesa 4",
       "time": "Por definir",
       "div": "A",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 6",
+      "session": 6,
+      "table": 5,
       "mesa": "División A — Mesa 5",
       "time": "Por definir",
       "div": "A",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 6",
+      "session": 6,
+      "table": 6,
       "mesa": "División A — Mesa 6",
       "time": "Por definir",
       "div": "A",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 7",
+      "session": 7,
+      "table": 1,
       "mesa": "División A — Mesa 1",
       "time": "Por definir",
       "div": "A",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 7",
+      "session": 7,
+      "table": 2,
       "mesa": "División A — Mesa 2",
       "time": "Por definir",
       "div": "A",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 7",
+      "session": 7,
+      "table": 3,
       "mesa": "División A — Mesa 3",
       "time": "Por definir",
       "div": "A",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 7",
+      "session": 7,
+      "table": 4,
       "mesa": "División A — Mesa 4",
       "time": "Por definir",
       "div": "A",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 7",
+      "session": 7,
+      "table": 5,
       "mesa": "División A — Mesa 5",
       "time": "Por definir",
       "div": "A",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 7",
+      "session": 7,
+      "table": 6,
       "mesa": "División A — Mesa 6",
       "time": "Por definir",
       "div": "A",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "30 ago",
       "day": "dom",
       "round": "Sesión 5",
+      "session": 5,
+      "table": 1,
       "mesa": "División B — Mesa 1",
       "time": "22:00",
       "div": "B",
+      "players": [
+        {
+          "name": "Cuervo_Gris",
+          "nat": "UY"
+        },
+        {
+          "name": "Misiwasy2",
+          "nat": "PE"
+        },
+        {
+          "name": "erica_",
+          "nat": "CL"
+        },
+        {
+          "name": "PrivateIdaho",
+          "nat": "AR"
+        }
+      ],
       "status": "highlight"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 5",
+      "session": 5,
+      "table": 2,
       "mesa": "División B — Mesa 2",
       "time": "Por definir",
       "div": "B",
+      "players": [
+        {
+          "name": "ZAKY",
+          "nat": "MX"
+        },
+        {
+          "name": "helinder",
+          "nat": "UY"
+        },
+        {
+          "name": "brenohai",
+          "nat": "BR"
+        },
+        {
+          "name": "nicompleto",
+          "nat": "CL"
+        }
+      ],
       "status": "highlight"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 5",
+      "session": 5,
+      "table": 3,
       "mesa": "División B — Mesa 3",
       "time": "Por definir",
       "div": "B",
+      "players": [
+        {
+          "name": "24Kakoo",
+          "nat": "CL"
+        },
+        {
+          "name": "Cr1cho",
+          "nat": "CL"
+        },
+        {
+          "name": "Luiz_Fuba",
+          "nat": "BR"
+        },
+        {
+          "name": "Parri",
+          "nat": "UY"
+        }
+      ],
       "status": "highlight"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 5",
+      "session": 5,
+      "table": 4,
       "mesa": "División B — Mesa 4",
       "time": "Por definir",
       "div": "B",
+      "players": [
+        {
+          "name": "andyjango",
+          "nat": "CL"
+        },
+        {
+          "name": "JDavid",
+          "nat": "CL"
+        },
+        {
+          "name": "cidoku",
+          "nat": "CL"
+        },
+        {
+          "name": "HOSHIGAMI",
+          "nat": "CL"
+        }
+      ],
       "status": "highlight"
     },
     {
       "date": "21 ago",
       "day": "vie",
       "round": "Sesión 5",
+      "session": 5,
+      "table": 5,
       "mesa": "División B — Mesa 5",
       "time": "19:00",
       "div": "B",
+      "players": [
+        {
+          "name": "False_tux",
+          "nat": "UY"
+        },
+        {
+          "name": "Ponwino",
+          "nat": "CL"
+        },
+        {
+          "name": "Bubblyth",
+          "nat": "UY"
+        },
+        {
+          "name": "OnIShadow",
+          "nat": "UY"
+        }
+      ],
       "status": "highlight"
     },
     {
       "date": "24 ago",
       "day": "lun",
       "round": "Sesión 5",
+      "session": 5,
+      "table": 6,
       "mesa": "División B — Mesa 6",
       "time": "19:00",
       "div": "B",
+      "players": [
+        {
+          "name": "Megazero158",
+          "nat": "CL"
+        },
+        {
+          "name": "BernyMyMen",
+          "nat": "CL"
+        },
+        {
+          "name": "Sircrab",
+          "nat": "CL"
+        },
+        {
+          "name": "Mano_gu",
+          "nat": "BR"
+        }
+      ],
       "status": "highlight"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 6",
+      "session": 6,
+      "table": 1,
       "mesa": "División B — Mesa 1",
       "time": "Por definir",
       "div": "B",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 6",
+      "session": 6,
+      "table": 2,
       "mesa": "División B — Mesa 2",
       "time": "Por definir",
       "div": "B",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 6",
+      "session": 6,
+      "table": 3,
       "mesa": "División B — Mesa 3",
       "time": "Por definir",
       "div": "B",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 6",
+      "session": 6,
+      "table": 4,
       "mesa": "División B — Mesa 4",
       "time": "Por definir",
       "div": "B",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 6",
+      "session": 6,
+      "table": 5,
       "mesa": "División B — Mesa 5",
       "time": "Por definir",
       "div": "B",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 6",
+      "session": 6,
+      "table": 6,
       "mesa": "División B — Mesa 6",
       "time": "Por definir",
       "div": "B",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 7",
+      "session": 7,
+      "table": 1,
       "mesa": "División B — Mesa 1",
       "time": "Por definir",
       "div": "B",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 7",
+      "session": 7,
+      "table": 2,
       "mesa": "División B — Mesa 2",
       "time": "Por definir",
       "div": "B",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 7",
+      "session": 7,
+      "table": 3,
       "mesa": "División B — Mesa 3",
       "time": "Por definir",
       "div": "B",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 7",
+      "session": 7,
+      "table": 4,
       "mesa": "División B — Mesa 4",
       "time": "Por definir",
       "div": "B",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 7",
+      "session": 7,
+      "table": 5,
       "mesa": "División B — Mesa 5",
       "time": "Por definir",
       "div": "B",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     },
     {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 7",
+      "session": 7,
+      "table": 6,
       "mesa": "División B — Mesa 6",
       "time": "Por definir",
       "div": "B",
+      "players": [
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        },
+        {
+          "name": "",
+          "nat": "OT"
+        }
+      ],
       "status": "scheduled"
     }
   ],
