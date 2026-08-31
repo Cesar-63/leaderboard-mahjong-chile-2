@@ -79,7 +79,8 @@ exclusivamente en GitHub Actions Secrets:
 
 El sincronizador renueva la sesión mediante `quick-login`, inicia el flujo
 OAuth2 de Mahjong Soul y descarga los registros faltantes en una única conexión,
-respetando el límite de la API: como máximo `MAX_RECORDS_PER_RUN` (6) por corrida,
-espaciados `PAIPU_REQUEST_DELAY_SECONDS` (3 s), y cortando la tanda ante dos
-rechazos seguidos con código 540. El resto queda para las corridas siguientes.
+respetando el límite de la API: como máximo `MAX_RECORDS_PER_RUN` (3) por corrida,
+espaciados `PAIPU_REQUEST_DELAY_SECONDS` (20 s), y cortando la tanda al primer
+rechazo con código 540. El resto queda para las corridas siguientes, que el cron
+completa solo cada 15 minutos.
 Los valores nunca se escriben en logs ni en archivos versionados.
