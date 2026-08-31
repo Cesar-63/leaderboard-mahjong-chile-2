@@ -236,7 +236,8 @@ def merge_paipus(submissions: list[dict[str, Any]], histories: dict[str, dict[st
         except PaipuAuthRequired as exc:
             status.append({"key": submission["key"], "cell": submission["cell"], "uuid": uuid, "status": "REQUIERE_AUTH", "message": str(exc)})
         except Exception as exc:
-            status.append({"key": submission["key"], "cell": submission["cell"], "uuid": uuid, "status": "ERROR", "message": str(exc)})
+            message = str(exc) if isinstance(exc, PaipuError) else f"{type(exc).__name__}: {exc}"
+            status.append({"key": submission["key"], "cell": submission["cell"], "uuid": uuid, "status": "ERROR", "message": message})
     return parsed_games, {"submissions": status}
 
 
