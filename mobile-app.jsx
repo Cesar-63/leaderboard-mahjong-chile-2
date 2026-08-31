@@ -535,6 +535,7 @@ function MobMore({ data, onPick }) {
 
 function MobileApp() {
   const [t, setTweak] = useTweaks(MOB_TWEAKS);
+  window.LANG = t.lang;
   const [route, setRoute] = React.useState(parseRoute);
   const data = window.MJC_DATA;
   const L = data.league;
@@ -571,12 +572,12 @@ function MobileApp() {
   const lang = t.lang;
 
   const HEAD = {
-    standings: { title: `División ${div}`, jp: '順位表', aside: `Sesión ${L.sessionsPlayed}/${L.sessionsTotal}
+    standings: { title: tr('division', { d: div }), jp: '順位表', aside: `Sesión ${L.sessionsPlayed}/${L.sessionsTotal}
 uma ${L.rules[div].uma.map(v => v >= 0 ? '+' + v : '−' + Math.abs(v)).join('/')}` },
-    detail: { title: 'Perfil', jp: '選手詳細', aside: null },
-    compare: { title: 'Cara a Cara', jp: '対戦比較', aside: null },
-    log: { title: 'Hanchan', jp: '半荘記録', aside: `${data.divisions[div].matches.length} registros` },
-    more: { title: 'Liga', jp: '代表・殿堂', aside: `${L.playersPerDiv * 2} jugadores` },
+    detail: { title: tr('perfil'), jp: '選手詳細', aside: null },
+    compare: { title: tr('cara_a_cara'), jp: '対戦比較', aside: null },
+    log: { title: 'Hanchan', jp: '半荘記録', aside: tr('records_count', { n: data.divisions[div].matches.length }) },
+    more: { title: tr('liga_lbl'), jp: '代表・殿堂', aside: `${L.playersPerDiv * 2} ${tr('jugadores')}` },
   }[tab];
 
   return (

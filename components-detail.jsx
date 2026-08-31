@@ -80,7 +80,7 @@ function PlayerDetail({ playerId, data, onPick }) {
 
           <div className="rank-big">
             <span className="n" style={{ color }}>#{p.rank}</span>
-            <span className="of">de {divSize} · Div {p.div}</span>
+            <span className="of">{tr('of_rank', { n: divSize, div: p.div })}</span>
             <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: p.points >= 0 ? 'var(--good)' : 'var(--bad)' }}>{fmtPts(p.points)}</span>
           </div>
 
@@ -89,35 +89,35 @@ function PlayerDetail({ playerId, data, onPick }) {
               <Flag nat="CL" size={20} />
               <div>
                 <div className="ib-t">
-                  {p.iormc === 'qualified' && `Clasificado IORMC · cupo ${p.natRank}`}
-                  {p.iormc === 'contention' && `En carrera IORMC · ${p.natRank}° chileno`}
-                  {p.iormc === 'out' && `${p.natRank}° chileno de División A`}
+                  {p.iormc === 'qualified' && tr('iormc_qualified', { n: p.natRank })}
+                  {p.iormc === 'contention' && tr('iormc_contention', { n: p.natRank })}
+                  {p.iormc === 'out' && tr('iormc_out', { n: p.natRank })}
                 </div>
-                <div className="ib-s">Top 4 chileno de División A · corte {fmtPts(data.iormc.cutPoints)}</div>
+                <div className="ib-s">{tr('iormc_cut_line', { cut: fmtPts(data.iormc.cutPoints) })}</div>
               </div>
             </div>
           )}
 
           {p.zone && (
             <div className={`zone-banner ${p.zone}`}>
-              {p.zone === 'title' && 'Zona de Playoff por el Título'}
-              {p.zone === 'relegation' && 'Zona de Descenso a División B'}
-              {p.zone === 'promotion' && 'Zona de Promoción a División A'}
-              {p.zone === 'bottom' && 'Zona baja de División B'}
+              {p.zone === 'title' && tr('zone_playoff')}
+              {p.zone === 'relegation' && tr('zone_releg')}
+              {p.zone === 'promotion' && tr('zone_promo')}
+              {p.zone === 'bottom' && tr('zone_bottom')}
             </div>
           )}
 
           <div className="stat-block">
-            <div className="stat-cell"><div className="l">Avg Rank · 平均順位</div><div className="v">{p.avgRank.toFixed(2)}</div></div>
-            <div className="stat-cell"><div className="l">Avg ± · 平均得点</div><div className="v" style={{ color: p.avgPoints >= 0 ? 'var(--good)' : 'var(--bad)' }}>{fmtPts(p.avgPoints)}</div></div>
-            <div className="stat-cell"><div className="l">Win Rate · 和了率</div><div className="v">{fmtAdvanced(p, 'winRate', '%')}</div></div>
-            <div className="stat-cell"><div className="l">Deal-in · 放銃率</div><div className="v" style={{ color: 'var(--bad)' }}>{fmtAdvanced(p, 'dealInRate', '%')}</div></div>
-            <div className="stat-cell"><div className="l">Riichi · 立直率</div><div className="v">{fmtAdvanced(p, 'riichiRate', '%')}</div></div>
-            <div className="stat-cell"><div className="l">Open · 副露率</div><div className="v">{fmtAdvanced(p, 'openRate', '%')}</div></div>
+            <div className="stat-cell"><div className="l">{tr('lbl_avgrank')} · 平均順位</div><div className="v">{p.avgRank.toFixed(2)}</div></div>
+            <div className="stat-cell"><div className="l">{tr('lbl_avgpts')} · 平均得点</div><div className="v" style={{ color: p.avgPoints >= 0 ? 'var(--good)' : 'var(--bad)' }}>{fmtPts(p.avgPoints)}</div></div>
+            <div className="stat-cell"><div className="l">{tr('lbl_winrate')} · 和了率</div><div className="v">{fmtAdvanced(p, 'winRate', '%')}</div></div>
+            <div className="stat-cell"><div className="l">{tr('lbl_dealin')} · 放銃率</div><div className="v" style={{ color: 'var(--bad)' }}>{fmtAdvanced(p, 'dealInRate', '%')}</div></div>
+            <div className="stat-cell"><div className="l">{tr('lbl_riichi')} · 立直率</div><div className="v">{fmtAdvanced(p, 'riichiRate', '%')}</div></div>
+            <div className="stat-cell"><div className="l">{tr('lbl_open')} · 副露率</div><div className="v">{fmtAdvanced(p, 'openRate', '%')}</div></div>
           </div>
 
           <div>
-            <div className="block-label">Distribución de Puestos · 順位率</div>
+            <div className="block-label">{tr('placement_title')} · 順位率</div>
             <div className="placement-bar">
               {placementSegments(p).map(s => (
                 <div key={s.place} className={`pl${s.place}`} style={{ flex: s.v }}>{s.v >= 0.08 ? Math.round(s.v * 100) + '%' : ''}</div>
@@ -133,7 +133,7 @@ function PlayerDetail({ playerId, data, onPick }) {
 
         <div className="detail-right">
           <div className="chart-card">
-            <div className="ch-head"><h3>Perfil de Juego</h3><span className="jp">プレイスタイル</span></div>
+            <div className="ch-head"><h3>{tr('profile_title')}</h3><span className="jp">プレイスタイル</span></div>
             <div className="radar-wrap">
               <RadarChart key={p.id} stats={radar} color={color} size={300} />
               <div className="radar-legend">
@@ -145,12 +145,12 @@ function PlayerDetail({ playerId, data, onPick }) {
           </div>
 
           <div className="chart-card line-card">
-            <div className="ch-head"><h3>Evolución de Puntos · {p.games} hanchan</h3><span className="jp">スコア推移</span></div>
+            <div className="ch-head"><h3>{tr('evolution_title')} · {p.games} {tr('hanchan')}</h3><span className="jp">スコア推移</span></div>
             <LineChart key={p.id} values={p.cum} color={color} />
           </div>
 
           <div className="chart-card">
-            <div className="ch-head"><h3>Yaku Más Jugados</h3><span className="jp">役の頻度</span></div>
+            <div className="ch-head"><h3>{tr('yaku_title')}</h3><span className="jp">役の頻度</span></div>
             <div className="yaku-list">
               {p.topYaku.map((y, i) => (
                 <div className="yaku-row" key={y.name}>
@@ -177,13 +177,13 @@ function IORMCView({ data, onPick }) {
       <div className="section-head">
         <div className="h-left">
           <span className="num">06 / Selección</span>
-          <h1>Camino al IORMC</h1>
+          <h1>{tr('camino_iormc')}</h1>
           <Flag nat="CL" size={22} />
           <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>代表選抜</span>
         </div>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)', textAlign: 'right' }}>
           <div>International Online Riichi Mahjong Championship</div>
-          <div style={{ color: 'var(--ink-faint)' }}>{io.slots} cupos · {io.eligible} chilenos en División A</div>
+          <div style={{ color: 'var(--ink-faint)' }}>{tr('io_cupos', { slots: io.slots, eligible: io.eligible })}</div>
         </div>
       </div>
 
@@ -192,13 +192,13 @@ function IORMCView({ data, onPick }) {
           <button className="iq-card" key={p.id} onClick={() => onPick(p)}
             style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 60}ms` }}>
             <div className="iq-flagwash"></div>
-            <div className="iq-slot">Cupo {i + 1}</div>
+            <div className="iq-slot">{tr('cupo_lbl', { n: i + 1 })}</div>
             <div className="iq-av"><div className="avatar div-A" style={{ width: 52, height: 52, borderRadius: 14, fontSize: 12 }}>{initials(p.handle)}</div></div>
             <div className="iq-nm">{p.shortName}</div>
-            <div className="iq-meta">#{p.rank} División A · {p.games} hanchan</div>
+            <div className="iq-meta">{tr('iormc_meta', { rank: p.rank, games: p.games })}</div>
             <div className="iq-pts">{fmtPts(p.points)}</div>
             <div className="iq-stats">
-              <span>Avg {p.avgRank.toFixed(2)}</span><span>Win {p.winRate.toFixed(1)}%</span><span>Deal-in {p.dealInRate.toFixed(1)}%</span>
+              <span>{tr('lbl_avgrank')} {p.avgRank.toFixed(2)}</span><span>{tr('win_rate')} {p.winRate.toFixed(1)}%</span><span>{tr('deal_in')} {p.dealInRate.toFixed(1)}%</span>
             </div>
           </button>
         ))}
@@ -206,13 +206,13 @@ function IORMCView({ data, onPick }) {
 
       <div className="iormc-grid">
         <div className="chart-card">
-          <div className="ch-head"><h3>Carrera chilena · División A</h3><span className="jp">チリ代表予選</span></div>
+          <div className="ch-head"><h3>{tr('carrera_chilena')}</h3><span className="jp">チリ代表予選</span></div>
           <div className="race-list">
             {io.all.map((p, i) => {
               const isCut = i === io.slots;
               return (
                 <React.Fragment key={p.id}>
-                  {isCut && <div className="race-cut"><span>Corte · {fmtPts(io.cutPoints)}</span></div>}
+                  {isCut && <div className="race-cut"><span>{tr('iormc_cut_lbl', { cut: fmtPts(io.cutPoints) })}</span></div>}
                   <button className={`race-row ${p.iormc}`} onClick={() => onPick(p)}>
                     <span className="rr-pos">{p.natRank}</span>
                     <div className="avatar div-A" style={{ width: 28, height: 28, borderRadius: 9, fontSize: 8.5 }}>{initials(p.handle)}</div>
@@ -230,20 +230,20 @@ function IORMCView({ data, onPick }) {
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div className="chart-card">
-            <div className="ch-head"><h3>Margen del corte</h3><span className="jp">差</span></div>
+            <div className="ch-head"><h3>{tr('margen_corte')}</h3><span className="jp">差</span></div>
             <div className="cut-stat">
               <div className="cs-big">{io.gap.toFixed(1)}</div>
-              <div className="cs-lb">puntos entre el 4° y el 5° chileno</div>
+              <div className="cs-lb">{tr('cut_stat_lb')}</div>
             </div>
             <div className="cut-pair">
-              <div className="cp in"><span className="cp-l">Dentro · 4°</span><span className="cp-n">{io.qualified[3].shortName}</span><span className="cp-p">{fmtPts(io.qualified[3].points)}</span></div>
-              <div className="cp out"><span className="cp-l">Fuera · 5°</span><span className="cp-n">{io.contention[0].shortName}</span><span className="cp-p">{fmtPts(io.contention[0].points)}</span></div>
+              <div className="cp in"><span className="cp-l">{tr('dentro_lbl')}</span><span className="cp-n">{io.qualified[3].shortName}</span><span className="cp-p">{fmtPts(io.qualified[3].points)}</span></div>
+              <div className="cp out"><span className="cp-l">{tr('fuera_lbl')}</span><span className="cp-n">{io.contention[0].shortName}</span><span className="cp-p">{fmtPts(io.contention[0].points)}</span></div>
             </div>
-            <div className="cut-note">Queda 1 sesión · 2 hanchan por jugador</div>
+            <div className="cut-note">{tr('cut_note', { s: 1, h: 2 })}</div>
           </div>
 
           <div className="chart-card">
-            <div className="ch-head"><h3>Composición de la liga</h3><span className="jp">国籍別</span></div>
+            <div className="ch-head"><h3>{tr('comp_liga')}</h3><span className="jp">国籍別</span></div>
             <div className="nat-breakdown">
               {data.nationalities.map(n => (
                 <div className="nb-row" key={n.code}>
@@ -286,14 +286,14 @@ function Comparator({ data }) {
   React.useEffect(() => { setAnimKey(k => k + 1); }, [aId, bId]);
 
   const metrics = [
-    { key: 'points', label: 'Puntos', jp: '総合', lower: false, fmt: fmtPts },
-    { key: 'avgRank', label: 'Avg Rank', jp: '平均順位', lower: true, fmt: v => v.toFixed(2) },
-    { key: 'winRate', label: 'Win Rate', jp: '和了率', lower: false, fmt: v => v.toFixed(1) + '%' },
-    { key: 'dealInRate', label: 'Deal-in', jp: '放銃率', lower: true, fmt: v => v.toFixed(1) + '%' },
-    { key: 'riichiRate', label: 'Riichi', jp: '立直率', lower: false, fmt: v => v.toFixed(1) + '%' },
-    { key: 'openRate', label: 'Open Hand', jp: '副露率', lower: false, fmt: v => v.toFixed(1) + '%' },
-    { key: 'avgPoints', label: 'Avg ±', jp: '平均得点', lower: false, fmt: fmtPts },
-    { key: 'firstRate', label: '1° Rate', jp: 'トップ率', lower: false, fmt: v => (v * 100).toFixed(0) + '%' },
+    { key: 'points', label: tr('points'), jp: '総合', lower: false, fmt: fmtPts },
+    { key: 'avgRank', label: tr('lbl_avgrank'), jp: '平均順位', lower: true, fmt: v => v.toFixed(2) },
+    { key: 'winRate', label: tr('win_rate'), jp: '和了率', lower: false, fmt: v => v.toFixed(1) + '%' },
+    { key: 'dealInRate', label: tr('deal_in'), jp: '放銃率', lower: true, fmt: v => v.toFixed(1) + '%' },
+    { key: 'riichiRate', label: tr('riichi'), jp: '立直率', lower: false, fmt: v => v.toFixed(1) + '%' },
+    { key: 'openRate', label: tr('open'), jp: '副露率', lower: false, fmt: v => v.toFixed(1) + '%' },
+    { key: 'avgPoints', label: tr('lbl_avgpts'), jp: '平均得点', lower: false, fmt: fmtPts },
+    { key: 'firstRate', label: tr('top_rate'), jp: 'トップ率', lower: false, fmt: v => (v * 100).toFixed(0) + '%' },
   ];
   const scales = React.useMemo(() => {
     const enriched = data.allPlayers.map(p => ({ ...p, firstRate: p.placements.p1 }));
@@ -310,14 +310,14 @@ function Comparator({ data }) {
       <div className="section-head">
         <div className="h-left">
           <span className="num">03 / Comparador</span>
-          <h1>Cara a Cara</h1>
+          <h1>{tr('cara_a_cara')}</h1>
           <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>対戦比較</span>
         </div>
         <div className="vs-header">
           <span className={`div-chip ${a.div}`}>{a.handle}</span>
           <span style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>VS</span>
           <span className={`div-chip ${b.div}`}>{b.handle}</span>
-          {crossDiv && <span className="cross-tag">Inter-división</span>}
+          {crossDiv && <span className="cross-tag">{tr('inter_division')}</span>}
         </div>
       </div>
 
@@ -381,17 +381,17 @@ function HanchanLog({ data, div }) {
       <div className="section-head">
         <div className="h-left">
           <span className="num">04 / Log</span>
-          <h1>Historial de Hanchan</h1>
+          <h1>{tr('historial_title')}</h1>
           <span className={`div-chip ${div}`}>DIV {div}</span>
           <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>半荘記録</span>
         </div>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)' }}>
-          {matches.length} de {divData.matches.length} hanchan
+          {tr('log_count', { shown: matches.length, total: divData.matches.length })}
         </div>
       </div>
 
       <div className="session-filter">
-        <button className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>Todas</button>
+        <button className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>{tr('all')}</button>
         {sessions.map(s => (
           <button key={s.code} className={filter === s.code ? 'active' : ''} onClick={() => setFilter(s.code)}>
             {s.code} <span className="sf-date">{s.date}</span>
@@ -405,8 +405,8 @@ function HanchanLog({ data, div }) {
             <div className="code-block">
               <div className="code">{m.code}</div>
               <div className="date">{m.sessionCode} · H{m.hanchan}</div>
-              <div className="table">Mesa {m.table} · {m.date}</div>
-              {m.paipuUrl && <a href={m.paipuUrl.replace(/^Mahjong Soul Game Log:/, '')} target="_blank" rel="noopener noreferrer" className="paipu-link">Ver paipu ↗</a>}
+              <div className="table">{tr('mesa', { n: m.table })} · {m.date}</div>
+              {m.paipuUrl && <a href={m.paipuUrl.replace(/^Mahjong Soul Game Log:/, '')} target="_blank" rel="noopener noreferrer" className="paipu-link">{tr('view_paipu')}</a>}
             </div>
             <div className="four-results">
               {m.players.map((pl, i) => (
@@ -435,15 +435,15 @@ function CalendarView({ data }) {
       <div className="section-head">
         <div className="h-left">
           <span className="num">05 / Agenda</span>
-          <h1>Calendario de Temporada</h1>
+          <h1>{tr('calendario_title')}</h1>
           <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>予定</span>
         </div>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)' }}>
-          {data.league.sessionsTotal} sesiones · {data.league.hanchanPerSession} hanchan cada una
+          {tr('cal_subtitle', { total: data.league.sessionsTotal, per: data.league.hanchanPerSession })}
         </div>
       </div>
 
-      <div className="block-label" style={{ marginBottom: 12 }}>Próximo · 次回</div>
+      <div className="block-label" style={{ marginBottom: 12 }}>{tr('next_cal')} · 次回</div>
       <div className="cal-grid">
         {scheduled.map((c, i) => (
           <div className={`cal-card ${c.status === 'highlight' ? 'highlight' : ''} div-${c.div}`} key={i}
@@ -461,7 +461,7 @@ function CalendarView({ data }) {
         ))}
       </div>
 
-      <div className="block-label" style={{ margin: '28px 0 12px' }}>Sesiones Jugadas · 実施済み</div>
+      <div className="block-label" style={{ margin: '28px 0 12px' }}>{tr('played_sessions')} · 実施済み</div>
       <div className="session-strip">
         {played.map((s, i) => (
           <div className="session-pill done" key={s.code} style={{ animation: 'rowin .35s ease both', animationDelay: `${i * 30}ms` }}>
@@ -486,10 +486,10 @@ function HallOfFame({ data }) {
       <div className="section-head">
         <div className="h-left">
           <span className="num">06 / Records</span>
-          <h1>Hall of Fame</h1>
+          <h1>{tr('records_title')}</h1>
           <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>名誉殿堂</span>
         </div>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)' }}>Temporada 2026 · ambas divisiones</div>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)' }}>{tr('app_tagline')} · ambos</div>
       </div>
 
       {['A', 'B'].map(d => (

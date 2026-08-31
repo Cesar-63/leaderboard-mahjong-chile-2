@@ -94,8 +94,8 @@ function DivisionSwitch({ div, onChange, data, disabled }) {
         return (
           <button key={d} ref={el => (refs.current[d] = el)}
             className={`ds-btn ${div === d ? 'active' : ''}`} onClick={() => onChange(d)}>
-            <span className="ds-label">División {d}</span>
-            <span className="ds-meta">Líder {leader.handle} · {fmtPts(leader.points)}</span>
+            <span className="ds-label">{tr('division', { d })}</span>
+            <span className="ds-meta">{tr('leader', { name: leader.handle })} · {fmtPts(leader.points)}</span>
           </button>
         );
       })}
@@ -103,8 +103,23 @@ function DivisionSwitch({ div, onChange, data, disabled }) {
   );
 }
 
+function LangSwitch({ value, onChange }) {
+  const langs = [
+    { v: 'es', l: 'ES' }, { v: 'en', l: 'EN' }, { v: 'pt', l: 'PT' },
+  ];
+  return (
+    <div className="lang-switch" role="group" aria-label={tr('idioma')}>
+      {langs.map(x => (
+        <button key={x.v} className={`lang-btn ${value === x.v ? 'active' : ''}`}
+          onClick={() => onChange(x.v)}>{x.l}</button>
+      ))}
+    </div>
+  );
+}
+
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  window.LANG = t.lang;
   const [route, setRoute] = React.useState(parseRoute);
   const data = window.MJC_DATA;
   const L = data.league;
@@ -144,20 +159,21 @@ function App() {
         <div className="brand">
           <div className="crest"></div>
           <div className="wordmark">
-            <div className="l1">Liga Mahjong Chile</div>
-            <div className="l2">Riichi · Temporada 2026 · 麻雀リーグ</div>
+            <div className="l1">{tr('app_title')}</div>
+            <div className="l2">{tr('app_tagline')} · 麻雀リーグ</div>
           </div>
         </div>
         <div className="meta">
-          <span><b>2</b> divisiones</span>
-          <span><b>{L.playersPerDiv * 2}</b> jugadores</span>
-          <span><b>{L.sessionsPlayed}</b>/{L.sessionsTotal} sesiones</span>
-          <span><b>{L.hanchanTotal}</b> hanchan</span>
+          <span><b>2</b> {tr('divisiones')}</span>
+          <span><b>{L.playersPerDiv * 2}</b> {tr('jugadores')}</span>
+          <span><b>{L.sessionsPlayed}</b>/{L.sessionsTotal} {tr('sesiones_noun')}</span>
+          <span><b>{L.hanchanTotal}</b> {tr('hanchan')}</span>
         </div>
         <div className="live-pill">
           <span className="dot"></span>
-          <span>DATOS OFICIALES</span>
+          <span>{tr('official_data')}</span>
         </div>
+        <LangSwitch value={t.lang} onChange={(v) => setTweak('lang', v)} />
       </header>
 
       <div className="control-bar">
@@ -171,11 +187,11 @@ function App() {
             <div className="section-head">
               <div className="h-left">
                 <span className="num">01 / Liga</span>
-                <h1>Clasificación División {div}</h1>
+                <h1>{tr('standings_title', { div })}</h1>
                 <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>順位表</span>
               </div>
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)', textAlign: 'right' }}>
-                <div>Sesión {L.sessionsPlayed} de {L.sessionsTotal} · {L.hanchanPerSession} hanchan por sesión</div>
+                <div>{tr('session_summary', { played: L.sessionsPlayed, total: L.sessionsTotal, per: L.hanchanPerSession })}</div>
                 <div style={{ color: 'var(--ink-faint)' }}>
                   uma {L.rules[div].uma.map(v => v >= 0 ? `+${v}` : `−${Math.abs(v)}`).join(' / ')}
                 </div>
@@ -192,26 +208,25 @@ function App() {
         {tab === 'hof' && <HallOfFame data={data} />}
       </main>
 
-      <TweaksPanel>
-        <TweakSection label="Tema" />
-        <TweakRadio label="Estilo" value={t.theme}
+      <TweaksPanel title={tr('tweaks_title')}>
+        <TweakSection label={tr('tema')} />
+        <TweakRadio label={tr('estilo')} value={t.theme}
           options={[{ value: 'washi', label: 'Washi' }, { value: 'neon', label: 'Neon' }]}
           onChange={(v) => setTweak('theme', v)} />
-        <TweakToggle label="Modo oscuro" value={t.dark} onChange={(v) => setTweak('dark', v)} />
+        <TweakToggle label={tr('oscuro')} value={t.dark} onChange={(v) => setTweak('dark', v)} />
         <TweakSection label="Layout" />
-        <TweakRadio label="Disposición" value={t.layout}
-          options={[{ value: 'classic', label: 'Clásico' }, { value: 'stacked', label: 'Apilado' }, { value: 'split', label: 'Doble' }]}
+        <TweakRadio label={tr('disposicion_str')} value={t.layout}
+          options={[{ value: 'classic', label: tr('clasico') }, { value: 'stacked', label: tr('apilado') }, { value: 'split', label: tr('doble') }]}
           onChange={(v) => setTweak('layout', v)} />
-        <TweakRadio label="Densidad" value={t.density}
-          options={[{ value: 'compact', label: 'Compacta' }, { value: 'regular', label: 'Normal' }, { value: 'comfy', label: 'Amplia' }]}
+        <TweakRadio label={tr('densidad')} value={t.density}
+          options={[{ value: 'compact', label: tr('compacta') }, { value: 'regular', label: tr('normal') }, { value: 'comfy', label: tr('amplia') }]}
           onChange={(v) => setTweak('density', v)} />
-        <TweakSection label="Idioma" />
-        <TweakRadio label="Display" value={t.lang}
+        <TweakSection label={tr('idioma')} />
+        <TweakRadio label={tr('display')} value={t.lang}
           options={[
             { value: 'es', label: 'ES · Español' },
             { value: 'en', label: 'EN · English' },
             { value: 'pt', label: 'PT · Português (BR)' },
-            { value: 'jp', label: 'JP · 日本語' },
           ]}
           onChange={(v) => setTweak('lang', v)} />
       </TweaksPanel>
