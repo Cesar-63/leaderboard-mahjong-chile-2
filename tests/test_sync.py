@@ -148,7 +148,6 @@ class SyncTests(unittest.TestCase):
         self.assertEqual(parsed.players[0]["nickname"], "A-P1")
         self.assertEqual(parsed.players[3]["point"], 4500)
         self.assertTrue(parsed.record_game_seen)
-
     def test_parse_record_reads_head_identity_from_res_game_record(self):
         from ms import protocol_pb2 as pb
         head = pb.RecordGame()
