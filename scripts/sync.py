@@ -236,7 +236,8 @@ def merge_paipus(submissions: list[dict[str, Any]], histories: dict[str, dict[st
         except PaipuAuthRequired as exc:
             status.append({"key": submission["key"], "cell": submission["cell"], "uuid": uuid, "status": "REQUIERE_AUTH", "message": str(exc)})
         except Exception as exc:
-            status.append({"key": submission["key"], "cell": submission["cell"], "uuid": uuid, "status": "ERROR", "message": str(exc)})
+            message = str(exc) if isinstance(exc, PaipuError) else f"{type(exc).__name__}: {exc}"
+            status.append({"key": submission["key"], "cell": submission["cell"], "uuid": uuid, "status": "ERROR", "message": message})
     return parsed_games, {"submissions": status}
 
 
@@ -443,12 +444,17 @@ def main() -> int:
         for division, rule in config["divisions"].items():
             histories.update(parse_history(workbook, division, rule["historySheet"], rule))
         if not args.offline:
+            # Una falla de la sesión técnica no debe frenar la publicación de
+            # standings; los paipus quedan REQUIERE_AUTH y se reintenta luego.
             submitted = sum(1 for item in submissions if item.get("uuid"))
             if submitted and not has_yostar_credentials():
                 print("AVISO: hay paipus que requieren sesión técnica pero no hay credenciales MAJSOUL_UID/TOKEN/DEVICE_ID. Las estadísticas avanzadas quedarán como pendientes.", file=sys.stderr)
-            downloaded = prefetch_authenticated_records(submissions, ROOT / "data" / "raw-paipu")
-            if downloaded:
-                print(f"Paipus descargados con la sesión técnica: {downloaded}")
+            try:
+                downloaded = prefetch_authenticated_records(submissions, ROOT / "data" / "raw-paipu")
+                if downloaded:
+                    print(f"Paipus descargados con la sesión técnica: {downloaded}")
+            except PaipuError as exc:
+                print(f"AVISO: la descarga autenticada de paipus falló: {exc}", file=sys.stderr)
         parsed_games, status = merge_paipus(submissions, histories, ROOT / "data" / "raw-paipu", args.offline)
         if args.strict_paipu:
             failures = [item for item in status["submissions"] if item["status"] == "ERROR"]
