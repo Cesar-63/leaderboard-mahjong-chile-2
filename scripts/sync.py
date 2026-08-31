@@ -11,7 +11,7 @@ import tempfile
 import urllib.request
 from collections import Counter, defaultdict
 from dataclasses import asdict
-from datetime import date, datetime, time
+from datetime import date, datetime, time, timedelta, timezone
 from pathlib import Path
 from typing import Any
 
@@ -21,7 +21,7 @@ from openpyxl.utils import get_column_letter
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scripts.majsoul import PaipuAuthRequired, PaipuError, extract_record_id, extract_uuid, fetch_record, has_yostar_credentials, parse_record, prefetch_authenticated_records
+from scripts.majsoul import THROTTLE_COOLDOWN_HOURS, PaipuAuthRequired, PaipuError, extract_record_id, extract_uuid, fetch_record, has_yostar_credentials, parse_record, prefetch_authenticated_records
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -482,6 +482,27 @@ def advanced_stats_health(stats: dict[str, Any], status: dict[str, Any]) -> dict
     }
 
 
+def cooldown_vigente(output_dir: Path) -> str | None:
+    """Devuelve el instante hasta el que hay que dejar en paz la API, si sigue vigente."""
+    try:
+        previo = json.loads((output_dir / "sync-status.json").read_text(encoding="utf-8"))
+        hasta = previo.get("paipuCooldownUntil")
+        if hasta and datetime.fromisoformat(hasta) > datetime.now(timezone.utc):
+            return str(hasta)
+    except Exception:
+        pass
+    return None
+
+
+def cooldown_restante(output_dir: Path) -> str | None:
+    hasta = cooldown_vigente(output_dir)
+    if not hasta:
+        return None
+    falta = datetime.fromisoformat(hasta) - datetime.now(timezone.utc)
+    minutos = max(1, int(falta.total_seconds() // 60))
+    return f"{minutos // 60} h {minutos % 60} min" if minutos >= 60 else f"{minutos} min"
+
+
 def write_outputs(data: dict[str, Any], stats: dict[str, Any], status: dict[str, Any], output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     for name, payload in (("liga.json", data), ("stats.json", stats), ("sync-status.json", status)):
@@ -500,6 +521,7 @@ def main() -> int:
     parser.add_argument("--output", type=Path, default=ROOT / "data")
     args = parser.parse_args()
     config = load_config(args.config)
+    cooldown_until: str | None = cooldown_vigente(args.output)
     temp_path: Path | None = None
     try:
         if args.xlsx:
@@ -522,13 +544,27 @@ def main() -> int:
             submitted = sum(1 for item in submissions if item.get("uuid"))
             if submitted and not has_yostar_credentials():
                 print("AVISO: hay paipus que requieren sesión técnica pero no hay credenciales MAJSOUL_UID/TOKEN/DEVICE_ID. Las estadísticas avanzadas quedarán como pendientes.", file=sys.stderr)
-            try:
-                downloaded = prefetch_authenticated_records(submissions, ROOT / "data" / "raw-paipu")
-                if downloaded:
-                    print(f"Paipus descargados con la sesión técnica: {downloaded}")
-            except PaipuError as exc:
-                print(f"AVISO: la descarga autenticada de paipus falló: {exc}", file=sys.stderr)
+            enfriando = cooldown_restante(args.output)
+            if enfriando:
+                print(
+                    f"Descarga de paipus en enfriamiento: la API marcó límite y se reintenta "
+                    f"en {enfriando}. Los paipus ya versionados se usan igual.",
+                    file=sys.stderr,
+                )
+            else:
+                try:
+                    resultado = prefetch_authenticated_records(submissions, ROOT / "data" / "raw-paipu")
+                    if resultado["downloaded"]:
+                        print(f"Paipus descargados con la sesión técnica: {resultado['downloaded']}")
+                    if resultado["throttled"]:
+                        cooldown_until = (
+                            datetime.now(timezone.utc) + timedelta(hours=THROTTLE_COOLDOWN_HOURS)
+                        ).isoformat()
+                except PaipuError as exc:
+                    print(f"AVISO: la descarga autenticada de paipus falló: {exc}", file=sys.stderr)
         parsed_games, status = merge_paipus(submissions, histories, ROOT / "data" / "raw-paipu", args.offline)
+        if cooldown_until:
+            status["paipuCooldownUntil"] = cooldown_until
         if args.strict_paipu:
             failures = [item for item in status["submissions"] if item["status"] == "ERROR"]
             if failures:
