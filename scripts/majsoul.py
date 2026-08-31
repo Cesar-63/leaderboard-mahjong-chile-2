@@ -44,11 +44,6 @@ MS_ROUTE_FALLBACKS = (
     ("en-2", "wss://engsbk.mahjongsoul.com:443/gateway"),
 )
 MS_CURRENCY_PLATFORMS = (1, 4, 5, 9, 12)
-# Mahjong Soul devuelve 540 al pedir paipus por encima de su cuota: los
-# registros de A pasaron a fallar igual que los de B después de una tanda
-# grande de llamadas. Por eso el reintento por torneo va espaciado.
-RECORD_THROTTLED_CODE = 540
-CONTEST_RETRY_DELAY_SECONDS = 2.0
 YOSTAR_QUICK_LOGIN = "https://en-sdk-api.yostarplat.com/user/quick-login"
 YOSTAR_SDK_VERSION = "4.16.0"
 YOSTAR_SIGNING_SALT = bytes([
@@ -166,10 +161,13 @@ async def _open_route(pb: Any, channel_class: Any, route_id: str, endpoint: str)
         raise
 
 
-def _fallback_contest_id() -> str:
-    """Solo la división B usa el canal de torneo: los paipus de A se obtienen
-    por la vía directa y reintentarlos ahí solo gasta llamadas."""
-    return os.environ.get("MAJSOUL_CONTEST_ID_B", "").strip()
+def _configured_contest_ids() -> list[str]:
+    ids = []
+    for name in ("MAJSOUL_CONTEST_ID_A", "MAJSOUL_CONTEST_ID_B"):
+        value = os.environ.get(name, "").strip()
+        if value:
+            ids.append(value)
+    return ids
 
 
 async def _download_record(pb: Any, lobby: Any, client_version: str, record_uuid: str, destination: Path) -> None:
@@ -177,8 +175,7 @@ async def _download_record(pb: Any, lobby: Any, client_version: str, record_uuid
     # es solo el ancla de vista y el servidor lo rechaza (1203).
     request = pb.ReqGameRecord(game_uuid=record_uuid, client_version_string=client_version)
     response = await lobby.fetch_game_record(request)
-    # El 540 nunca cedió ante readGameRecord; reintentarlo solo consume cuota.
-    if response.HasField("error") and response.error.code and response.error.code != RECORD_THROTTLED_CODE:
+    if response.HasField("error") and response.error.code:
         await lobby.read_game_record(request)
         response = await lobby.fetch_game_record(request)
     if response.HasField("error") and response.error.code:
@@ -254,11 +251,9 @@ async def _recover_via_contest(
         elif listed:
             notes.append(f"torneo {contest_id}: el lobby lista {len(listed)} registros")
 
-        objetivos = [u for u in pending if not listed or u in listed]
-        for index, record_uuid in enumerate(objetivos):
-            if index:
-                # Espaciado entre reintentos para no gatillar la cuota.
-                await asyncio.sleep(CONTEST_RETRY_DELAY_SECONDS)
+        for record_uuid in pending:
+            if listed and record_uuid not in listed:
+                continue
             destination = cache_dir / f"{record_uuid}.pb"
             try:
                 await _download_record(pb, lobby, client_version, record_uuid, destination)
@@ -352,22 +347,27 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
                 except Exception as exc:
                     failures[record_uuid] = str(exc)
 
-            # Segundo intento por membresía de torneo, solo para la división B.
-            contest_id = _fallback_contest_id()
-            if failures and contest_id:
+            # Segundo intento por membresía de torneo: los registros creados
+            # cuando el lobby estaba oculto (open_show apagado) devuelven 540
+            # por la vía directa, pero pueden ser accesibles desde dentro.
+            contest_notes: list[str] = []
+            for contest_id in _configured_contest_ids():
+                if not failures:
+                    break
                 try:
-                    recovered, contest_notes = await _recover_via_contest(
+                    recovered, notes = await _recover_via_contest(
                         pb, lobby, client_version, contest_id, sorted(failures), cache_dir
                     )
                 except Exception as exc:
-                    recovered, contest_notes = [], [f"torneo {contest_id}: {exc}"]
+                    recovered, notes = [], [f"torneo {contest_id}: {exc}"]
+                contest_notes.extend(notes)
                 for record_uuid in recovered:
                     failures.pop(record_uuid, None)
                     downloaded += 1
                 if recovered:
                     print(f"Paipus recuperados vía torneo {contest_id}: {len(recovered)}")
-                if contest_notes:
-                    print("Diagnóstico del canal de torneo:\n" + "\n".join(f"- {n}" for n in contest_notes), file=sys.stderr)
+            if contest_notes:
+                print("Diagnóstico del canal de torneo:\n" + "\n".join(f"- {n}" for n in contest_notes), file=sys.stderr)
             if failures:
                 print(
                     f"AVISO: {len(failures)} paipus no se pudieron descargar con la sesión técnica:\n"

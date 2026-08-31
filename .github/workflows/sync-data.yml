@@ -22,19 +22,12 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt
-      # Sin esto cada corrida vuelve a pedir los 24 paipus a Mahjong Soul, que
-      # responde 540 al pasarse de cuota. Con caché solo se piden los nuevos.
-      - name: Reutilizar paipus ya descargados
-        uses: actions/cache@v4
-        with:
-          path: data/raw-paipu
-          key: raw-paipu-${{ github.run_id }}
-          restore-keys: raw-paipu-
       - name: Sincronizar planilla y paipus
         env:
           MAJSOUL_UID: ${{ secrets.MAJSOUL_UID }}
           MAJSOUL_TOKEN: ${{ secrets.MAJSOUL_TOKEN }}
           MAJSOUL_DEVICE_ID: ${{ secrets.MAJSOUL_DEVICE_ID }}
+          MAJSOUL_CONTEST_ID_A: ${{ secrets.MAJSOUL_CONTEST_ID_A }}
           MAJSOUL_CONTEST_ID_B: ${{ secrets.MAJSOUL_CONTEST_ID_B }}
         run: python scripts/sync.py
       - name: Publicar cambios de datos
