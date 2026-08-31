@@ -149,6 +149,33 @@ class SyncTests(unittest.TestCase):
         self.assertEqual(parsed.players[3]["point"], 4500)
         self.assertTrue(parsed.record_game_seen)
 
+    def test_parse_record_reads_head_identity_from_res_game_record(self):
+        from ms import protocol_pb2 as pb
+        head = pb.RecordGame()
+        for seat, (acc, nick) in enumerate([(1111, "A-P1"), (2222, "A-P2"), (3333, "A-P3"), (4444, "A-P4")]):
+            account = head.accounts.add()
+            account.account_id = acc
+            account.seat = seat
+            account.nickname = nick
+        new_round = pb.RecordNewRound()
+        new_round.scores.extend([45000, 38500, 32000, 4500])
+        rec = pb.Wrapper()
+        rec.name = "RecordNewRound"
+        rec.data = new_round.SerializeToString()
+        details = pb.GameDetailRecords()
+        details.records.append(rec.SerializeToString())
+        log_wrapper = pb.Wrapper()
+        log_wrapper.name = "GameDetailRecords"
+        log_wrapper.data = details.SerializeToString()
+        res = pb.ResGameRecord()
+        res.data = log_wrapper.SerializeToString()
+        res.head.CopyFrom(head)
+        parsed = parse_record("260101-00000000-0000-0000-0000-000000000000", res.SerializeToString())
+        self.assertTrue(parsed.record_game_seen)
+        self.assertEqual([p["account_id"] for p in parsed.players], [1111, 2222, 3333, 4444])
+        self.assertEqual([p["nickname"] for p in parsed.players], ["A-P1", "A-P2", "A-P3", "A-P4"])
+        self.assertEqual(parsed.final_scores, [45000, 38500, 32000, 4500])
+
     def test_match_paipu_seats_is_order_agnostic(self):
         players = _rosters()["A"]
         parsed_players = _paipu_game()["players"]

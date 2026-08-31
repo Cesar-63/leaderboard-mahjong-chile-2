@@ -242,10 +242,17 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
                             f"La sesión técnica devolvió XML en vez del paipu {record_uuid}; "
                             f"el acceso autorizado a este registro sigue fallando"
                         )
+                    # Guardamos la cabecera (head = RecordGame con los jugadores y
+                    # sus cuenta_id/nickname) más el log (data), para conservar
+                    # toda la info: así se puede mapear por account_id.
+                    container = pb.ResGameRecord()
+                    container.data = raw
+                    if response.HasField("head"):
+                        container.head.CopyFrom(response.head)
                 except Exception as exc:
                     failures.append(f"{record_uuid}: {exc}")
                     continue
-                destination.write_bytes(raw)
+                destination.write_bytes(container.SerializeToString())
                 downloaded += 1
             if failures:
                 print(
@@ -302,6 +309,7 @@ def fetch_record(record_id: str, cache_dir: Path, uuid: str | None = None) -> by
     if raw.lstrip().startswith(b"<?xml"):
         raise PaipuAuthRequired("El registro reciente requiere una sesión técnica de Mahjong Soul")
     destination.write_bytes(raw)
+    # El GET público no trae la cabecera con jugadores; se conserva raw tal cual.
     return raw
 
 
@@ -330,9 +338,22 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
     if raw.lstrip().startswith(b"<?xml"):
         raise PaipuAuthRequired("El registro reciente requiere una sesión técnica de Mahjong Soul")
     pb = _protobuf_module()
+    # Contenedor nuevo (ResGameRecord): `head` trae los jugadores con su
+    # account_id/nickname y `data` el log de la partida. Formato legacy: es
+    # directamente un Wrapper(GameDetailRecords) sin identidad.
+    head_record = None
+    log_raw = raw
+    try:
+        res = pb.ResGameRecord()
+        res.ParseFromString(raw)
+        if res.data:
+            log_raw = res.data
+            head_record = res.head if res.HasField("head") else None
+    except Exception:
+        pass
     wrapper = pb.Wrapper()
     try:
-        wrapper.ParseFromString(raw)
+        wrapper.ParseFromString(log_raw)
     except Exception as exc:
         raise PaipuError(f"El registro no es un Wrapper protobuf válido: {exc}") from exc
     if not wrapper.name.endswith("GameDetailRecords"):
@@ -358,7 +379,13 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
     last_discard: int | None = None
     seat_identity: dict[int, dict[str, Any]] = {}
     record_game_points: dict[int, int] = {}
-    record_game_seen = False
+    record_game_seen = head_record is not None
+    if head_record is not None:
+        for account in head_record.accounts:
+            if account.seat < 4:
+                seat_identity[int(account.seat)] = {
+                    "account_id": int(account.account_id), "nickname": account.nickname,
+                }
 
     for payload in payloads:
         item = pb.Wrapper()
