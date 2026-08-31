@@ -56,7 +56,7 @@ jobs:
           print('OK')
           EOF
       - name: Subir paipus descargados (depuración)
-        if: hashFiles('data/raw-paipu/*.pb') != ''
+        if: ${{ always() && hashFiles('data/raw-paipu/*.pb') != '' }}
         uses: actions/upload-artifact@v4
         with:
           name: raw-paipu
