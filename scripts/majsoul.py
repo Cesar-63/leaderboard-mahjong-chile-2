@@ -312,6 +312,7 @@ class ParsedPaipu:
     hands: int
     seat_stats: list[dict[str, Any]]
     players: list[dict[str, Any]]
+    record_game_seen: bool
     sha256: str
 
 
@@ -357,6 +358,7 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
     last_discard: int | None = None
     seat_identity: dict[int, dict[str, Any]] = {}
     record_game_points: dict[int, int] = {}
+    record_game_seen = False
 
     for payload in payloads:
         item = pb.Wrapper()
@@ -370,6 +372,7 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
 
         if name == "RecordGame" and hasattr(message, "accounts"):
             # El inicio del registro declara los 4 jugadores y el resultado final.
+            record_game_seen = True
             for account in message.accounts:
                 if account.seat < 4:
                     seat_identity[int(account.seat)] = {"account_id": int(account.account_id), "nickname": account.nickname}
@@ -440,5 +443,6 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
         hands=max((seat["hands"] for seat in stats), default=0),
         seat_stats=normalized,
         players=players,
+        record_game_seen=record_game_seen,
         sha256=hashlib.sha256(raw).hexdigest(),
     )
