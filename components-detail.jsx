@@ -437,7 +437,7 @@ function CalModal({ entry, onClose }) {
         <div className="cm-head">
           <div>
             <div className="cm-title">{entry.round} · {entry.mesa}</div>
-            {entry.date !== 'Por definir' && <div className="cm-sub">{entry.date} · {entry.day} · {entry.time}</div>}
+            {entry.date !== 'Por definir' && <div className="cm-sub">{entry.date} · {entry.day} · {window.fmtTzTime(entry.date, entry.time, window.TZ)} · {window.TZ}</div>}
           </div>
           <button className="cm-close" onClick={onClose} aria-label="Cerrar">✕</button>
         </div>
@@ -459,13 +459,15 @@ function CalModal({ entry, onClose }) {
         )}
 
         <div className="cm-players">
-          <div className="cm-block">{tr('all_times')} · {entry.time || 'Por definir'}</div>
-          {allZones.map(z => (
-            <div className="cm-player" key={z.tz}>
-              <div className="cm-name">{z.label}</div>
-              <div className="cm-tz"><b>{window.fmtTzTime(entry.date, entry.time, z.tz)}</b><span>{z.tz}</span></div>
-            </div>
-          ))}
+          <div className="cm-block">{tr('all_times')} · {window.fmtTzTime(entry.date, entry.time, window.TZ)} · {window.TZ}</div>
+          <div className="cm-grid">
+            {allZones.map(z => (
+              <div className="cm-player" key={z.tz}>
+                <div className="cm-name">{z.label}</div>
+                <div className="cm-tz"><b>{window.fmtTzTime(entry.date, entry.time, z.tz)}</b><span>{z.tz}</span></div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
