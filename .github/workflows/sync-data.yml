@@ -27,8 +27,6 @@ jobs:
           MAJSOUL_UID: ${{ secrets.MAJSOUL_UID }}
           MAJSOUL_TOKEN: ${{ secrets.MAJSOUL_TOKEN }}
           MAJSOUL_DEVICE_ID: ${{ secrets.MAJSOUL_DEVICE_ID }}
-          MAJSOUL_CONTEST_ID_A: ${{ secrets.MAJSOUL_CONTEST_ID_A }}
-          MAJSOUL_CONTEST_ID_B: ${{ secrets.MAJSOUL_CONTEST_ID_B }}
         run: python scripts/sync.py
       - name: Publicar cambios de datos
         run: |
