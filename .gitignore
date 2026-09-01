@@ -13,3 +13,6 @@ Desktop.ini
 *.xlsx
 __pycache__/
 .venv/
+
+# Reporte de paipus propuestos: se regenera en cada corrida.
+reports/
