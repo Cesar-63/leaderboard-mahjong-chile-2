@@ -55,6 +55,50 @@ El frontend conserva `data.js` como fallback de desarrollo. Cuando existe
 - `REQUIERE_AUTH`: el enlace es válido, pero Mahjong Soul exige una sesión
   técnica para entregar el protobuf. El resultado oficial igual se publica.
 
+## Buscar los paipus en las salas de torneo
+
+`scripts/fill_calendar_paipus.py` hace el camino inverso al pegado manual: lee
+el historial de partidas de las salas de torneo de División A y B y dice qué
+enlace va en cada celda `Paipu G1` / `Paipu G2` todavía vacía.
+
+```bash
+MAJSOUL_CONTEST_ID_A=... MAJSOUL_CONTEST_ID_B=... python scripts/fill_calendar_paipus.py
+python scripts/fill_calendar_paipus.py --xlsx planilla.xlsx --games-json partidas.json
+```
+
+**No escribe en la planilla.** Deja `reports/calendar-paipus.json` y
+`reports/calendar-paipus.csv` con `celda → valor`, y el mismo resumen en el
+Job Summary de GitHub Actions. El pegado lo hace un humano.
+
+Cómo empareja una partida con su mesa:
+
+1. Cada asiento del torneo se resuelve a un jugador de liga por `account_id`
+   (o por nickname si el roster no trae el ID).
+2. Gana la mesa del Calendario con más jugadores en común, con un mínimo de 3.
+   El reparto de mesas no se repite en la liga, así que tres coincidencias
+   identifican la mesa aunque haya jugado un sustituto.
+3. Si dos mesas empatan, desempata la fecha del fixture. Si tampoco alcanza, la
+   partida queda sin asignar y aparece como `AMBIGUA`.
+4. Dentro de una mesa, **Game 1 es la partida que empezó primero**.
+
+Estados del reporte:
+
+- `PROPUESTO`: celda vacía y una partida clara para pegar.
+- `REVISAR`: la mesa tiene más de dos partidas en el torneo; se proponen las dos
+  más tempranas y el aviso `MESA_CON_EXTRAS` lista todas.
+- `CONFLICTO`: la celda ya tiene otro paipu. Nunca se sobrescribe.
+- `PENDIENTE`: no hay partida en el torneo para esa celda.
+- `OK`: la celda ya está cargada con el paipu que devolvió el torneo.
+
+Avisos: `SIN_MESA` (partida que no calza con ninguna mesa), `AMBIGUA`,
+`MESA_CON_EXTRAS` y `NOMBRE_DESCONOCIDO` (un nombre del Calendario que no está
+en el roster). El job informa y termina OK; con `--fail-on-issues` falla.
+
+`.github/workflows/calendar-paipus.yml` lo corre a diario y a pedido, con los
+secrets `MAJSOUL_CONTEST_ID_A` y `MAJSOUL_CONTEST_ID_B` además de la sesión
+técnica. Comparte el grupo de concurrencia con el sincronizador porque Mahjong
+Soul admite una sola sesión por cuenta.
+
 ## Automatización
 
 `.github/workflows/sync-data.yml` ejecuta la sincronización cada 15 minutos y
