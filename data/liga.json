@@ -204,8 +204,8 @@
             23.0,
             -6.5,
             28.2,
-            26.8,
-            -3.0
+            -3.0,
+            26.8
           ],
           "cum": [
             3.9,
@@ -216,7 +216,7 @@
             74.2,
             67.7,
             95.9,
-            122.7,
+            92.9,
             119.7
           ],
           "counts": [
@@ -226,11 +226,11 @@
             0
           ],
           "absences": 0,
-          "hands": 80,
-          "wins": 21,
+          "hands": 104,
+          "wins": 27,
           "dealIns": 13,
-          "riichis": 19,
-          "openHands": 40,
+          "riichis": 26,
+          "openHands": 49,
           "placements": {
             "p1": 0.3,
             "p2": 0.4,
@@ -240,128 +240,37 @@
           "avgRank": 2.0,
           "avgPoints": 12.0,
           "streak": 45.5,
-          "winRate": 26.2,
-          "dealInRate": 16.2,
-          "riichiRate": 23.8,
-          "openRate": 50.0,
+          "winRate": 26.0,
+          "dealInRate": 12.5,
+          "riichiRate": 25.0,
+          "openRate": 47.1,
           "topYaku": [
             {
               "name": "Junchan",
-              "count": 11
+              "count": 14
             },
             {
               "name": "Riichi",
-              "count": 10
+              "count": 12
             },
             {
               "name": "Chinitsu",
-              "count": 10
+              "count": 12
             },
             {
               "name": "Yakuhai Este",
-              "count": 7
-            },
-            {
-              "name": "Menzen Tsumo",
-              "count": 5
-            }
-          ],
-          "statsSample": 80,
-          "statsReliable": true,
-          "arch": "con datos",
-          "rank": 3,
-          "zone": "title"
-        },
-        {
-          "id": "A09",
-          "div": "A",
-          "num": "09",
-          "name": "Xuxe",
-          "shortName": "Xuxe",
-          "handle": "Xuxe",
-          "accountId": 119296750,
-          "discord": "xuxe",
-          "nat": "CL",
-          "games": 10,
-          "points": 100.4,
-          "history": [
-            25.1,
-            5.3,
-            -39.3,
-            -31.4,
-            46.5,
-            15.7,
-            12.1,
-            14.1,
-            39.5,
-            12.8
-          ],
-          "cum": [
-            25.1,
-            30.4,
-            -8.9,
-            -40.3,
-            6.2,
-            21.9,
-            34.0,
-            48.1,
-            87.6,
-            100.4
-          ],
-          "counts": [
-            3,
-            5,
-            0,
-            2
-          ],
-          "absences": 0,
-          "hands": 99,
-          "wins": 25,
-          "dealIns": 17,
-          "riichis": 28,
-          "openHands": 41,
-          "placements": {
-            "p1": 0.3,
-            "p2": 0.5,
-            "p3": 0.0,
-            "p4": 0.2
-          },
-          "avgRank": 2.1,
-          "avgPoints": 10.0,
-          "streak": 78.5,
-          "winRate": 25.3,
-          "dealInRate": 17.2,
-          "riichiRate": 28.3,
-          "openRate": 41.4,
-          "topYaku": [
-            {
-              "name": "Riichi",
-              "count": 13
-            },
-            {
-              "name": "Chinitsu",
-              "count": 13
-            },
-            {
-              "name": "Junchan",
               "count": 9
             },
             {
               "name": "Menzen Tsumo",
-              "count": 3
-            },
-            {
-              "name": "Yakuhai Oeste",
-              "count": 3
+              "count": 7
             }
           ],
-          "statsSample": 99,
+          "statsSample": 104,
           "statsReliable": true,
           "arch": "con datos",
-          "rank": 4,
-          "zone": "title",
-          "natRank": 2,
-          "iormc": "qualified"
+          "rank": 3,
+          "zone": "title"
         },
         {
           "id": "A04",
@@ -449,9 +358,9 @@
           "statsSample": 90,
           "statsReliable": true,
           "arch": "con datos",
-          "rank": 5,
-          "zone": null,
-          "natRank": 3,
+          "rank": 4,
+          "zone": "title",
+          "natRank": 2,
           "iormc": "qualified"
         },
         {
@@ -540,7 +449,7 @@
           "statsSample": 95,
           "statsReliable": true,
           "arch": "con datos",
-          "rank": 6,
+          "rank": 5,
           "zone": null
         },
         {
@@ -627,6 +536,97 @@
             }
           ],
           "statsSample": 98,
+          "statsReliable": true,
+          "arch": "con datos",
+          "rank": 6,
+          "zone": null,
+          "natRank": 3,
+          "iormc": "qualified"
+        },
+        {
+          "id": "A09",
+          "div": "A",
+          "num": "09",
+          "name": "Xuxe",
+          "shortName": "Xuxe",
+          "handle": "Xuxe",
+          "accountId": 119296750,
+          "discord": "xuxe",
+          "nat": "CL",
+          "games": 10,
+          "points": 73.7,
+          "history": [
+            25.1,
+            5.3,
+            -39.3,
+            -31.4,
+            46.5,
+            15.7,
+            12.1,
+            14.1,
+            12.8,
+            12.8
+          ],
+          "cum": [
+            25.1,
+            30.4,
+            -8.9,
+            -40.3,
+            6.2,
+            21.9,
+            34.0,
+            48.1,
+            60.9,
+            73.7
+          ],
+          "counts": [
+            2,
+            6,
+            0,
+            2
+          ],
+          "absences": 0,
+          "hands": 115,
+          "wins": 28,
+          "dealIns": 19,
+          "riichis": 31,
+          "openHands": 47,
+          "placements": {
+            "p1": 0.2,
+            "p2": 0.6,
+            "p3": 0.0,
+            "p4": 0.2
+          },
+          "avgRank": 2.2,
+          "avgPoints": 7.4,
+          "streak": 51.8,
+          "winRate": 24.3,
+          "dealInRate": 16.5,
+          "riichiRate": 27.0,
+          "openRate": 40.9,
+          "topYaku": [
+            {
+              "name": "Riichi",
+              "count": 14
+            },
+            {
+              "name": "Chinitsu",
+              "count": 14
+            },
+            {
+              "name": "Junchan",
+              "count": 10
+            },
+            {
+              "name": "Yakuhai Este",
+              "count": 4
+            },
+            {
+              "name": "Sanankou",
+              "count": 3
+            }
+          ],
+          "statsSample": 115,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 7,
@@ -724,6 +724,95 @@
           "zone": null
         },
         {
+          "id": "A14",
+          "div": "A",
+          "num": "14",
+          "name": "Kychiel",
+          "shortName": "Kychiel",
+          "handle": "Kychiel",
+          "accountId": 86168805,
+          "discord": "Kychiel",
+          "nat": "AR",
+          "games": 10,
+          "points": 67.7,
+          "history": [
+            22.6,
+            20.3,
+            -21.7,
+            -12.0,
+            20.2,
+            -4.1,
+            15.5,
+            -29.3,
+            28.1,
+            28.1
+          ],
+          "cum": [
+            22.6,
+            42.9,
+            21.2,
+            9.2,
+            29.4,
+            25.3,
+            40.8,
+            11.5,
+            39.6,
+            67.7
+          ],
+          "counts": [
+            5,
+            1,
+            2,
+            2
+          ],
+          "absences": 0,
+          "hands": 101,
+          "wins": 23,
+          "dealIns": 8,
+          "riichis": 25,
+          "openHands": 34,
+          "placements": {
+            "p1": 0.5,
+            "p2": 0.1,
+            "p3": 0.2,
+            "p4": 0.2
+          },
+          "avgRank": 2.1,
+          "avgPoints": 6.8,
+          "streak": 42.4,
+          "winRate": 22.8,
+          "dealInRate": 7.9,
+          "riichiRate": 24.8,
+          "openRate": 33.7,
+          "topYaku": [
+            {
+              "name": "Junchan",
+              "count": 13
+            },
+            {
+              "name": "Riichi",
+              "count": 9
+            },
+            {
+              "name": "Chinitsu",
+              "count": 9
+            },
+            {
+              "name": "Yakuhai Este",
+              "count": 8
+            },
+            {
+              "name": "Hotei Raoyui",
+              "count": 4
+            }
+          ],
+          "statsSample": 101,
+          "statsReliable": true,
+          "arch": "con datos",
+          "rank": 9,
+          "zone": null
+        },
+        {
           "id": "A24",
           "div": "A",
           "num": "24",
@@ -809,7 +898,7 @@
           "statsSample": 90,
           "statsReliable": true,
           "arch": "con datos",
-          "rank": 9,
+          "rank": 10,
           "zone": null
         },
         {
@@ -833,8 +922,8 @@
             -9.7,
             -36.5,
             43.8,
-            -22.6,
-            49.1
+            49.1,
+            -22.6
           ],
           "cum": [
             -21.2,
@@ -845,7 +934,7 @@
             -11.1,
             -47.6,
             -3.8,
-            -26.4,
+            45.3,
             22.7
           ],
           "counts": [
@@ -855,11 +944,11 @@
             4
           ],
           "absences": 0,
-          "hands": 93,
-          "wins": 18,
-          "dealIns": 11,
+          "hands": 117,
+          "wins": 24,
+          "dealIns": 12,
           "riichis": 15,
-          "openHands": 21,
+          "openHands": 33,
           "placements": {
             "p1": 0.3,
             "p2": 0.2,
@@ -869,11 +958,15 @@
           "avgRank": 2.6,
           "avgPoints": 2.3,
           "streak": 33.8,
-          "winRate": 19.4,
-          "dealInRate": 11.8,
-          "riichiRate": 16.1,
-          "openRate": 22.6,
+          "winRate": 20.5,
+          "dealInRate": 10.3,
+          "riichiRate": 12.8,
+          "openRate": 28.2,
           "topYaku": [
+            {
+              "name": "Junchan",
+              "count": 14
+            },
             {
               "name": "Riichi",
               "count": 12
@@ -883,22 +976,18 @@
               "count": 12
             },
             {
-              "name": "Junchan",
-              "count": 10
-            },
-            {
               "name": "Menzen Tsumo",
-              "count": 5
+              "count": 6
             },
             {
-              "name": "Pinfu",
-              "count": 4
+              "name": "Yakuhai Oeste",
+              "count": 6
             }
           ],
-          "statsSample": 93,
+          "statsSample": 117,
           "statsReliable": true,
           "arch": "con datos",
-          "rank": 10,
+          "rank": 11,
           "zone": null,
           "natRank": 5,
           "iormc": "contention"
@@ -987,95 +1076,6 @@
             }
           ],
           "statsSample": 94,
-          "statsReliable": true,
-          "arch": "con datos",
-          "rank": 11,
-          "zone": null
-        },
-        {
-          "id": "A14",
-          "div": "A",
-          "num": "14",
-          "name": "Kychiel",
-          "shortName": "Kychiel",
-          "handle": "Kychiel",
-          "accountId": 86168805,
-          "discord": "Kychiel",
-          "nat": "AR",
-          "games": 10,
-          "points": -1.6,
-          "history": [
-            22.6,
-            20.3,
-            -21.7,
-            -12.0,
-            20.2,
-            -4.1,
-            15.5,
-            -29.3,
-            -41.2,
-            28.1
-          ],
-          "cum": [
-            22.6,
-            42.9,
-            21.2,
-            9.2,
-            29.4,
-            25.3,
-            40.8,
-            11.5,
-            -29.7,
-            -1.6
-          ],
-          "counts": [
-            4,
-            1,
-            2,
-            3
-          ],
-          "absences": 0,
-          "hands": 85,
-          "wins": 19,
-          "dealIns": 8,
-          "riichis": 21,
-          "openHands": 27,
-          "placements": {
-            "p1": 0.4,
-            "p2": 0.1,
-            "p3": 0.2,
-            "p4": 0.3
-          },
-          "avgRank": 2.4,
-          "avgPoints": -0.2,
-          "streak": -26.9,
-          "winRate": 22.4,
-          "dealInRate": 9.4,
-          "riichiRate": 24.7,
-          "openRate": 31.8,
-          "topYaku": [
-            {
-              "name": "Junchan",
-              "count": 12
-            },
-            {
-              "name": "Riichi",
-              "count": 8
-            },
-            {
-              "name": "Chinitsu",
-              "count": 8
-            },
-            {
-              "name": "Yakuhai Este",
-              "count": 7
-            },
-            {
-              "name": "Ryanpeikou",
-              "count": 4
-            }
-          ],
-          "statsSample": 85,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 12,
@@ -1171,97 +1171,6 @@
           "zone": null
         },
         {
-          "id": "A02",
-          "div": "A",
-          "num": "02",
-          "name": "Mon_96",
-          "shortName": "Mon_96",
-          "handle": "Mon_96",
-          "accountId": 88811372,
-          "discord": "monique__96",
-          "nat": "CL",
-          "games": 10,
-          "points": -19.6,
-          "history": [
-            5.5,
-            21.9,
-            31.1,
-            -32.4,
-            31.6,
-            -45.6,
-            -28.7,
-            -13.4,
-            12.1,
-            -1.7
-          ],
-          "cum": [
-            5.5,
-            27.4,
-            58.5,
-            26.1,
-            57.7,
-            12.1,
-            -16.6,
-            -30.0,
-            -17.9,
-            -19.6
-          ],
-          "counts": [
-            3,
-            2,
-            2,
-            3
-          ],
-          "absences": 0,
-          "hands": 83,
-          "wins": 20,
-          "dealIns": 17,
-          "riichis": 11,
-          "openHands": 38,
-          "placements": {
-            "p1": 0.3,
-            "p2": 0.2,
-            "p3": 0.2,
-            "p4": 0.3
-          },
-          "avgRank": 2.5,
-          "avgPoints": -2.0,
-          "streak": -31.7,
-          "winRate": 24.1,
-          "dealInRate": 20.5,
-          "riichiRate": 13.3,
-          "openRate": 45.8,
-          "topYaku": [
-            {
-              "name": "Junchan",
-              "count": 10
-            },
-            {
-              "name": "Riichi",
-              "count": 5
-            },
-            {
-              "name": "Chinitsu",
-              "count": 5
-            },
-            {
-              "name": "Yakuhai Este",
-              "count": 4
-            },
-            {
-              "name": "Hotei Raoyui",
-              "count": 4
-            }
-          ],
-          "statsSample": 83,
-          "statsReliable": true,
-          "arch": "con datos",
-          "rank": 14,
-          "zone": null,
-          "natRank": 6,
-          "iormc": "contention"
-        },
-        {
           "id": "A08",
           "div": "A",
           "num": "08",
@@ -1347,6 +1256,97 @@
           "statsSample": 99,
           "statsReliable": true,
           "arch": "con datos",
+          "rank": 14,
+          "zone": null,
+          "natRank": 6,
+          "iormc": "contention"
+        },
+        {
+          "id": "A02",
+          "div": "A",
+          "num": "02",
+          "name": "Mon_96",
+          "shortName": "Mon_96",
+          "handle": "Mon_96",
+          "accountId": 88811372,
+          "discord": "monique__96",
+          "nat": "CL",
+          "games": 10,
+          "points": -33.4,
+          "history": [
+            5.5,
+            21.9,
+            31.1,
+            -32.4,
+            31.6,
+            -45.6,
+            -28.7,
+            -13.4,
+            -1.7,
+            -1.7
+          ],
+          "cum": [
+            5.5,
+            27.4,
+            58.5,
+            26.1,
+            57.7,
+            12.1,
+            -16.6,
+            -30.0,
+            -31.7,
+            -33.4
+          ],
+          "counts": [
+            3,
+            1,
+            3,
+            3
+          ],
+          "absences": 0,
+          "hands": 99,
+          "wins": 26,
+          "dealIns": 18,
+          "riichis": 12,
+          "openHands": 45,
+          "placements": {
+            "p1": 0.3,
+            "p2": 0.1,
+            "p3": 0.3,
+            "p4": 0.3
+          },
+          "avgRank": 2.6,
+          "avgPoints": -3.3,
+          "streak": -45.5,
+          "winRate": 26.3,
+          "dealInRate": 18.2,
+          "riichiRate": 12.1,
+          "openRate": 45.5,
+          "topYaku": [
+            {
+              "name": "Junchan",
+              "count": 11
+            },
+            {
+              "name": "Yakuhai Este",
+              "count": 5
+            },
+            {
+              "name": "Tsumo",
+              "count": 5
+            },
+            {
+              "name": "Riichi",
+              "count": 5
+            },
+            {
+              "name": "Chinitsu",
+              "count": 5
+            }
+          ],
+          "statsSample": 99,
+          "statsReliable": true,
+          "arch": "con datos",
           "rank": 15,
           "zone": null,
           "natRank": 7,
@@ -1373,8 +1373,8 @@
             7.9,
             35.1,
             -21.4,
-            5.4,
-            7.6
+            7.6,
+            5.4
           ],
           "cum": [
             27.3,
@@ -1385,7 +1385,7 @@
             -69.3,
             -34.2,
             -55.6,
-            -50.2,
+            -48.0,
             -42.6
           ],
           "counts": [
@@ -1395,11 +1395,11 @@
             3
           ],
           "absences": 0,
-          "hands": 97,
-          "wins": 20,
-          "dealIns": 12,
-          "riichis": 18,
-          "openHands": 22,
+          "hands": 121,
+          "wins": 23,
+          "dealIns": 15,
+          "riichis": 23,
+          "openHands": 28,
           "placements": {
             "p1": 0.2,
             "p2": 0.3,
@@ -1409,22 +1409,22 @@
           "avgRank": 2.6,
           "avgPoints": -4.3,
           "streak": 26.7,
-          "winRate": 20.6,
+          "winRate": 19.0,
           "dealInRate": 12.4,
-          "riichiRate": 18.6,
-          "openRate": 22.7,
+          "riichiRate": 19.0,
+          "openRate": 23.1,
           "topYaku": [
             {
               "name": "Riichi",
-              "count": 11
+              "count": 13
             },
             {
               "name": "Chinitsu",
-              "count": 11
+              "count": 13
             },
             {
               "name": "Junchan",
-              "count": 9
+              "count": 11
             },
             {
               "name": "Yakuhai Este",
@@ -1435,103 +1435,12 @@
               "count": 4
             }
           ],
-          "statsSample": 97,
+          "statsSample": 121,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 16,
           "zone": null,
           "natRank": 8,
-          "iormc": "out"
-        },
-        {
-          "id": "A23",
-          "div": "A",
-          "num": "23",
-          "name": "YotsugiNagi",
-          "shortName": "YotsugiNagi",
-          "handle": "YotsugiNagi",
-          "accountId": 125300837,
-          "discord": "yotsugi",
-          "nat": "CL",
-          "games": 10,
-          "points": -44.0,
-          "history": [
-            -34.0,
-            27.2,
-            -11.4,
-            -4.2,
-            -8.1,
-            23.3,
-            17.0,
-            -4.2,
-            -10.4,
-            -39.2
-          ],
-          "cum": [
-            -34.0,
-            -6.8,
-            -18.2,
-            -22.4,
-            -30.5,
-            -7.2,
-            9.8,
-            5.6,
-            -4.8,
-            -44.0
-          ],
-          "counts": [
-            1,
-            2,
-            5,
-            2
-          ],
-          "absences": 0,
-          "hands": 94,
-          "wins": 23,
-          "dealIns": 14,
-          "riichis": 17,
-          "openHands": 46,
-          "placements": {
-            "p1": 0.1,
-            "p2": 0.2,
-            "p3": 0.5,
-            "p4": 0.2
-          },
-          "avgRank": 2.8,
-          "avgPoints": -4.4,
-          "streak": -36.8,
-          "winRate": 24.5,
-          "dealInRate": 14.9,
-          "riichiRate": 18.1,
-          "openRate": 48.9,
-          "topYaku": [
-            {
-              "name": "Riichi",
-              "count": 9
-            },
-            {
-              "name": "Chinitsu",
-              "count": 9
-            },
-            {
-              "name": "Junchan",
-              "count": 6
-            },
-            {
-              "name": "Menzen Tsumo",
-              "count": 3
-            },
-            {
-              "name": "Ryanpeikou",
-              "count": 3
-            }
-          ],
-          "statsSample": 94,
-          "statsReliable": true,
-          "arch": "con datos",
-          "rank": 17,
-          "zone": null,
-          "natRank": 9,
           "iormc": "out"
         },
         {
@@ -1620,7 +1529,7 @@
           "statsSample": 95,
           "statsReliable": true,
           "arch": "con datos",
-          "rank": 18,
+          "rank": 17,
           "zone": null
         },
         {
@@ -1644,8 +1553,8 @@
             18.4,
             -37.5,
             -29.3,
-            -9.6,
-            -53.7
+            -53.7,
+            -9.6
           ],
           "cum": [
             5.9,
@@ -1656,7 +1565,7 @@
             64.5,
             27.0,
             -2.3,
-            -11.9,
+            -56.0,
             -65.6
           ],
           "counts": [
@@ -1666,11 +1575,11 @@
             3
           ],
           "absences": 0,
-          "hands": 105,
-          "wins": 18,
-          "dealIns": 14,
-          "riichis": 22,
-          "openHands": 42,
+          "hands": 129,
+          "wins": 22,
+          "dealIns": 21,
+          "riichis": 27,
+          "openHands": 54,
           "placements": {
             "p1": 0.1,
             "p2": 0.4,
@@ -1681,13 +1590,17 @@
           "avgPoints": -6.6,
           "streak": -130.1,
           "winRate": 17.1,
-          "dealInRate": 13.3,
-          "riichiRate": 21.0,
-          "openRate": 40.0,
+          "dealInRate": 16.3,
+          "riichiRate": 20.9,
+          "openRate": 41.9,
           "topYaku": [
             {
               "name": "Junchan",
-              "count": 14
+              "count": 16
+            },
+            {
+              "name": "Yakuhai Este",
+              "count": 7
             },
             {
               "name": "Riichi",
@@ -1698,19 +1611,106 @@
               "count": 5
             },
             {
-              "name": "Yakuhai Este",
-              "count": 4
-            },
-            {
               "name": "Hotei Raoyui",
               "count": 4
             }
           ],
-          "statsSample": 105,
+          "statsSample": 129,
+          "statsReliable": true,
+          "arch": "con datos",
+          "rank": 18,
+          "zone": null
+        },
+        {
+          "id": "A23",
+          "div": "A",
+          "num": "23",
+          "name": "YotsugiNagi",
+          "shortName": "YotsugiNagi",
+          "handle": "YotsugiNagi",
+          "accountId": 125300837,
+          "discord": "yotsugi",
+          "nat": "CL",
+          "games": 10,
+          "points": -72.8,
+          "history": [
+            -34.0,
+            27.2,
+            -11.4,
+            -4.2,
+            -8.1,
+            23.3,
+            17.0,
+            -4.2,
+            -39.2,
+            -39.2
+          ],
+          "cum": [
+            -34.0,
+            -6.8,
+            -18.2,
+            -22.4,
+            -30.5,
+            -7.2,
+            9.8,
+            5.6,
+            -33.6,
+            -72.8
+          ],
+          "counts": [
+            1,
+            2,
+            4,
+            3
+          ],
+          "absences": 0,
+          "hands": 110,
+          "wins": 25,
+          "dealIns": 20,
+          "riichis": 20,
+          "openHands": 52,
+          "placements": {
+            "p1": 0.1,
+            "p2": 0.2,
+            "p3": 0.4,
+            "p4": 0.3
+          },
+          "avgRank": 2.9,
+          "avgPoints": -7.3,
+          "streak": -65.6,
+          "winRate": 22.7,
+          "dealInRate": 18.2,
+          "riichiRate": 18.2,
+          "openRate": 47.3,
+          "topYaku": [
+            {
+              "name": "Riichi",
+              "count": 10
+            },
+            {
+              "name": "Chinitsu",
+              "count": 10
+            },
+            {
+              "name": "Junchan",
+              "count": 6
+            },
+            {
+              "name": "Menzen Tsumo",
+              "count": 3
+            },
+            {
+              "name": "Ryanpeikou",
+              "count": 3
+            }
+          ],
+          "statsSample": 110,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 19,
-          "zone": null
+          "zone": null,
+          "natRank": 9,
+          "iormc": "out"
         },
         {
           "id": "A21",
@@ -5057,66 +5057,6 @@
           "table": 1,
           "players": [
             {
-              "id": "A15",
-              "name": "UnChano",
-              "handle": "UnChano",
-              "nat": "MX",
-              "scoreRaw": 41800,
-              "place": 1,
-              "delta": 26.8,
-              "sustitutoDe": null,
-              "esSuplente": false
-            },
-            {
-              "id": "A18",
-              "name": "furanchizuko2",
-              "handle": "furanchizuko2",
-              "nat": "CL",
-              "scoreRaw": 30400,
-              "place": 2,
-              "delta": 5.4,
-              "sustitutoDe": null,
-              "esSuplente": false
-            },
-            {
-              "id": "A06",
-              "name": "DiosioわTensai",
-              "handle": "DiosioわTensai",
-              "nat": "MX",
-              "scoreRaw": 25400,
-              "place": 3,
-              "delta": -9.6,
-              "sustitutoDe": null,
-              "esSuplente": false
-            },
-            {
-              "id": "A01",
-              "name": "Bodoque",
-              "handle": "Bodoque",
-              "nat": "CL",
-              "scoreRaw": 22400,
-              "place": 4,
-              "delta": -22.6,
-              "sustitutoDe": null,
-              "esSuplente": false
-            }
-          ],
-          "paipuUrl": "https://mahjongsoul.game.yo-star.com/?paipu=260826-bab760e8-eedc-49e8-8495-73c5c250430b",
-          "verified": false,
-          "source": "excel"
-        },
-        {
-          "id": "A-S5-M1-G2",
-          "code": "A-S5-M1-G2",
-          "div": "A",
-          "session": 5,
-          "sessionCode": "S5",
-          "hanchan": 2,
-          "date": "23 ago",
-          "weekday": "dom",
-          "table": 1,
-          "players": [
-            {
               "id": "A01",
               "name": "Bodoque",
               "handle": "Bodoque",
@@ -5161,9 +5101,69 @@
               "esSuplente": false
             }
           ],
+          "paipuUrl": "https://mahjongsoul.game.yo-star.com/?paipu=260826-bab760e8-eedc-49e8-8495-73c5c250430b",
+          "verified": true,
+          "source": "paipu"
+        },
+        {
+          "id": "A-S5-M1-G2",
+          "code": "A-S5-M1-G2",
+          "div": "A",
+          "session": 5,
+          "sessionCode": "S5",
+          "hanchan": 2,
+          "date": "23 ago",
+          "weekday": "dom",
+          "table": 1,
+          "players": [
+            {
+              "id": "A15",
+              "name": "UnChano",
+              "handle": "UnChano",
+              "nat": "MX",
+              "scoreRaw": 41800,
+              "place": 1,
+              "delta": 26.8,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A18",
+              "name": "furanchizuko2",
+              "handle": "furanchizuko2",
+              "nat": "CL",
+              "scoreRaw": 30400,
+              "place": 2,
+              "delta": 5.4,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A06",
+              "name": "DiosioわTensai",
+              "handle": "DiosioわTensai",
+              "nat": "MX",
+              "scoreRaw": 25400,
+              "place": 3,
+              "delta": -9.6,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A01",
+              "name": "Bodoque",
+              "handle": "Bodoque",
+              "nat": "CL",
+              "scoreRaw": 22400,
+              "place": 4,
+              "delta": -22.6,
+              "sustitutoDe": null,
+              "esSuplente": false
+            }
+          ],
           "paipuUrl": "https://mahjongsoul.game.yo-star.com/?paipu=260826-c5c8bc55-47fc-4273-9af0-b26ca322a78e",
-          "verified": false,
-          "source": "excel"
+          "verified": true,
+          "source": "paipu"
         },
         {
           "id": "A-S5-M2-G1",
@@ -5177,13 +5177,24 @@
           "table": 2,
           "players": [
             {
+              "id": "A14",
+              "name": "Kychiel",
+              "handle": "Kychiel",
+              "nat": "AR",
+              "scoreRaw": 43100,
+              "place": 1,
+              "delta": 28.1,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
               "id": "A09",
               "name": "Xuxe",
               "handle": "Xuxe",
               "nat": "CL",
-              "scoreRaw": 54500,
-              "place": 1,
-              "delta": 39.5,
+              "scoreRaw": 37800,
+              "place": 2,
+              "delta": 12.8,
               "sustitutoDe": null,
               "esSuplente": false
             },
@@ -5192,9 +5203,9 @@
               "name": "Mon_96",
               "handle": "Mon_96",
               "nat": "CL",
-              "scoreRaw": 37100,
-              "place": 2,
-              "delta": 12.1,
+              "scoreRaw": 33300,
+              "place": 3,
+              "delta": -1.7,
               "sustitutoDe": null,
               "esSuplente": false
             },
@@ -5203,27 +5214,16 @@
               "name": "YotsugiNagi",
               "handle": "YotsugiNagi",
               "nat": "CL",
-              "scoreRaw": 24600,
-              "place": 3,
-              "delta": -10.4,
-              "sustitutoDe": null,
-              "esSuplente": false
-            },
-            {
-              "id": "A14",
-              "name": "Kychiel",
-              "handle": "Kychiel",
-              "nat": "AR",
-              "scoreRaw": 3800,
+              "scoreRaw": 5800,
               "place": 4,
-              "delta": -41.2,
+              "delta": -39.2,
               "sustitutoDe": null,
               "esSuplente": false
             }
           ],
           "paipuUrl": "https://mahjongsoul.game.yo-star.com/?paipu=260824-9f782035-f958-4731-984a-f5ccf2a494c2",
-          "verified": false,
-          "source": "excel"
+          "verified": true,
+          "source": "paipu"
         },
         {
           "id": "A-S5-M2-G2",
@@ -12555,8 +12555,8 @@
         23.0,
         -6.5,
         28.2,
-        26.8,
-        -3.0
+        -3.0,
+        26.8
       ],
       "cum": [
         3.9,
@@ -12567,7 +12567,7 @@
         74.2,
         67.7,
         95.9,
-        122.7,
+        92.9,
         119.7
       ],
       "counts": [
@@ -12577,11 +12577,11 @@
         0
       ],
       "absences": 0,
-      "hands": 80,
-      "wins": 21,
+      "hands": 104,
+      "wins": 27,
       "dealIns": 13,
-      "riichis": 19,
-      "openHands": 40,
+      "riichis": 26,
+      "openHands": 49,
       "placements": {
         "p1": 0.3,
         "p2": 0.4,
@@ -12591,128 +12591,37 @@
       "avgRank": 2.0,
       "avgPoints": 12.0,
       "streak": 45.5,
-      "winRate": 26.2,
-      "dealInRate": 16.2,
-      "riichiRate": 23.8,
-      "openRate": 50.0,
+      "winRate": 26.0,
+      "dealInRate": 12.5,
+      "riichiRate": 25.0,
+      "openRate": 47.1,
       "topYaku": [
         {
           "name": "Junchan",
-          "count": 11
+          "count": 14
         },
         {
           "name": "Riichi",
-          "count": 10
+          "count": 12
         },
         {
           "name": "Chinitsu",
-          "count": 10
+          "count": 12
         },
         {
           "name": "Yakuhai Este",
-          "count": 7
-        },
-        {
-          "name": "Menzen Tsumo",
-          "count": 5
-        }
-      ],
-      "statsSample": 80,
-      "statsReliable": true,
-      "arch": "con datos",
-      "rank": 3,
-      "zone": "title"
-    },
-    {
-      "id": "A09",
-      "div": "A",
-      "num": "09",
-      "name": "Xuxe",
-      "shortName": "Xuxe",
-      "handle": "Xuxe",
-      "accountId": 119296750,
-      "discord": "xuxe",
-      "nat": "CL",
-      "games": 10,
-      "points": 100.4,
-      "history": [
-        25.1,
-        5.3,
-        -39.3,
-        -31.4,
-        46.5,
-        15.7,
-        12.1,
-        14.1,
-        39.5,
-        12.8
-      ],
-      "cum": [
-        25.1,
-        30.4,
-        -8.9,
-        -40.3,
-        6.2,
-        21.9,
-        34.0,
-        48.1,
-        87.6,
-        100.4
-      ],
-      "counts": [
-        3,
-        5,
-        0,
-        2
-      ],
-      "absences": 0,
-      "hands": 99,
-      "wins": 25,
-      "dealIns": 17,
-      "riichis": 28,
-      "openHands": 41,
-      "placements": {
-        "p1": 0.3,
-        "p2": 0.5,
-        "p3": 0.0,
-        "p4": 0.2
-      },
-      "avgRank": 2.1,
-      "avgPoints": 10.0,
-      "streak": 78.5,
-      "winRate": 25.3,
-      "dealInRate": 17.2,
-      "riichiRate": 28.3,
-      "openRate": 41.4,
-      "topYaku": [
-        {
-          "name": "Riichi",
-          "count": 13
-        },
-        {
-          "name": "Chinitsu",
-          "count": 13
-        },
-        {
-          "name": "Junchan",
           "count": 9
         },
         {
           "name": "Menzen Tsumo",
-          "count": 3
-        },
-        {
-          "name": "Yakuhai Oeste",
-          "count": 3
+          "count": 7
         }
       ],
-      "statsSample": 99,
+      "statsSample": 104,
       "statsReliable": true,
       "arch": "con datos",
-      "rank": 4,
-      "zone": "title",
-      "natRank": 2,
-      "iormc": "qualified"
+      "rank": 3,
+      "zone": "title"
     },
     {
       "id": "A04",
@@ -12800,9 +12709,9 @@
       "statsSample": 90,
       "statsReliable": true,
       "arch": "con datos",
-      "rank": 5,
-      "zone": null,
-      "natRank": 3,
+      "rank": 4,
+      "zone": "title",
+      "natRank": 2,
       "iormc": "qualified"
     },
     {
@@ -12891,7 +12800,7 @@
       "statsSample": 95,
       "statsReliable": true,
       "arch": "con datos",
-      "rank": 6,
+      "rank": 5,
       "zone": null
     },
     {
@@ -12978,6 +12887,97 @@
         }
       ],
       "statsSample": 98,
+      "statsReliable": true,
+      "arch": "con datos",
+      "rank": 6,
+      "zone": null,
+      "natRank": 3,
+      "iormc": "qualified"
+    },
+    {
+      "id": "A09",
+      "div": "A",
+      "num": "09",
+      "name": "Xuxe",
+      "shortName": "Xuxe",
+      "handle": "Xuxe",
+      "accountId": 119296750,
+      "discord": "xuxe",
+      "nat": "CL",
+      "games": 10,
+      "points": 73.7,
+      "history": [
+        25.1,
+        5.3,
+        -39.3,
+        -31.4,
+        46.5,
+        15.7,
+        12.1,
+        14.1,
+        12.8,
+        12.8
+      ],
+      "cum": [
+        25.1,
+        30.4,
+        -8.9,
+        -40.3,
+        6.2,
+        21.9,
+        34.0,
+        48.1,
+        60.9,
+        73.7
+      ],
+      "counts": [
+        2,
+        6,
+        0,
+        2
+      ],
+      "absences": 0,
+      "hands": 115,
+      "wins": 28,
+      "dealIns": 19,
+      "riichis": 31,
+      "openHands": 47,
+      "placements": {
+        "p1": 0.2,
+        "p2": 0.6,
+        "p3": 0.0,
+        "p4": 0.2
+      },
+      "avgRank": 2.2,
+      "avgPoints": 7.4,
+      "streak": 51.8,
+      "winRate": 24.3,
+      "dealInRate": 16.5,
+      "riichiRate": 27.0,
+      "openRate": 40.9,
+      "topYaku": [
+        {
+          "name": "Riichi",
+          "count": 14
+        },
+        {
+          "name": "Chinitsu",
+          "count": 14
+        },
+        {
+          "name": "Junchan",
+          "count": 10
+        },
+        {
+          "name": "Yakuhai Este",
+          "count": 4
+        },
+        {
+          "name": "Sanankou",
+          "count": 3
+        }
+      ],
+      "statsSample": 115,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 7,
@@ -13075,6 +13075,95 @@
       "zone": null
     },
     {
+      "id": "A14",
+      "div": "A",
+      "num": "14",
+      "name": "Kychiel",
+      "shortName": "Kychiel",
+      "handle": "Kychiel",
+      "accountId": 86168805,
+      "discord": "Kychiel",
+      "nat": "AR",
+      "games": 10,
+      "points": 67.7,
+      "history": [
+        22.6,
+        20.3,
+        -21.7,
+        -12.0,
+        20.2,
+        -4.1,
+        15.5,
+        -29.3,
+        28.1,
+        28.1
+      ],
+      "cum": [
+        22.6,
+        42.9,
+        21.2,
+        9.2,
+        29.4,
+        25.3,
+        40.8,
+        11.5,
+        39.6,
+        67.7
+      ],
+      "counts": [
+        5,
+        1,
+        2,
+        2
+      ],
+      "absences": 0,
+      "hands": 101,
+      "wins": 23,
+      "dealIns": 8,
+      "riichis": 25,
+      "openHands": 34,
+      "placements": {
+        "p1": 0.5,
+        "p2": 0.1,
+        "p3": 0.2,
+        "p4": 0.2
+      },
+      "avgRank": 2.1,
+      "avgPoints": 6.8,
+      "streak": 42.4,
+      "winRate": 22.8,
+      "dealInRate": 7.9,
+      "riichiRate": 24.8,
+      "openRate": 33.7,
+      "topYaku": [
+        {
+          "name": "Junchan",
+          "count": 13
+        },
+        {
+          "name": "Riichi",
+          "count": 9
+        },
+        {
+          "name": "Chinitsu",
+          "count": 9
+        },
+        {
+          "name": "Yakuhai Este",
+          "count": 8
+        },
+        {
+          "name": "Hotei Raoyui",
+          "count": 4
+        }
+      ],
+      "statsSample": 101,
+      "statsReliable": true,
+      "arch": "con datos",
+      "rank": 9,
+      "zone": null
+    },
+    {
       "id": "A24",
       "div": "A",
       "num": "24",
@@ -13160,7 +13249,7 @@
       "statsSample": 90,
       "statsReliable": true,
       "arch": "con datos",
-      "rank": 9,
+      "rank": 10,
       "zone": null
     },
     {
@@ -13184,8 +13273,8 @@
         -9.7,
         -36.5,
         43.8,
-        -22.6,
-        49.1
+        49.1,
+        -22.6
       ],
       "cum": [
         -21.2,
@@ -13196,7 +13285,7 @@
         -11.1,
         -47.6,
         -3.8,
-        -26.4,
+        45.3,
         22.7
       ],
       "counts": [
@@ -13206,11 +13295,11 @@
         4
       ],
       "absences": 0,
-      "hands": 93,
-      "wins": 18,
-      "dealIns": 11,
+      "hands": 117,
+      "wins": 24,
+      "dealIns": 12,
       "riichis": 15,
-      "openHands": 21,
+      "openHands": 33,
       "placements": {
         "p1": 0.3,
         "p2": 0.2,
@@ -13220,11 +13309,15 @@
       "avgRank": 2.6,
       "avgPoints": 2.3,
       "streak": 33.8,
-      "winRate": 19.4,
-      "dealInRate": 11.8,
-      "riichiRate": 16.1,
-      "openRate": 22.6,
+      "winRate": 20.5,
+      "dealInRate": 10.3,
+      "riichiRate": 12.8,
+      "openRate": 28.2,
       "topYaku": [
+        {
+          "name": "Junchan",
+          "count": 14
+        },
         {
           "name": "Riichi",
           "count": 12
@@ -13234,22 +13327,18 @@
           "count": 12
         },
         {
-          "name": "Junchan",
-          "count": 10
-        },
-        {
           "name": "Menzen Tsumo",
-          "count": 5
+          "count": 6
         },
         {
-          "name": "Pinfu",
-          "count": 4
+          "name": "Yakuhai Oeste",
+          "count": 6
         }
       ],
-      "statsSample": 93,
+      "statsSample": 117,
       "statsReliable": true,
       "arch": "con datos",
-      "rank": 10,
+      "rank": 11,
       "zone": null,
       "natRank": 5,
       "iormc": "contention"
@@ -13338,95 +13427,6 @@
         }
       ],
       "statsSample": 94,
-      "statsReliable": true,
-      "arch": "con datos",
-      "rank": 11,
-      "zone": null
-    },
-    {
-      "id": "A14",
-      "div": "A",
-      "num": "14",
-      "name": "Kychiel",
-      "shortName": "Kychiel",
-      "handle": "Kychiel",
-      "accountId": 86168805,
-      "discord": "Kychiel",
-      "nat": "AR",
-      "games": 10,
-      "points": -1.6,
-      "history": [
-        22.6,
-        20.3,
-        -21.7,
-        -12.0,
-        20.2,
-        -4.1,
-        15.5,
-        -29.3,
-        -41.2,
-        28.1
-      ],
-      "cum": [
-        22.6,
-        42.9,
-        21.2,
-        9.2,
-        29.4,
-        25.3,
-        40.8,
-        11.5,
-        -29.7,
-        -1.6
-      ],
-      "counts": [
-        4,
-        1,
-        2,
-        3
-      ],
-      "absences": 0,
-      "hands": 85,
-      "wins": 19,
-      "dealIns": 8,
-      "riichis": 21,
-      "openHands": 27,
-      "placements": {
-        "p1": 0.4,
-        "p2": 0.1,
-        "p3": 0.2,
-        "p4": 0.3
-      },
-      "avgRank": 2.4,
-      "avgPoints": -0.2,
-      "streak": -26.9,
-      "winRate": 22.4,
-      "dealInRate": 9.4,
-      "riichiRate": 24.7,
-      "openRate": 31.8,
-      "topYaku": [
-        {
-          "name": "Junchan",
-          "count": 12
-        },
-        {
-          "name": "Riichi",
-          "count": 8
-        },
-        {
-          "name": "Chinitsu",
-          "count": 8
-        },
-        {
-          "name": "Yakuhai Este",
-          "count": 7
-        },
-        {
-          "name": "Ryanpeikou",
-          "count": 4
-        }
-      ],
-      "statsSample": 85,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 12,
@@ -13522,97 +13522,6 @@
       "zone": null
     },
     {
-      "id": "A02",
-      "div": "A",
-      "num": "02",
-      "name": "Mon_96",
-      "shortName": "Mon_96",
-      "handle": "Mon_96",
-      "accountId": 88811372,
-      "discord": "monique__96",
-      "nat": "CL",
-      "games": 10,
-      "points": -19.6,
-      "history": [
-        5.5,
-        21.9,
-        31.1,
-        -32.4,
-        31.6,
-        -45.6,
-        -28.7,
-        -13.4,
-        12.1,
-        -1.7
-      ],
-      "cum": [
-        5.5,
-        27.4,
-        58.5,
-        26.1,
-        57.7,
-        12.1,
-        -16.6,
-        -30.0,
-        -17.9,
-        -19.6
-      ],
-      "counts": [
-        3,
-        2,
-        2,
-        3
-      ],
-      "absences": 0,
-      "hands": 83,
-      "wins": 20,
-      "dealIns": 17,
-      "riichis": 11,
-      "openHands": 38,
-      "placements": {
-        "p1": 0.3,
-        "p2": 0.2,
-        "p3": 0.2,
-        "p4": 0.3
-      },
-      "avgRank": 2.5,
-      "avgPoints": -2.0,
-      "streak": -31.7,
-      "winRate": 24.1,
-      "dealInRate": 20.5,
-      "riichiRate": 13.3,
-      "openRate": 45.8,
-      "topYaku": [
-        {
-          "name": "Junchan",
-          "count": 10
-        },
-        {
-          "name": "Riichi",
-          "count": 5
-        },
-        {
-          "name": "Chinitsu",
-          "count": 5
-        },
-        {
-          "name": "Yakuhai Este",
-          "count": 4
-        },
-        {
-          "name": "Hotei Raoyui",
-          "count": 4
-        }
-      ],
-      "statsSample": 83,
-      "statsReliable": true,
-      "arch": "con datos",
-      "rank": 14,
-      "zone": null,
-      "natRank": 6,
-      "iormc": "contention"
-    },
-    {
       "id": "A08",
       "div": "A",
       "num": "08",
@@ -13698,6 +13607,97 @@
       "statsSample": 99,
       "statsReliable": true,
       "arch": "con datos",
+      "rank": 14,
+      "zone": null,
+      "natRank": 6,
+      "iormc": "contention"
+    },
+    {
+      "id": "A02",
+      "div": "A",
+      "num": "02",
+      "name": "Mon_96",
+      "shortName": "Mon_96",
+      "handle": "Mon_96",
+      "accountId": 88811372,
+      "discord": "monique__96",
+      "nat": "CL",
+      "games": 10,
+      "points": -33.4,
+      "history": [
+        5.5,
+        21.9,
+        31.1,
+        -32.4,
+        31.6,
+        -45.6,
+        -28.7,
+        -13.4,
+        -1.7,
+        -1.7
+      ],
+      "cum": [
+        5.5,
+        27.4,
+        58.5,
+        26.1,
+        57.7,
+        12.1,
+        -16.6,
+        -30.0,
+        -31.7,
+        -33.4
+      ],
+      "counts": [
+        3,
+        1,
+        3,
+        3
+      ],
+      "absences": 0,
+      "hands": 99,
+      "wins": 26,
+      "dealIns": 18,
+      "riichis": 12,
+      "openHands": 45,
+      "placements": {
+        "p1": 0.3,
+        "p2": 0.1,
+        "p3": 0.3,
+        "p4": 0.3
+      },
+      "avgRank": 2.6,
+      "avgPoints": -3.3,
+      "streak": -45.5,
+      "winRate": 26.3,
+      "dealInRate": 18.2,
+      "riichiRate": 12.1,
+      "openRate": 45.5,
+      "topYaku": [
+        {
+          "name": "Junchan",
+          "count": 11
+        },
+        {
+          "name": "Yakuhai Este",
+          "count": 5
+        },
+        {
+          "name": "Tsumo",
+          "count": 5
+        },
+        {
+          "name": "Riichi",
+          "count": 5
+        },
+        {
+          "name": "Chinitsu",
+          "count": 5
+        }
+      ],
+      "statsSample": 99,
+      "statsReliable": true,
+      "arch": "con datos",
       "rank": 15,
       "zone": null,
       "natRank": 7,
@@ -13724,8 +13724,8 @@
         7.9,
         35.1,
         -21.4,
-        5.4,
-        7.6
+        7.6,
+        5.4
       ],
       "cum": [
         27.3,
@@ -13736,7 +13736,7 @@
         -69.3,
         -34.2,
         -55.6,
-        -50.2,
+        -48.0,
         -42.6
       ],
       "counts": [
@@ -13746,11 +13746,11 @@
         3
       ],
       "absences": 0,
-      "hands": 97,
-      "wins": 20,
-      "dealIns": 12,
-      "riichis": 18,
-      "openHands": 22,
+      "hands": 121,
+      "wins": 23,
+      "dealIns": 15,
+      "riichis": 23,
+      "openHands": 28,
       "placements": {
         "p1": 0.2,
         "p2": 0.3,
@@ -13760,22 +13760,22 @@
       "avgRank": 2.6,
       "avgPoints": -4.3,
       "streak": 26.7,
-      "winRate": 20.6,
+      "winRate": 19.0,
       "dealInRate": 12.4,
-      "riichiRate": 18.6,
-      "openRate": 22.7,
+      "riichiRate": 19.0,
+      "openRate": 23.1,
       "topYaku": [
         {
           "name": "Riichi",
-          "count": 11
+          "count": 13
         },
         {
           "name": "Chinitsu",
-          "count": 11
+          "count": 13
         },
         {
           "name": "Junchan",
-          "count": 9
+          "count": 11
         },
         {
           "name": "Yakuhai Este",
@@ -13786,103 +13786,12 @@
           "count": 4
         }
       ],
-      "statsSample": 97,
+      "statsSample": 121,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 16,
       "zone": null,
       "natRank": 8,
-      "iormc": "out"
-    },
-    {
-      "id": "A23",
-      "div": "A",
-      "num": "23",
-      "name": "YotsugiNagi",
-      "shortName": "YotsugiNagi",
-      "handle": "YotsugiNagi",
-      "accountId": 125300837,
-      "discord": "yotsugi",
-      "nat": "CL",
-      "games": 10,
-      "points": -44.0,
-      "history": [
-        -34.0,
-        27.2,
-        -11.4,
-        -4.2,
-        -8.1,
-        23.3,
-        17.0,
-        -4.2,
-        -10.4,
-        -39.2
-      ],
-      "cum": [
-        -34.0,
-        -6.8,
-        -18.2,
-        -22.4,
-        -30.5,
-        -7.2,
-        9.8,
-        5.6,
-        -4.8,
-        -44.0
-      ],
-      "counts": [
-        1,
-        2,
-        5,
-        2
-      ],
-      "absences": 0,
-      "hands": 94,
-      "wins": 23,
-      "dealIns": 14,
-      "riichis": 17,
-      "openHands": 46,
-      "placements": {
-        "p1": 0.1,
-        "p2": 0.2,
-        "p3": 0.5,
-        "p4": 0.2
-      },
-      "avgRank": 2.8,
-      "avgPoints": -4.4,
-      "streak": -36.8,
-      "winRate": 24.5,
-      "dealInRate": 14.9,
-      "riichiRate": 18.1,
-      "openRate": 48.9,
-      "topYaku": [
-        {
-          "name": "Riichi",
-          "count": 9
-        },
-        {
-          "name": "Chinitsu",
-          "count": 9
-        },
-        {
-          "name": "Junchan",
-          "count": 6
-        },
-        {
-          "name": "Menzen Tsumo",
-          "count": 3
-        },
-        {
-          "name": "Ryanpeikou",
-          "count": 3
-        }
-      ],
-      "statsSample": 94,
-      "statsReliable": true,
-      "arch": "con datos",
-      "rank": 17,
-      "zone": null,
-      "natRank": 9,
       "iormc": "out"
     },
     {
@@ -13971,7 +13880,7 @@
       "statsSample": 95,
       "statsReliable": true,
       "arch": "con datos",
-      "rank": 18,
+      "rank": 17,
       "zone": null
     },
     {
@@ -13995,8 +13904,8 @@
         18.4,
         -37.5,
         -29.3,
-        -9.6,
-        -53.7
+        -53.7,
+        -9.6
       ],
       "cum": [
         5.9,
@@ -14007,7 +13916,7 @@
         64.5,
         27.0,
         -2.3,
-        -11.9,
+        -56.0,
         -65.6
       ],
       "counts": [
@@ -14017,11 +13926,11 @@
         3
       ],
       "absences": 0,
-      "hands": 105,
-      "wins": 18,
-      "dealIns": 14,
-      "riichis": 22,
-      "openHands": 42,
+      "hands": 129,
+      "wins": 22,
+      "dealIns": 21,
+      "riichis": 27,
+      "openHands": 54,
       "placements": {
         "p1": 0.1,
         "p2": 0.4,
@@ -14032,13 +13941,17 @@
       "avgPoints": -6.6,
       "streak": -130.1,
       "winRate": 17.1,
-      "dealInRate": 13.3,
-      "riichiRate": 21.0,
-      "openRate": 40.0,
+      "dealInRate": 16.3,
+      "riichiRate": 20.9,
+      "openRate": 41.9,
       "topYaku": [
         {
           "name": "Junchan",
-          "count": 14
+          "count": 16
+        },
+        {
+          "name": "Yakuhai Este",
+          "count": 7
         },
         {
           "name": "Riichi",
@@ -14049,19 +13962,106 @@
           "count": 5
         },
         {
-          "name": "Yakuhai Este",
-          "count": 4
-        },
-        {
           "name": "Hotei Raoyui",
           "count": 4
         }
       ],
-      "statsSample": 105,
+      "statsSample": 129,
+      "statsReliable": true,
+      "arch": "con datos",
+      "rank": 18,
+      "zone": null
+    },
+    {
+      "id": "A23",
+      "div": "A",
+      "num": "23",
+      "name": "YotsugiNagi",
+      "shortName": "YotsugiNagi",
+      "handle": "YotsugiNagi",
+      "accountId": 125300837,
+      "discord": "yotsugi",
+      "nat": "CL",
+      "games": 10,
+      "points": -72.8,
+      "history": [
+        -34.0,
+        27.2,
+        -11.4,
+        -4.2,
+        -8.1,
+        23.3,
+        17.0,
+        -4.2,
+        -39.2,
+        -39.2
+      ],
+      "cum": [
+        -34.0,
+        -6.8,
+        -18.2,
+        -22.4,
+        -30.5,
+        -7.2,
+        9.8,
+        5.6,
+        -33.6,
+        -72.8
+      ],
+      "counts": [
+        1,
+        2,
+        4,
+        3
+      ],
+      "absences": 0,
+      "hands": 110,
+      "wins": 25,
+      "dealIns": 20,
+      "riichis": 20,
+      "openHands": 52,
+      "placements": {
+        "p1": 0.1,
+        "p2": 0.2,
+        "p3": 0.4,
+        "p4": 0.3
+      },
+      "avgRank": 2.9,
+      "avgPoints": -7.3,
+      "streak": -65.6,
+      "winRate": 22.7,
+      "dealInRate": 18.2,
+      "riichiRate": 18.2,
+      "openRate": 47.3,
+      "topYaku": [
+        {
+          "name": "Riichi",
+          "count": 10
+        },
+        {
+          "name": "Chinitsu",
+          "count": 10
+        },
+        {
+          "name": "Junchan",
+          "count": 6
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 3
+        },
+        {
+          "name": "Ryanpeikou",
+          "count": 3
+        }
+      ],
+      "statsSample": 110,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 19,
-      "zone": null
+      "zone": null,
+      "natRank": 9,
+      "iormc": "out"
     },
     {
       "id": "A21",
@@ -16597,8 +16597,8 @@
       "count": 4,
       "inA": 3,
       "inB": 1,
-      "avgPoints": 27.6,
-      "avgRank": 2.39,
+      "avgPoints": 45.0,
+      "avgRank": 2.31,
       "best": {
         "id": "B15",
         "div": "B",
@@ -16787,8 +16787,8 @@
       "count": 24,
       "inA": 12,
       "inB": 12,
-      "avgPoints": 5.7,
-      "avgRank": 2.5,
+      "avgPoints": 2.8,
+      "avgRank": 2.51,
       "best": {
         "id": "B04",
         "div": "B",
@@ -16907,8 +16907,8 @@
           23.0,
           -6.5,
           28.2,
-          26.8,
-          -3.0
+          -3.0,
+          26.8
         ],
         "cum": [
           3.9,
@@ -16919,7 +16919,7 @@
           74.2,
           67.7,
           95.9,
-          122.7,
+          92.9,
           119.7
         ],
         "counts": [
@@ -16929,11 +16929,11 @@
           0
         ],
         "absences": 0,
-        "hands": 80,
-        "wins": 21,
+        "hands": 104,
+        "wins": 27,
         "dealIns": 13,
-        "riichis": 19,
-        "openHands": 40,
+        "riichis": 26,
+        "openHands": 49,
         "placements": {
           "p1": 0.3,
           "p2": 0.4,
@@ -16943,33 +16943,33 @@
         "avgRank": 2.0,
         "avgPoints": 12.0,
         "streak": 45.5,
-        "winRate": 26.2,
-        "dealInRate": 16.2,
-        "riichiRate": 23.8,
-        "openRate": 50.0,
+        "winRate": 26.0,
+        "dealInRate": 12.5,
+        "riichiRate": 25.0,
+        "openRate": 47.1,
         "topYaku": [
           {
             "name": "Junchan",
-            "count": 11
+            "count": 14
           },
           {
             "name": "Riichi",
-            "count": 10
+            "count": 12
           },
           {
             "name": "Chinitsu",
-            "count": 10
+            "count": 12
           },
           {
             "name": "Yakuhai Este",
-            "count": 7
+            "count": 9
           },
           {
             "name": "Menzen Tsumo",
-            "count": 5
+            "count": 7
           }
         ],
-        "statsSample": 80,
+        "statsSample": 104,
         "statsReliable": true,
         "arch": "con datos",
         "rank": 3,
@@ -17162,7 +17162,7 @@
         "statsSample": 95,
         "statsReliable": true,
         "arch": "con datos",
-        "rank": 6,
+        "rank": 5,
         "zone": null
       }
     }
@@ -17263,97 +17263,6 @@
         "iormc": "qualified"
       },
       {
-        "id": "A09",
-        "div": "A",
-        "num": "09",
-        "name": "Xuxe",
-        "shortName": "Xuxe",
-        "handle": "Xuxe",
-        "accountId": 119296750,
-        "discord": "xuxe",
-        "nat": "CL",
-        "games": 10,
-        "points": 100.4,
-        "history": [
-          25.1,
-          5.3,
-          -39.3,
-          -31.4,
-          46.5,
-          15.7,
-          12.1,
-          14.1,
-          39.5,
-          12.8
-        ],
-        "cum": [
-          25.1,
-          30.4,
-          -8.9,
-          -40.3,
-          6.2,
-          21.9,
-          34.0,
-          48.1,
-          87.6,
-          100.4
-        ],
-        "counts": [
-          3,
-          5,
-          0,
-          2
-        ],
-        "absences": 0,
-        "hands": 99,
-        "wins": 25,
-        "dealIns": 17,
-        "riichis": 28,
-        "openHands": 41,
-        "placements": {
-          "p1": 0.3,
-          "p2": 0.5,
-          "p3": 0.0,
-          "p4": 0.2
-        },
-        "avgRank": 2.1,
-        "avgPoints": 10.0,
-        "streak": 78.5,
-        "winRate": 25.3,
-        "dealInRate": 17.2,
-        "riichiRate": 28.3,
-        "openRate": 41.4,
-        "topYaku": [
-          {
-            "name": "Riichi",
-            "count": 13
-          },
-          {
-            "name": "Chinitsu",
-            "count": 13
-          },
-          {
-            "name": "Junchan",
-            "count": 9
-          },
-          {
-            "name": "Menzen Tsumo",
-            "count": 3
-          },
-          {
-            "name": "Yakuhai Oeste",
-            "count": 3
-          }
-        ],
-        "statsSample": 99,
-        "statsReliable": true,
-        "arch": "con datos",
-        "rank": 4,
-        "zone": "title",
-        "natRank": 2,
-        "iormc": "qualified"
-      },
-      {
         "id": "A04",
         "div": "A",
         "num": "04",
@@ -17439,9 +17348,9 @@
         "statsSample": 90,
         "statsReliable": true,
         "arch": "con datos",
-        "rank": 5,
-        "zone": null,
-        "natRank": 3,
+        "rank": 4,
+        "zone": "title",
+        "natRank": 2,
         "iormc": "qualified"
       },
       {
@@ -17530,6 +17439,97 @@
         "statsSample": 98,
         "statsReliable": true,
         "arch": "con datos",
+        "rank": 6,
+        "zone": null,
+        "natRank": 3,
+        "iormc": "qualified"
+      },
+      {
+        "id": "A09",
+        "div": "A",
+        "num": "09",
+        "name": "Xuxe",
+        "shortName": "Xuxe",
+        "handle": "Xuxe",
+        "accountId": 119296750,
+        "discord": "xuxe",
+        "nat": "CL",
+        "games": 10,
+        "points": 73.7,
+        "history": [
+          25.1,
+          5.3,
+          -39.3,
+          -31.4,
+          46.5,
+          15.7,
+          12.1,
+          14.1,
+          12.8,
+          12.8
+        ],
+        "cum": [
+          25.1,
+          30.4,
+          -8.9,
+          -40.3,
+          6.2,
+          21.9,
+          34.0,
+          48.1,
+          60.9,
+          73.7
+        ],
+        "counts": [
+          2,
+          6,
+          0,
+          2
+        ],
+        "absences": 0,
+        "hands": 115,
+        "wins": 28,
+        "dealIns": 19,
+        "riichis": 31,
+        "openHands": 47,
+        "placements": {
+          "p1": 0.2,
+          "p2": 0.6,
+          "p3": 0.0,
+          "p4": 0.2
+        },
+        "avgRank": 2.2,
+        "avgPoints": 7.4,
+        "streak": 51.8,
+        "winRate": 24.3,
+        "dealInRate": 16.5,
+        "riichiRate": 27.0,
+        "openRate": 40.9,
+        "topYaku": [
+          {
+            "name": "Riichi",
+            "count": 14
+          },
+          {
+            "name": "Chinitsu",
+            "count": 14
+          },
+          {
+            "name": "Junchan",
+            "count": 10
+          },
+          {
+            "name": "Yakuhai Este",
+            "count": 4
+          },
+          {
+            "name": "Sanankou",
+            "count": 3
+          }
+        ],
+        "statsSample": 115,
+        "statsReliable": true,
+        "arch": "con datos",
         "rank": 7,
         "zone": null,
         "natRank": 4,
@@ -17558,8 +17558,8 @@
           -9.7,
           -36.5,
           43.8,
-          -22.6,
-          49.1
+          49.1,
+          -22.6
         ],
         "cum": [
           -21.2,
@@ -17570,7 +17570,7 @@
           -11.1,
           -47.6,
           -3.8,
-          -26.4,
+          45.3,
           22.7
         ],
         "counts": [
@@ -17580,11 +17580,11 @@
           4
         ],
         "absences": 0,
-        "hands": 93,
-        "wins": 18,
-        "dealIns": 11,
+        "hands": 117,
+        "wins": 24,
+        "dealIns": 12,
         "riichis": 15,
-        "openHands": 21,
+        "openHands": 33,
         "placements": {
           "p1": 0.3,
           "p2": 0.2,
@@ -17594,11 +17594,15 @@
         "avgRank": 2.6,
         "avgPoints": 2.3,
         "streak": 33.8,
-        "winRate": 19.4,
-        "dealInRate": 11.8,
-        "riichiRate": 16.1,
-        "openRate": 22.6,
+        "winRate": 20.5,
+        "dealInRate": 10.3,
+        "riichiRate": 12.8,
+        "openRate": 28.2,
         "topYaku": [
+          {
+            "name": "Junchan",
+            "count": 14
+          },
           {
             "name": "Riichi",
             "count": 12
@@ -17606,117 +17610,22 @@
           {
             "name": "Chinitsu",
             "count": 12
-          },
-          {
-            "name": "Junchan",
-            "count": 10
           },
           {
             "name": "Menzen Tsumo",
-            "count": 5
+            "count": 6
           },
           {
-            "name": "Pinfu",
-            "count": 4
+            "name": "Yakuhai Oeste",
+            "count": 6
           }
         ],
-        "statsSample": 93,
+        "statsSample": 117,
         "statsReliable": true,
         "arch": "con datos",
-        "rank": 10,
+        "rank": 11,
         "zone": null,
         "natRank": 5,
-        "iormc": "contention"
-      },
-      {
-        "id": "A02",
-        "div": "A",
-        "num": "02",
-        "name": "Mon_96",
-        "shortName": "Mon_96",
-        "handle": "Mon_96",
-        "accountId": 88811372,
-        "discord": "monique__96",
-        "nat": "CL",
-        "games": 10,
-        "points": -19.6,
-        "history": [
-          5.5,
-          21.9,
-          31.1,
-          -32.4,
-          31.6,
-          -45.6,
-          -28.7,
-          -13.4,
-          12.1,
-          -1.7
-        ],
-        "cum": [
-          5.5,
-          27.4,
-          58.5,
-          26.1,
-          57.7,
-          12.1,
-          -16.6,
-          -30.0,
-          -17.9,
-          -19.6
-        ],
-        "counts": [
-          3,
-          2,
-          2,
-          3
-        ],
-        "absences": 0,
-        "hands": 83,
-        "wins": 20,
-        "dealIns": 17,
-        "riichis": 11,
-        "openHands": 38,
-        "placements": {
-          "p1": 0.3,
-          "p2": 0.2,
-          "p3": 0.2,
-          "p4": 0.3
-        },
-        "avgRank": 2.5,
-        "avgPoints": -2.0,
-        "streak": -31.7,
-        "winRate": 24.1,
-        "dealInRate": 20.5,
-        "riichiRate": 13.3,
-        "openRate": 45.8,
-        "topYaku": [
-          {
-            "name": "Junchan",
-            "count": 10
-          },
-          {
-            "name": "Riichi",
-            "count": 5
-          },
-          {
-            "name": "Chinitsu",
-            "count": 5
-          },
-          {
-            "name": "Yakuhai Este",
-            "count": 4
-          },
-          {
-            "name": "Hotei Raoyui",
-            "count": 4
-          }
-        ],
-        "statsSample": 83,
-        "statsReliable": true,
-        "arch": "con datos",
-        "rank": 14,
-        "zone": null,
-        "natRank": 6,
         "iormc": "contention"
       },
       {
@@ -17805,6 +17714,97 @@
         "statsSample": 99,
         "statsReliable": true,
         "arch": "con datos",
+        "rank": 14,
+        "zone": null,
+        "natRank": 6,
+        "iormc": "contention"
+      },
+      {
+        "id": "A02",
+        "div": "A",
+        "num": "02",
+        "name": "Mon_96",
+        "shortName": "Mon_96",
+        "handle": "Mon_96",
+        "accountId": 88811372,
+        "discord": "monique__96",
+        "nat": "CL",
+        "games": 10,
+        "points": -33.4,
+        "history": [
+          5.5,
+          21.9,
+          31.1,
+          -32.4,
+          31.6,
+          -45.6,
+          -28.7,
+          -13.4,
+          -1.7,
+          -1.7
+        ],
+        "cum": [
+          5.5,
+          27.4,
+          58.5,
+          26.1,
+          57.7,
+          12.1,
+          -16.6,
+          -30.0,
+          -31.7,
+          -33.4
+        ],
+        "counts": [
+          3,
+          1,
+          3,
+          3
+        ],
+        "absences": 0,
+        "hands": 99,
+        "wins": 26,
+        "dealIns": 18,
+        "riichis": 12,
+        "openHands": 45,
+        "placements": {
+          "p1": 0.3,
+          "p2": 0.1,
+          "p3": 0.3,
+          "p4": 0.3
+        },
+        "avgRank": 2.6,
+        "avgPoints": -3.3,
+        "streak": -45.5,
+        "winRate": 26.3,
+        "dealInRate": 18.2,
+        "riichiRate": 12.1,
+        "openRate": 45.5,
+        "topYaku": [
+          {
+            "name": "Junchan",
+            "count": 11
+          },
+          {
+            "name": "Yakuhai Este",
+            "count": 5
+          },
+          {
+            "name": "Tsumo",
+            "count": 5
+          },
+          {
+            "name": "Riichi",
+            "count": 5
+          },
+          {
+            "name": "Chinitsu",
+            "count": 5
+          }
+        ],
+        "statsSample": 99,
+        "statsReliable": true,
+        "arch": "con datos",
         "rank": 15,
         "zone": null,
         "natRank": 7,
@@ -17833,8 +17833,8 @@
           7.9,
           35.1,
           -21.4,
-          5.4,
-          7.6
+          7.6,
+          5.4
         ],
         "cum": [
           27.3,
@@ -17845,7 +17845,7 @@
           -69.3,
           -34.2,
           -55.6,
-          -50.2,
+          -48.0,
           -42.6
         ],
         "counts": [
@@ -17855,11 +17855,11 @@
           3
         ],
         "absences": 0,
-        "hands": 97,
-        "wins": 20,
-        "dealIns": 12,
-        "riichis": 18,
-        "openHands": 22,
+        "hands": 121,
+        "wins": 23,
+        "dealIns": 15,
+        "riichis": 23,
+        "openHands": 28,
         "placements": {
           "p1": 0.2,
           "p2": 0.3,
@@ -17869,22 +17869,22 @@
         "avgRank": 2.6,
         "avgPoints": -4.3,
         "streak": 26.7,
-        "winRate": 20.6,
+        "winRate": 19.0,
         "dealInRate": 12.4,
-        "riichiRate": 18.6,
-        "openRate": 22.7,
+        "riichiRate": 19.0,
+        "openRate": 23.1,
         "topYaku": [
           {
             "name": "Riichi",
-            "count": 11
+            "count": 13
           },
           {
             "name": "Chinitsu",
-            "count": 11
+            "count": 13
           },
           {
             "name": "Junchan",
-            "count": 9
+            "count": 11
           },
           {
             "name": "Yakuhai Este",
@@ -17895,7 +17895,7 @@
             "count": 4
           }
         ],
-        "statsSample": 97,
+        "statsSample": 121,
         "statsReliable": true,
         "arch": "con datos",
         "rank": 16,
@@ -17914,7 +17914,7 @@
         "discord": "yotsugi",
         "nat": "CL",
         "games": 10,
-        "points": -44.0,
+        "points": -72.8,
         "history": [
           -34.0,
           27.2,
@@ -17924,7 +17924,7 @@
           23.3,
           17.0,
           -4.2,
-          -10.4,
+          -39.2,
           -39.2
         ],
         "cum": [
@@ -17936,42 +17936,42 @@
           -7.2,
           9.8,
           5.6,
-          -4.8,
-          -44.0
+          -33.6,
+          -72.8
         ],
         "counts": [
           1,
           2,
-          5,
-          2
+          4,
+          3
         ],
         "absences": 0,
-        "hands": 94,
-        "wins": 23,
-        "dealIns": 14,
-        "riichis": 17,
-        "openHands": 46,
+        "hands": 110,
+        "wins": 25,
+        "dealIns": 20,
+        "riichis": 20,
+        "openHands": 52,
         "placements": {
           "p1": 0.1,
           "p2": 0.2,
-          "p3": 0.5,
-          "p4": 0.2
+          "p3": 0.4,
+          "p4": 0.3
         },
-        "avgRank": 2.8,
-        "avgPoints": -4.4,
-        "streak": -36.8,
-        "winRate": 24.5,
-        "dealInRate": 14.9,
-        "riichiRate": 18.1,
-        "openRate": 48.9,
+        "avgRank": 2.9,
+        "avgPoints": -7.3,
+        "streak": -65.6,
+        "winRate": 22.7,
+        "dealInRate": 18.2,
+        "riichiRate": 18.2,
+        "openRate": 47.3,
         "topYaku": [
           {
             "name": "Riichi",
-            "count": 9
+            "count": 10
           },
           {
             "name": "Chinitsu",
-            "count": 9
+            "count": 10
           },
           {
             "name": "Junchan",
@@ -17986,10 +17986,10 @@
             "count": 3
           }
         ],
-        "statsSample": 94,
+        "statsSample": 110,
         "statsReliable": true,
         "arch": "con datos",
-        "rank": 17,
+        "rank": 19,
         "zone": null,
         "natRank": 9,
         "iormc": "out"
@@ -18361,97 +18361,6 @@
         "iormc": "qualified"
       },
       {
-        "id": "A09",
-        "div": "A",
-        "num": "09",
-        "name": "Xuxe",
-        "shortName": "Xuxe",
-        "handle": "Xuxe",
-        "accountId": 119296750,
-        "discord": "xuxe",
-        "nat": "CL",
-        "games": 10,
-        "points": 100.4,
-        "history": [
-          25.1,
-          5.3,
-          -39.3,
-          -31.4,
-          46.5,
-          15.7,
-          12.1,
-          14.1,
-          39.5,
-          12.8
-        ],
-        "cum": [
-          25.1,
-          30.4,
-          -8.9,
-          -40.3,
-          6.2,
-          21.9,
-          34.0,
-          48.1,
-          87.6,
-          100.4
-        ],
-        "counts": [
-          3,
-          5,
-          0,
-          2
-        ],
-        "absences": 0,
-        "hands": 99,
-        "wins": 25,
-        "dealIns": 17,
-        "riichis": 28,
-        "openHands": 41,
-        "placements": {
-          "p1": 0.3,
-          "p2": 0.5,
-          "p3": 0.0,
-          "p4": 0.2
-        },
-        "avgRank": 2.1,
-        "avgPoints": 10.0,
-        "streak": 78.5,
-        "winRate": 25.3,
-        "dealInRate": 17.2,
-        "riichiRate": 28.3,
-        "openRate": 41.4,
-        "topYaku": [
-          {
-            "name": "Riichi",
-            "count": 13
-          },
-          {
-            "name": "Chinitsu",
-            "count": 13
-          },
-          {
-            "name": "Junchan",
-            "count": 9
-          },
-          {
-            "name": "Menzen Tsumo",
-            "count": 3
-          },
-          {
-            "name": "Yakuhai Oeste",
-            "count": 3
-          }
-        ],
-        "statsSample": 99,
-        "statsReliable": true,
-        "arch": "con datos",
-        "rank": 4,
-        "zone": "title",
-        "natRank": 2,
-        "iormc": "qualified"
-      },
-      {
         "id": "A04",
         "div": "A",
         "num": "04",
@@ -18537,9 +18446,9 @@
         "statsSample": 90,
         "statsReliable": true,
         "arch": "con datos",
-        "rank": 5,
-        "zone": null,
-        "natRank": 3,
+        "rank": 4,
+        "zone": "title",
+        "natRank": 2,
         "iormc": "qualified"
       },
       {
@@ -18628,6 +18537,97 @@
         "statsSample": 98,
         "statsReliable": true,
         "arch": "con datos",
+        "rank": 6,
+        "zone": null,
+        "natRank": 3,
+        "iormc": "qualified"
+      },
+      {
+        "id": "A09",
+        "div": "A",
+        "num": "09",
+        "name": "Xuxe",
+        "shortName": "Xuxe",
+        "handle": "Xuxe",
+        "accountId": 119296750,
+        "discord": "xuxe",
+        "nat": "CL",
+        "games": 10,
+        "points": 73.7,
+        "history": [
+          25.1,
+          5.3,
+          -39.3,
+          -31.4,
+          46.5,
+          15.7,
+          12.1,
+          14.1,
+          12.8,
+          12.8
+        ],
+        "cum": [
+          25.1,
+          30.4,
+          -8.9,
+          -40.3,
+          6.2,
+          21.9,
+          34.0,
+          48.1,
+          60.9,
+          73.7
+        ],
+        "counts": [
+          2,
+          6,
+          0,
+          2
+        ],
+        "absences": 0,
+        "hands": 115,
+        "wins": 28,
+        "dealIns": 19,
+        "riichis": 31,
+        "openHands": 47,
+        "placements": {
+          "p1": 0.2,
+          "p2": 0.6,
+          "p3": 0.0,
+          "p4": 0.2
+        },
+        "avgRank": 2.2,
+        "avgPoints": 7.4,
+        "streak": 51.8,
+        "winRate": 24.3,
+        "dealInRate": 16.5,
+        "riichiRate": 27.0,
+        "openRate": 40.9,
+        "topYaku": [
+          {
+            "name": "Riichi",
+            "count": 14
+          },
+          {
+            "name": "Chinitsu",
+            "count": 14
+          },
+          {
+            "name": "Junchan",
+            "count": 10
+          },
+          {
+            "name": "Yakuhai Este",
+            "count": 4
+          },
+          {
+            "name": "Sanankou",
+            "count": 3
+          }
+        ],
+        "statsSample": 115,
+        "statsReliable": true,
+        "arch": "con datos",
         "rank": 7,
         "zone": null,
         "natRank": 4,
@@ -18654,8 +18654,8 @@
           -9.7,
           -36.5,
           43.8,
-          -22.6,
-          49.1
+          49.1,
+          -22.6
         ],
         "cum": [
           -21.2,
@@ -18666,7 +18666,7 @@
           -11.1,
           -47.6,
           -3.8,
-          -26.4,
+          45.3,
           22.7
         ],
         "counts": [
@@ -18676,11 +18676,11 @@
           4
         ],
         "absences": 0,
-        "hands": 93,
-        "wins": 18,
-        "dealIns": 11,
+        "hands": 117,
+        "wins": 24,
+        "dealIns": 12,
         "riichis": 15,
-        "openHands": 21,
+        "openHands": 33,
         "placements": {
           "p1": 0.3,
           "p2": 0.2,
@@ -18690,11 +18690,15 @@
         "avgRank": 2.6,
         "avgPoints": 2.3,
         "streak": 33.8,
-        "winRate": 19.4,
-        "dealInRate": 11.8,
-        "riichiRate": 16.1,
-        "openRate": 22.6,
+        "winRate": 20.5,
+        "dealInRate": 10.3,
+        "riichiRate": 12.8,
+        "openRate": 28.2,
         "topYaku": [
+          {
+            "name": "Junchan",
+            "count": 14
+          },
           {
             "name": "Riichi",
             "count": 12
@@ -18702,117 +18706,22 @@
           {
             "name": "Chinitsu",
             "count": 12
-          },
-          {
-            "name": "Junchan",
-            "count": 10
           },
           {
             "name": "Menzen Tsumo",
-            "count": 5
+            "count": 6
           },
           {
-            "name": "Pinfu",
-            "count": 4
+            "name": "Yakuhai Oeste",
+            "count": 6
           }
         ],
-        "statsSample": 93,
+        "statsSample": 117,
         "statsReliable": true,
         "arch": "con datos",
-        "rank": 10,
+        "rank": 11,
         "zone": null,
         "natRank": 5,
-        "iormc": "contention"
-      },
-      {
-        "id": "A02",
-        "div": "A",
-        "num": "02",
-        "name": "Mon_96",
-        "shortName": "Mon_96",
-        "handle": "Mon_96",
-        "accountId": 88811372,
-        "discord": "monique__96",
-        "nat": "CL",
-        "games": 10,
-        "points": -19.6,
-        "history": [
-          5.5,
-          21.9,
-          31.1,
-          -32.4,
-          31.6,
-          -45.6,
-          -28.7,
-          -13.4,
-          12.1,
-          -1.7
-        ],
-        "cum": [
-          5.5,
-          27.4,
-          58.5,
-          26.1,
-          57.7,
-          12.1,
-          -16.6,
-          -30.0,
-          -17.9,
-          -19.6
-        ],
-        "counts": [
-          3,
-          2,
-          2,
-          3
-        ],
-        "absences": 0,
-        "hands": 83,
-        "wins": 20,
-        "dealIns": 17,
-        "riichis": 11,
-        "openHands": 38,
-        "placements": {
-          "p1": 0.3,
-          "p2": 0.2,
-          "p3": 0.2,
-          "p4": 0.3
-        },
-        "avgRank": 2.5,
-        "avgPoints": -2.0,
-        "streak": -31.7,
-        "winRate": 24.1,
-        "dealInRate": 20.5,
-        "riichiRate": 13.3,
-        "openRate": 45.8,
-        "topYaku": [
-          {
-            "name": "Junchan",
-            "count": 10
-          },
-          {
-            "name": "Riichi",
-            "count": 5
-          },
-          {
-            "name": "Chinitsu",
-            "count": 5
-          },
-          {
-            "name": "Yakuhai Este",
-            "count": 4
-          },
-          {
-            "name": "Hotei Raoyui",
-            "count": 4
-          }
-        ],
-        "statsSample": 83,
-        "statsReliable": true,
-        "arch": "con datos",
-        "rank": 14,
-        "zone": null,
-        "natRank": 6,
         "iormc": "contention"
       },
       {
@@ -18901,6 +18810,97 @@
         "statsSample": 99,
         "statsReliable": true,
         "arch": "con datos",
+        "rank": 14,
+        "zone": null,
+        "natRank": 6,
+        "iormc": "contention"
+      },
+      {
+        "id": "A02",
+        "div": "A",
+        "num": "02",
+        "name": "Mon_96",
+        "shortName": "Mon_96",
+        "handle": "Mon_96",
+        "accountId": 88811372,
+        "discord": "monique__96",
+        "nat": "CL",
+        "games": 10,
+        "points": -33.4,
+        "history": [
+          5.5,
+          21.9,
+          31.1,
+          -32.4,
+          31.6,
+          -45.6,
+          -28.7,
+          -13.4,
+          -1.7,
+          -1.7
+        ],
+        "cum": [
+          5.5,
+          27.4,
+          58.5,
+          26.1,
+          57.7,
+          12.1,
+          -16.6,
+          -30.0,
+          -31.7,
+          -33.4
+        ],
+        "counts": [
+          3,
+          1,
+          3,
+          3
+        ],
+        "absences": 0,
+        "hands": 99,
+        "wins": 26,
+        "dealIns": 18,
+        "riichis": 12,
+        "openHands": 45,
+        "placements": {
+          "p1": 0.3,
+          "p2": 0.1,
+          "p3": 0.3,
+          "p4": 0.3
+        },
+        "avgRank": 2.6,
+        "avgPoints": -3.3,
+        "streak": -45.5,
+        "winRate": 26.3,
+        "dealInRate": 18.2,
+        "riichiRate": 12.1,
+        "openRate": 45.5,
+        "topYaku": [
+          {
+            "name": "Junchan",
+            "count": 11
+          },
+          {
+            "name": "Yakuhai Este",
+            "count": 5
+          },
+          {
+            "name": "Tsumo",
+            "count": 5
+          },
+          {
+            "name": "Riichi",
+            "count": 5
+          },
+          {
+            "name": "Chinitsu",
+            "count": 5
+          }
+        ],
+        "statsSample": 99,
+        "statsReliable": true,
+        "arch": "con datos",
         "rank": 15,
         "zone": null,
         "natRank": 7,
@@ -18927,8 +18927,8 @@
           7.9,
           35.1,
           -21.4,
-          5.4,
-          7.6
+          7.6,
+          5.4
         ],
         "cum": [
           27.3,
@@ -18939,7 +18939,7 @@
           -69.3,
           -34.2,
           -55.6,
-          -50.2,
+          -48.0,
           -42.6
         ],
         "counts": [
@@ -18949,11 +18949,11 @@
           3
         ],
         "absences": 0,
-        "hands": 97,
-        "wins": 20,
-        "dealIns": 12,
-        "riichis": 18,
-        "openHands": 22,
+        "hands": 121,
+        "wins": 23,
+        "dealIns": 15,
+        "riichis": 23,
+        "openHands": 28,
         "placements": {
           "p1": 0.2,
           "p2": 0.3,
@@ -18963,22 +18963,22 @@
         "avgRank": 2.6,
         "avgPoints": -4.3,
         "streak": 26.7,
-        "winRate": 20.6,
+        "winRate": 19.0,
         "dealInRate": 12.4,
-        "riichiRate": 18.6,
-        "openRate": 22.7,
+        "riichiRate": 19.0,
+        "openRate": 23.1,
         "topYaku": [
           {
             "name": "Riichi",
-            "count": 11
+            "count": 13
           },
           {
             "name": "Chinitsu",
-            "count": 11
+            "count": 13
           },
           {
             "name": "Junchan",
-            "count": 9
+            "count": 11
           },
           {
             "name": "Yakuhai Este",
@@ -18989,7 +18989,7 @@
             "count": 4
           }
         ],
-        "statsSample": 97,
+        "statsSample": 121,
         "statsReliable": true,
         "arch": "con datos",
         "rank": 16,
@@ -19008,7 +19008,7 @@
         "discord": "yotsugi",
         "nat": "CL",
         "games": 10,
-        "points": -44.0,
+        "points": -72.8,
         "history": [
           -34.0,
           27.2,
@@ -19018,7 +19018,7 @@
           23.3,
           17.0,
           -4.2,
-          -10.4,
+          -39.2,
           -39.2
         ],
         "cum": [
@@ -19030,42 +19030,42 @@
           -7.2,
           9.8,
           5.6,
-          -4.8,
-          -44.0
+          -33.6,
+          -72.8
         ],
         "counts": [
           1,
           2,
-          5,
-          2
+          4,
+          3
         ],
         "absences": 0,
-        "hands": 94,
-        "wins": 23,
-        "dealIns": 14,
-        "riichis": 17,
-        "openHands": 46,
+        "hands": 110,
+        "wins": 25,
+        "dealIns": 20,
+        "riichis": 20,
+        "openHands": 52,
         "placements": {
           "p1": 0.1,
           "p2": 0.2,
-          "p3": 0.5,
-          "p4": 0.2
+          "p3": 0.4,
+          "p4": 0.3
         },
-        "avgRank": 2.8,
-        "avgPoints": -4.4,
-        "streak": -36.8,
-        "winRate": 24.5,
-        "dealInRate": 14.9,
-        "riichiRate": 18.1,
-        "openRate": 48.9,
+        "avgRank": 2.9,
+        "avgPoints": -7.3,
+        "streak": -65.6,
+        "winRate": 22.7,
+        "dealInRate": 18.2,
+        "riichiRate": 18.2,
+        "openRate": 47.3,
         "topYaku": [
           {
             "name": "Riichi",
-            "count": 9
+            "count": 10
           },
           {
             "name": "Chinitsu",
-            "count": 9
+            "count": 10
           },
           {
             "name": "Junchan",
@@ -19080,10 +19080,10 @@
             "count": 3
           }
         ],
-        "statsSample": 94,
+        "statsSample": 110,
         "statsReliable": true,
         "arch": "con datos",
-        "rank": 17,
+        "rank": 19,
         "zone": null,
         "natRank": 9,
         "iormc": "out"
@@ -19362,8 +19362,8 @@
         "iormc": "out"
       }
     ],
-    "cutPoints": 74.0,
-    "gap": 51.3
+    "cutPoints": 73.7,
+    "gap": 51.0
   },
   "calendar": [
     {
