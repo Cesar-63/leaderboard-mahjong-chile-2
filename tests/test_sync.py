@@ -3,8 +3,9 @@ from unittest.mock import patch
 
 from scripts.majsoul import PaipuError, YAKU_NAMES, extract_record_id, extract_uuid, has_yostar_credentials, parse_record
 from scripts.sync import (
-    CALENDAR_VALUE_COLS, SESSION_G1_ROWS, advanced_stats_health, build_excel_results,
-    build_paipu_results, build_public_data, match_paipu_seats, normalize_nat,
+    CALENDAR_VALUE_COLS, SESSION_G1_ROWS, advanced_stats_health, align_history_with_fixtures,
+    build_excel_results, build_paipu_results, build_public_data, find_absent_player,
+    match_paipu_seats, normalize_nat,
 )
 
 
@@ -195,7 +196,8 @@ class SyncTests(unittest.TestCase):
     def test_build_paipu_results_computes_delta_and_place(self):
         players = _rosters()["A"]
         seat_map = match_paipu_seats(_paipu_game()["players"], players)
-        results = build_paipu_results(seat_map, _paipu_game()["finalScoresBySeat"], _division_config()["divisions"]["A"])
+        game = _paipu_game()
+        results = build_paipu_results("A-S1-M1-G1", seat_map, game["players"], game["finalScoresBySeat"], _division_config()["divisions"]["A"], None)
         by_id = {r["id"]: r for r in results}
         self.assertEqual(by_id["A03"]["place"], 1)
         self.assertEqual(by_id["A03"]["delta"], 30.0)
@@ -258,6 +260,109 @@ class SyncTests(unittest.TestCase):
         self.assertEqual(by_id["A01"]["points"], 30.0)
         self.assertEqual(by_id["A03"]["points"], 13.5)
         self.assertEqual(data["divisions"]["A"]["matches"][0]["source"], "excel")
+
+
+def _fixture(division, session, table, players, date="12 abr"):
+    return {"division": division, "session": session, "table": table, "players": players,
+            "date": date, "weekday": "sáb", "dateISO": "2026-04-12", "time": None}
+
+
+def _history(key, session, table, game, names, scores=(45000, 38500, 32000, 4500)):
+    umas = [15, 5, -5, -15]
+    return {key: {"key": key, "session": session, "table": table, "game": game,
+                  "results": [{"name": n, "scoreRaw": s, "place": i + 1,
+                               "delta": round((s - 30000) / 1000 + umas[i], 1)}
+                              for i, (n, s) in enumerate(zip(names, scores))],
+                  "sourceCell": "X!B2"}}
+
+
+class MesasRenumeradasTests(unittest.TestCase):
+    """El Game History numera las mesas distinto que el Calendario."""
+
+    def test_reasigna_grupos_cruzados_a_la_mesa_del_calendario(self):
+        fixtures = [
+            _fixture("A", 1, 1, ["Bodoque", "Mon_96", "Meme000", "Twining1999"]),
+            _fixture("A", 1, 6, ["W", "X", "Y", "Z"]),
+        ]
+        histories = {}
+        histories.update(_history("A-S1-M1-G1", 1, 1, 1, ["W", "X", "Y", "Z"]))
+        histories.update(_history("A-S1-M6-G1", 1, 6, 1, ["Bodoque", "Mon_96", "Meme000", "Twining1999"]))
+        alineadas, avisos = align_history_with_fixtures(histories, fixtures)
+        self.assertEqual(alineadas["A-S1-M6-G1"]["results"][0]["name"], "W")
+        self.assertEqual(alineadas["A-S1-M1-G1"]["results"][0]["name"], "Bodoque")
+        self.assertEqual(alineadas["A-S1-M1-G1"]["table"], 1)
+        self.assertTrue(any("mesa 1 del Game History corresponde a la mesa 6" in a for a in avisos))
+
+    def test_empareja_con_tres_de_cuatro_cuando_hay_suplente(self):
+        fixtures = [_fixture("A", 2, 3, ["Bodoque", "Mon_96", "Meme000", "Twining1999"])]
+        histories = _history("A-S2-M5-G1", 2, 5, 1, ["Bodoque", "Mon_96", "Meme000", "ForasteroXYZ"])
+        alineadas, _ = align_history_with_fixtures(histories, fixtures)
+        self.assertIn("A-S2-M3-G1", alineadas)
+        self.assertEqual(alineadas["A-S2-M3-G1"]["table"], 3)
+
+    def test_avisa_cuando_ningun_grupo_calza(self):
+        fixtures = [_fixture("A", 1, 1, ["Bodoque", "Mon_96", "Meme000", "Twining1999"])]
+        histories = _history("A-S1-M1-G1", 1, 1, 1, ["Otro1", "Otro2", "Otro3", "Otro4"])
+        alineadas, avisos = align_history_with_fixtures(histories, fixtures)
+        self.assertIn("A-S1-M1-G1", alineadas)
+        self.assertTrue(any("ningún grupo del calendario coincide" in a for a in avisos))
+
+
+class SuplentesYAusenciasTests(unittest.TestCase):
+
+    def test_ausente_suma_partida_y_penalizacion_sin_ocupar_puesto(self):
+        config = _division_config() | {"absencePenaltyPerHanchan": -30}
+        rosters = _rosters()
+        fixtures = [_fixture("A", 1, 1, ["Bodoque", "Mon_96", "Meme000", "Twining1999"])]
+        submissions = [{"key": "A-S1-M1-G1", "division": "A", "session": 1, "table": 1,
+                        "players": ["Bodoque", "Mon_96", "Meme000", "Twining1999"],
+                        "game": 1, "cell": "Calendario!C11", "url": ""}]
+        # Twining1999 (A04) se ausenta; juega un suplente ajeno al roster.
+        histories = _history("A-S1-M1-G1", 1, 1, 1, ["Bodoque", "Mon_96", "Meme000", "ForasteroXYZ"])
+        data, _ = build_public_data(config, rosters, fixtures, submissions, histories, {})
+        by_id = {p["id"]: p for p in data["divisions"]["A"]["players"]}
+        ausente = by_id["A04"]
+        self.assertEqual(ausente["games"], 1)
+        self.assertEqual(ausente["absences"], 1)
+        self.assertEqual(ausente["points"], -30.0)
+        self.assertEqual(ausente["history"], [-30.0])
+        # No ocupa puesto: la distribución y el promedio quedan vacíos.
+        self.assertEqual(ausente["counts"], [0, 0, 0, 0])
+        self.assertEqual(ausente["avgRank"], 0)
+        # El suplente no entra en la clasificación pero sí en el historial.
+        suplente = next(p for p in data["divisions"]["A"]["matches"][0]["players"] if p.get("esSuplente"))
+        self.assertEqual(suplente["sustitutoDe"], "A04")
+        self.assertNotIn(suplente["id"], by_id)
+
+    def test_paipu_con_suplente_no_le_atribuye_stats_al_ausente(self):
+        config = _division_config() | {"absencePenaltyPerHanchan": -30}
+        rosters = _rosters()
+        fixtures = [_fixture("A", 1, 1, ["Bodoque", "Mon_96", "Meme000", "Twining1999"])]
+        submissions = [{"key": "A-S1-M1-G1", "division": "A", "session": 1, "table": 1,
+                        "players": ["Bodoque", "Mon_96", "Meme000", "Twining1999"],
+                        "game": 1, "cell": "Calendario!C11", "url": "u"}]
+        parsed = _paipu_game()
+        # El asiento 3 lo ocupa una cuenta que no está en ningún roster.
+        parsed["players"] = [
+            {"seat": 0, "account_id": 101, "nickname": "Bodoque", "point": 45000},
+            {"seat": 1, "account_id": 102, "nickname": "Mon_96", "point": 38500},
+            {"seat": 2, "account_id": 103, "nickname": "Meme000", "point": 32000},
+            {"seat": 3, "account_id": 999, "nickname": "ForasteroXYZ", "point": 4500},
+        ]
+        data, stats = build_public_data(config, rosters, fixtures, submissions, {"A-S1-M1-G1": parsed}, {"A-S1-M1-G1": parsed})
+        by_id = {p["id"]: p for p in data["divisions"]["A"]["players"]}
+        ausente = by_id["A04"]
+        self.assertEqual(ausente["games"], 1)
+        self.assertEqual(ausente["points"], -30.0)
+        # Las manos del asiento del suplente no son de nadie del roster.
+        self.assertEqual(ausente["hands"], 0)
+        self.assertEqual(by_id["A01"]["hands"], 7)
+
+    def test_find_absent_player_devuelve_al_que_falta(self):
+        players = _rosters()["A"]
+        presentes = {"A01", "A02", "A03"}
+        self.assertEqual(find_absent_player(["Bodoque", "Mon_96", "Meme000", "Twining1999"], players, presentes)["id"], "A04")
+        self.assertIsNone(find_absent_player(["Bodoque"], players, {"A01"}))
 
 
 if __name__ == "__main__":

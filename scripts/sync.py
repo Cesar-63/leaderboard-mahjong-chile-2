@@ -36,6 +36,9 @@ NAT_CODES = {
 CALENDAR_VALUE_COLS = {"A": [3, 6, 9, 12, 15, 18], "B": [22, 25, 28, 31, 34, 37]}
 CALENDAR_PLAYER_COLS = {"A": [1, 4, 7, 10, 13, 16], "B": [20, 23, 26, 29, 32, 35]}
 SESSION_G1_ROWS = [11, 19, 27, 35, 43, 51, 59]
+# Mínimo de jugadores en común para dar por equivalentes dos grupos: 3 de 4,
+# para tolerar exactamente un suplente.
+MIN_ROSTER_OVERLAP = 3
 WEEKDAYS_ES = ["lun", "mar", "mié", "jue", "vie", "sáb", "dom"]
 MONTHS_ES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"]
 
@@ -244,7 +247,8 @@ def match_paipu_seats(parsed_players: list[dict[str, Any]], players: list[dict[s
             player = by_name.get(str(entry["nickname"]).strip().lower())
         if player is not None:
             seat_map[seat] = player
-    if len(seat_map) == 4 and len({p["id"] for p in seat_map.values()}) == 4:
+    if len(seat_map) == len({p["id"] for p in seat_map.values()}) >= 3:
+        # 4 asientos = mesa completa; 3 = hay exactamente un suplente.
         return seat_map
     return None
 
@@ -257,21 +261,43 @@ def match_fixture_order(fixture_players: list[str], players: list[dict[str, Any]
         player = by_name.get(name.strip().lower())
         if player is not None:
             seat_map[seat] = player
-    if len(seat_map) == 4 and len({p["id"] for p in seat_map.values()}) == 4:
+    if len(seat_map) == len({p["id"] for p in seat_map.values()}) >= 3:
+        # 4 asientos = mesa completa; 3 = hay exactamente un suplente.
         return seat_map
     return None
 
 
-def build_paipu_results(seat_map: dict[int, dict[str, Any]], final_scores: list[int], rule: dict[str, Any]) -> list[dict[str, Any]]:
-    """Resultados de liga (puesto, delta, puntos) a partir de los datos del paipu."""
-    pairs = [(seat_map[seat], final_scores[seat]) for seat in range(4)]
+def find_absent_player(fixture_players: list[str], players: list[dict[str, Any]], present_ids: set[str]) -> dict[str, Any] | None:
+    """El jugador del grupo del calendario que no se sentó a la mesa."""
+    by_name = {p["name"].strip().lower(): p for p in players}
+    for name in fixture_players:
+        player = by_name.get(str(name).strip().lower())
+        if player is not None and player["id"] not in present_ids:
+            return player
+    return None
+
+
+def build_paipu_results(key: str, seat_map: dict[int, dict[str, Any]], parsed_players: list[dict[str, Any]], final_scores: list[int], rule: dict[str, Any], absent: dict[str, Any] | None) -> list[dict[str, Any]]:
+    """Resultados de liga (puesto, delta, puntos) a partir de los datos del paipu.
+    Un asiento fuera del roster es un suplente: juega y ocupa su puesto, pero se
+    marca con `sustitutoDe` para excluirlo de la clasificación."""
+    pairs = []
+    for seat in range(4):
+        player = seat_map.get(seat)
+        if player is None:
+            apodo = str(parsed_players[seat].get("nickname") or "").strip() or "Suplente"
+            player = {"id": None, "name": apodo, "handle": apodo, "nat": "OT"}
+        pairs.append((player, final_scores[seat]))
     ranked = sorted(pairs, key=lambda item: item[1], reverse=True)
     results = []
     for place, (player, score) in enumerate(ranked, start=1):
         delta = round((score - int(rule["initialPoints"])) / 1000 + float(rule["uma"][place - 1]), 1)
+        suplente = player["id"] is None
         results.append({
-            "id": player["id"], "name": player["name"], "handle": player["handle"],
-            "nat": player["nat"], "scoreRaw": int(score), "place": place, "delta": delta,
+            "id": player["id"] or f"sub-{key}-{place}", "name": player["name"],
+            "handle": player["handle"], "nat": player["nat"], "scoreRaw": int(score),
+            "place": place, "delta": delta,
+            "sustitutoDe": (absent["id"] if absent else None) if suplente else None,
         })
     return results
 
@@ -307,9 +333,10 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
     all_players: list[dict[str, Any]] = []
     stats_output: dict[str, Any] = {"players": {}}
     submission_by_key = {item["key"]: item for item in submissions if item.get("url")}
+    absence_penalty = float(config.get("absencePenaltyPerHanchan", -30))
     for division in ("A", "B"):
         rule = config["divisions"][division]
-        players = [{**player, "games": 0, "points": 0.0, "history": [], "cum": [], "counts": [0, 0, 0, 0], "hands": 0, "wins": 0, "dealIns": 0, "riichis": 0, "openHands": 0, "yakuCounts": Counter()} for player in rosters[division]]
+        players = [{**player, "games": 0, "points": 0.0, "history": [], "cum": [], "counts": [0, 0, 0, 0], "absences": 0, "hands": 0, "wins": 0, "dealIns": 0, "riichis": 0, "openHands": 0, "yakuCounts": Counter()} for player in rosters[division]]
         by_id = {player["id"]: player for player in players}
         matches = []
         keys = {key for key in histories if key.startswith(f"{division}-")} | {key for key in parsed_games if key.startswith(f"{division}-")}
@@ -327,7 +354,10 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
             if parsed and seat_map is None and fixture_names:
                 seat_map = match_fixture_order(fixture_names, players)
             if parsed and seat_map and len(parsed["finalScoresBySeat"]) == 4:
-                results = build_paipu_results(seat_map, parsed["finalScoresBySeat"], rule)
+                absent = None
+                if len(seat_map) < 4:
+                    absent = find_absent_player(fixture_names, players, {p["id"] for p in seat_map.values()})
+                results = build_paipu_results(key, seat_map, parsed["players"], parsed["finalScoresBySeat"], rule, absent)
                 source = "paipu"
             elif official:
                 results = build_excel_results(official, fixture_names, players)
@@ -336,13 +366,23 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
                 continue
             match_players = []
             for result in results:
+                es_suplente = result["id"].startswith("sub-")
                 player = by_id.get(result["id"])
-                if player and not result["id"].startswith("sub-"):
+                if player and not es_suplente:
                     player["games"] += 1
                     player["points"] = round(player["points"] + result["delta"], 1)
                     player["history"].append(result["delta"])
                     player["counts"][result["place"] - 1] += 1
-                match_players.append({k: result[k] for k in ("id", "name", "handle", "nat", "scoreRaw", "place", "delta")} | {"sustitutoDe": result.get("sustitutoDe")})
+                if es_suplente and result.get("sustitutoDe"):
+                    # El ausente tiene la partida por jugada y recibe la
+                    # penalización fija; no ocupa puesto porque no jugó.
+                    ausente = by_id.get(result["sustitutoDe"])
+                    if ausente is not None:
+                        ausente["games"] += 1
+                        ausente["absences"] += 1
+                        ausente["points"] = round(ausente["points"] + absence_penalty, 1)
+                        ausente["history"].append(absence_penalty)
+                match_players.append({k: result[k] for k in ("id", "name", "handle", "nat", "scoreRaw", "place", "delta")} | {"sustitutoDe": result.get("sustitutoDe"), "esSuplente": es_suplente})
             if parsed and seat_map:
                 for seat, player in seat_map.items():
                     seat_stats = parsed["seatStats"][seat]
@@ -365,8 +405,11 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
                 running = round(running + delta, 1)
                 player["cum"].append(running)
             games = player["games"]
-            player["placements"] = {f"p{i + 1}": round(player["counts"][i] / games, 2) if games else 0 for i in range(4)}
-            player["avgRank"] = round(sum((i + 1) * count for i, count in enumerate(player["counts"])) / games, 2) if games else 0
+            # Las ausencias suman partidas y puntos, pero no tienen puesto: el
+            # promedio y la distribución se calculan sobre lo realmente jugado.
+            played = games - player["absences"]
+            player["placements"] = {f"p{i + 1}": round(player["counts"][i] / played, 2) if played else 0 for i in range(4)}
+            player["avgRank"] = round(sum((i + 1) * count for i, count in enumerate(player["counts"])) / played, 2) if played else 0
             player["avgPoints"] = round(player["points"] / games, 1) if games else 0
             player["streak"] = round(sum(player["history"][-4:]), 1)
             hands = player["hands"]
@@ -482,6 +525,82 @@ def advanced_stats_health(stats: dict[str, Any], status: dict[str, Any]) -> dict
     }
 
 
+def align_history_with_fixtures(histories: dict[str, dict[str, Any]], fixtures: list[dict[str, Any]]) -> tuple[dict[str, dict[str, Any]], list[str]]:
+    """El Game History numera las mesas distinto que el Calendario: la sesión
+    coincide, el número de mesa no. Se empareja cada grupo del historial con la
+    mesa del calendario con la que comparta al menos 3 jugadores (3 y no 4 para
+    tolerar un suplente) y se re-indexa a la mesa real. El calendario manda."""
+    avisos: list[str] = []
+    nombres_gh: dict[tuple[str, int, int], set[str]] = {}
+    claves_gh: dict[tuple[str, int, int], list[str]] = defaultdict(list)
+    for key, official in histories.items():
+        division = key.split("-", 1)[0]
+        celda = (division, official["session"], official["table"])
+        nombres_gh.setdefault(celda, set()).update(
+            r["name"].strip().lower() for r in official["results"]
+        )
+        claves_gh[celda].append(key)
+
+    remapeo: dict[tuple[str, int, int], int] = {}
+    sesiones = {(d, s) for d, s, _ in nombres_gh}
+    for division, session in sorted(sesiones):
+        del_calendario = {
+            f["table"]: {n.strip().lower() for n in f["players"] if n}
+            for f in fixtures if f["division"] == division and f["session"] == session
+        }
+        mesas_gh = sorted(m for d, s, m in nombres_gh if d == division and s == session)
+        # Todas las coincidencias posibles, de mayor a menor, asignadas sin repetir.
+        candidatos = sorted(
+            (
+                (len(nombres_gh[(division, session, mesa)] & grupo), mesa, mesa_real)
+                for mesa in mesas_gh
+                for mesa_real, grupo in del_calendario.items()
+                if len(nombres_gh[(division, session, mesa)] & grupo) >= MIN_ROSTER_OVERLAP
+            ),
+            reverse=True,
+        )
+        usadas_gh: set[int] = set()
+        usadas_reales: set[int] = set()
+        for coincidencias, mesa, mesa_real in candidatos:
+            if mesa in usadas_gh or mesa_real in usadas_reales:
+                continue
+            usadas_gh.add(mesa)
+            usadas_reales.add(mesa_real)
+            remapeo[(division, session, mesa)] = mesa_real
+        for mesa in mesas_gh:
+            if mesa not in usadas_gh:
+                avisos.append(
+                    f"División {division}, sesión {session}, mesa {mesa} del Game History: "
+                    f"ningún grupo del calendario coincide en {MIN_ROSTER_OVERLAP} jugadores; "
+                    f"se conserva el número de mesa original"
+                )
+                remapeo[(division, session, mesa)] = mesa
+
+    realineadas: dict[str, dict[str, Any]] = {}
+    for celda, keys in claves_gh.items():
+        division, session, mesa = celda
+        mesa_real = remapeo.get(celda, mesa)
+        for key in keys:
+            official = dict(histories[key])
+            official["table"] = mesa_real
+            official["tableGameHistory"] = mesa
+            nueva = f"{division}-S{session}-M{mesa_real}-G{official['game']}"
+            official["key"] = nueva
+            if nueva in realineadas:
+                avisos.append(
+                    f"División {division}, sesión {session}: dos grupos del Game History "
+                    f"apuntan a la mesa {mesa_real}; se descarta el duplicado {key}"
+                )
+                continue
+            realineadas[nueva] = official
+            if mesa_real != mesa:
+                avisos.append(
+                    f"División {division}, sesión {session}: el grupo de la mesa {mesa} del "
+                    f"Game History corresponde a la mesa {mesa_real} del calendario"
+                )
+    return realineadas, avisos
+
+
 def write_outputs(data: dict[str, Any], stats: dict[str, Any], status: dict[str, Any], output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     for name, payload in (("liga.json", data), ("stats.json", stats), ("sync-status.json", status)):
@@ -516,6 +635,9 @@ def main() -> int:
         histories: dict[str, dict[str, Any]] = {}
         for division, rule in config["divisions"].items():
             histories.update(parse_history(workbook, division, rule["historySheet"], rule))
+        histories, avisos_mesas = align_history_with_fixtures(histories, fixtures)
+        for aviso in avisos_mesas:
+            print(f"AVISO: {aviso}", file=sys.stderr)
         if not args.offline:
             # Una falla de la sesión técnica no debe frenar la publicación de
             # standings; los paipus quedan REQUIERE_AUTH y se reintenta luego.
