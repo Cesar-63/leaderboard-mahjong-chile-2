@@ -87,146 +87,170 @@
     {
       "key": "A-S2-M1-G1",
       "cell": "Calendario!C19",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260723-ebd45ff1-4cad-4439-8f3a-8716a86a634f",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado (identidad de asientos)"
     },
     {
       "key": "A-S2-M1-G2",
       "cell": "Calendario!C20",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260723-3adcecf2-16fa-4b59-a324-c18cbd4fb65e",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado (identidad de asientos)"
     },
     {
       "key": "A-S2-M2-G1",
       "cell": "Calendario!F19",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260721-fbedd1e6-e668-41e4-8071-e8a015f1be9b",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado (identidad de asientos)"
     },
     {
       "key": "A-S2-M2-G2",
       "cell": "Calendario!F20",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260721-709eb677-4ebb-45e5-abb3-08eed6bd5caa",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S2-M3-G1",
       "cell": "Calendario!I19",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260727-c555d876-b163-4e0b-abf2-70fc6c0bc142",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S2-M3-G2",
       "cell": "Calendario!I20",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260727-567b4a75-bc14-45b4-bf21-dfec4a9a4229",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S2-M4-G1",
       "cell": "Calendario!L19",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260720-a90b8e9a-503b-4aca-8f96-9b314f5927e2",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S2-M4-G2",
       "cell": "Calendario!L20",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260720-dbdfa2dd-0c3b-429c-a1e7-2243496c64da",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S2-M5-G1",
       "cell": "Calendario!O19",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260728-d6cb015c-d085-4827-862a-d07722667532",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S2-M5-G2",
       "cell": "Calendario!O20",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260728-d1331dff-d2f4-4463-99d8-62af32e86b83",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S2-M6-G1",
       "cell": "Calendario!R19",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260721-30a6c67a-0c65-4059-9776-d1c3540cf540",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S2-M6-G2",
       "cell": "Calendario!R20",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260721-b99d47e7-c243-42ca-9c4d-2335530a0c77",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S3-M1-G1",
       "cell": "Calendario!C27",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260804-547c448d-d2fd-49a3-9c72-7ecfa998eb9a",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S3-M1-G2",
       "cell": "Calendario!C28",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260804-8e6dde45-4883-4288-9e37-b342647e5d9d",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S3-M2-G1",
       "cell": "Calendario!F27",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260802-1c692bac-6272-4ee0-ab7b-161524f3220c",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S3-M2-G2",
       "cell": "Calendario!F28",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260802-9d6b3a26-f3d8-4c5f-9862-ab49e6dc3718",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S3-M3-G1",
       "cell": "Calendario!I27",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260730-f0bd3f1f-5a58-45be-aa73-0b38a26df802",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S3-M3-G2",
       "cell": "Calendario!I28",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260730-ba859cc0-e022-42d6-8536-a4e0aa491f99",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S3-M4-G1",
       "cell": "Calendario!L27",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260804-4735efa2-bd26-4379-a346-2706f222546d",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S3-M4-G2",
       "cell": "Calendario!L28",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260804-6e92abf3-f641-443b-b73d-f49e485d9b5d",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S3-M5-G1",
       "cell": "Calendario!O27",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260730-c48dd1c6-dbe5-4eba-a1d3-02159577b2ae",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S3-M5-G2",
       "cell": "Calendario!O28",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260730-6dad708a-129c-4654-9c08-d8678be98984",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S3-M6-G1",
       "cell": "Calendario!R27",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260803-8bd6b3d1-d37d-46b4-a826-de2bc53302e3",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S3-M6-G2",
       "cell": "Calendario!R28",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260803-2e51b3c0-b681-4457-a084-71d690104da1",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "A-S4-M1-G1",
@@ -603,146 +627,170 @@
     {
       "key": "B-S2-M1-G1",
       "cell": "Calendario!V19",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260721-c0cdeda8-4027-45bf-9e70-a65c5f84efa8",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S2-M1-G2",
       "cell": "Calendario!V20",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260721-d46843c8-94a5-4efe-ab39-cb0520ddb2a7",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S2-M2-G1",
       "cell": "Calendario!Y19",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260723-d85e2435-2a47-48a0-ad7e-a5a9ee629930",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S2-M2-G2",
       "cell": "Calendario!Y20",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260723-210f82d5-51e7-44d8-976f-8e197afdfaef",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S2-M3-G1",
       "cell": "Calendario!AB19",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260721-2de51c70-2ef0-4454-a2a6-71fe715fa8c3",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S2-M3-G2",
       "cell": "Calendario!AB20",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260721-41d5d400-e82d-420f-af5d-c5e3e3517eb7",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S2-M4-G1",
       "cell": "Calendario!AE19",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260725-ba21c8da-d74e-412f-ab19-e22c51bf7b66",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S2-M4-G2",
       "cell": "Calendario!AE20",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260725-2ba194a4-fea1-4067-a13d-cc1106d3815c",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S2-M5-G1",
       "cell": "Calendario!AH19",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260724-53f96bfd-7d31-4ecd-837d-ce3485266da7",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S2-M5-G2",
       "cell": "Calendario!AH20",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260724-fa76ccd9-559c-4e41-9783-f54f583a414b",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S2-M6-G1",
       "cell": "Calendario!AK19",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260728-3412051e-0d2f-4d03-af69-4f9299258a84",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S2-M6-G2",
       "cell": "Calendario!AK20",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260728-e0ea32b5-5e67-4e90-b38b-af759894ce39",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S3-M1-G1",
       "cell": "Calendario!V27",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260807-eca91ba6-b25b-49f0-ae80-e3edd852131d",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S3-M1-G2",
       "cell": "Calendario!V28",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260807-a22e2bdd-62d4-428d-bc54-780cd0f41528",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S3-M2-G1",
       "cell": "Calendario!Y27",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260809-ab4cb2c3-50db-4153-8dfe-ac88581f4230",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S3-M2-G2",
       "cell": "Calendario!Y28",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260809-57cb0052-9798-4743-881b-1f4f6188d12f",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S3-M3-G1",
       "cell": "Calendario!AB27",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260802-875223a2-b8c6-4eec-8259-d8d54ddb8ef1",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S3-M3-G2",
       "cell": "Calendario!AB28",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260802-70e8f5e3-434f-4c90-80bf-a662750422fb",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S3-M4-G1",
       "cell": "Calendario!AE27",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260803-c42e107b-cc9a-4f7e-aed6-b4be83674f3a",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S3-M4-G2",
       "cell": "Calendario!AE28",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260803-64dd7c1c-fdc2-4106-8e31-b2ef087dd4d9",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S3-M5-G1",
       "cell": "Calendario!AH27",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260731-ace8634f-d32a-4d2f-ac17-78ea19217f8d",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S3-M5-G2",
       "cell": "Calendario!AH28",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260731-a7c608f2-b69d-44b3-9796-9a7cd067896d",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S3-M6-G1",
       "cell": "Calendario!AK27",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260804-538d4659-5ec4-42ac-be0a-9eb12ad5d420",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S3-M6-G2",
       "cell": "Calendario!AK28",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260804-efcad47a-dbda-40f8-ba0f-36e0ff3fa71e",
+      "status": "ERROR",
+      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
     },
     {
       "key": "B-S4-M1-G1",
