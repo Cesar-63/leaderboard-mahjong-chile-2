@@ -130,22 +130,22 @@
       "key": "A-S2-M4-G1",
       "cell": "Calendario!L19",
       "uuid": "260720-a90b8e9a-503b-4aca-8f96-9b314f5927e2",
-      "status": "ERROR",
-      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado (identidad de asientos)"
     },
     {
       "key": "A-S2-M4-G2",
       "cell": "Calendario!L20",
       "uuid": "260720-dbdfa2dd-0c3b-429c-a1e7-2243496c64da",
-      "status": "ERROR",
-      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado (identidad de asientos)"
     },
     {
       "key": "A-S2-M5-G1",
       "cell": "Calendario!O19",
       "uuid": "260728-d6cb015c-d085-4827-862a-d07722667532",
-      "status": "ERROR",
-      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado (identidad de asientos)"
     },
     {
       "key": "A-S2-M5-G2",
