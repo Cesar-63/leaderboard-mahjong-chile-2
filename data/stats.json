@@ -1,30 +1,30 @@
 {
   "players": {
     "A01": {
-      "hands": 68,
-      "winRate": 19.1,
+      "hands": 93,
+      "winRate": 19.4,
       "dealInRate": 11.8,
-      "riichiRate": 17.6,
-      "openRate": 20.6,
+      "riichiRate": 16.1,
+      "openRate": 22.6,
       "topYaku": [
         {
           "name": "Riichi",
-          "count": 10
+          "count": 12
         },
         {
           "name": "Chinitsu",
-          "count": 10
+          "count": 12
         },
         {
           "name": "Junchan",
-          "count": 8
+          "count": 10
         },
         {
           "name": "Menzen Tsumo",
           "count": 5
         },
         {
-          "name": "Yakuhai Oeste",
+          "name": "Pinfu",
           "count": 4
         }
       ],
@@ -121,26 +121,26 @@
       "statsReliable": true
     },
     "A05": {
-      "hands": 69,
-      "winRate": 18.8,
-      "dealInRate": 20.3,
-      "riichiRate": 21.7,
-      "openRate": 44.9,
+      "hands": 94,
+      "winRate": 17.0,
+      "dealInRate": 19.1,
+      "riichiRate": 22.3,
+      "openRate": 44.7,
       "topYaku": [
         {
           "name": "Riichi",
-          "count": 6
+          "count": 8
         },
         {
           "name": "Chinitsu",
+          "count": 8
+        },
+        {
+          "name": "Junchan",
           "count": 6
         },
         {
           "name": "Iipeiko",
-          "count": 4
-        },
-        {
-          "name": "Junchan",
           "count": 4
         },
         {
@@ -211,27 +211,27 @@
       "statsReliable": true
     },
     "A08": {
-      "hands": 70,
-      "winRate": 24.3,
-      "dealInRate": 17.1,
-      "riichiRate": 30.0,
-      "openRate": 41.4,
+      "hands": 88,
+      "winRate": 22.7,
+      "dealInRate": 13.6,
+      "riichiRate": 27.3,
+      "openRate": 43.2,
       "topYaku": [
         {
           "name": "Riichi",
-          "count": 10
+          "count": 11
         },
         {
           "name": "Chinitsu",
-          "count": 10
+          "count": 11
         },
         {
           "name": "Junchan",
-          "count": 9
+          "count": 10
         },
         {
           "name": "Yakuhai Este",
-          "count": 3
+          "count": 6
         },
         {
           "name": "Tsumo",
@@ -241,30 +241,30 @@
       "statsReliable": true
     },
     "A09": {
-      "hands": 70,
-      "winRate": 21.4,
-      "dealInRate": 12.9,
-      "riichiRate": 31.4,
-      "openRate": 38.6,
+      "hands": 88,
+      "winRate": 23.9,
+      "dealInRate": 17.0,
+      "riichiRate": 28.4,
+      "openRate": 40.9,
       "topYaku": [
         {
           "name": "Riichi",
-          "count": 9
+          "count": 10
         },
         {
           "name": "Chinitsu",
-          "count": 9
+          "count": 10
         },
         {
           "name": "Junchan",
-          "count": 6
+          "count": 8
         },
         {
           "name": "Menzen Tsumo",
-          "count": 2
+          "count": 3
         },
         {
-          "name": "Yakuhai Oeste",
+          "name": "Sanankou",
           "count": 2
         }
       ],
@@ -361,61 +361,61 @@
       "statsReliable": true
     },
     "A13": {
-      "hands": 69,
-      "winRate": 13.0,
-      "dealInRate": 23.2,
-      "riichiRate": 27.5,
-      "openRate": 37.7,
+      "hands": 87,
+      "winRate": 14.9,
+      "dealInRate": 23.0,
+      "riichiRate": 25.3,
+      "openRate": 36.8,
       "topYaku": [
         {
+          "name": "Yakuhai Este",
+          "count": 6
+        },
+        {
           "name": "Riichi",
-          "count": 4
+          "count": 5
         },
         {
           "name": "Chinitsu",
-          "count": 4
+          "count": 5
         },
         {
           "name": "Junchan",
-          "count": 4
+          "count": 5
         },
         {
           "name": "Tanyao",
-          "count": 3
-        },
-        {
-          "name": "Yakuhai Este",
           "count": 3
         }
       ],
       "statsReliable": true
     },
     "A14": {
-      "hands": 60,
-      "winRate": 25.0,
-      "dealInRate": 11.7,
-      "riichiRate": 23.3,
-      "openRate": 33.3,
+      "hands": 85,
+      "winRate": 22.4,
+      "dealInRate": 9.4,
+      "riichiRate": 24.7,
+      "openRate": 31.8,
       "topYaku": [
         {
           "name": "Junchan",
-          "count": 9
+          "count": 12
         },
         {
           "name": "Riichi",
-          "count": 6
+          "count": 8
         },
         {
           "name": "Chinitsu",
-          "count": 6
+          "count": 8
         },
         {
           "name": "Yakuhai Este",
-          "count": 5
+          "count": 7
         },
         {
-          "name": "Pinfu",
-          "count": 3
+          "name": "Ryanpeikou",
+          "count": 4
         }
       ],
       "statsReliable": true
@@ -631,23 +631,23 @@
       "statsReliable": true
     },
     "A22": {
-      "hands": 73,
-      "winRate": 21.9,
-      "dealInRate": 8.2,
-      "riichiRate": 17.8,
-      "openRate": 30.1,
+      "hands": 91,
+      "winRate": 20.9,
+      "dealInRate": 6.6,
+      "riichiRate": 19.8,
+      "openRate": 28.6,
       "topYaku": [
         {
-          "name": "Junchan",
-          "count": 10
-        },
-        {
           "name": "Riichi",
-          "count": 8
+          "count": 11
         },
         {
           "name": "Chinitsu",
-          "count": 8
+          "count": 11
+        },
+        {
+          "name": "Junchan",
+          "count": 10
         },
         {
           "name": "Menzen Tsumo",
@@ -691,31 +691,31 @@
       "statsReliable": true
     },
     "A24": {
-      "hands": 65,
-      "winRate": 15.4,
-      "dealInRate": 12.3,
-      "riichiRate": 9.2,
-      "openRate": 47.7,
+      "hands": 90,
+      "winRate": 20.0,
+      "dealInRate": 13.3,
+      "riichiRate": 12.2,
+      "openRate": 46.7,
       "topYaku": [
         {
           "name": "Junchan",
-          "count": 5
-        },
-        {
-          "name": "Yakuhai Este",
-          "count": 3
-        },
-        {
-          "name": "Yakuhai Sur",
-          "count": 3
+          "count": 9
         },
         {
           "name": "Yakuhai Oeste",
-          "count": 3
+          "count": 7
         },
         {
           "name": "Riichi",
-          "count": 3
+          "count": 7
+        },
+        {
+          "name": "Chinitsu",
+          "count": 7
+        },
+        {
+          "name": "Yakuhai Este",
+          "count": 4
         }
       ],
       "statsReliable": true
