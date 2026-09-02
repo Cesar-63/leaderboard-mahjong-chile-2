@@ -1,7 +1,10 @@
 import unittest
 from unittest.mock import patch
 
-from scripts.majsoul import PaipuError, YAKU_NAMES, extract_record_id, extract_uuid, has_yostar_credentials, parse_record
+from scripts.majsoul import (
+    NON_YAKU_FAN_IDS, PaipuError, YAKU_NAMES, extract_record_id, extract_uuid,
+    has_yostar_credentials, parse_record,
+)
 from scripts.sync import (
     CALENDAR_VALUE_COLS, SESSION_G1_ROWS, advanced_stats_health, align_history_with_fixtures,
     build_excel_results, build_paipu_results, build_public_data, find_absent_player,
@@ -25,6 +28,35 @@ def synthetic_paipu(accounts):
     inner.data = record_game.SerializeToString()
     details = pb.GameDetailRecords()
     details.records.append(inner.SerializeToString())
+    outer = pb.Wrapper()
+    outer.name = "GameDetailRecords"
+    outer.data = details.SerializeToString()
+    return outer.SerializeToString()
+
+
+def synthetic_hule_paipu(fans):
+    """Un paipu de una sola mano ganada por el asiento 0 con los fans dados."""
+    from ms import protocol_pb2 as pb
+    new_round = pb.RecordNewRound()
+    new_round.scores.extend([30000, 30000, 30000, 30000])
+    start = pb.Wrapper()
+    start.name = "RecordNewRound"
+    start.data = new_round.SerializeToString()
+    hule_record = pb.RecordHule()
+    hule_record.scores.extend([38000, 26000, 30000, 26000])
+    hule = hule_record.hules.add()
+    hule.seat = 0
+    hule.zimo = True
+    for fan_id, val in fans:
+        fan = hule.fans.add()
+        fan.id = fan_id
+        fan.val = val
+    end = pb.Wrapper()
+    end.name = "RecordHule"
+    end.data = hule_record.SerializeToString()
+    details = pb.GameDetailRecords()
+    details.records.append(start.SerializeToString())
+    details.records.append(end.SerializeToString())
     outer = pb.Wrapper()
     outer.name = "GameDetailRecords"
     outer.data = details.SerializeToString()
@@ -150,12 +182,21 @@ class SyncTests(unittest.TestCase):
         self.assertEqual(parsed.players[3]["point"], 4500)
         self.assertTrue(parsed.record_game_seen)
     def test_yaku_names_map_known_ids(self):
+        # Ids verificados contra los paipus reales de data/raw-paipu.
         self.assertEqual(YAKU_NAMES[2], "Riichi")
-        self.assertEqual(YAKU_NAMES[9], "Pinfu")
-        self.assertEqual(YAKU_NAMES[14], "Yakuhai Oeste")
-        self.assertEqual(YAKU_NAMES[31], "Junchan")
-        self.assertEqual(YAKU_NAMES[33], "Chinitsu")
+        self.assertEqual(YAKU_NAMES[12], "Tanyao")
+        self.assertEqual(YAKU_NAMES[14], "Pinfu")
+        self.assertEqual(YAKU_NAMES[26], "Junchan")
+        self.assertEqual(YAKU_NAMES[29], "Chinitsu")
+        self.assertEqual(YAKU_NAMES[42], "Kokushi Musou")
         self.assertIsNotNone(YAKU_NAMES.get(999) or "Yaku #999")
+
+    def test_dora_is_not_counted_as_yaku(self):
+        # 31/32/33 son dora, aka dora y ura dora: suman han, no son yaku.
+        self.assertEqual(NON_YAKU_FAN_IDS, frozenset({31, 32, 33, 34}))
+        raw = synthetic_hule_paipu([(2, 1), (14, 1), (31, 3), (33, 1)])
+        parsed = parse_record("260101-00000000-0000-0000-0000-000000000000", raw)
+        self.assertEqual(parsed.seat_stats[0]["yaku"], {"Riichi": 1, "Pinfu": 1})
 
     def test_parse_record_reads_head_identity_from_res_game_record(self):
         from ms import protocol_pb2 as pb
