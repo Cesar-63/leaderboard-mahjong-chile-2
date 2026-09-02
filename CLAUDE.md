@@ -21,12 +21,21 @@ mahjong, jugada en sala de torneo de MahjongSoul. Estático, sin backend, sin au
 
 ## Reglas de puntaje
 
-- Puntos iniciales: 30.000 por hanchan.
-- **Uma: +15 / +5 / −5 / −15.**
+**Las reglas no son iguales en las dos divisiones.** Las de cada una viven en
+`sync-config.json` bajo `divisions`; lo de abajo es la referencia, no una fuente
+paralela que haya que mantener sincronizada a mano.
+
+- Puntos iniciales: 30.000 por hanchan, en ambas divisiones.
+- **Uma: A = +15 / +5 / −5 / −15. B = +35 / +5 / −10 / −30.**
 - **Sin oka.** Puntos de retorno = puntos iniciales, por lo tanto cada mesa suma
-  cero en puntos de liga.
+  cero en puntos de liga. Los dos umas suman cero, así que la validación de
+  "suma de puntos de liga por mesa = 0" vale para las dos.
 - Fórmula: `puntos = (scoreFinal − 30000) / 1000 + uma`.
-- Sin akadora (dora rojo).
+- **Akadora: A no tiene. B juega con 4.** Verificado en el `detail_rule` de los
+  paipus (`dora_count: 4` solo en B) y en los tiles: 0 rojos en 624 manos
+  ganadas de A, 70 en 117 de B. Los rojos ya vienen dentro del `scoreRaw`, así
+  que no cambian nada del pipeline; la suma de scores crudos sigue siendo
+  120.000.
 - **Penalización por ausencia: −30 por hanchan** (una sesión completa ausente son
   −60). Confirmado por César; vive en `sync-config.json` como
   `absencePenaltyPerHanchan`, no hardcodeada. La partida cuenta como jugada y el
