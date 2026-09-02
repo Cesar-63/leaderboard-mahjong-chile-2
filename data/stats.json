@@ -8,15 +8,7 @@
       "openRate": 28.2,
       "topYaku": [
         {
-          "name": "Junchan",
-          "count": 14
-        },
-        {
           "name": "Riichi",
-          "count": 12
-        },
-        {
-          "name": "Chinitsu",
           "count": 12
         },
         {
@@ -24,8 +16,16 @@
           "count": 6
         },
         {
-          "name": "Yakuhai Oeste",
+          "name": "Pinfu",
           "count": 6
+        },
+        {
+          "name": "Tanyao",
+          "count": 5
+        },
+        {
+          "name": "Yakuhai Chun",
+          "count": 4
         }
       ],
       "statsReliable": true
@@ -38,15 +38,11 @@
       "openRate": 44.2,
       "topYaku": [
         {
-          "name": "Junchan",
-          "count": 13
-        },
-        {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 5
         },
         {
-          "name": "Tsumo",
+          "name": "Yakuhai Hatsu",
           "count": 5
         },
         {
@@ -54,8 +50,12 @@
           "count": 5
         },
         {
-          "name": "Chinitsu",
-          "count": 5
+          "name": "Yakuhai Haku",
+          "count": 4
+        },
+        {
+          "name": "Yakuhai Jikaze",
+          "count": 4
         }
       ],
       "statsReliable": true
@@ -72,20 +72,20 @@
           "count": 15
         },
         {
-          "name": "Chinitsu",
-          "count": 15
-        },
-        {
           "name": "Menzen Tsumo",
           "count": 11
         },
         {
-          "name": "Junchan",
-          "count": 11
+          "name": "Pinfu",
+          "count": 8
         },
         {
-          "name": "Yakuhai Oeste",
-          "count": 8
+          "name": "Tanyao",
+          "count": 5
+        },
+        {
+          "name": "Yakuhai Hatsu",
+          "count": 4
         }
       ],
       "statsReliable": true
@@ -102,20 +102,20 @@
           "count": 10
         },
         {
-          "name": "Chinitsu",
-          "count": 10
-        },
-        {
-          "name": "Junchan",
-          "count": 10
-        },
-        {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 7
         },
         {
           "name": "Menzen Tsumo",
           "count": 5
+        },
+        {
+          "name": "Honitsu",
+          "count": 3
+        },
+        {
+          "name": "Yakuhai Haku",
+          "count": 3
         }
       ],
       "statsReliable": true
@@ -132,20 +132,20 @@
           "count": 11
         },
         {
-          "name": "Chinitsu",
-          "count": 11
-        },
-        {
-          "name": "Junchan",
-          "count": 7
-        },
-        {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 5
         },
         {
-          "name": "Iipeiko",
+          "name": "Yakuhai Bakaze",
           "count": 5
+        },
+        {
+          "name": "Yakuhai Jikaze",
+          "count": 4
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 4
         }
       ],
       "statsReliable": true
@@ -158,11 +158,7 @@
       "openRate": 41.9,
       "topYaku": [
         {
-          "name": "Junchan",
-          "count": 16
-        },
-        {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 7
         },
         {
@@ -170,12 +166,16 @@
           "count": 5
         },
         {
-          "name": "Chinitsu",
-          "count": 5
+          "name": "Yakuhai Haku",
+          "count": 4
         },
         {
-          "name": "Hotei Raoyui",
-          "count": 4
+          "name": "Yakuhai Bakaze",
+          "count": 3
+        },
+        {
+          "name": "Yakuhai Chun",
+          "count": 3
         }
       ],
       "statsReliable": true
@@ -192,20 +192,20 @@
           "count": 17
         },
         {
-          "name": "Chinitsu",
-          "count": 17
-        },
-        {
-          "name": "Junchan",
-          "count": 10
-        },
-        {
-          "name": "Yakuhai Oeste",
+          "name": "Pinfu",
           "count": 9
         },
         {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 9
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 8
+        },
+        {
+          "name": "Yakuhai Hatsu",
+          "count": 3
         }
       ],
       "statsReliable": true
@@ -222,20 +222,20 @@
           "count": 12
         },
         {
-          "name": "Junchan",
-          "count": 12
-        },
-        {
-          "name": "Chinitsu",
-          "count": 12
-        },
-        {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 6
         },
         {
-          "name": "Tsumo",
+          "name": "Yakuhai Hatsu",
           "count": 4
+        },
+        {
+          "name": "Yakuhai Jikaze",
+          "count": 4
+        },
+        {
+          "name": "Pinfu",
+          "count": 3
         }
       ],
       "statsReliable": true
@@ -252,20 +252,20 @@
           "count": 16
         },
         {
-          "name": "Chinitsu",
-          "count": 16
-        },
-        {
-          "name": "Junchan",
-          "count": 12
-        },
-        {
-          "name": "Sanankou",
+          "name": "Honitsu",
           "count": 5
         },
         {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 5
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 4
+        },
+        {
+          "name": "Pinfu",
+          "count": 4
         }
       ],
       "statsReliable": true
@@ -278,11 +278,7 @@
       "openRate": 45.4,
       "topYaku": [
         {
-          "name": "Junchan",
-          "count": 12
-        },
-        {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 7
         },
         {
@@ -294,8 +290,12 @@
           "count": 5
         },
         {
-          "name": "Chinitsu",
-          "count": 5
+          "name": "Yakuhai Jikaze",
+          "count": 3
+        },
+        {
+          "name": "Pinfu",
+          "count": 3
         }
       ],
       "statsReliable": true
@@ -312,20 +312,20 @@
           "count": 8
         },
         {
-          "name": "Chinitsu",
-          "count": 8
-        },
-        {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 5
         },
         {
-          "name": "Pinfu",
+          "name": "Yakuhai Chun",
           "count": 4
         },
         {
-          "name": "Junchan",
-          "count": 4
+          "name": "Yakuhai Bakaze",
+          "count": 3
+        },
+        {
+          "name": "Pinfu",
+          "count": 3
         }
       ],
       "statsReliable": true
@@ -342,20 +342,20 @@
           "count": 11
         },
         {
-          "name": "Chinitsu",
-          "count": 11
-        },
-        {
-          "name": "Junchan",
-          "count": 6
-        },
-        {
           "name": "Menzen Tsumo",
           "count": 5
         },
         {
-          "name": "Yakuhai Oeste",
+          "name": "Pinfu",
           "count": 5
+        },
+        {
+          "name": "Ippatsu",
+          "count": 4
+        },
+        {
+          "name": "Tanyao",
+          "count": 3
         }
       ],
       "statsReliable": true
@@ -368,11 +368,7 @@
       "openRate": 39.4,
       "topYaku": [
         {
-          "name": "Yakuhai Este",
-          "count": 8
-        },
-        {
-          "name": "Junchan",
+          "name": "Tanyao",
           "count": 8
         },
         {
@@ -380,12 +376,16 @@
           "count": 6
         },
         {
-          "name": "Chinitsu",
-          "count": 6
+          "name": "Yakuhai Chun",
+          "count": 5
         },
         {
-          "name": "Pinfu",
-          "count": 5
+          "name": "Yakuhai Jikaze",
+          "count": 3
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 2
         }
       ],
       "statsReliable": true
@@ -398,23 +398,23 @@
       "openRate": 33.9,
       "topYaku": [
         {
-          "name": "Junchan",
-          "count": 13
-        },
-        {
           "name": "Riichi",
           "count": 9
         },
         {
-          "name": "Chinitsu",
+          "name": "Tanyao",
           "count": 9
         },
         {
-          "name": "Yakuhai Este",
-          "count": 9
+          "name": "Yakuhai Haku",
+          "count": 4
         },
         {
-          "name": "Hotei Raoyui",
+          "name": "Ippatsu",
+          "count": 4
+        },
+        {
+          "name": "Menzen Tsumo",
           "count": 4
         }
       ],
@@ -428,24 +428,24 @@
       "openRate": 47.1,
       "topYaku": [
         {
-          "name": "Junchan",
-          "count": 14
-        },
-        {
           "name": "Riichi",
           "count": 12
         },
         {
-          "name": "Chinitsu",
-          "count": 12
-        },
-        {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 9
         },
         {
           "name": "Menzen Tsumo",
           "count": 7
+        },
+        {
+          "name": "Pinfu",
+          "count": 3
+        },
+        {
+          "name": "Toitoi",
+          "count": 2
         }
       ],
       "statsReliable": true
@@ -462,20 +462,20 @@
           "count": 21
         },
         {
-          "name": "Chinitsu",
-          "count": 21
-        },
-        {
-          "name": "Junchan",
-          "count": 11
-        },
-        {
-          "name": "Yakuhai Oeste",
+          "name": "Pinfu",
           "count": 9
         },
         {
           "name": "Menzen Tsumo",
           "count": 6
+        },
+        {
+          "name": "Ippatsu",
+          "count": 5
+        },
+        {
+          "name": "Tanyao",
+          "count": 4
         }
       ],
       "statsReliable": true
@@ -488,24 +488,24 @@
       "openRate": 30.1,
       "topYaku": [
         {
-          "name": "Junchan",
-          "count": 17
-        },
-        {
           "name": "Riichi",
           "count": 15
         },
         {
-          "name": "Chinitsu",
-          "count": 15
-        },
-        {
-          "name": "Yakuhai Oeste",
+          "name": "Pinfu",
           "count": 8
         },
         {
           "name": "Menzen Tsumo",
           "count": 7
+        },
+        {
+          "name": "Tanyao",
+          "count": 5
+        },
+        {
+          "name": "Yakuhai Chun",
+          "count": 5
         }
       ],
       "statsReliable": true
@@ -522,20 +522,20 @@
           "count": 13
         },
         {
-          "name": "Chinitsu",
-          "count": 13
-        },
-        {
-          "name": "Junchan",
-          "count": 11
-        },
-        {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 5
         },
         {
-          "name": "Tanyao",
+          "name": "Yakuhai Jikaze",
           "count": 4
+        },
+        {
+          "name": "Pinfu",
+          "count": 4
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 3
         }
       ],
       "statsReliable": true
@@ -552,20 +552,20 @@
           "count": 16
         },
         {
-          "name": "Chinitsu",
-          "count": 16
-        },
-        {
-          "name": "Junchan",
+          "name": "Pinfu",
           "count": 10
         },
         {
-          "name": "Yakuhai Oeste",
-          "count": 10
-        },
-        {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 6
+        },
+        {
+          "name": "Ippatsu",
+          "count": 4
+        },
+        {
+          "name": "Yakuhai Chun",
+          "count": 3
         }
       ],
       "statsReliable": true
@@ -582,20 +582,20 @@
           "count": 15
         },
         {
-          "name": "Chinitsu",
-          "count": 15
-        },
-        {
-          "name": "Junchan",
-          "count": 11
-        },
-        {
-          "name": "Yakuhai Oeste",
+          "name": "Pinfu",
           "count": 7
         },
         {
           "name": "Menzen Tsumo",
           "count": 6
+        },
+        {
+          "name": "Honitsu",
+          "count": 3
+        },
+        {
+          "name": "Tanyao",
+          "count": 2
         }
       ],
       "statsReliable": true
@@ -608,24 +608,24 @@
       "openRate": 40.3,
       "topYaku": [
         {
-          "name": "Junchan",
-          "count": 17
-        },
-        {
           "name": "Riichi",
           "count": 16
         },
         {
-          "name": "Chinitsu",
-          "count": 16
-        },
-        {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 8
         },
         {
-          "name": "Yakuhai Oeste",
+          "name": "Pinfu",
           "count": 6
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 5
+        },
+        {
+          "name": "Ittsu",
+          "count": 3
         }
       ],
       "statsReliable": true
@@ -642,20 +642,20 @@
           "count": 14
         },
         {
-          "name": "Chinitsu",
-          "count": 14
-        },
-        {
-          "name": "Junchan",
-          "count": 12
-        },
-        {
           "name": "Menzen Tsumo",
           "count": 7
         },
         {
-          "name": "Tanyao",
+          "name": "Yakuhai Jikaze",
           "count": 5
+        },
+        {
+          "name": "Pinfu",
+          "count": 5
+        },
+        {
+          "name": "Yakuhai Bakaze",
+          "count": 4
         }
       ],
       "statsReliable": true
@@ -672,19 +672,19 @@
           "count": 11
         },
         {
-          "name": "Chinitsu",
-          "count": 11
-        },
-        {
-          "name": "Junchan",
-          "count": 9
-        },
-        {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 5
         },
         {
-          "name": "Ryanpeikou",
+          "name": "Ippatsu",
+          "count": 4
+        },
+        {
+          "name": "Yakuhai Bakaze",
+          "count": 4
+        },
+        {
+          "name": "Yakuhai Jikaze",
           "count": 4
         }
       ],
@@ -698,24 +698,24 @@
       "openRate": 46.2,
       "topYaku": [
         {
-          "name": "Junchan",
-          "count": 12
-        },
-        {
           "name": "Riichi",
           "count": 9
         },
         {
-          "name": "Chinitsu",
-          "count": 9
-        },
-        {
-          "name": "Yakuhai Oeste",
+          "name": "Pinfu",
           "count": 8
         },
         {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 6
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 5
+        },
+        {
+          "name": "Yakuhai Chun",
+          "count": 5
         }
       ],
       "statsReliable": true
@@ -728,23 +728,23 @@
       "openRate": 34.8,
       "topYaku": [
         {
-          "name": "Honitsu",
-          "count": 3
-        },
-        {
-          "name": "Hotei Raoyui",
-          "count": 1
-        },
-        {
           "name": "Yakuhai Haku",
           "count": 1
         },
         {
-          "name": "Iipeiko",
+          "name": "Ittsu",
           "count": 1
         },
         {
-          "name": "Junchan",
+          "name": "Yakuhai Bakaze",
+          "count": 1
+        },
+        {
+          "name": "Tanyao",
+          "count": 1
+        },
+        {
+          "name": "Riichi",
           "count": 1
         }
       ],
@@ -758,24 +758,24 @@
       "openRate": 21.7,
       "topYaku": [
         {
-          "name": "Junchan",
-          "count": 5
-        },
-        {
-          "name": "Honitsu",
-          "count": 4
-        },
-        {
           "name": "Riichi",
           "count": 4
         },
         {
-          "name": "Chinitsu",
-          "count": 4
+          "name": "Tanyao",
+          "count": 3
         },
         {
-          "name": "Yakuhai Este",
-          "count": 3
+          "name": "Yakuhai Hatsu",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Chun",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Haku",
+          "count": 1
         }
       ],
       "statsReliable": true
@@ -796,15 +796,15 @@
           "count": 2
         },
         {
-          "name": "Honitsu",
-          "count": 2
+          "name": "Yakuhai Chun",
+          "count": 1
         },
         {
-          "name": "Chinitsu",
-          "count": 2
+          "name": "Yakuhai Haku",
+          "count": 1
         },
         {
-          "name": "Pinfu",
+          "name": "Chiitoitsu",
           "count": 1
         }
       ],
@@ -818,11 +818,7 @@
       "openRate": 45.8,
       "topYaku": [
         {
-          "name": "Honitsu",
-          "count": 5
-        },
-        {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 3
         },
         {
@@ -830,12 +826,16 @@
           "count": 3
         },
         {
-          "name": "Chinitsu",
-          "count": 3
+          "name": "Ippatsu",
+          "count": 2
         },
         {
-          "name": "Junchan",
-          "count": 3
+          "name": "Menzen Tsumo",
+          "count": 1
+        },
+        {
+          "name": "Ittsu",
+          "count": 1
         }
       ],
       "statsReliable": true
@@ -848,10 +848,6 @@
       "openRate": 50.0,
       "topYaku": [
         {
-          "name": "Honitsu",
-          "count": 4
-        },
-        {
           "name": "Menzen Tsumo",
           "count": 3
         },
@@ -861,11 +857,15 @@
         },
         {
           "name": "Chinitsu",
-          "count": 3
+          "count": 1
         },
         {
-          "name": "Junchan",
-          "count": 2
+          "name": "Yakuhai Bakaze",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Hatsu",
+          "count": 1
         }
       ],
       "statsReliable": true
@@ -878,15 +878,11 @@
       "openRate": 66.7,
       "topYaku": [
         {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 2
         },
         {
-          "name": "Junchan",
-          "count": 2
-        },
-        {
-          "name": "Yakuhai Oeste",
+          "name": "Pinfu",
           "count": 1
         },
         {
@@ -894,7 +890,11 @@
           "count": 1
         },
         {
-          "name": "Tanyao",
+          "name": "Yakuhai Jikaze",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Hatsu",
           "count": 1
         }
       ],
@@ -912,20 +912,20 @@
           "count": 4
         },
         {
-          "name": "Chinitsu",
-          "count": 4
-        },
-        {
-          "name": "Junchan",
-          "count": 3
-        },
-        {
-          "name": "Honitsu",
-          "count": 3
-        },
-        {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 2
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Chun",
+          "count": 1
+        },
+        {
+          "name": "Ippatsu",
+          "count": 1
         }
       ],
       "statsReliable": true
@@ -942,20 +942,20 @@
           "count": 4
         },
         {
-          "name": "Chinitsu",
-          "count": 4
-        },
-        {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 3
         },
         {
-          "name": "Yakuhai Oeste",
+          "name": "Pinfu",
           "count": 2
         },
         {
-          "name": "Honitsu",
-          "count": 2
+          "name": "Menzen Tsumo",
+          "count": 1
+        },
+        {
+          "name": "Ippatsu",
+          "count": 1
         }
       ],
       "statsReliable": true
@@ -968,23 +968,23 @@
       "openRate": 66.7,
       "topYaku": [
         {
-          "name": "Junchan",
-          "count": 2
-        },
-        {
-          "name": "Yakuhai Norte",
+          "name": "Chanta",
           "count": 1
         },
         {
-          "name": "Hotei Raoyui",
+          "name": "Yakuhai Haku",
           "count": 1
         },
         {
-          "name": "Yakuhai Hatsu",
+          "name": "Sanshoku Doujun",
           "count": 1
         },
         {
-          "name": "Yakuhai Oeste",
+          "name": "Pinfu",
+          "count": 1
+        },
+        {
+          "name": "Tanyao",
           "count": 1
         }
       ],
@@ -1002,11 +1002,7 @@
           "count": 2
         },
         {
-          "name": "Chinitsu",
-          "count": 2
-        },
-        {
-          "name": "Tsumo",
+          "name": "Yakuhai Hatsu",
           "count": 2
         },
         {
@@ -1014,7 +1010,7 @@
           "count": 1
         },
         {
-          "name": "Sanankou",
+          "name": "Pinfu",
           "count": 1
         }
       ],
@@ -1028,23 +1024,15 @@
       "openRate": 26.1,
       "topYaku": [
         {
-          "name": "Honitsu",
-          "count": 3
-        },
-        {
           "name": "Riichi",
           "count": 2
         },
         {
-          "name": "Chinitsu",
-          "count": 2
-        },
-        {
-          "name": "Hotei Raoyui",
+          "name": "Yakuhai Haku",
           "count": 1
         },
         {
-          "name": "Yakuhai Oeste",
+          "name": "Pinfu",
           "count": 1
         }
       ],
@@ -1058,23 +1046,23 @@
       "openRate": 68.2,
       "topYaku": [
         {
-          "name": "Junchan",
-          "count": 4
-        },
-        {
-          "name": "Honitsu",
-          "count": 3
-        },
-        {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 2
         },
         {
-          "name": "Iipeiko",
+          "name": "Yakuhai Bakaze",
           "count": 1
         },
         {
           "name": "Menzen Tsumo",
+          "count": 1
+        },
+        {
+          "name": "Riichi",
+          "count": 1
+        },
+        {
+          "name": "Toitoi",
           "count": 1
         }
       ],
@@ -1088,11 +1076,7 @@
       "openRate": 39.1,
       "topYaku": [
         {
-          "name": "Honitsu",
-          "count": 8
-        },
-        {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 4
         },
         {
@@ -1104,8 +1088,12 @@
           "count": 2
         },
         {
-          "name": "Chinitsu",
+          "name": "Yakuhai Chun",
           "count": 2
+        },
+        {
+          "name": "Yakuhai Hatsu",
+          "count": 1
         }
       ],
       "statsReliable": true
@@ -1118,15 +1106,7 @@
       "openRate": 27.3,
       "topYaku": [
         {
-          "name": "Junchan",
-          "count": 4
-        },
-        {
-          "name": "Yakuhai Oeste",
-          "count": 3
-        },
-        {
-          "name": "Honitsu",
+          "name": "Pinfu",
           "count": 3
         },
         {
@@ -1134,8 +1114,16 @@
           "count": 3
         },
         {
-          "name": "Chinitsu",
-          "count": 3
+          "name": "Menzen Tsumo",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Hatsu",
+          "count": 1
+        },
+        {
+          "name": "Tanyao",
+          "count": 1
         }
       ],
       "statsReliable": true
@@ -1152,19 +1140,19 @@
           "count": 3
         },
         {
-          "name": "Chinitsu",
-          "count": 3
-        },
-        {
           "name": "Menzen Tsumo",
           "count": 2
         },
         {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 1
         },
         {
-          "name": "Yakuhai Oeste",
+          "name": "Pinfu",
+          "count": 1
+        },
+        {
+          "name": "Iipeiko",
           "count": 1
         }
       ],
@@ -1178,15 +1166,7 @@
       "openRate": 52.4,
       "topYaku": [
         {
-          "name": "Hotei Raoyui",
-          "count": 2
-        },
-        {
-          "name": "Junchan",
-          "count": 2
-        },
-        {
-          "name": "Honitsu",
+          "name": "Yakuhai Haku",
           "count": 2
         },
         {
@@ -1194,8 +1174,16 @@
           "count": 2
         },
         {
-          "name": "Chinitsu",
-          "count": 2
+          "name": "Chanta",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Chun",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Hatsu",
+          "count": 1
         }
       ],
       "statsReliable": true
@@ -1212,19 +1200,19 @@
           "count": 3
         },
         {
-          "name": "Junchan",
-          "count": 3
-        },
-        {
-          "name": "Chinitsu",
-          "count": 3
-        },
-        {
-          "name": "Yakuhai Oeste",
+          "name": "Pinfu",
           "count": 2
         },
         {
           "name": "Menzen Tsumo",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Haku",
+          "count": 1
+        },
+        {
+          "name": "Ippatsu",
           "count": 1
         }
       ],
@@ -1242,19 +1230,19 @@
           "count": 1
         },
         {
-          "name": "Chinitsu",
+          "name": "Yakuhai Haku",
           "count": 1
         },
         {
-          "name": "Hotei Raoyui",
+          "name": "Sanankou",
           "count": 1
         },
         {
-          "name": "Ittsu",
+          "name": "Toitoi",
           "count": 1
         },
         {
-          "name": "Chanta",
+          "name": "Honitsu",
           "count": 1
         }
       ],
@@ -1272,20 +1260,16 @@
           "count": 4
         },
         {
-          "name": "Chinitsu",
-          "count": 4
-        },
-        {
-          "name": "Ryanpeikou",
+          "name": "Ippatsu",
           "count": 3
-        },
-        {
-          "name": "Honitsu",
-          "count": 2
         },
         {
           "name": "Menzen Tsumo",
           "count": 2
+        },
+        {
+          "name": "Tanyao",
+          "count": 1
         }
       ],
       "statsReliable": true
@@ -1298,23 +1282,15 @@
       "openRate": 52.4,
       "topYaku": [
         {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 3
         },
         {
-          "name": "Honitsu",
-          "count": 3
-        },
-        {
-          "name": "Junchan",
-          "count": 2
-        },
-        {
-          "name": "Yakuhai Haku",
+          "name": "Ittsu",
           "count": 1
         },
         {
-          "name": "Pinfu",
+          "name": "Yakuhai Chun",
           "count": 1
         }
       ],
@@ -1328,23 +1304,19 @@
       "openRate": 56.5,
       "topYaku": [
         {
-          "name": "Junchan",
-          "count": 2
-        },
-        {
-          "name": "Honitsu",
-          "count": 2
-        },
-        {
-          "name": "Pinfu",
+          "name": "Yakuhai Chun",
           "count": 1
         },
         {
-          "name": "Yakuhai Este",
+          "name": "Tanyao",
           "count": 1
         },
         {
           "name": "Riichi",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Haku",
           "count": 1
         }
       ],
@@ -1358,15 +1330,11 @@
       "openRate": 52.4,
       "topYaku": [
         {
-          "name": "Pinfu",
+          "name": "Yakuhai Chun",
           "count": 4
         },
         {
-          "name": "Yakuhai Este",
-          "count": 2
-        },
-        {
-          "name": "Honitsu",
+          "name": "Tanyao",
           "count": 2
         },
         {
@@ -1374,8 +1342,12 @@
           "count": 2
         },
         {
-          "name": "Chinitsu",
+          "name": "Yakuhai Jikaze",
           "count": 2
+        },
+        {
+          "name": "Yakuhai Bakaze",
+          "count": 1
         }
       ],
       "statsReliable": true
@@ -1388,11 +1360,11 @@
       "openRate": 76.2,
       "topYaku": [
         {
-          "name": "Iipeiko",
+          "name": "Yakuhai Bakaze",
           "count": 1
         },
         {
-          "name": "Pinfu",
+          "name": "Yakuhai Chun",
           "count": 1
         }
       ],
@@ -1406,23 +1378,23 @@
       "openRate": 33.3,
       "topYaku": [
         {
-          "name": "Hotei Raoyui",
+          "name": "Yakuhai Haku",
           "count": 2
+        },
+        {
+          "name": "Yakuhai Jikaze",
+          "count": 2
+        },
+        {
+          "name": "Shousangen",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Chun",
+          "count": 1
         },
         {
           "name": "Tanyao",
-          "count": 2
-        },
-        {
-          "name": "Sanshoku Doujun",
-          "count": 1
-        },
-        {
-          "name": "Pinfu",
-          "count": 1
-        },
-        {
-          "name": "Honitsu",
           "count": 1
         }
       ],
