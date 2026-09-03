@@ -52,7 +52,7 @@
 [data-density="comfy"]{--density-row:56px;--density-pad:18px;--density-fs:15px}
 
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;min-height:100%}
+html,body{margin:0;padding:0;min-height:100%;overflow-x:hidden}
 body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased;text-wrap:pretty;transition:background-color .3s ease,color .3s ease}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
 table{border-collapse:collapse}
@@ -598,6 +598,10 @@ select{font:inherit;color:inherit}
   .cal-grid{grid-template-columns:1fr}
   .iormc-podium{grid-template-columns:1fr}
   .lang-switch .lang-btn{padding:4px 6px}
-  .tz-switch select{max-width:140px}
+  .tz-switch select{max-width:132px}
   .tabs{margin-left:0}
+  .section-head h1{font-size:26px;white-space:normal}
+  .section-head .h-left .num{font-size:10px}
+  .topbar .brand .wordmark .l1{font-size:14px}
+  .ds-btn{padding:6px 10px}
 }
