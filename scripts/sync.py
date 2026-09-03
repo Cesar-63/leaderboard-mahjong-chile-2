@@ -336,7 +336,7 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
     absence_penalty = float(config.get("absencePenaltyPerHanchan", -30))
     for division in ("A", "B"):
         rule = config["divisions"][division]
-        players = [{**player, "games": 0, "points": 0.0, "history": [], "cum": [], "counts": [0, 0, 0, 0], "absences": 0, "hands": 0, "wins": 0, "dealIns": 0, "riichis": 0, "openHands": 0, "yakuCounts": Counter()} for player in rosters[division]]
+        players = [{**player, "games": 0, "points": 0.0, "history": [], "cum": [], "counts": [0, 0, 0, 0], "absences": 0, "hands": 0, "wins": 0, "dealIns": 0, "riichis": 0, "openHands": 0, "damaten": 0, "winPoints": 0, "dealInPoints": 0, "winTurns": 0, "yakuCounts": Counter()} for player in rosters[division]]
         by_id = {player["id"]: player for player in players}
         matches = []
         keys = {key for key in histories if key.startswith(f"{division}-")} | {key for key in parsed_games if key.startswith(f"{division}-")}
@@ -386,7 +386,7 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
             if parsed and seat_map:
                 for seat, player in seat_map.items():
                     seat_stats = parsed["seatStats"][seat]
-                    for field in ("hands", "wins", "dealIns", "riichis", "openHands"):
+                    for field in ("hands", "wins", "dealIns", "riichis", "openHands", "damaten", "winPoints", "dealInPoints", "winTurns"):
                         player[field] += int(seat_stats[field])
                     player["yakuCounts"].update(seat_stats["yaku"])
             date_display = fixture["date"] if fixture else "—"
@@ -417,11 +417,19 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
             player["dealInRate"] = pct(player["dealIns"], hands)
             player["riichiRate"] = pct(player["riichis"], hands)
             player["openRate"] = pct(player["openHands"], hands)
+            # Métricas al estilo amae-koromo: las tres primeras se miden sobre
+            # manos ganadas o sobre deal-ins, no sobre el total de manos.
+            wins, deal_ins = player["wins"], player["dealIns"]
+            player["damatenRate"] = pct(player["damaten"], wins)
+            player["avgWinPoints"] = round(player["winPoints"] / wins) if wins else 0
+            player["avgDealInPoints"] = round(player["dealInPoints"] / deal_ins) if deal_ins else 0
+            player["avgWinTurn"] = round(player["winTurns"] / wins, 2) if wins else 0
             player["topYaku"] = [{"name": name, "count": count} for name, count in player["yakuCounts"].most_common(5)]
             player["statsSample"] = hands
             player["statsReliable"] = hands >= int(config["minimumAdvancedStatsHands"])
             player["arch"] = "con datos" if player["statsReliable"] else "stats pendientes"
-            stats_output["players"][player["id"]] = {key: player[key] for key in ("hands", "winRate", "dealInRate", "riichiRate", "openRate", "topYaku", "statsReliable")}
+            stats_output["players"][player["id"]] = {key: player[key] for key in ("hands", "wins", "dealIns", "winRate", "dealInRate", "riichiRate", "openRate",
+                "damatenRate", "avgWinPoints", "avgDealInPoints", "avgWinTurn", "topYaku", "statsReliable")}
             del player["yakuCounts"]
         players.sort(key=lambda item: (-item["points"], item["avgRank"] if item["games"] else 99, item["name"].lower()))
         for index, player in enumerate(players, start=1):
