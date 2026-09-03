@@ -16,3 +16,7 @@ __pycache__/
 
 # Reporte de paipus propuestos: se regenera en cada corrida.
 reports/
+
+# Preview local: dependencias de build y bundles generados.
+.vendor/
+dist/

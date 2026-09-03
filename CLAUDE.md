@@ -144,6 +144,23 @@ src/
 **Lógica separada de presentación.** `standings.ts` no importa JSX y tiene tests
 contra un fixture escrito a mano. Los componentes solo pintan.
 
+## Preview local
+
+Para ver una rama sin desplegar ni tocar `main`:
+
+- **Servidor estático:** `python3 -m http.server 8000` en la raíz y abrir
+  `http://localhost:8000/index.html` (o `/Mobile.html`). Es el sitio tal cual,
+  con React y Babel desde CDN.
+- **Bundle de un solo archivo:** `node scripts/build_preview.mjs` emite
+  `dist/preview.html` (y `--entry Mobile.html` emite `dist/mobile.html`):
+  CSS, datos, logo, React y el JSX ya transpilado, todo inlineado. Se abre con
+  doble clic o se comparte tal cual; no pide red ni servidor. El gemelo
+  `dist/*.artifact.html` es el mismo contenido sin `<html>/<head>/<body>`, para
+  publicarlo como Artifact.
+
+El script instala solo sus dependencias en `.vendor/` la primera vez. `.vendor/`
+y `dist/` no se versionan, y nada de esto entra al deploy de Vercel.
+
 ## Vistas
 
 1. **Tabla** — clasificación por división, columnas ordenables, sparkline de forma,
