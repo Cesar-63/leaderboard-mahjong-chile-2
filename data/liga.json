@@ -50,7 +50,11 @@
           "wins": 37,
           "dealIns": 8,
           "riichis": 17,
-          "openHands": 37,
+          "openHands": 36,
+          "damaten": 5,
+          "winPoints": 200800,
+          "dealInPoints": 15400,
+          "winTurns": 431,
           "placements": {
             "p1": 0.6,
             "p2": 0.3,
@@ -63,7 +67,11 @@
           "winRate": 30.1,
           "dealInRate": 6.5,
           "riichiRate": 13.8,
-          "openRate": 30.1,
+          "openRate": 29.3,
+          "damatenRate": 13.5,
+          "avgWinPoints": 5427,
+          "avgDealInPoints": 1925,
+          "avgWinTurn": 11.65,
           "topYaku": [
             {
               "name": "Riichi",
@@ -139,7 +147,11 @@
           "wins": 32,
           "dealIns": 9,
           "riichis": 21,
-          "openHands": 42,
+          "openHands": 38,
+          "damaten": 4,
+          "winPoints": 167800,
+          "dealInPoints": 44800,
+          "winTurns": 346,
           "placements": {
             "p1": 0.5,
             "p2": 0.2,
@@ -152,7 +164,11 @@
           "winRate": 26.0,
           "dealInRate": 7.3,
           "riichiRate": 17.1,
-          "openRate": 34.1,
+          "openRate": 30.9,
+          "damatenRate": 12.5,
+          "avgWinPoints": 5244,
+          "avgDealInPoints": 4978,
+          "avgWinTurn": 10.81,
           "topYaku": [
             {
               "name": "Riichi",
@@ -231,6 +247,10 @@
           "dealIns": 13,
           "riichis": 26,
           "openHands": 49,
+          "damaten": 2,
+          "winPoints": 135100,
+          "dealInPoints": 41800,
+          "winTurns": 296,
           "placements": {
             "p1": 0.3,
             "p2": 0.4,
@@ -244,6 +264,10 @@
           "dealInRate": 12.5,
           "riichiRate": 25.0,
           "openRate": 47.1,
+          "damatenRate": 7.4,
+          "avgWinPoints": 5004,
+          "avgDealInPoints": 3215,
+          "avgWinTurn": 10.96,
           "topYaku": [
             {
               "name": "Riichi",
@@ -319,7 +343,11 @@
           "wins": 32,
           "dealIns": 22,
           "riichis": 36,
-          "openHands": 52,
+          "openHands": 49,
+          "damaten": 0,
+          "winPoints": 172900,
+          "dealInPoints": 78000,
+          "winTurns": 352,
           "placements": {
             "p1": 0.3,
             "p2": 0.5,
@@ -332,7 +360,11 @@
           "winRate": 24.8,
           "dealInRate": 17.1,
           "riichiRate": 27.9,
-          "openRate": 40.3,
+          "openRate": 38.0,
+          "damatenRate": 0.0,
+          "avgWinPoints": 5403,
+          "avgDealInPoints": 3545,
+          "avgWinTurn": 11.0,
           "topYaku": [
             {
               "name": "Riichi",
@@ -410,7 +442,11 @@
           "wins": 29,
           "dealIns": 8,
           "riichis": 26,
-          "openHands": 43,
+          "openHands": 42,
+          "damaten": 2,
+          "winPoints": 139300,
+          "dealInPoints": 25700,
+          "winTurns": 335,
           "placements": {
             "p1": 0.2,
             "p2": 0.4,
@@ -423,7 +459,11 @@
           "winRate": 24.2,
           "dealInRate": 6.7,
           "riichiRate": 21.7,
-          "openRate": 35.8,
+          "openRate": 35.0,
+          "damatenRate": 6.9,
+          "avgWinPoints": 4803,
+          "avgDealInPoints": 3212,
+          "avgWinTurn": 11.55,
           "topYaku": [
             {
               "name": "Riichi",
@@ -502,6 +542,10 @@
           "dealIns": 14,
           "riichis": 27,
           "openHands": 43,
+          "damaten": 1,
+          "winPoints": 156300,
+          "dealInPoints": 60600,
+          "winTurns": 288,
           "placements": {
             "p1": 0.3,
             "p2": 0.2,
@@ -515,6 +559,10 @@
           "dealInRate": 11.8,
           "riichiRate": 22.7,
           "openRate": 36.1,
+          "damatenRate": 3.3,
+          "avgWinPoints": 5210,
+          "avgDealInPoints": 4329,
+          "avgWinTurn": 9.6,
           "topYaku": [
             {
               "name": "Riichi",
@@ -590,7 +638,11 @@
           "wins": 30,
           "dealIns": 13,
           "riichis": 39,
-          "openHands": 34,
+          "openHands": 30,
+          "damaten": 0,
+          "winPoints": 185100,
+          "dealInPoints": 92300,
+          "winTurns": 330,
           "placements": {
             "p1": 0.4,
             "p2": 0.1,
@@ -603,7 +655,11 @@
           "winRate": 23.8,
           "dealInRate": 10.3,
           "riichiRate": 31.0,
-          "openRate": 27.0,
+          "openRate": 23.8,
+          "damatenRate": 0.0,
+          "avgWinPoints": 6170,
+          "avgDealInPoints": 7100,
+          "avgWinTurn": 11.0,
           "topYaku": [
             {
               "name": "Riichi",
@@ -681,7 +737,11 @@
           "wins": 25,
           "dealIns": 8,
           "riichis": 24,
-          "openHands": 36,
+          "openHands": 33,
+          "damaten": 1,
+          "winPoints": 147800,
+          "dealInPoints": 51600,
+          "winTurns": 265,
           "placements": {
             "p1": 0.4,
             "p2": 0.1,
@@ -694,7 +754,11 @@
           "winRate": 19.8,
           "dealInRate": 6.3,
           "riichiRate": 19.0,
-          "openRate": 28.6,
+          "openRate": 26.2,
+          "damatenRate": 4.0,
+          "avgWinPoints": 5912,
+          "avgDealInPoints": 6450,
+          "avgWinTurn": 10.6,
           "topYaku": [
             {
               "name": "Riichi",
@@ -771,6 +835,10 @@
           "dealIns": 12,
           "riichis": 13,
           "openHands": 55,
+          "damaten": 2,
+          "winPoints": 135700,
+          "dealInPoints": 73000,
+          "winTurns": 288,
           "placements": {
             "p1": 0.3,
             "p2": 0.3,
@@ -784,6 +852,10 @@
           "dealInRate": 10.1,
           "riichiRate": 10.9,
           "openRate": 46.2,
+          "damatenRate": 8.0,
+          "avgWinPoints": 5428,
+          "avgDealInPoints": 6083,
+          "avgWinTurn": 11.52,
           "topYaku": [
             {
               "name": "Riichi",
@@ -859,7 +931,11 @@
           "wins": 24,
           "dealIns": 12,
           "riichis": 15,
-          "openHands": 33,
+          "openHands": 32,
+          "damaten": 4,
+          "winPoints": 141700,
+          "dealInPoints": 45800,
+          "winTurns": 277,
           "placements": {
             "p1": 0.3,
             "p2": 0.2,
@@ -872,7 +948,11 @@
           "winRate": 20.5,
           "dealInRate": 10.3,
           "riichiRate": 12.8,
-          "openRate": 28.2,
+          "openRate": 27.4,
+          "damatenRate": 16.7,
+          "avgWinPoints": 5904,
+          "avgDealInPoints": 3817,
+          "avgWinTurn": 11.54,
           "topYaku": [
             {
               "name": "Riichi",
@@ -951,6 +1031,10 @@
           "dealIns": 19,
           "riichis": 36,
           "openHands": 33,
+          "damaten": 3,
+          "winPoints": 124400,
+          "dealInPoints": 78500,
+          "winTurns": 348,
           "placements": {
             "p1": 0.3,
             "p2": 0.2,
@@ -964,6 +1048,10 @@
           "dealInRate": 15.4,
           "riichiRate": 29.3,
           "openRate": 26.8,
+          "damatenRate": 10.7,
+          "avgWinPoints": 4443,
+          "avgDealInPoints": 4132,
+          "avgWinTurn": 12.43,
           "topYaku": [
             {
               "name": "Riichi",
@@ -1039,7 +1127,11 @@
           "wins": 24,
           "dealIns": 10,
           "riichis": 28,
-          "openHands": 39,
+          "openHands": 38,
+          "damaten": 2,
+          "winPoints": 94700,
+          "dealInPoints": 51600,
+          "winTurns": 250,
           "placements": {
             "p1": 0.4,
             "p2": 0.1,
@@ -1052,7 +1144,11 @@
           "winRate": 20.9,
           "dealInRate": 8.7,
           "riichiRate": 24.3,
-          "openRate": 33.9,
+          "openRate": 33.0,
+          "damatenRate": 8.3,
+          "avgWinPoints": 3946,
+          "avgDealInPoints": 5160,
+          "avgWinTurn": 10.42,
           "topYaku": [
             {
               "name": "Riichi",
@@ -1128,7 +1224,11 @@
           "wins": 22,
           "dealIns": 23,
           "riichis": 11,
-          "openHands": 49,
+          "openHands": 48,
+          "damaten": 6,
+          "winPoints": 99300,
+          "dealInPoints": 69600,
+          "winTurns": 236,
           "placements": {
             "p1": 0.3,
             "p2": 0.2,
@@ -1141,7 +1241,11 @@
           "winRate": 20.4,
           "dealInRate": 21.3,
           "riichiRate": 10.2,
-          "openRate": 45.4,
+          "openRate": 44.4,
+          "damatenRate": 27.3,
+          "avgWinPoints": 4514,
+          "avgDealInPoints": 3026,
+          "avgWinTurn": 10.73,
           "topYaku": [
             {
               "name": "Tanyao",
@@ -1218,6 +1322,10 @@
           "dealIns": 18,
           "riichis": 13,
           "openHands": 50,
+          "damaten": 3,
+          "winPoints": 111600,
+          "dealInPoints": 98100,
+          "winTurns": 330,
           "placements": {
             "p1": 0.3,
             "p2": 0.2,
@@ -1231,6 +1339,10 @@
           "dealInRate": 15.9,
           "riichiRate": 11.5,
           "openRate": 44.2,
+          "damatenRate": 10.3,
+          "avgWinPoints": 3848,
+          "avgDealInPoints": 5450,
+          "avgWinTurn": 11.38,
           "topYaku": [
             {
               "name": "Tanyao",
@@ -1308,7 +1420,11 @@
           "wins": 26,
           "dealIns": 22,
           "riichis": 29,
-          "openHands": 60,
+          "openHands": 58,
+          "damaten": 1,
+          "winPoints": 133200,
+          "dealInPoints": 120800,
+          "winTurns": 330,
           "placements": {
             "p1": 0.1,
             "p2": 0.4,
@@ -1321,7 +1437,11 @@
           "winRate": 20.2,
           "dealInRate": 17.1,
           "riichiRate": 22.5,
-          "openRate": 46.5,
+          "openRate": 45.0,
+          "damatenRate": 3.8,
+          "avgWinPoints": 5123,
+          "avgDealInPoints": 5491,
+          "avgWinTurn": 12.69,
           "topYaku": [
             {
               "name": "Riichi",
@@ -1399,7 +1519,11 @@
           "wins": 23,
           "dealIns": 15,
           "riichis": 23,
-          "openHands": 28,
+          "openHands": 27,
+          "damaten": 1,
+          "winPoints": 96800,
+          "dealInPoints": 69400,
+          "winTurns": 270,
           "placements": {
             "p1": 0.2,
             "p2": 0.3,
@@ -1412,7 +1536,11 @@
           "winRate": 19.0,
           "dealInRate": 12.4,
           "riichiRate": 19.0,
-          "openRate": 23.1,
+          "openRate": 22.3,
+          "damatenRate": 4.3,
+          "avgWinPoints": 4209,
+          "avgDealInPoints": 4627,
+          "avgWinTurn": 11.74,
           "topYaku": [
             {
               "name": "Riichi",
@@ -1490,7 +1618,11 @@
           "wins": 28,
           "dealIns": 24,
           "riichis": 23,
-          "openHands": 59,
+          "openHands": 58,
+          "damaten": 2,
+          "winPoints": 123600,
+          "dealInPoints": 79800,
+          "winTurns": 301,
           "placements": {
             "p1": 0.1,
             "p2": 0.2,
@@ -1503,7 +1635,11 @@
           "winRate": 22.6,
           "dealInRate": 19.4,
           "riichiRate": 18.5,
-          "openRate": 47.6,
+          "openRate": 46.8,
+          "damatenRate": 7.1,
+          "avgWinPoints": 4414,
+          "avgDealInPoints": 3325,
+          "avgWinTurn": 10.75,
           "topYaku": [
             {
               "name": "Riichi",
@@ -1581,7 +1717,11 @@
           "wins": 17,
           "dealIns": 20,
           "riichis": 21,
-          "openHands": 25,
+          "openHands": 24,
+          "damaten": 0,
+          "winPoints": 115700,
+          "dealInPoints": 81200,
+          "winTurns": 201,
           "placements": {
             "p1": 0.2,
             "p2": 0.3,
@@ -1594,7 +1734,11 @@
           "winRate": 13.8,
           "dealInRate": 16.3,
           "riichiRate": 17.1,
-          "openRate": 20.3,
+          "openRate": 19.5,
+          "damatenRate": 0.0,
+          "avgWinPoints": 6806,
+          "avgDealInPoints": 4060,
+          "avgWinTurn": 11.82,
           "topYaku": [
             {
               "name": "Riichi",
@@ -1670,7 +1814,11 @@
           "wins": 22,
           "dealIns": 21,
           "riichis": 27,
-          "openHands": 54,
+          "openHands": 52,
+          "damaten": 0,
+          "winPoints": 123700,
+          "dealInPoints": 126700,
+          "winTurns": 232,
           "placements": {
             "p1": 0.1,
             "p2": 0.4,
@@ -1683,7 +1831,11 @@
           "winRate": 17.1,
           "dealInRate": 16.3,
           "riichiRate": 20.9,
-          "openRate": 41.9,
+          "openRate": 40.3,
+          "damatenRate": 0.0,
+          "avgWinPoints": 5623,
+          "avgDealInPoints": 6033,
+          "avgWinTurn": 10.55,
           "topYaku": [
             {
               "name": "Tanyao",
@@ -1759,7 +1911,11 @@
           "wins": 28,
           "dealIns": 25,
           "riichis": 38,
-          "openHands": 50,
+          "openHands": 45,
+          "damaten": 1,
+          "winPoints": 148100,
+          "dealInPoints": 146100,
+          "winTurns": 364,
           "placements": {
             "p1": 0.1,
             "p2": 0.4,
@@ -1772,7 +1928,11 @@
           "winRate": 22.6,
           "dealInRate": 20.2,
           "riichiRate": 30.6,
-          "openRate": 40.3,
+          "openRate": 36.3,
+          "damatenRate": 3.6,
+          "avgWinPoints": 5289,
+          "avgDealInPoints": 5844,
+          "avgWinTurn": 13.0,
           "topYaku": [
             {
               "name": "Riichi",
@@ -1848,7 +2008,11 @@
           "wins": 22,
           "dealIns": 24,
           "riichis": 33,
-          "openHands": 37,
+          "openHands": 36,
+          "damaten": 1,
+          "winPoints": 156600,
+          "dealInPoints": 149600,
+          "winTurns": 259,
           "placements": {
             "p1": 0.1,
             "p2": 0.4,
@@ -1861,7 +2025,11 @@
           "winRate": 18.6,
           "dealInRate": 20.3,
           "riichiRate": 28.0,
-          "openRate": 31.4,
+          "openRate": 30.5,
+          "damatenRate": 4.5,
+          "avgWinPoints": 7118,
+          "avgDealInPoints": 6233,
+          "avgWinTurn": 11.77,
           "topYaku": [
             {
               "name": "Riichi",
@@ -1940,6 +2108,10 @@
           "dealIns": 24,
           "riichis": 26,
           "openHands": 55,
+          "damaten": 0,
+          "winPoints": 117300,
+          "dealInPoints": 134700,
+          "winTurns": 252,
           "placements": {
             "p1": 0.0,
             "p2": 0.2,
@@ -1953,6 +2125,10 @@
           "dealInRate": 19.7,
           "riichiRate": 21.3,
           "openRate": 45.1,
+          "damatenRate": 0.0,
+          "avgWinPoints": 4888,
+          "avgDealInPoints": 5612,
+          "avgWinTurn": 10.5,
           "topYaku": [
             {
               "name": "Riichi",
@@ -2028,7 +2204,11 @@
           "wins": 20,
           "dealIns": 23,
           "riichis": 22,
-          "openHands": 45,
+          "openHands": 44,
+          "damaten": 0,
+          "winPoints": 54100,
+          "dealInPoints": 110200,
+          "winTurns": 200,
           "placements": {
             "p1": 0.1,
             "p2": 0.0,
@@ -2041,7 +2221,11 @@
           "winRate": 18.2,
           "dealInRate": 20.9,
           "riichiRate": 20.0,
-          "openRate": 40.9,
+          "openRate": 40.0,
+          "damatenRate": 0.0,
+          "avgWinPoints": 2705,
+          "avgDealInPoints": 4791,
+          "avgWinTurn": 10.0,
           "topYaku": [
             {
               "name": "Riichi",
@@ -2119,7 +2303,11 @@
           "wins": 20,
           "dealIns": 34,
           "riichis": 28,
-          "openHands": 50,
+          "openHands": 48,
+          "damaten": 1,
+          "winPoints": 104000,
+          "dealInPoints": 178700,
+          "winTurns": 217,
           "placements": {
             "p1": 0.1,
             "p2": 0.0,
@@ -2132,7 +2320,11 @@
           "winRate": 15.7,
           "dealInRate": 26.8,
           "riichiRate": 22.0,
-          "openRate": 39.4,
+          "openRate": 37.8,
+          "damatenRate": 5.0,
+          "avgWinPoints": 5200,
+          "avgDealInPoints": 5256,
+          "avgWinTurn": 10.85,
           "topYaku": [
             {
               "name": "Tanyao",
@@ -5883,7 +6075,11 @@
             "wins": 37,
             "dealIns": 8,
             "riichis": 17,
-            "openHands": 37,
+            "openHands": 36,
+            "damaten": 5,
+            "winPoints": 200800,
+            "dealInPoints": 15400,
+            "winTurns": 431,
             "placements": {
               "p1": 0.6,
               "p2": 0.3,
@@ -5896,7 +6092,11 @@
             "winRate": 30.1,
             "dealInRate": 6.5,
             "riichiRate": 13.8,
-            "openRate": 30.1,
+            "openRate": 29.3,
+            "damatenRate": 13.5,
+            "avgWinPoints": 5427,
+            "avgDealInPoints": 1925,
+            "avgWinTurn": 11.65,
             "topYaku": [
               {
                 "name": "Riichi",
@@ -5978,7 +6178,11 @@
             "wins": 37,
             "dealIns": 8,
             "riichis": 17,
-            "openHands": 37,
+            "openHands": 36,
+            "damaten": 5,
+            "winPoints": 200800,
+            "dealInPoints": 15400,
+            "winTurns": 431,
             "placements": {
               "p1": 0.6,
               "p2": 0.3,
@@ -5991,7 +6195,11 @@
             "winRate": 30.1,
             "dealInRate": 6.5,
             "riichiRate": 13.8,
-            "openRate": 30.1,
+            "openRate": 29.3,
+            "damatenRate": 13.5,
+            "avgWinPoints": 5427,
+            "avgDealInPoints": 1925,
+            "avgWinTurn": 11.65,
             "topYaku": [
               {
                 "name": "Riichi",
@@ -6073,7 +6281,11 @@
             "wins": 25,
             "dealIns": 8,
             "riichis": 24,
-            "openHands": 36,
+            "openHands": 33,
+            "damaten": 1,
+            "winPoints": 147800,
+            "dealInPoints": 51600,
+            "winTurns": 265,
             "placements": {
               "p1": 0.4,
               "p2": 0.1,
@@ -6086,7 +6298,11 @@
             "winRate": 19.8,
             "dealInRate": 6.3,
             "riichiRate": 19.0,
-            "openRate": 28.6,
+            "openRate": 26.2,
+            "damatenRate": 4.0,
+            "avgWinPoints": 5912,
+            "avgDealInPoints": 6450,
+            "avgWinTurn": 10.6,
             "topYaku": [
               {
                 "name": "Riichi",
@@ -6168,7 +6384,11 @@
             "wins": 30,
             "dealIns": 13,
             "riichis": 39,
-            "openHands": 34,
+            "openHands": 30,
+            "damaten": 0,
+            "winPoints": 185100,
+            "dealInPoints": 92300,
+            "winTurns": 330,
             "placements": {
               "p1": 0.4,
               "p2": 0.1,
@@ -6181,7 +6401,11 @@
             "winRate": 23.8,
             "dealInRate": 10.3,
             "riichiRate": 31.0,
-            "openRate": 27.0,
+            "openRate": 23.8,
+            "damatenRate": 0.0,
+            "avgWinPoints": 6170,
+            "avgDealInPoints": 7100,
+            "avgWinTurn": 11.0,
             "topYaku": [
               {
                 "name": "Riichi",
@@ -6265,7 +6489,11 @@
             "wins": 37,
             "dealIns": 8,
             "riichis": 17,
-            "openHands": 37,
+            "openHands": 36,
+            "damaten": 5,
+            "winPoints": 200800,
+            "dealInPoints": 15400,
+            "winTurns": 431,
             "placements": {
               "p1": 0.6,
               "p2": 0.3,
@@ -6278,7 +6506,11 @@
             "winRate": 30.1,
             "dealInRate": 6.5,
             "riichiRate": 13.8,
-            "openRate": 30.1,
+            "openRate": 29.3,
+            "damatenRate": 13.5,
+            "avgWinPoints": 5427,
+            "avgDealInPoints": 1925,
+            "avgWinTurn": 11.65,
             "topYaku": [
               {
                 "name": "Riichi",
@@ -6360,7 +6592,11 @@
             "wins": 37,
             "dealIns": 8,
             "riichis": 17,
-            "openHands": 37,
+            "openHands": 36,
+            "damaten": 5,
+            "winPoints": 200800,
+            "dealInPoints": 15400,
+            "winTurns": 431,
             "placements": {
               "p1": 0.6,
               "p2": 0.3,
@@ -6373,7 +6609,11 @@
             "winRate": 30.1,
             "dealInRate": 6.5,
             "riichiRate": 13.8,
-            "openRate": 30.1,
+            "openRate": 29.3,
+            "damatenRate": 13.5,
+            "avgWinPoints": 5427,
+            "avgDealInPoints": 1925,
+            "avgWinTurn": 11.65,
             "topYaku": [
               {
                 "name": "Riichi",
@@ -6456,7 +6696,11 @@
           "wins": 18,
           "dealIns": 6,
           "riichis": 16,
-          "openHands": 23,
+          "openHands": 22,
+          "damaten": 0,
+          "winPoints": 113200,
+          "dealInPoints": 27100,
+          "winTurns": 188,
           "placements": {
             "p1": 0.4,
             "p2": 0.4,
@@ -6469,7 +6713,11 @@
           "winRate": 28.1,
           "dealInRate": 9.4,
           "riichiRate": 25.0,
-          "openRate": 35.9,
+          "openRate": 34.4,
+          "damatenRate": 0.0,
+          "avgWinPoints": 6289,
+          "avgDealInPoints": 4517,
+          "avgWinTurn": 10.44,
           "topYaku": [
             {
               "name": "Riichi",
@@ -6546,6 +6794,10 @@
           "dealIns": 7,
           "riichis": 11,
           "openHands": 30,
+          "damaten": 2,
+          "winPoints": 154400,
+          "dealInPoints": 26600,
+          "winTurns": 211,
           "placements": {
             "p1": 0.4,
             "p2": 0.2,
@@ -6559,6 +6811,10 @@
           "dealInRate": 10.9,
           "riichiRate": 17.2,
           "openRate": 46.9,
+          "damatenRate": 10.5,
+          "avgWinPoints": 8126,
+          "avgDealInPoints": 3800,
+          "avgWinTurn": 11.11,
           "topYaku": [
             {
               "name": "Tanyao",
@@ -6634,7 +6890,11 @@
           "wins": 14,
           "dealIns": 7,
           "riichis": 17,
-          "openHands": 23,
+          "openHands": 22,
+          "damaten": 2,
+          "winPoints": 96500,
+          "dealInPoints": 30400,
+          "winTurns": 170,
           "placements": {
             "p1": 0.5,
             "p2": 0.1,
@@ -6647,7 +6907,11 @@
           "winRate": 23.0,
           "dealInRate": 11.5,
           "riichiRate": 27.9,
-          "openRate": 37.7,
+          "openRate": 36.1,
+          "damatenRate": 14.3,
+          "avgWinPoints": 6893,
+          "avgDealInPoints": 4343,
+          "avgWinTurn": 12.14,
           "topYaku": [
             {
               "name": "Riichi",
@@ -6720,6 +6984,10 @@
           "dealIns": 6,
           "riichis": 11,
           "openHands": 17,
+          "damaten": 0,
+          "winPoints": 46800,
+          "dealInPoints": 31100,
+          "winTurns": 99,
           "placements": {
             "p1": 0.5,
             "p2": 0.25,
@@ -6733,6 +7001,10 @@
           "dealInRate": 12.0,
           "riichiRate": 22.0,
           "openRate": 34.0,
+          "damatenRate": 0.0,
+          "avgWinPoints": 4680,
+          "avgDealInPoints": 5183,
+          "avgWinTurn": 9.9,
           "topYaku": [
             {
               "name": "Yakuhai Chun",
@@ -6808,7 +7080,11 @@
           "wins": 21,
           "dealIns": 7,
           "riichis": 17,
-          "openHands": 21,
+          "openHands": 20,
+          "damaten": 3,
+          "winPoints": 111700,
+          "dealInPoints": 44800,
+          "winTurns": 257,
           "placements": {
             "p1": 0.4,
             "p2": 0.2,
@@ -6821,7 +7097,11 @@
           "winRate": 30.0,
           "dealInRate": 10.0,
           "riichiRate": 24.3,
-          "openRate": 30.0,
+          "openRate": 28.6,
+          "damatenRate": 14.3,
+          "avgWinPoints": 5319,
+          "avgDealInPoints": 6400,
+          "avgWinTurn": 12.24,
           "topYaku": [
             {
               "name": "Riichi",
@@ -6897,7 +7177,11 @@
           "wins": 23,
           "dealIns": 10,
           "riichis": 14,
-          "openHands": 23,
+          "openHands": 22,
+          "damaten": 4,
+          "winPoints": 128800,
+          "dealInPoints": 48900,
+          "winTurns": 279,
           "placements": {
             "p1": 0.3,
             "p2": 0.3,
@@ -6910,7 +7194,11 @@
           "winRate": 34.8,
           "dealInRate": 15.2,
           "riichiRate": 21.2,
-          "openRate": 34.8,
+          "openRate": 33.3,
+          "damatenRate": 17.4,
+          "avgWinPoints": 5600,
+          "avgDealInPoints": 4890,
+          "avgWinTurn": 12.13,
           "topYaku": [
             {
               "name": "Riichi",
@@ -6983,6 +7271,10 @@
           "dealIns": 9,
           "riichis": 7,
           "openHands": 14,
+          "damaten": 2,
+          "winPoints": 91900,
+          "dealInPoints": 58000,
+          "winTurns": 113,
           "placements": {
             "p1": 0.38,
             "p2": 0.12,
@@ -6996,6 +7288,10 @@
           "dealInRate": 13.8,
           "riichiRate": 10.8,
           "openRate": 21.5,
+          "damatenRate": 20.0,
+          "avgWinPoints": 9190,
+          "avgDealInPoints": 6444,
+          "avgWinTurn": 11.3,
           "topYaku": [
             {
               "name": "Riichi",
@@ -7068,6 +7364,10 @@
           "dealIns": 7,
           "riichis": 15,
           "openHands": 20,
+          "damaten": 3,
+          "winPoints": 142800,
+          "dealInPoints": 45400,
+          "winTurns": 222,
           "placements": {
             "p1": 0.12,
             "p2": 0.62,
@@ -7081,6 +7381,10 @@
           "dealInRate": 9.7,
           "riichiRate": 20.8,
           "openRate": 27.8,
+          "damatenRate": 13.6,
+          "avgWinPoints": 6491,
+          "avgDealInPoints": 6486,
+          "avgWinTurn": 10.09,
           "topYaku": [
             {
               "name": "Riichi",
@@ -7152,7 +7456,11 @@
           "wins": 16,
           "dealIns": 9,
           "riichis": 25,
-          "openHands": 22,
+          "openHands": 19,
+          "damaten": 0,
+          "winPoints": 86500,
+          "dealInPoints": 54500,
+          "winTurns": 190,
           "placements": {
             "p1": 0.5,
             "p2": 0.0,
@@ -7165,7 +7473,11 @@
           "winRate": 25.4,
           "dealInRate": 14.3,
           "riichiRate": 39.7,
-          "openRate": 34.9,
+          "openRate": 30.2,
+          "damatenRate": 0.0,
+          "avgWinPoints": 5406,
+          "avgDealInPoints": 6056,
+          "avgWinTurn": 11.88,
           "topYaku": [
             {
               "name": "Riichi",
@@ -7242,6 +7554,10 @@
           "dealIns": 3,
           "riichis": 7,
           "openHands": 16,
+          "damaten": 1,
+          "winPoints": 29400,
+          "dealInPoints": 19100,
+          "winTurns": 70,
           "placements": {
             "p1": 0.1,
             "p2": 0.4,
@@ -7255,6 +7571,10 @@
           "dealInRate": 5.8,
           "riichiRate": 13.5,
           "openRate": 30.8,
+          "damatenRate": 16.7,
+          "avgWinPoints": 4900,
+          "avgDealInPoints": 6367,
+          "avgWinTurn": 11.67,
           "topYaku": [
             {
               "name": "Riichi",
@@ -7326,7 +7646,11 @@
           "wins": 11,
           "dealIns": 7,
           "riichis": 12,
-          "openHands": 22,
+          "openHands": 21,
+          "damaten": 0,
+          "winPoints": 86900,
+          "dealInPoints": 46400,
+          "winTurns": 130,
           "placements": {
             "p1": 0.5,
             "p2": 0.17,
@@ -7339,7 +7663,11 @@
           "winRate": 22.0,
           "dealInRate": 14.0,
           "riichiRate": 24.0,
-          "openRate": 44.0,
+          "openRate": 42.0,
+          "damatenRate": 0.0,
+          "avgWinPoints": 7900,
+          "avgDealInPoints": 6629,
+          "avgWinTurn": 11.82,
           "topYaku": [
             {
               "name": "Riichi",
@@ -7416,6 +7744,10 @@
           "dealIns": 4,
           "riichis": 11,
           "openHands": 8,
+          "damaten": 2,
+          "winPoints": 89100,
+          "dealInPoints": 20600,
+          "winTurns": 161,
           "placements": {
             "p1": 0.2,
             "p2": 0.3,
@@ -7429,6 +7761,10 @@
           "dealInRate": 8.7,
           "riichiRate": 23.9,
           "openRate": 17.4,
+          "damatenRate": 15.4,
+          "avgWinPoints": 6854,
+          "avgDealInPoints": 5150,
+          "avgWinTurn": 12.38,
           "topYaku": [
             {
               "name": "Riichi",
@@ -7501,6 +7837,10 @@
           "dealIns": 8,
           "riichis": 9,
           "openHands": 12,
+          "damaten": 1,
+          "winPoints": 72700,
+          "dealInPoints": 23200,
+          "winTurns": 88,
           "placements": {
             "p1": 0.0,
             "p2": 0.62,
@@ -7514,6 +7854,10 @@
           "dealInRate": 19.0,
           "riichiRate": 21.4,
           "openRate": 28.6,
+          "damatenRate": 11.1,
+          "avgWinPoints": 8078,
+          "avgDealInPoints": 2900,
+          "avgWinTurn": 9.78,
           "topYaku": [
             {
               "name": "Riichi",
@@ -7586,6 +7930,10 @@
           "dealIns": 9,
           "riichis": 8,
           "openHands": 19,
+          "damaten": 0,
+          "winPoints": 41400,
+          "dealInPoints": 44000,
+          "winTurns": 81,
           "placements": {
             "p1": 0.25,
             "p2": 0.38,
@@ -7599,6 +7947,10 @@
           "dealInRate": 19.6,
           "riichiRate": 17.4,
           "openRate": 41.3,
+          "damatenRate": 0.0,
+          "avgWinPoints": 6900,
+          "avgDealInPoints": 4889,
+          "avgWinTurn": 13.5,
           "topYaku": [
             {
               "name": "Riichi",
@@ -7675,6 +8027,10 @@
           "dealIns": 8,
           "riichis": 10,
           "openHands": 22,
+          "damaten": 0,
+          "winPoints": 48000,
+          "dealInPoints": 41600,
+          "winTurns": 101,
           "placements": {
             "p1": 0.2,
             "p2": 0.2,
@@ -7688,6 +8044,10 @@
           "dealInRate": 18.2,
           "riichiRate": 22.7,
           "openRate": 50.0,
+          "damatenRate": 0.0,
+          "avgWinPoints": 5333,
+          "avgDealInPoints": 5200,
+          "avgWinTurn": 11.22,
           "topYaku": [
             {
               "name": "Riichi",
@@ -7764,6 +8124,10 @@
           "dealIns": 15,
           "riichis": 11,
           "openHands": 46,
+          "damaten": 0,
+          "winPoints": 104600,
+          "dealInPoints": 102200,
+          "winTurns": 168,
           "placements": {
             "p1": 0.2,
             "p2": 0.3,
@@ -7777,6 +8141,10 @@
           "dealInRate": 19.5,
           "riichiRate": 14.3,
           "openRate": 59.7,
+          "damatenRate": 0.0,
+          "avgWinPoints": 6538,
+          "avgDealInPoints": 6813,
+          "avgWinTurn": 10.5,
           "topYaku": [
             {
               "name": "Tanyao",
@@ -7849,6 +8217,10 @@
           "dealIns": 12,
           "riichis": 23,
           "openHands": 12,
+          "damaten": 1,
+          "winPoints": 128900,
+          "dealInPoints": 67600,
+          "winTurns": 172,
           "placements": {
             "p1": 0.25,
             "p2": 0.0,
@@ -7862,6 +8234,10 @@
           "dealInRate": 16.9,
           "riichiRate": 32.4,
           "openRate": 16.9,
+          "damatenRate": 5.9,
+          "avgWinPoints": 7582,
+          "avgDealInPoints": 5633,
+          "avgWinTurn": 10.12,
           "topYaku": [
             {
               "name": "Riichi",
@@ -7938,6 +8314,10 @@
           "dealIns": 12,
           "riichis": 7,
           "openHands": 18,
+          "damaten": 2,
+          "winPoints": 85700,
+          "dealInPoints": 78500,
+          "winTurns": 158,
           "placements": {
             "p1": 0.2,
             "p2": 0.1,
@@ -7951,6 +8331,10 @@
           "dealInRate": 23.5,
           "riichiRate": 13.7,
           "openRate": 35.3,
+          "damatenRate": 15.4,
+          "avgWinPoints": 6592,
+          "avgDealInPoints": 6542,
+          "avgWinTurn": 12.15,
           "topYaku": [
             {
               "name": "Riichi",
@@ -8023,6 +8407,10 @@
           "dealIns": 10,
           "riichis": 0,
           "openHands": 47,
+          "damaten": 4,
+          "winPoints": 43600,
+          "dealInPoints": 52900,
+          "winTurns": 135,
           "placements": {
             "p1": 0.0,
             "p2": 0.5,
@@ -8036,6 +8424,10 @@
           "dealInRate": 13.9,
           "riichiRate": 0.0,
           "openRate": 65.3,
+          "damatenRate": 33.3,
+          "avgWinPoints": 3633,
+          "avgDealInPoints": 5290,
+          "avgWinTurn": 11.25,
           "topYaku": [
             {
               "name": "Tanyao",
@@ -8111,7 +8503,11 @@
           "wins": 17,
           "dealIns": 19,
           "riichis": 14,
-          "openHands": 47,
+          "openHands": 45,
+          "damaten": 0,
+          "winPoints": 97600,
+          "dealInPoints": 99500,
+          "winTurns": 191,
           "placements": {
             "p1": 0.1,
             "p2": 0.3,
@@ -8124,7 +8520,11 @@
           "winRate": 22.4,
           "dealInRate": 25.0,
           "riichiRate": 18.4,
-          "openRate": 61.8,
+          "openRate": 59.2,
+          "damatenRate": 0.0,
+          "avgWinPoints": 5741,
+          "avgDealInPoints": 5237,
+          "avgWinTurn": 11.24,
           "topYaku": [
             {
               "name": "Riichi",
@@ -8196,7 +8596,11 @@
           "wins": 3,
           "dealIns": 12,
           "riichis": 2,
-          "openHands": 45,
+          "openHands": 44,
+          "damaten": 0,
+          "winPoints": 16600,
+          "dealInPoints": 46200,
+          "winTurns": 27,
           "placements": {
             "p1": 0.12,
             "p2": 0.0,
@@ -8209,7 +8613,11 @@
           "winRate": 4.4,
           "dealInRate": 17.6,
           "riichiRate": 2.9,
-          "openRate": 66.2,
+          "openRate": 64.7,
+          "damatenRate": 0.0,
+          "avgWinPoints": 5533,
+          "avgDealInPoints": 3850,
+          "avgWinTurn": 9.0,
           "topYaku": [
             {
               "name": "Yakuhai Bakaze",
@@ -8281,7 +8689,11 @@
           "wins": 9,
           "dealIns": 6,
           "riichis": 11,
-          "openHands": 14,
+          "openHands": 12,
+          "damaten": 1,
+          "winPoints": 38200,
+          "dealInPoints": 61100,
+          "winTurns": 102,
           "placements": {
             "p1": 0.12,
             "p2": 0.25,
@@ -8294,7 +8706,11 @@
           "winRate": 20.0,
           "dealInRate": 13.3,
           "riichiRate": 24.4,
-          "openRate": 31.1,
+          "openRate": 26.7,
+          "damatenRate": 11.1,
+          "avgWinPoints": 4244,
+          "avgDealInPoints": 10183,
+          "avgWinTurn": 11.33,
           "topYaku": [
             {
               "name": "Riichi",
@@ -8366,7 +8782,11 @@
           "wins": 13,
           "dealIns": 6,
           "riichis": 11,
-          "openHands": 35,
+          "openHands": 33,
+          "damaten": 1,
+          "winPoints": 67800,
+          "dealInPoints": 35200,
+          "winTurns": 124,
           "placements": {
             "p1": 0.12,
             "p2": 0.25,
@@ -8379,7 +8799,11 @@
           "winRate": 19.4,
           "dealInRate": 9.0,
           "riichiRate": 16.4,
-          "openRate": 52.2,
+          "openRate": 49.3,
+          "damatenRate": 7.7,
+          "avgWinPoints": 5215,
+          "avgDealInPoints": 5867,
+          "avgWinTurn": 9.54,
           "topYaku": [
             {
               "name": "Riichi",
@@ -8456,6 +8880,10 @@
           "dealIns": 23,
           "riichis": 16,
           "openHands": 24,
+          "damaten": 1,
+          "winPoints": 89900,
+          "dealInPoints": 141500,
+          "winTurns": 192,
           "placements": {
             "p1": 0.2,
             "p2": 0.1,
@@ -8469,6 +8897,10 @@
           "dealInRate": 36.5,
           "riichiRate": 25.4,
           "openRate": 38.1,
+          "damatenRate": 6.2,
+          "avgWinPoints": 5619,
+          "avgDealInPoints": 6152,
+          "avgWinTurn": 12.0,
           "topYaku": [
             {
               "name": "Riichi",
@@ -11857,7 +12289,11 @@
             "wins": 18,
             "dealIns": 6,
             "riichis": 16,
-            "openHands": 23,
+            "openHands": 22,
+            "damaten": 0,
+            "winPoints": 113200,
+            "dealInPoints": 27100,
+            "winTurns": 188,
             "placements": {
               "p1": 0.4,
               "p2": 0.4,
@@ -11870,7 +12306,11 @@
             "winRate": 28.1,
             "dealInRate": 9.4,
             "riichiRate": 25.0,
-            "openRate": 35.9,
+            "openRate": 34.4,
+            "damatenRate": 0.0,
+            "avgWinPoints": 6289,
+            "avgDealInPoints": 4517,
+            "avgWinTurn": 10.44,
             "topYaku": [
               {
                 "name": "Riichi",
@@ -11952,7 +12392,11 @@
             "wins": 23,
             "dealIns": 10,
             "riichis": 14,
-            "openHands": 23,
+            "openHands": 22,
+            "damaten": 4,
+            "winPoints": 128800,
+            "dealInPoints": 48900,
+            "winTurns": 279,
             "placements": {
               "p1": 0.3,
               "p2": 0.3,
@@ -11965,7 +12409,11 @@
             "winRate": 34.8,
             "dealInRate": 15.2,
             "riichiRate": 21.2,
-            "openRate": 34.8,
+            "openRate": 33.3,
+            "damatenRate": 17.4,
+            "avgWinPoints": 5600,
+            "avgDealInPoints": 4890,
+            "avgWinTurn": 12.13,
             "topYaku": [
               {
                 "name": "Riichi",
@@ -12048,6 +12496,10 @@
             "dealIns": 3,
             "riichis": 7,
             "openHands": 16,
+            "damaten": 1,
+            "winPoints": 29400,
+            "dealInPoints": 19100,
+            "winTurns": 70,
             "placements": {
               "p1": 0.1,
               "p2": 0.4,
@@ -12061,6 +12513,10 @@
             "dealInRate": 5.8,
             "riichiRate": 13.5,
             "openRate": 30.8,
+            "damatenRate": 16.7,
+            "avgWinPoints": 4900,
+            "avgDealInPoints": 6367,
+            "avgWinTurn": 11.67,
             "topYaku": [
               {
                 "name": "Riichi",
@@ -12138,7 +12594,11 @@
             "wins": 16,
             "dealIns": 9,
             "riichis": 25,
-            "openHands": 22,
+            "openHands": 19,
+            "damaten": 0,
+            "winPoints": 86500,
+            "dealInPoints": 54500,
+            "winTurns": 190,
             "placements": {
               "p1": 0.5,
               "p2": 0.0,
@@ -12151,7 +12611,11 @@
             "winRate": 25.4,
             "dealInRate": 14.3,
             "riichiRate": 39.7,
-            "openRate": 34.9,
+            "openRate": 30.2,
+            "damatenRate": 0.0,
+            "avgWinPoints": 5406,
+            "avgDealInPoints": 6056,
+            "avgWinTurn": 11.88,
             "topYaku": [
               {
                 "name": "Riichi",
@@ -12233,7 +12697,11 @@
             "wins": 18,
             "dealIns": 6,
             "riichis": 16,
-            "openHands": 23,
+            "openHands": 22,
+            "damaten": 0,
+            "winPoints": 113200,
+            "dealInPoints": 27100,
+            "winTurns": 188,
             "placements": {
               "p1": 0.4,
               "p2": 0.4,
@@ -12246,7 +12714,11 @@
             "winRate": 28.1,
             "dealInRate": 9.4,
             "riichiRate": 25.0,
-            "openRate": 35.9,
+            "openRate": 34.4,
+            "damatenRate": 0.0,
+            "avgWinPoints": 6289,
+            "avgDealInPoints": 4517,
+            "avgWinTurn": 10.44,
             "topYaku": [
               {
                 "name": "Riichi",
@@ -12325,6 +12797,10 @@
             "dealIns": 9,
             "riichis": 7,
             "openHands": 14,
+            "damaten": 2,
+            "winPoints": 91900,
+            "dealInPoints": 58000,
+            "winTurns": 113,
             "placements": {
               "p1": 0.38,
               "p2": 0.12,
@@ -12338,6 +12814,10 @@
             "dealInRate": 13.8,
             "riichiRate": 10.8,
             "openRate": 21.5,
+            "damatenRate": 20.0,
+            "avgWinPoints": 9190,
+            "avgDealInPoints": 6444,
+            "avgWinTurn": 11.3,
             "topYaku": [
               {
                 "name": "Riichi",
@@ -12419,7 +12899,11 @@
       "wins": 37,
       "dealIns": 8,
       "riichis": 17,
-      "openHands": 37,
+      "openHands": 36,
+      "damaten": 5,
+      "winPoints": 200800,
+      "dealInPoints": 15400,
+      "winTurns": 431,
       "placements": {
         "p1": 0.6,
         "p2": 0.3,
@@ -12432,7 +12916,11 @@
       "winRate": 30.1,
       "dealInRate": 6.5,
       "riichiRate": 13.8,
-      "openRate": 30.1,
+      "openRate": 29.3,
+      "damatenRate": 13.5,
+      "avgWinPoints": 5427,
+      "avgDealInPoints": 1925,
+      "avgWinTurn": 11.65,
       "topYaku": [
         {
           "name": "Riichi",
@@ -12508,7 +12996,11 @@
       "wins": 32,
       "dealIns": 9,
       "riichis": 21,
-      "openHands": 42,
+      "openHands": 38,
+      "damaten": 4,
+      "winPoints": 167800,
+      "dealInPoints": 44800,
+      "winTurns": 346,
       "placements": {
         "p1": 0.5,
         "p2": 0.2,
@@ -12521,7 +13013,11 @@
       "winRate": 26.0,
       "dealInRate": 7.3,
       "riichiRate": 17.1,
-      "openRate": 34.1,
+      "openRate": 30.9,
+      "damatenRate": 12.5,
+      "avgWinPoints": 5244,
+      "avgDealInPoints": 4978,
+      "avgWinTurn": 10.81,
       "topYaku": [
         {
           "name": "Riichi",
@@ -12600,6 +13096,10 @@
       "dealIns": 13,
       "riichis": 26,
       "openHands": 49,
+      "damaten": 2,
+      "winPoints": 135100,
+      "dealInPoints": 41800,
+      "winTurns": 296,
       "placements": {
         "p1": 0.3,
         "p2": 0.4,
@@ -12613,6 +13113,10 @@
       "dealInRate": 12.5,
       "riichiRate": 25.0,
       "openRate": 47.1,
+      "damatenRate": 7.4,
+      "avgWinPoints": 5004,
+      "avgDealInPoints": 3215,
+      "avgWinTurn": 10.96,
       "topYaku": [
         {
           "name": "Riichi",
@@ -12688,7 +13192,11 @@
       "wins": 32,
       "dealIns": 22,
       "riichis": 36,
-      "openHands": 52,
+      "openHands": 49,
+      "damaten": 0,
+      "winPoints": 172900,
+      "dealInPoints": 78000,
+      "winTurns": 352,
       "placements": {
         "p1": 0.3,
         "p2": 0.5,
@@ -12701,7 +13209,11 @@
       "winRate": 24.8,
       "dealInRate": 17.1,
       "riichiRate": 27.9,
-      "openRate": 40.3,
+      "openRate": 38.0,
+      "damatenRate": 0.0,
+      "avgWinPoints": 5403,
+      "avgDealInPoints": 3545,
+      "avgWinTurn": 11.0,
       "topYaku": [
         {
           "name": "Riichi",
@@ -12779,7 +13291,11 @@
       "wins": 29,
       "dealIns": 8,
       "riichis": 26,
-      "openHands": 43,
+      "openHands": 42,
+      "damaten": 2,
+      "winPoints": 139300,
+      "dealInPoints": 25700,
+      "winTurns": 335,
       "placements": {
         "p1": 0.2,
         "p2": 0.4,
@@ -12792,7 +13308,11 @@
       "winRate": 24.2,
       "dealInRate": 6.7,
       "riichiRate": 21.7,
-      "openRate": 35.8,
+      "openRate": 35.0,
+      "damatenRate": 6.9,
+      "avgWinPoints": 4803,
+      "avgDealInPoints": 3212,
+      "avgWinTurn": 11.55,
       "topYaku": [
         {
           "name": "Riichi",
@@ -12871,6 +13391,10 @@
       "dealIns": 14,
       "riichis": 27,
       "openHands": 43,
+      "damaten": 1,
+      "winPoints": 156300,
+      "dealInPoints": 60600,
+      "winTurns": 288,
       "placements": {
         "p1": 0.3,
         "p2": 0.2,
@@ -12884,6 +13408,10 @@
       "dealInRate": 11.8,
       "riichiRate": 22.7,
       "openRate": 36.1,
+      "damatenRate": 3.3,
+      "avgWinPoints": 5210,
+      "avgDealInPoints": 4329,
+      "avgWinTurn": 9.6,
       "topYaku": [
         {
           "name": "Riichi",
@@ -12959,7 +13487,11 @@
       "wins": 30,
       "dealIns": 13,
       "riichis": 39,
-      "openHands": 34,
+      "openHands": 30,
+      "damaten": 0,
+      "winPoints": 185100,
+      "dealInPoints": 92300,
+      "winTurns": 330,
       "placements": {
         "p1": 0.4,
         "p2": 0.1,
@@ -12972,7 +13504,11 @@
       "winRate": 23.8,
       "dealInRate": 10.3,
       "riichiRate": 31.0,
-      "openRate": 27.0,
+      "openRate": 23.8,
+      "damatenRate": 0.0,
+      "avgWinPoints": 6170,
+      "avgDealInPoints": 7100,
+      "avgWinTurn": 11.0,
       "topYaku": [
         {
           "name": "Riichi",
@@ -13050,7 +13586,11 @@
       "wins": 25,
       "dealIns": 8,
       "riichis": 24,
-      "openHands": 36,
+      "openHands": 33,
+      "damaten": 1,
+      "winPoints": 147800,
+      "dealInPoints": 51600,
+      "winTurns": 265,
       "placements": {
         "p1": 0.4,
         "p2": 0.1,
@@ -13063,7 +13603,11 @@
       "winRate": 19.8,
       "dealInRate": 6.3,
       "riichiRate": 19.0,
-      "openRate": 28.6,
+      "openRate": 26.2,
+      "damatenRate": 4.0,
+      "avgWinPoints": 5912,
+      "avgDealInPoints": 6450,
+      "avgWinTurn": 10.6,
       "topYaku": [
         {
           "name": "Riichi",
@@ -13140,6 +13684,10 @@
       "dealIns": 12,
       "riichis": 13,
       "openHands": 55,
+      "damaten": 2,
+      "winPoints": 135700,
+      "dealInPoints": 73000,
+      "winTurns": 288,
       "placements": {
         "p1": 0.3,
         "p2": 0.3,
@@ -13153,6 +13701,10 @@
       "dealInRate": 10.1,
       "riichiRate": 10.9,
       "openRate": 46.2,
+      "damatenRate": 8.0,
+      "avgWinPoints": 5428,
+      "avgDealInPoints": 6083,
+      "avgWinTurn": 11.52,
       "topYaku": [
         {
           "name": "Riichi",
@@ -13228,7 +13780,11 @@
       "wins": 24,
       "dealIns": 12,
       "riichis": 15,
-      "openHands": 33,
+      "openHands": 32,
+      "damaten": 4,
+      "winPoints": 141700,
+      "dealInPoints": 45800,
+      "winTurns": 277,
       "placements": {
         "p1": 0.3,
         "p2": 0.2,
@@ -13241,7 +13797,11 @@
       "winRate": 20.5,
       "dealInRate": 10.3,
       "riichiRate": 12.8,
-      "openRate": 28.2,
+      "openRate": 27.4,
+      "damatenRate": 16.7,
+      "avgWinPoints": 5904,
+      "avgDealInPoints": 3817,
+      "avgWinTurn": 11.54,
       "topYaku": [
         {
           "name": "Riichi",
@@ -13320,6 +13880,10 @@
       "dealIns": 19,
       "riichis": 36,
       "openHands": 33,
+      "damaten": 3,
+      "winPoints": 124400,
+      "dealInPoints": 78500,
+      "winTurns": 348,
       "placements": {
         "p1": 0.3,
         "p2": 0.2,
@@ -13333,6 +13897,10 @@
       "dealInRate": 15.4,
       "riichiRate": 29.3,
       "openRate": 26.8,
+      "damatenRate": 10.7,
+      "avgWinPoints": 4443,
+      "avgDealInPoints": 4132,
+      "avgWinTurn": 12.43,
       "topYaku": [
         {
           "name": "Riichi",
@@ -13408,7 +13976,11 @@
       "wins": 24,
       "dealIns": 10,
       "riichis": 28,
-      "openHands": 39,
+      "openHands": 38,
+      "damaten": 2,
+      "winPoints": 94700,
+      "dealInPoints": 51600,
+      "winTurns": 250,
       "placements": {
         "p1": 0.4,
         "p2": 0.1,
@@ -13421,7 +13993,11 @@
       "winRate": 20.9,
       "dealInRate": 8.7,
       "riichiRate": 24.3,
-      "openRate": 33.9,
+      "openRate": 33.0,
+      "damatenRate": 8.3,
+      "avgWinPoints": 3946,
+      "avgDealInPoints": 5160,
+      "avgWinTurn": 10.42,
       "topYaku": [
         {
           "name": "Riichi",
@@ -13497,7 +14073,11 @@
       "wins": 22,
       "dealIns": 23,
       "riichis": 11,
-      "openHands": 49,
+      "openHands": 48,
+      "damaten": 6,
+      "winPoints": 99300,
+      "dealInPoints": 69600,
+      "winTurns": 236,
       "placements": {
         "p1": 0.3,
         "p2": 0.2,
@@ -13510,7 +14090,11 @@
       "winRate": 20.4,
       "dealInRate": 21.3,
       "riichiRate": 10.2,
-      "openRate": 45.4,
+      "openRate": 44.4,
+      "damatenRate": 27.3,
+      "avgWinPoints": 4514,
+      "avgDealInPoints": 3026,
+      "avgWinTurn": 10.73,
       "topYaku": [
         {
           "name": "Tanyao",
@@ -13587,6 +14171,10 @@
       "dealIns": 18,
       "riichis": 13,
       "openHands": 50,
+      "damaten": 3,
+      "winPoints": 111600,
+      "dealInPoints": 98100,
+      "winTurns": 330,
       "placements": {
         "p1": 0.3,
         "p2": 0.2,
@@ -13600,6 +14188,10 @@
       "dealInRate": 15.9,
       "riichiRate": 11.5,
       "openRate": 44.2,
+      "damatenRate": 10.3,
+      "avgWinPoints": 3848,
+      "avgDealInPoints": 5450,
+      "avgWinTurn": 11.38,
       "topYaku": [
         {
           "name": "Tanyao",
@@ -13677,7 +14269,11 @@
       "wins": 26,
       "dealIns": 22,
       "riichis": 29,
-      "openHands": 60,
+      "openHands": 58,
+      "damaten": 1,
+      "winPoints": 133200,
+      "dealInPoints": 120800,
+      "winTurns": 330,
       "placements": {
         "p1": 0.1,
         "p2": 0.4,
@@ -13690,7 +14286,11 @@
       "winRate": 20.2,
       "dealInRate": 17.1,
       "riichiRate": 22.5,
-      "openRate": 46.5,
+      "openRate": 45.0,
+      "damatenRate": 3.8,
+      "avgWinPoints": 5123,
+      "avgDealInPoints": 5491,
+      "avgWinTurn": 12.69,
       "topYaku": [
         {
           "name": "Riichi",
@@ -13768,7 +14368,11 @@
       "wins": 23,
       "dealIns": 15,
       "riichis": 23,
-      "openHands": 28,
+      "openHands": 27,
+      "damaten": 1,
+      "winPoints": 96800,
+      "dealInPoints": 69400,
+      "winTurns": 270,
       "placements": {
         "p1": 0.2,
         "p2": 0.3,
@@ -13781,7 +14385,11 @@
       "winRate": 19.0,
       "dealInRate": 12.4,
       "riichiRate": 19.0,
-      "openRate": 23.1,
+      "openRate": 22.3,
+      "damatenRate": 4.3,
+      "avgWinPoints": 4209,
+      "avgDealInPoints": 4627,
+      "avgWinTurn": 11.74,
       "topYaku": [
         {
           "name": "Riichi",
@@ -13859,7 +14467,11 @@
       "wins": 28,
       "dealIns": 24,
       "riichis": 23,
-      "openHands": 59,
+      "openHands": 58,
+      "damaten": 2,
+      "winPoints": 123600,
+      "dealInPoints": 79800,
+      "winTurns": 301,
       "placements": {
         "p1": 0.1,
         "p2": 0.2,
@@ -13872,7 +14484,11 @@
       "winRate": 22.6,
       "dealInRate": 19.4,
       "riichiRate": 18.5,
-      "openRate": 47.6,
+      "openRate": 46.8,
+      "damatenRate": 7.1,
+      "avgWinPoints": 4414,
+      "avgDealInPoints": 3325,
+      "avgWinTurn": 10.75,
       "topYaku": [
         {
           "name": "Riichi",
@@ -13950,7 +14566,11 @@
       "wins": 17,
       "dealIns": 20,
       "riichis": 21,
-      "openHands": 25,
+      "openHands": 24,
+      "damaten": 0,
+      "winPoints": 115700,
+      "dealInPoints": 81200,
+      "winTurns": 201,
       "placements": {
         "p1": 0.2,
         "p2": 0.3,
@@ -13963,7 +14583,11 @@
       "winRate": 13.8,
       "dealInRate": 16.3,
       "riichiRate": 17.1,
-      "openRate": 20.3,
+      "openRate": 19.5,
+      "damatenRate": 0.0,
+      "avgWinPoints": 6806,
+      "avgDealInPoints": 4060,
+      "avgWinTurn": 11.82,
       "topYaku": [
         {
           "name": "Riichi",
@@ -14039,7 +14663,11 @@
       "wins": 22,
       "dealIns": 21,
       "riichis": 27,
-      "openHands": 54,
+      "openHands": 52,
+      "damaten": 0,
+      "winPoints": 123700,
+      "dealInPoints": 126700,
+      "winTurns": 232,
       "placements": {
         "p1": 0.1,
         "p2": 0.4,
@@ -14052,7 +14680,11 @@
       "winRate": 17.1,
       "dealInRate": 16.3,
       "riichiRate": 20.9,
-      "openRate": 41.9,
+      "openRate": 40.3,
+      "damatenRate": 0.0,
+      "avgWinPoints": 5623,
+      "avgDealInPoints": 6033,
+      "avgWinTurn": 10.55,
       "topYaku": [
         {
           "name": "Tanyao",
@@ -14128,7 +14760,11 @@
       "wins": 28,
       "dealIns": 25,
       "riichis": 38,
-      "openHands": 50,
+      "openHands": 45,
+      "damaten": 1,
+      "winPoints": 148100,
+      "dealInPoints": 146100,
+      "winTurns": 364,
       "placements": {
         "p1": 0.1,
         "p2": 0.4,
@@ -14141,7 +14777,11 @@
       "winRate": 22.6,
       "dealInRate": 20.2,
       "riichiRate": 30.6,
-      "openRate": 40.3,
+      "openRate": 36.3,
+      "damatenRate": 3.6,
+      "avgWinPoints": 5289,
+      "avgDealInPoints": 5844,
+      "avgWinTurn": 13.0,
       "topYaku": [
         {
           "name": "Riichi",
@@ -14217,7 +14857,11 @@
       "wins": 22,
       "dealIns": 24,
       "riichis": 33,
-      "openHands": 37,
+      "openHands": 36,
+      "damaten": 1,
+      "winPoints": 156600,
+      "dealInPoints": 149600,
+      "winTurns": 259,
       "placements": {
         "p1": 0.1,
         "p2": 0.4,
@@ -14230,7 +14874,11 @@
       "winRate": 18.6,
       "dealInRate": 20.3,
       "riichiRate": 28.0,
-      "openRate": 31.4,
+      "openRate": 30.5,
+      "damatenRate": 4.5,
+      "avgWinPoints": 7118,
+      "avgDealInPoints": 6233,
+      "avgWinTurn": 11.77,
       "topYaku": [
         {
           "name": "Riichi",
@@ -14309,6 +14957,10 @@
       "dealIns": 24,
       "riichis": 26,
       "openHands": 55,
+      "damaten": 0,
+      "winPoints": 117300,
+      "dealInPoints": 134700,
+      "winTurns": 252,
       "placements": {
         "p1": 0.0,
         "p2": 0.2,
@@ -14322,6 +14974,10 @@
       "dealInRate": 19.7,
       "riichiRate": 21.3,
       "openRate": 45.1,
+      "damatenRate": 0.0,
+      "avgWinPoints": 4888,
+      "avgDealInPoints": 5612,
+      "avgWinTurn": 10.5,
       "topYaku": [
         {
           "name": "Riichi",
@@ -14397,7 +15053,11 @@
       "wins": 20,
       "dealIns": 23,
       "riichis": 22,
-      "openHands": 45,
+      "openHands": 44,
+      "damaten": 0,
+      "winPoints": 54100,
+      "dealInPoints": 110200,
+      "winTurns": 200,
       "placements": {
         "p1": 0.1,
         "p2": 0.0,
@@ -14410,7 +15070,11 @@
       "winRate": 18.2,
       "dealInRate": 20.9,
       "riichiRate": 20.0,
-      "openRate": 40.9,
+      "openRate": 40.0,
+      "damatenRate": 0.0,
+      "avgWinPoints": 2705,
+      "avgDealInPoints": 4791,
+      "avgWinTurn": 10.0,
       "topYaku": [
         {
           "name": "Riichi",
@@ -14488,7 +15152,11 @@
       "wins": 20,
       "dealIns": 34,
       "riichis": 28,
-      "openHands": 50,
+      "openHands": 48,
+      "damaten": 1,
+      "winPoints": 104000,
+      "dealInPoints": 178700,
+      "winTurns": 217,
       "placements": {
         "p1": 0.1,
         "p2": 0.0,
@@ -14501,7 +15169,11 @@
       "winRate": 15.7,
       "dealInRate": 26.8,
       "riichiRate": 22.0,
-      "openRate": 39.4,
+      "openRate": 37.8,
+      "damatenRate": 5.0,
+      "avgWinPoints": 5200,
+      "avgDealInPoints": 5256,
+      "avgWinTurn": 10.85,
       "topYaku": [
         {
           "name": "Tanyao",
@@ -14579,7 +15251,11 @@
       "wins": 18,
       "dealIns": 6,
       "riichis": 16,
-      "openHands": 23,
+      "openHands": 22,
+      "damaten": 0,
+      "winPoints": 113200,
+      "dealInPoints": 27100,
+      "winTurns": 188,
       "placements": {
         "p1": 0.4,
         "p2": 0.4,
@@ -14592,7 +15268,11 @@
       "winRate": 28.1,
       "dealInRate": 9.4,
       "riichiRate": 25.0,
-      "openRate": 35.9,
+      "openRate": 34.4,
+      "damatenRate": 0.0,
+      "avgWinPoints": 6289,
+      "avgDealInPoints": 4517,
+      "avgWinTurn": 10.44,
       "topYaku": [
         {
           "name": "Riichi",
@@ -14669,6 +15349,10 @@
       "dealIns": 7,
       "riichis": 11,
       "openHands": 30,
+      "damaten": 2,
+      "winPoints": 154400,
+      "dealInPoints": 26600,
+      "winTurns": 211,
       "placements": {
         "p1": 0.4,
         "p2": 0.2,
@@ -14682,6 +15366,10 @@
       "dealInRate": 10.9,
       "riichiRate": 17.2,
       "openRate": 46.9,
+      "damatenRate": 10.5,
+      "avgWinPoints": 8126,
+      "avgDealInPoints": 3800,
+      "avgWinTurn": 11.11,
       "topYaku": [
         {
           "name": "Tanyao",
@@ -14757,7 +15445,11 @@
       "wins": 14,
       "dealIns": 7,
       "riichis": 17,
-      "openHands": 23,
+      "openHands": 22,
+      "damaten": 2,
+      "winPoints": 96500,
+      "dealInPoints": 30400,
+      "winTurns": 170,
       "placements": {
         "p1": 0.5,
         "p2": 0.1,
@@ -14770,7 +15462,11 @@
       "winRate": 23.0,
       "dealInRate": 11.5,
       "riichiRate": 27.9,
-      "openRate": 37.7,
+      "openRate": 36.1,
+      "damatenRate": 14.3,
+      "avgWinPoints": 6893,
+      "avgDealInPoints": 4343,
+      "avgWinTurn": 12.14,
       "topYaku": [
         {
           "name": "Riichi",
@@ -14843,6 +15539,10 @@
       "dealIns": 6,
       "riichis": 11,
       "openHands": 17,
+      "damaten": 0,
+      "winPoints": 46800,
+      "dealInPoints": 31100,
+      "winTurns": 99,
       "placements": {
         "p1": 0.5,
         "p2": 0.25,
@@ -14856,6 +15556,10 @@
       "dealInRate": 12.0,
       "riichiRate": 22.0,
       "openRate": 34.0,
+      "damatenRate": 0.0,
+      "avgWinPoints": 4680,
+      "avgDealInPoints": 5183,
+      "avgWinTurn": 9.9,
       "topYaku": [
         {
           "name": "Yakuhai Chun",
@@ -14931,7 +15635,11 @@
       "wins": 21,
       "dealIns": 7,
       "riichis": 17,
-      "openHands": 21,
+      "openHands": 20,
+      "damaten": 3,
+      "winPoints": 111700,
+      "dealInPoints": 44800,
+      "winTurns": 257,
       "placements": {
         "p1": 0.4,
         "p2": 0.2,
@@ -14944,7 +15652,11 @@
       "winRate": 30.0,
       "dealInRate": 10.0,
       "riichiRate": 24.3,
-      "openRate": 30.0,
+      "openRate": 28.6,
+      "damatenRate": 14.3,
+      "avgWinPoints": 5319,
+      "avgDealInPoints": 6400,
+      "avgWinTurn": 12.24,
       "topYaku": [
         {
           "name": "Riichi",
@@ -15020,7 +15732,11 @@
       "wins": 23,
       "dealIns": 10,
       "riichis": 14,
-      "openHands": 23,
+      "openHands": 22,
+      "damaten": 4,
+      "winPoints": 128800,
+      "dealInPoints": 48900,
+      "winTurns": 279,
       "placements": {
         "p1": 0.3,
         "p2": 0.3,
@@ -15033,7 +15749,11 @@
       "winRate": 34.8,
       "dealInRate": 15.2,
       "riichiRate": 21.2,
-      "openRate": 34.8,
+      "openRate": 33.3,
+      "damatenRate": 17.4,
+      "avgWinPoints": 5600,
+      "avgDealInPoints": 4890,
+      "avgWinTurn": 12.13,
       "topYaku": [
         {
           "name": "Riichi",
@@ -15106,6 +15826,10 @@
       "dealIns": 9,
       "riichis": 7,
       "openHands": 14,
+      "damaten": 2,
+      "winPoints": 91900,
+      "dealInPoints": 58000,
+      "winTurns": 113,
       "placements": {
         "p1": 0.38,
         "p2": 0.12,
@@ -15119,6 +15843,10 @@
       "dealInRate": 13.8,
       "riichiRate": 10.8,
       "openRate": 21.5,
+      "damatenRate": 20.0,
+      "avgWinPoints": 9190,
+      "avgDealInPoints": 6444,
+      "avgWinTurn": 11.3,
       "topYaku": [
         {
           "name": "Riichi",
@@ -15191,6 +15919,10 @@
       "dealIns": 7,
       "riichis": 15,
       "openHands": 20,
+      "damaten": 3,
+      "winPoints": 142800,
+      "dealInPoints": 45400,
+      "winTurns": 222,
       "placements": {
         "p1": 0.12,
         "p2": 0.62,
@@ -15204,6 +15936,10 @@
       "dealInRate": 9.7,
       "riichiRate": 20.8,
       "openRate": 27.8,
+      "damatenRate": 13.6,
+      "avgWinPoints": 6491,
+      "avgDealInPoints": 6486,
+      "avgWinTurn": 10.09,
       "topYaku": [
         {
           "name": "Riichi",
@@ -15275,7 +16011,11 @@
       "wins": 16,
       "dealIns": 9,
       "riichis": 25,
-      "openHands": 22,
+      "openHands": 19,
+      "damaten": 0,
+      "winPoints": 86500,
+      "dealInPoints": 54500,
+      "winTurns": 190,
       "placements": {
         "p1": 0.5,
         "p2": 0.0,
@@ -15288,7 +16028,11 @@
       "winRate": 25.4,
       "dealInRate": 14.3,
       "riichiRate": 39.7,
-      "openRate": 34.9,
+      "openRate": 30.2,
+      "damatenRate": 0.0,
+      "avgWinPoints": 5406,
+      "avgDealInPoints": 6056,
+      "avgWinTurn": 11.88,
       "topYaku": [
         {
           "name": "Riichi",
@@ -15365,6 +16109,10 @@
       "dealIns": 3,
       "riichis": 7,
       "openHands": 16,
+      "damaten": 1,
+      "winPoints": 29400,
+      "dealInPoints": 19100,
+      "winTurns": 70,
       "placements": {
         "p1": 0.1,
         "p2": 0.4,
@@ -15378,6 +16126,10 @@
       "dealInRate": 5.8,
       "riichiRate": 13.5,
       "openRate": 30.8,
+      "damatenRate": 16.7,
+      "avgWinPoints": 4900,
+      "avgDealInPoints": 6367,
+      "avgWinTurn": 11.67,
       "topYaku": [
         {
           "name": "Riichi",
@@ -15449,7 +16201,11 @@
       "wins": 11,
       "dealIns": 7,
       "riichis": 12,
-      "openHands": 22,
+      "openHands": 21,
+      "damaten": 0,
+      "winPoints": 86900,
+      "dealInPoints": 46400,
+      "winTurns": 130,
       "placements": {
         "p1": 0.5,
         "p2": 0.17,
@@ -15462,7 +16218,11 @@
       "winRate": 22.0,
       "dealInRate": 14.0,
       "riichiRate": 24.0,
-      "openRate": 44.0,
+      "openRate": 42.0,
+      "damatenRate": 0.0,
+      "avgWinPoints": 7900,
+      "avgDealInPoints": 6629,
+      "avgWinTurn": 11.82,
       "topYaku": [
         {
           "name": "Riichi",
@@ -15539,6 +16299,10 @@
       "dealIns": 4,
       "riichis": 11,
       "openHands": 8,
+      "damaten": 2,
+      "winPoints": 89100,
+      "dealInPoints": 20600,
+      "winTurns": 161,
       "placements": {
         "p1": 0.2,
         "p2": 0.3,
@@ -15552,6 +16316,10 @@
       "dealInRate": 8.7,
       "riichiRate": 23.9,
       "openRate": 17.4,
+      "damatenRate": 15.4,
+      "avgWinPoints": 6854,
+      "avgDealInPoints": 5150,
+      "avgWinTurn": 12.38,
       "topYaku": [
         {
           "name": "Riichi",
@@ -15624,6 +16392,10 @@
       "dealIns": 8,
       "riichis": 9,
       "openHands": 12,
+      "damaten": 1,
+      "winPoints": 72700,
+      "dealInPoints": 23200,
+      "winTurns": 88,
       "placements": {
         "p1": 0.0,
         "p2": 0.62,
@@ -15637,6 +16409,10 @@
       "dealInRate": 19.0,
       "riichiRate": 21.4,
       "openRate": 28.6,
+      "damatenRate": 11.1,
+      "avgWinPoints": 8078,
+      "avgDealInPoints": 2900,
+      "avgWinTurn": 9.78,
       "topYaku": [
         {
           "name": "Riichi",
@@ -15709,6 +16485,10 @@
       "dealIns": 9,
       "riichis": 8,
       "openHands": 19,
+      "damaten": 0,
+      "winPoints": 41400,
+      "dealInPoints": 44000,
+      "winTurns": 81,
       "placements": {
         "p1": 0.25,
         "p2": 0.38,
@@ -15722,6 +16502,10 @@
       "dealInRate": 19.6,
       "riichiRate": 17.4,
       "openRate": 41.3,
+      "damatenRate": 0.0,
+      "avgWinPoints": 6900,
+      "avgDealInPoints": 4889,
+      "avgWinTurn": 13.5,
       "topYaku": [
         {
           "name": "Riichi",
@@ -15798,6 +16582,10 @@
       "dealIns": 8,
       "riichis": 10,
       "openHands": 22,
+      "damaten": 0,
+      "winPoints": 48000,
+      "dealInPoints": 41600,
+      "winTurns": 101,
       "placements": {
         "p1": 0.2,
         "p2": 0.2,
@@ -15811,6 +16599,10 @@
       "dealInRate": 18.2,
       "riichiRate": 22.7,
       "openRate": 50.0,
+      "damatenRate": 0.0,
+      "avgWinPoints": 5333,
+      "avgDealInPoints": 5200,
+      "avgWinTurn": 11.22,
       "topYaku": [
         {
           "name": "Riichi",
@@ -15887,6 +16679,10 @@
       "dealIns": 15,
       "riichis": 11,
       "openHands": 46,
+      "damaten": 0,
+      "winPoints": 104600,
+      "dealInPoints": 102200,
+      "winTurns": 168,
       "placements": {
         "p1": 0.2,
         "p2": 0.3,
@@ -15900,6 +16696,10 @@
       "dealInRate": 19.5,
       "riichiRate": 14.3,
       "openRate": 59.7,
+      "damatenRate": 0.0,
+      "avgWinPoints": 6538,
+      "avgDealInPoints": 6813,
+      "avgWinTurn": 10.5,
       "topYaku": [
         {
           "name": "Tanyao",
@@ -15972,6 +16772,10 @@
       "dealIns": 12,
       "riichis": 23,
       "openHands": 12,
+      "damaten": 1,
+      "winPoints": 128900,
+      "dealInPoints": 67600,
+      "winTurns": 172,
       "placements": {
         "p1": 0.25,
         "p2": 0.0,
@@ -15985,6 +16789,10 @@
       "dealInRate": 16.9,
       "riichiRate": 32.4,
       "openRate": 16.9,
+      "damatenRate": 5.9,
+      "avgWinPoints": 7582,
+      "avgDealInPoints": 5633,
+      "avgWinTurn": 10.12,
       "topYaku": [
         {
           "name": "Riichi",
@@ -16061,6 +16869,10 @@
       "dealIns": 12,
       "riichis": 7,
       "openHands": 18,
+      "damaten": 2,
+      "winPoints": 85700,
+      "dealInPoints": 78500,
+      "winTurns": 158,
       "placements": {
         "p1": 0.2,
         "p2": 0.1,
@@ -16074,6 +16886,10 @@
       "dealInRate": 23.5,
       "riichiRate": 13.7,
       "openRate": 35.3,
+      "damatenRate": 15.4,
+      "avgWinPoints": 6592,
+      "avgDealInPoints": 6542,
+      "avgWinTurn": 12.15,
       "topYaku": [
         {
           "name": "Riichi",
@@ -16146,6 +16962,10 @@
       "dealIns": 10,
       "riichis": 0,
       "openHands": 47,
+      "damaten": 4,
+      "winPoints": 43600,
+      "dealInPoints": 52900,
+      "winTurns": 135,
       "placements": {
         "p1": 0.0,
         "p2": 0.5,
@@ -16159,6 +16979,10 @@
       "dealInRate": 13.9,
       "riichiRate": 0.0,
       "openRate": 65.3,
+      "damatenRate": 33.3,
+      "avgWinPoints": 3633,
+      "avgDealInPoints": 5290,
+      "avgWinTurn": 11.25,
       "topYaku": [
         {
           "name": "Tanyao",
@@ -16234,7 +17058,11 @@
       "wins": 17,
       "dealIns": 19,
       "riichis": 14,
-      "openHands": 47,
+      "openHands": 45,
+      "damaten": 0,
+      "winPoints": 97600,
+      "dealInPoints": 99500,
+      "winTurns": 191,
       "placements": {
         "p1": 0.1,
         "p2": 0.3,
@@ -16247,7 +17075,11 @@
       "winRate": 22.4,
       "dealInRate": 25.0,
       "riichiRate": 18.4,
-      "openRate": 61.8,
+      "openRate": 59.2,
+      "damatenRate": 0.0,
+      "avgWinPoints": 5741,
+      "avgDealInPoints": 5237,
+      "avgWinTurn": 11.24,
       "topYaku": [
         {
           "name": "Riichi",
@@ -16319,7 +17151,11 @@
       "wins": 3,
       "dealIns": 12,
       "riichis": 2,
-      "openHands": 45,
+      "openHands": 44,
+      "damaten": 0,
+      "winPoints": 16600,
+      "dealInPoints": 46200,
+      "winTurns": 27,
       "placements": {
         "p1": 0.12,
         "p2": 0.0,
@@ -16332,7 +17168,11 @@
       "winRate": 4.4,
       "dealInRate": 17.6,
       "riichiRate": 2.9,
-      "openRate": 66.2,
+      "openRate": 64.7,
+      "damatenRate": 0.0,
+      "avgWinPoints": 5533,
+      "avgDealInPoints": 3850,
+      "avgWinTurn": 9.0,
       "topYaku": [
         {
           "name": "Yakuhai Bakaze",
@@ -16404,7 +17244,11 @@
       "wins": 9,
       "dealIns": 6,
       "riichis": 11,
-      "openHands": 14,
+      "openHands": 12,
+      "damaten": 1,
+      "winPoints": 38200,
+      "dealInPoints": 61100,
+      "winTurns": 102,
       "placements": {
         "p1": 0.12,
         "p2": 0.25,
@@ -16417,7 +17261,11 @@
       "winRate": 20.0,
       "dealInRate": 13.3,
       "riichiRate": 24.4,
-      "openRate": 31.1,
+      "openRate": 26.7,
+      "damatenRate": 11.1,
+      "avgWinPoints": 4244,
+      "avgDealInPoints": 10183,
+      "avgWinTurn": 11.33,
       "topYaku": [
         {
           "name": "Riichi",
@@ -16489,7 +17337,11 @@
       "wins": 13,
       "dealIns": 6,
       "riichis": 11,
-      "openHands": 35,
+      "openHands": 33,
+      "damaten": 1,
+      "winPoints": 67800,
+      "dealInPoints": 35200,
+      "winTurns": 124,
       "placements": {
         "p1": 0.12,
         "p2": 0.25,
@@ -16502,7 +17354,11 @@
       "winRate": 19.4,
       "dealInRate": 9.0,
       "riichiRate": 16.4,
-      "openRate": 52.2,
+      "openRate": 49.3,
+      "damatenRate": 7.7,
+      "avgWinPoints": 5215,
+      "avgDealInPoints": 5867,
+      "avgWinTurn": 9.54,
       "topYaku": [
         {
           "name": "Riichi",
@@ -16579,6 +17435,10 @@
       "dealIns": 23,
       "riichis": 16,
       "openHands": 24,
+      "damaten": 1,
+      "winPoints": 89900,
+      "dealInPoints": 141500,
+      "winTurns": 192,
       "placements": {
         "p1": 0.2,
         "p2": 0.1,
@@ -16592,6 +17452,10 @@
       "dealInRate": 36.5,
       "riichiRate": 25.4,
       "openRate": 38.1,
+      "damatenRate": 6.2,
+      "avgWinPoints": 5619,
+      "avgDealInPoints": 6152,
+      "avgWinTurn": 12.0,
       "topYaku": [
         {
           "name": "Riichi",
@@ -16673,6 +17537,10 @@
         "dealIns": 9,
         "riichis": 7,
         "openHands": 14,
+        "damaten": 2,
+        "winPoints": 91900,
+        "dealInPoints": 58000,
+        "winTurns": 113,
         "placements": {
           "p1": 0.38,
           "p2": 0.12,
@@ -16686,6 +17554,10 @@
         "dealInRate": 13.8,
         "riichiRate": 10.8,
         "openRate": 21.5,
+        "damatenRate": 20.0,
+        "avgWinPoints": 9190,
+        "avgDealInPoints": 6444,
+        "avgWinTurn": 11.3,
         "topYaku": [
           {
             "name": "Riichi",
@@ -16769,7 +17641,11 @@
         "wins": 37,
         "dealIns": 8,
         "riichis": 17,
-        "openHands": 37,
+        "openHands": 36,
+        "damaten": 5,
+        "winPoints": 200800,
+        "dealInPoints": 15400,
+        "winTurns": 431,
         "placements": {
           "p1": 0.6,
           "p2": 0.3,
@@ -16782,7 +17658,11 @@
         "winRate": 30.1,
         "dealInRate": 6.5,
         "riichiRate": 13.8,
-        "openRate": 30.1,
+        "openRate": 29.3,
+        "damatenRate": 13.5,
+        "avgWinPoints": 5427,
+        "avgDealInPoints": 1925,
+        "avgWinTurn": 11.65,
         "topYaku": [
           {
             "name": "Riichi",
@@ -16866,7 +17746,11 @@
         "wins": 18,
         "dealIns": 6,
         "riichis": 16,
-        "openHands": 23,
+        "openHands": 22,
+        "damaten": 0,
+        "winPoints": 113200,
+        "dealInPoints": 27100,
+        "winTurns": 188,
         "placements": {
           "p1": 0.4,
           "p2": 0.4,
@@ -16879,7 +17763,11 @@
         "winRate": 28.1,
         "dealInRate": 9.4,
         "riichiRate": 25.0,
-        "openRate": 35.9,
+        "openRate": 34.4,
+        "damatenRate": 0.0,
+        "avgWinPoints": 6289,
+        "avgDealInPoints": 4517,
+        "avgWinTurn": 10.44,
         "topYaku": [
           {
             "name": "Riichi",
@@ -16964,6 +17852,10 @@
         "dealIns": 13,
         "riichis": 26,
         "openHands": 49,
+        "damaten": 2,
+        "winPoints": 135100,
+        "dealInPoints": 41800,
+        "winTurns": 296,
         "placements": {
           "p1": 0.3,
           "p2": 0.4,
@@ -16977,6 +17869,10 @@
         "dealInRate": 12.5,
         "riichiRate": 25.0,
         "openRate": 47.1,
+        "damatenRate": 7.4,
+        "avgWinPoints": 5004,
+        "avgDealInPoints": 3215,
+        "avgWinTurn": 10.96,
         "topYaku": [
           {
             "name": "Riichi",
@@ -17057,6 +17953,10 @@
         "dealIns": 7,
         "riichis": 15,
         "openHands": 20,
+        "damaten": 3,
+        "winPoints": 142800,
+        "dealInPoints": 45400,
+        "winTurns": 222,
         "placements": {
           "p1": 0.12,
           "p2": 0.62,
@@ -17070,6 +17970,10 @@
         "dealInRate": 9.7,
         "riichiRate": 20.8,
         "openRate": 27.8,
+        "damatenRate": 13.6,
+        "avgWinPoints": 6491,
+        "avgDealInPoints": 6486,
+        "avgWinTurn": 10.09,
         "topYaku": [
           {
             "name": "Riichi",
@@ -17154,6 +18058,10 @@
         "dealIns": 14,
         "riichis": 27,
         "openHands": 43,
+        "damaten": 1,
+        "winPoints": 156300,
+        "dealInPoints": 60600,
+        "winTurns": 288,
         "placements": {
           "p1": 0.3,
           "p2": 0.2,
@@ -17167,6 +18075,10 @@
         "dealInRate": 11.8,
         "riichiRate": 22.7,
         "openRate": 36.1,
+        "damatenRate": 3.3,
+        "avgWinPoints": 5210,
+        "avgDealInPoints": 4329,
+        "avgWinTurn": 9.6,
         "topYaku": [
           {
             "name": "Riichi",
@@ -17248,7 +18160,11 @@
         "wins": 32,
         "dealIns": 9,
         "riichis": 21,
-        "openHands": 42,
+        "openHands": 38,
+        "damaten": 4,
+        "winPoints": 167800,
+        "dealInPoints": 44800,
+        "winTurns": 346,
         "placements": {
           "p1": 0.5,
           "p2": 0.2,
@@ -17261,7 +18177,11 @@
         "winRate": 26.0,
         "dealInRate": 7.3,
         "riichiRate": 17.1,
-        "openRate": 34.1,
+        "openRate": 30.9,
+        "damatenRate": 12.5,
+        "avgWinPoints": 5244,
+        "avgDealInPoints": 4978,
+        "avgWinTurn": 10.81,
         "topYaku": [
           {
             "name": "Riichi",
@@ -17339,7 +18259,11 @@
         "wins": 32,
         "dealIns": 22,
         "riichis": 36,
-        "openHands": 52,
+        "openHands": 49,
+        "damaten": 0,
+        "winPoints": 172900,
+        "dealInPoints": 78000,
+        "winTurns": 352,
         "placements": {
           "p1": 0.3,
           "p2": 0.5,
@@ -17352,7 +18276,11 @@
         "winRate": 24.8,
         "dealInRate": 17.1,
         "riichiRate": 27.9,
-        "openRate": 40.3,
+        "openRate": 38.0,
+        "damatenRate": 0.0,
+        "avgWinPoints": 5403,
+        "avgDealInPoints": 3545,
+        "avgWinTurn": 11.0,
         "topYaku": [
           {
             "name": "Riichi",
@@ -17430,7 +18358,11 @@
         "wins": 29,
         "dealIns": 8,
         "riichis": 26,
-        "openHands": 43,
+        "openHands": 42,
+        "damaten": 2,
+        "winPoints": 139300,
+        "dealInPoints": 25700,
+        "winTurns": 335,
         "placements": {
           "p1": 0.2,
           "p2": 0.4,
@@ -17443,7 +18375,11 @@
         "winRate": 24.2,
         "dealInRate": 6.7,
         "riichiRate": 21.7,
-        "openRate": 35.8,
+        "openRate": 35.0,
+        "damatenRate": 6.9,
+        "avgWinPoints": 4803,
+        "avgDealInPoints": 3212,
+        "avgWinTurn": 11.55,
         "topYaku": [
           {
             "name": "Riichi",
@@ -17521,7 +18457,11 @@
         "wins": 30,
         "dealIns": 13,
         "riichis": 39,
-        "openHands": 34,
+        "openHands": 30,
+        "damaten": 0,
+        "winPoints": 185100,
+        "dealInPoints": 92300,
+        "winTurns": 330,
         "placements": {
           "p1": 0.4,
           "p2": 0.1,
@@ -17534,7 +18474,11 @@
         "winRate": 23.8,
         "dealInRate": 10.3,
         "riichiRate": 31.0,
-        "openRate": 27.0,
+        "openRate": 23.8,
+        "damatenRate": 0.0,
+        "avgWinPoints": 6170,
+        "avgDealInPoints": 7100,
+        "avgWinTurn": 11.0,
         "topYaku": [
           {
             "name": "Riichi",
@@ -17614,7 +18558,11 @@
         "wins": 24,
         "dealIns": 12,
         "riichis": 15,
-        "openHands": 33,
+        "openHands": 32,
+        "damaten": 4,
+        "winPoints": 141700,
+        "dealInPoints": 45800,
+        "winTurns": 277,
         "placements": {
           "p1": 0.3,
           "p2": 0.2,
@@ -17627,7 +18575,11 @@
         "winRate": 20.5,
         "dealInRate": 10.3,
         "riichiRate": 12.8,
-        "openRate": 28.2,
+        "openRate": 27.4,
+        "damatenRate": 16.7,
+        "avgWinPoints": 5904,
+        "avgDealInPoints": 3817,
+        "avgWinTurn": 11.54,
         "topYaku": [
           {
             "name": "Riichi",
@@ -17706,6 +18658,10 @@
         "dealIns": 18,
         "riichis": 13,
         "openHands": 50,
+        "damaten": 3,
+        "winPoints": 111600,
+        "dealInPoints": 98100,
+        "winTurns": 330,
         "placements": {
           "p1": 0.3,
           "p2": 0.2,
@@ -17719,6 +18675,10 @@
         "dealInRate": 15.9,
         "riichiRate": 11.5,
         "openRate": 44.2,
+        "damatenRate": 10.3,
+        "avgWinPoints": 3848,
+        "avgDealInPoints": 5450,
+        "avgWinTurn": 11.38,
         "topYaku": [
           {
             "name": "Tanyao",
@@ -17796,7 +18756,11 @@
         "wins": 26,
         "dealIns": 22,
         "riichis": 29,
-        "openHands": 60,
+        "openHands": 58,
+        "damaten": 1,
+        "winPoints": 133200,
+        "dealInPoints": 120800,
+        "winTurns": 330,
         "placements": {
           "p1": 0.1,
           "p2": 0.4,
@@ -17809,7 +18773,11 @@
         "winRate": 20.2,
         "dealInRate": 17.1,
         "riichiRate": 22.5,
-        "openRate": 46.5,
+        "openRate": 45.0,
+        "damatenRate": 3.8,
+        "avgWinPoints": 5123,
+        "avgDealInPoints": 5491,
+        "avgWinTurn": 12.69,
         "topYaku": [
           {
             "name": "Riichi",
@@ -17889,7 +18857,11 @@
         "wins": 23,
         "dealIns": 15,
         "riichis": 23,
-        "openHands": 28,
+        "openHands": 27,
+        "damaten": 1,
+        "winPoints": 96800,
+        "dealInPoints": 69400,
+        "winTurns": 270,
         "placements": {
           "p1": 0.2,
           "p2": 0.3,
@@ -17902,7 +18874,11 @@
         "winRate": 19.0,
         "dealInRate": 12.4,
         "riichiRate": 19.0,
-        "openRate": 23.1,
+        "openRate": 22.3,
+        "damatenRate": 4.3,
+        "avgWinPoints": 4209,
+        "avgDealInPoints": 4627,
+        "avgWinTurn": 11.74,
         "topYaku": [
           {
             "name": "Riichi",
@@ -17980,7 +18956,11 @@
         "wins": 28,
         "dealIns": 24,
         "riichis": 23,
-        "openHands": 59,
+        "openHands": 58,
+        "damaten": 2,
+        "winPoints": 123600,
+        "dealInPoints": 79800,
+        "winTurns": 301,
         "placements": {
           "p1": 0.1,
           "p2": 0.2,
@@ -17993,7 +18973,11 @@
         "winRate": 22.6,
         "dealInRate": 19.4,
         "riichiRate": 18.5,
-        "openRate": 47.6,
+        "openRate": 46.8,
+        "damatenRate": 7.1,
+        "avgWinPoints": 4414,
+        "avgDealInPoints": 3325,
+        "avgWinTurn": 10.75,
         "topYaku": [
           {
             "name": "Riichi",
@@ -18071,7 +19055,11 @@
         "wins": 22,
         "dealIns": 24,
         "riichis": 33,
-        "openHands": 37,
+        "openHands": 36,
+        "damaten": 1,
+        "winPoints": 156600,
+        "dealInPoints": 149600,
+        "winTurns": 259,
         "placements": {
           "p1": 0.1,
           "p2": 0.4,
@@ -18084,7 +19072,11 @@
         "winRate": 18.6,
         "dealInRate": 20.3,
         "riichiRate": 28.0,
-        "openRate": 31.4,
+        "openRate": 30.5,
+        "damatenRate": 4.5,
+        "avgWinPoints": 7118,
+        "avgDealInPoints": 6233,
+        "avgWinTurn": 11.77,
         "topYaku": [
           {
             "name": "Riichi",
@@ -18162,7 +19154,11 @@
         "wins": 20,
         "dealIns": 23,
         "riichis": 22,
-        "openHands": 45,
+        "openHands": 44,
+        "damaten": 0,
+        "winPoints": 54100,
+        "dealInPoints": 110200,
+        "winTurns": 200,
         "placements": {
           "p1": 0.1,
           "p2": 0.0,
@@ -18175,7 +19171,11 @@
         "winRate": 18.2,
         "dealInRate": 20.9,
         "riichiRate": 20.0,
-        "openRate": 40.9,
+        "openRate": 40.0,
+        "damatenRate": 0.0,
+        "avgWinPoints": 2705,
+        "avgDealInPoints": 4791,
+        "avgWinTurn": 10.0,
         "topYaku": [
           {
             "name": "Riichi",
@@ -18253,7 +19253,11 @@
         "wins": 20,
         "dealIns": 34,
         "riichis": 28,
-        "openHands": 50,
+        "openHands": 48,
+        "damaten": 1,
+        "winPoints": 104000,
+        "dealInPoints": 178700,
+        "winTurns": 217,
         "placements": {
           "p1": 0.1,
           "p2": 0.0,
@@ -18266,7 +19270,11 @@
         "winRate": 15.7,
         "dealInRate": 26.8,
         "riichiRate": 22.0,
-        "openRate": 39.4,
+        "openRate": 37.8,
+        "damatenRate": 5.0,
+        "avgWinPoints": 5200,
+        "avgDealInPoints": 5256,
+        "avgWinTurn": 10.85,
         "topYaku": [
           {
             "name": "Tanyao",
@@ -18346,7 +19354,11 @@
         "wins": 32,
         "dealIns": 9,
         "riichis": 21,
-        "openHands": 42,
+        "openHands": 38,
+        "damaten": 4,
+        "winPoints": 167800,
+        "dealInPoints": 44800,
+        "winTurns": 346,
         "placements": {
           "p1": 0.5,
           "p2": 0.2,
@@ -18359,7 +19371,11 @@
         "winRate": 26.0,
         "dealInRate": 7.3,
         "riichiRate": 17.1,
-        "openRate": 34.1,
+        "openRate": 30.9,
+        "damatenRate": 12.5,
+        "avgWinPoints": 5244,
+        "avgDealInPoints": 4978,
+        "avgWinTurn": 10.81,
         "topYaku": [
           {
             "name": "Riichi",
@@ -18437,7 +19453,11 @@
         "wins": 32,
         "dealIns": 22,
         "riichis": 36,
-        "openHands": 52,
+        "openHands": 49,
+        "damaten": 0,
+        "winPoints": 172900,
+        "dealInPoints": 78000,
+        "winTurns": 352,
         "placements": {
           "p1": 0.3,
           "p2": 0.5,
@@ -18450,7 +19470,11 @@
         "winRate": 24.8,
         "dealInRate": 17.1,
         "riichiRate": 27.9,
-        "openRate": 40.3,
+        "openRate": 38.0,
+        "damatenRate": 0.0,
+        "avgWinPoints": 5403,
+        "avgDealInPoints": 3545,
+        "avgWinTurn": 11.0,
         "topYaku": [
           {
             "name": "Riichi",
@@ -18528,7 +19552,11 @@
         "wins": 29,
         "dealIns": 8,
         "riichis": 26,
-        "openHands": 43,
+        "openHands": 42,
+        "damaten": 2,
+        "winPoints": 139300,
+        "dealInPoints": 25700,
+        "winTurns": 335,
         "placements": {
           "p1": 0.2,
           "p2": 0.4,
@@ -18541,7 +19569,11 @@
         "winRate": 24.2,
         "dealInRate": 6.7,
         "riichiRate": 21.7,
-        "openRate": 35.8,
+        "openRate": 35.0,
+        "damatenRate": 6.9,
+        "avgWinPoints": 4803,
+        "avgDealInPoints": 3212,
+        "avgWinTurn": 11.55,
         "topYaku": [
           {
             "name": "Riichi",
@@ -18619,7 +19651,11 @@
         "wins": 30,
         "dealIns": 13,
         "riichis": 39,
-        "openHands": 34,
+        "openHands": 30,
+        "damaten": 0,
+        "winPoints": 185100,
+        "dealInPoints": 92300,
+        "winTurns": 330,
         "placements": {
           "p1": 0.4,
           "p2": 0.1,
@@ -18632,7 +19668,11 @@
         "winRate": 23.8,
         "dealInRate": 10.3,
         "riichiRate": 31.0,
-        "openRate": 27.0,
+        "openRate": 23.8,
+        "damatenRate": 0.0,
+        "avgWinPoints": 6170,
+        "avgDealInPoints": 7100,
+        "avgWinTurn": 11.0,
         "topYaku": [
           {
             "name": "Riichi",
@@ -18710,7 +19750,11 @@
         "wins": 24,
         "dealIns": 12,
         "riichis": 15,
-        "openHands": 33,
+        "openHands": 32,
+        "damaten": 4,
+        "winPoints": 141700,
+        "dealInPoints": 45800,
+        "winTurns": 277,
         "placements": {
           "p1": 0.3,
           "p2": 0.2,
@@ -18723,7 +19767,11 @@
         "winRate": 20.5,
         "dealInRate": 10.3,
         "riichiRate": 12.8,
-        "openRate": 28.2,
+        "openRate": 27.4,
+        "damatenRate": 16.7,
+        "avgWinPoints": 5904,
+        "avgDealInPoints": 3817,
+        "avgWinTurn": 11.54,
         "topYaku": [
           {
             "name": "Riichi",
@@ -18802,6 +19850,10 @@
         "dealIns": 18,
         "riichis": 13,
         "openHands": 50,
+        "damaten": 3,
+        "winPoints": 111600,
+        "dealInPoints": 98100,
+        "winTurns": 330,
         "placements": {
           "p1": 0.3,
           "p2": 0.2,
@@ -18815,6 +19867,10 @@
         "dealInRate": 15.9,
         "riichiRate": 11.5,
         "openRate": 44.2,
+        "damatenRate": 10.3,
+        "avgWinPoints": 3848,
+        "avgDealInPoints": 5450,
+        "avgWinTurn": 11.38,
         "topYaku": [
           {
             "name": "Tanyao",
@@ -18892,7 +19948,11 @@
         "wins": 26,
         "dealIns": 22,
         "riichis": 29,
-        "openHands": 60,
+        "openHands": 58,
+        "damaten": 1,
+        "winPoints": 133200,
+        "dealInPoints": 120800,
+        "winTurns": 330,
         "placements": {
           "p1": 0.1,
           "p2": 0.4,
@@ -18905,7 +19965,11 @@
         "winRate": 20.2,
         "dealInRate": 17.1,
         "riichiRate": 22.5,
-        "openRate": 46.5,
+        "openRate": 45.0,
+        "damatenRate": 3.8,
+        "avgWinPoints": 5123,
+        "avgDealInPoints": 5491,
+        "avgWinTurn": 12.69,
         "topYaku": [
           {
             "name": "Riichi",
@@ -18983,7 +20047,11 @@
         "wins": 23,
         "dealIns": 15,
         "riichis": 23,
-        "openHands": 28,
+        "openHands": 27,
+        "damaten": 1,
+        "winPoints": 96800,
+        "dealInPoints": 69400,
+        "winTurns": 270,
         "placements": {
           "p1": 0.2,
           "p2": 0.3,
@@ -18996,7 +20064,11 @@
         "winRate": 19.0,
         "dealInRate": 12.4,
         "riichiRate": 19.0,
-        "openRate": 23.1,
+        "openRate": 22.3,
+        "damatenRate": 4.3,
+        "avgWinPoints": 4209,
+        "avgDealInPoints": 4627,
+        "avgWinTurn": 11.74,
         "topYaku": [
           {
             "name": "Riichi",
@@ -19074,7 +20146,11 @@
         "wins": 28,
         "dealIns": 24,
         "riichis": 23,
-        "openHands": 59,
+        "openHands": 58,
+        "damaten": 2,
+        "winPoints": 123600,
+        "dealInPoints": 79800,
+        "winTurns": 301,
         "placements": {
           "p1": 0.1,
           "p2": 0.2,
@@ -19087,7 +20163,11 @@
         "winRate": 22.6,
         "dealInRate": 19.4,
         "riichiRate": 18.5,
-        "openRate": 47.6,
+        "openRate": 46.8,
+        "damatenRate": 7.1,
+        "avgWinPoints": 4414,
+        "avgDealInPoints": 3325,
+        "avgWinTurn": 10.75,
         "topYaku": [
           {
             "name": "Riichi",
@@ -19165,7 +20245,11 @@
         "wins": 22,
         "dealIns": 24,
         "riichis": 33,
-        "openHands": 37,
+        "openHands": 36,
+        "damaten": 1,
+        "winPoints": 156600,
+        "dealInPoints": 149600,
+        "winTurns": 259,
         "placements": {
           "p1": 0.1,
           "p2": 0.4,
@@ -19178,7 +20262,11 @@
         "winRate": 18.6,
         "dealInRate": 20.3,
         "riichiRate": 28.0,
-        "openRate": 31.4,
+        "openRate": 30.5,
+        "damatenRate": 4.5,
+        "avgWinPoints": 7118,
+        "avgDealInPoints": 6233,
+        "avgWinTurn": 11.77,
         "topYaku": [
           {
             "name": "Riichi",
@@ -19256,7 +20344,11 @@
         "wins": 20,
         "dealIns": 23,
         "riichis": 22,
-        "openHands": 45,
+        "openHands": 44,
+        "damaten": 0,
+        "winPoints": 54100,
+        "dealInPoints": 110200,
+        "winTurns": 200,
         "placements": {
           "p1": 0.1,
           "p2": 0.0,
@@ -19269,7 +20361,11 @@
         "winRate": 18.2,
         "dealInRate": 20.9,
         "riichiRate": 20.0,
-        "openRate": 40.9,
+        "openRate": 40.0,
+        "damatenRate": 0.0,
+        "avgWinPoints": 2705,
+        "avgDealInPoints": 4791,
+        "avgWinTurn": 10.0,
         "topYaku": [
           {
             "name": "Riichi",
@@ -19347,7 +20443,11 @@
         "wins": 20,
         "dealIns": 34,
         "riichis": 28,
-        "openHands": 50,
+        "openHands": 48,
+        "damaten": 1,
+        "winPoints": 104000,
+        "dealInPoints": 178700,
+        "winTurns": 217,
         "placements": {
           "p1": 0.1,
           "p2": 0.0,
@@ -19360,7 +20460,11 @@
         "winRate": 15.7,
         "dealInRate": 26.8,
         "riichiRate": 22.0,
-        "openRate": 39.4,
+        "openRate": 37.8,
+        "damatenRate": 5.0,
+        "avgWinPoints": 5200,
+        "avgDealInPoints": 5256,
+        "avgWinTurn": 10.85,
         "topYaku": [
           {
             "name": "Tanyao",
