@@ -566,26 +566,38 @@ select{font:inherit;color:inherit}
 }
 
 /* ─── pantallas angostas / móvil (sitio desktop) ─── */
+/* min-width:0 deja que los contenedores se encojan y scrolleen en vez de
+   forzar el ancho de la pagina (root del desborde horizontal). */
+.standings-wrap,.standings-wrap>*{min-width:0}
+.detail-grid,.detail-grid>*{min-width:0}
+.control-bar>*{min-width:0}
 @media (max-width:760px){
-  .topbar{gap:10px;padding:10px 14px;flex-wrap:wrap}
-  .topbar .brand .wordmark .l2{font-size:10px}
+  .topbar{gap:8px;padding:10px 12px;flex-wrap:wrap}
+  .topbar .brand{min-width:0}
+  .topbar .brand .wordmark{min-width:0}
+  .topbar .brand .wordmark .l1{font-size:15px}
+  .topbar .brand .wordmark .l2{display:none}
   .topbar .live-pill{display:none}
-  .control-bar{padding:8px 14px 0;gap:10px}
+  .control-bar{padding:8px 12px 0;gap:8px;flex-wrap:wrap}
+  .div-switch{max-width:100%;min-width:0;flex:1 1 auto}
+  .ds-meta{display:none}
   .section-head{flex-direction:column;align-items:flex-start;gap:8px}
   .section-head .h-left{gap:9px}
-  .standings-card{overflow-x:auto}
-  .standings-table{min-width:660px}
+  .standings-card{overflow-x:auto;min-width:0}
+  .standings-table{min-width:640px}
+  .nat-filter{min-width:0}
   .side-rail{grid-template-columns:1fr}
   .detail-grid{grid-template-columns:1fr}
   .detail-hero .rank-big{flex-wrap:wrap;gap:8px}
   .comp-wrap{grid-template-columns:1fr}
   .cal-grid{grid-template-columns:1fr 1fr}
   .iormc-podium{grid-template-columns:1fr}
-  .main{padding:16px 12px 80px}
+  .main{min-width:0;padding:14px 12px 80px}
 }
 @media (max-width:460px){
   .cal-grid{grid-template-columns:1fr}
   .iormc-podium{grid-template-columns:1fr}
   .lang-switch .lang-btn{padding:4px 6px}
-  .tz-switch select{max-width:150px}
+  .tz-switch select{max-width:140px}
+  .tabs{margin-left:0}
 }
