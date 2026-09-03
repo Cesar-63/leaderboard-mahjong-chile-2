@@ -138,7 +138,8 @@ function App() {
     const bump = () => setTick(x => x + 1);
     window.addEventListener('langchange', bump);
     window.addEventListener('tzchange', bump);
-    return () => { window.removeEventListener('langchange', bump); window.removeEventListener('tzchange', bump); };
+    window.addEventListener('darkchange', bump);
+    return () => { window.removeEventListener('langchange', bump); window.removeEventListener('tzchange', bump); window.removeEventListener('darkchange', bump); };
   }, []);
   const [route, setRoute] = React.useState(parseRoute);
   const data = window.MJC_DATA;
@@ -161,7 +162,7 @@ function App() {
   React.useEffect(() => {
     const el = document.documentElement;
     el.setAttribute('data-theme', t.theme);
-    el.setAttribute('data-dark', String(!!t.dark));
+    el.setAttribute('data-dark', String(!!window.DARK));
     el.setAttribute('data-density', t.density);
     el.setAttribute('data-lang', window.LANG);
     el.setAttribute('data-div', div);
@@ -195,6 +196,16 @@ function App() {
         </div>
         <LangSwitch value={window.LANG} onChange={(v) => setLang(v)} />
         <TzSwitch value={window.TZ} onChange={(v) => setTZ(v)} />
+        <button className={`theme-switch ${window.DARK ? 'on' : ''}`} onClick={() => setDark(!window.DARK)}
+          role="switch" aria-checked={!!window.DARK} title="Modo oscuro">
+          <span className="ts-track">
+            <span className="ts-knob">
+              {window.DARK
+                ? <svg viewBox="0 0 16 16" width="11" height="11"><path d="M12.8 10.2A5 5 0 0 1 5.8 3.2a5 5 0 1 0 7 7z" fill="currentColor"/></svg>
+                : <svg viewBox="0 0 16 16" width="11" height="11"><circle cx="8" cy="8" r="3" fill="currentColor"/><g stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"><line x1="8" y1="1.4" x2="8" y2="3.2"/><line x1="8" y1="12.8" x2="8" y2="14.6"/><line x1="1.4" y1="8" x2="3.2" y2="8"/><line x1="12.8" y1="8" x2="14.6" y2="8"/><line x1="3.3" y1="3.3" x2="4.5" y2="4.5"/><line x1="11.5" y1="11.5" x2="12.7" y2="12.7"/><line x1="3.3" y1="12.7" x2="4.5" y2="11.5"/><line x1="11.5" y1="4.5" x2="12.7" y2="3.3"/></g></svg>}
+            </span>
+          </span>
+        </button>
       </header>
 
       <div className="control-bar">
@@ -234,7 +245,7 @@ function App() {
         <TweakRadio label={tr('estilo')} value={t.theme}
           options={[{ value: 'washi', label: 'Washi' }, { value: 'neon', label: 'Neon' }]}
           onChange={(v) => setTweak('theme', v)} />
-        <TweakToggle label={tr('oscuro')} value={t.dark} onChange={(v) => setTweak('dark', v)} />
+        <TweakToggle label={tr('oscuro')} value={window.DARK} onChange={(v) => setDark(v)} />
         <TweakSection label="Layout" />
         <TweakRadio label={tr('disposicion_str')} value={t.layout}
           options={[{ value: 'classic', label: tr('clasico') }, { value: 'stacked', label: tr('apilado') }, { value: 'split', label: tr('doble') }]}
