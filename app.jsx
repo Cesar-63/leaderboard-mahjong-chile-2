@@ -121,7 +121,7 @@ function TzSwitch({ value, onChange }) {
   const sel = window.TZ_OPTIONS.find(o => o.tz === (value || 'America/Santiago')) || window.TZ_OPTIONS[0];
   return (
     <label className="lang-switch tz-switch" title={tr('timezone')}>
-      <span className="tz-label">{sel.flag}</span>
+      <span className="tz-label">🕓</span>
       <select value={sel.tz} onChange={(e) => onChange(e.target.value)}>
         {window.TZ_OPTIONS.map(o => (
           <option key={o.tz} value={o.tz}>{o.flag} {o.city}</option>

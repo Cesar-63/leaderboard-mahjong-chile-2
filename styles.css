@@ -579,7 +579,8 @@ select{font:inherit;color:inherit}
   .topbar .brand .wordmark .l2{display:none}
   .topbar .live-pill{display:none}
   .control-bar{padding:8px 12px 0;gap:8px;flex-wrap:wrap}
-  .div-switch{max-width:100%;min-width:0;flex:1 1 auto}
+  .div-switch{max-width:100%;min-width:0;flex:1 1 auto;width:100%}
+  .ds-btn{flex:1;justify-content:center;align-items:center;text-align:center}
   .ds-meta{display:none}
   .section-head{flex-direction:column;align-items:flex-start;gap:8px}
   .section-head .h-left{gap:9px}
