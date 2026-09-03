@@ -64,6 +64,32 @@ la hora reales los tiene el Calendario.**
 distintas: el Excel manda para clasificación, y una corrida a medias del parser de
 logs no debe poder ensuciar la tabla.
 
+## Estadísticas avanzadas (paipu)
+
+`scripts/majsoul.py` cuenta por asiento y mano; `scripts/sync.py` agrega por
+jugador y publica las tasas. Definiciones, alineadas con amae-koromo:
+
+| Métrica | Fórmula | Nota |
+| --- | --- | --- |
+| `winRate` 和了率 | manos ganadas / manos jugadas | |
+| `dealInRate` 放銃率 | manos en que pagó el ron / manos jugadas | |
+| `riichiRate` 立直率 | manos con riichi / manos jugadas | |
+| `openRate` 副露率 | manos con llamada / manos jugadas | **el kan cerrado no abre la mano** |
+| `damatenRate` 黙聴率 | manos ganadas en menzen sin riichi / manos ganadas | |
+| `avgWinPoints` 平均打点 | puntos de las manos ganadas / manos ganadas | `dadian`: sin palos ni honba |
+| `avgDealInPoints` 平均銃点 | puntos pagados por ron / deal-ins | ídem |
+| `avgWinTurn` 和了巡数 | turno propio al ganar / manos ganadas | tsumo = robos; ron = robos + 1 |
+
+- **El kan cerrado (ankan, `RecordAnGangAddGang.type == 3`) no cuenta como
+  furo.** El kakan (type 2) sí, pero llega sobre un pon que ya la había abierto.
+- Las cuatro últimas se miden sobre manos ganadas o deal-ins, no sobre el total:
+  su denominador es chico y hay que degradarlas (`STAT_MIN_SAMPLE` en
+  `stat-tips.jsx`), no mostrarlas como dato firme.
+- `stat-tips.jsx` es la fuente única de qué mide cada casilla: rótulo, fórmula,
+  denominador y tooltip salen del mismo registro, y lo usan tanto la vista de
+  escritorio como la del teléfono. Agregar una métrica = una entrada ahí, sus
+  claves en `i18n.js` y el campo en `sync.py`.
+
 ## Esquema de `data/liga.json`
 
 ```json
@@ -143,6 +169,23 @@ src/
 
 **Lógica separada de presentación.** `standings.ts` no importa JSX y tiene tests
 contra un fixture escrito a mano. Los componentes solo pintan.
+
+## Preview local
+
+Para ver una rama sin desplegar ni tocar `main`:
+
+- **Servidor estático:** `python3 -m http.server 8000` en la raíz y abrir
+  `http://localhost:8000/index.html` (o `/Mobile.html`). Es el sitio tal cual,
+  con React y Babel desde CDN.
+- **Bundle de un solo archivo:** `node scripts/build_preview.mjs` emite
+  `dist/preview.html` (y `--entry Mobile.html` emite `dist/mobile.html`):
+  CSS, datos, logo, React y el JSX ya transpilado, todo inlineado. Se abre con
+  doble clic o se comparte tal cual; no pide red ni servidor. El gemelo
+  `dist/*.artifact.html` es el mismo contenido sin `<html>/<head>/<body>`, para
+  publicarlo como Artifact.
+
+El script instala solo sus dependencias en `.vendor/` la primera vez. `.vendor/`
+y `dist/` no se versionan, y nada de esto entra al deploy de Vercel.
 
 ## Vistas
 

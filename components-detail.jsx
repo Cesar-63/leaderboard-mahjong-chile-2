@@ -108,12 +108,9 @@ function PlayerDetail({ playerId, data, onPick }) {
           )}
 
           <div className="stat-block">
-            <div className="stat-cell"><div className="l">{tr('lbl_avgrank')} · 平均順位</div><div className="v">{p.avgRank.toFixed(2)}</div></div>
-            <div className="stat-cell"><div className="l">{tr('lbl_avgpts')} · 平均得点</div><div className="v" style={{ color: p.avgPoints >= 0 ? 'var(--good)' : 'var(--bad)' }}>{fmtPts(p.avgPoints)}</div></div>
-            <div className="stat-cell"><div className="l">{tr('lbl_winrate')} · 和了率</div><div className="v">{fmtAdvanced(p, 'winRate', '%')}</div></div>
-            <div className="stat-cell"><div className="l">{tr('lbl_dealin')} · 放銃率</div><div className="v" style={{ color: 'var(--bad)' }}>{fmtAdvanced(p, 'dealInRate', '%')}</div></div>
-            <div className="stat-cell"><div className="l">{tr('lbl_riichi')} · 立直率</div><div className="v">{fmtAdvanced(p, 'riichiRate', '%')}</div></div>
-            <div className="stat-cell"><div className="l">{tr('lbl_open')} · 副露率</div><div className="v">{fmtAdvanced(p, 'openRate', '%')}</div></div>
+            {PROFILE_STATS.map(metric => (
+              <StatCell key={metric} metric={metric} player={p} data={data} />
+            ))}
           </div>
 
           <div>

@@ -19,6 +19,11 @@ from typing import Any
 
 PAIPU_RE = re.compile(r"(?P<uuid>\d{6}-[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12})(?P<trailer>_a\d+)?")
 RECORD_URL = "https://record-v2.maj-soul.com:5333/majsoul/game_record/{uuid}"
+# RecordAnGangAddGang.type: 2 = kakan (sube un pon a kan, la mano ya estaba
+# abierta), 3 = ankan (kan cerrado, la mano sigue menzen). Verificado sobre los
+# paipus de data/raw-paipu: los 76 eventos type=2 caen siempre en un asiento que
+# ya había llamado, y 62 de los 76 type=3 en asientos sin ninguna llamada.
+ANKAN_TYPE = 3
 # Enumerado de "fans" de Mahjong Soul: el paipu trae solo `id` y `val` (el campo
 # `name` viene vacío), así que la tabla es la única fuente del nombre.
 # Verificada contra los 72 paipus de data/raw-paipu por la forma de cada yaku:
@@ -463,13 +468,17 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
 
     stats = [
         {"hands": 0, "wins": 0, "tsumo": 0, "ron": 0, "dealIns": 0,
-         "riichis": 0, "openHands": 0, "yaku": Counter()}
+         "riichis": 0, "openHands": 0, "damaten": 0,
+         "winPoints": 0, "dealInPoints": 0, "winTurns": 0, "yaku": Counter()}
         for _ in range(4)
     ]
     final_scores: list[int] = []
     round_index = -1
     opened: set[tuple[int, int]] = set()
     last_discard: int | None = None
+    # Tiradas propias en la mano en curso: el turno (junme) de un asiento es
+    # cuántas fichas robó, y el ron se anota en el turno que le habría tocado.
+    draws = [0, 0, 0, 0]
     seat_identity: dict[int, dict[str, Any]] = {}
     record_game_points: dict[int, int] = {}
     record_game_seen = head_record is not None
@@ -503,10 +512,15 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
         elif name == "RecordNewRound":
             round_index += 1
             last_discard = None
+            draws = [0, 0, 0, 0]
             for seat in range(min(4, len(message.scores))):
                 stats[seat]["hands"] += 1
             if message.scores:
                 final_scores = list(message.scores)
+        elif name == "RecordDealTile":
+            seat = int(message.seat)
+            if seat < 4:
+                draws[seat] += 1
         elif name == "RecordDiscardTile":
             seat = int(message.seat)
             last_discard = seat
@@ -514,6 +528,9 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                 stats[seat]["riichis"] += 1
         elif name in {"RecordChiPengGang", "RecordAnGangAddGang", "RecordBaBei"}:
             seat = int(message.seat)
+            if name == "RecordAnGangAddGang" and int(message.type) == ANKAN_TYPE:
+                # Kan cerrado: no rompe el menzen, así que no es mano abierta.
+                continue
             key = (round_index, seat)
             if seat < 4 and key not in opened:
                 opened.add(key)
@@ -529,8 +546,17 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                     continue
                 stats[seat]["wins"] += 1
                 stats[seat]["tsumo" if hule.zimo else "ron"] += 1
+                # `ming` lista las combinaciones declaradas; el kan cerrado
+                # aparece como "angang(...)" y no rompe el menzen.
+                menzen = all(str(combo).startswith("angang") for combo in hule.ming)
+                if menzen and not hule.liqi:
+                    stats[seat]["damaten"] += 1
+                # `dadian` es el valor de la mano, sin palos de riichi ni honba.
+                stats[seat]["winPoints"] += int(hule.dadian)
+                stats[seat]["winTurns"] += draws[seat] if hule.zimo else draws[seat] + 1
                 if not hule.zimo and last_discard is not None and last_discard < 4:
                     stats[last_discard]["dealIns"] += 1
+                    stats[last_discard]["dealInPoints"] += int(hule.dadian)
                 for fan in hule.fans:
                     if fan.id in NON_YAKU_FAN_IDS:
                         continue
