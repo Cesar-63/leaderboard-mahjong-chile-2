@@ -564,3 +564,28 @@ select{font:inherit;color:inherit}
   .four-results{grid-template-columns:1fr 1fr}
   .topbar .meta{display:none}
 }
+
+/* ─── pantallas angostas / móvil (sitio desktop) ─── */
+@media (max-width:760px){
+  .topbar{gap:10px;padding:10px 14px;flex-wrap:wrap}
+  .topbar .brand .wordmark .l2{font-size:10px}
+  .topbar .live-pill{display:none}
+  .control-bar{padding:8px 14px 0;gap:10px}
+  .section-head{flex-direction:column;align-items:flex-start;gap:8px}
+  .section-head .h-left{gap:9px}
+  .standings-card{overflow-x:auto}
+  .standings-table{min-width:660px}
+  .side-rail{grid-template-columns:1fr}
+  .detail-grid{grid-template-columns:1fr}
+  .detail-hero .rank-big{flex-wrap:wrap;gap:8px}
+  .comp-wrap{grid-template-columns:1fr}
+  .cal-grid{grid-template-columns:1fr 1fr}
+  .iormc-podium{grid-template-columns:1fr}
+  .main{padding:16px 12px 80px}
+}
+@media (max-width:460px){
+  .cal-grid{grid-template-columns:1fr}
+  .iormc-podium{grid-template-columns:1fr}
+  .lang-switch .lang-btn{padding:4px 6px}
+  .tz-switch select{max-width:150px}
+}
