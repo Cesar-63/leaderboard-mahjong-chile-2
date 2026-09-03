@@ -104,9 +104,39 @@ select{font:inherit;color:inherit}
 .theme-switch .ts-knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:var(--bg-elev);box-shadow:0 1px 2px rgba(0,0,0,.22),inset 0 0 0 1px var(--line-strong);display:flex;align-items:center;justify-content:center;color:var(--accent);transition:transform .25s cubic-bezier(.5,.1,.2,1),background .25s ease,color .25s ease}
 .theme-switch.on .ts-track{background:color-mix(in oklab,var(--accent-2) 26%,var(--bg-sunk));border-color:color-mix(in oklab,var(--accent-2) 45%,transparent)}
 .theme-switch.on .ts-knob{transform:translateX(20px);background:var(--accent-2);color:#fff}
-.tz-switch{padding:2px 10px;gap:6px;cursor:default}
-.tz-switch select{appearance:none;border:0;background:transparent;color:var(--ink);font:inherit;font-family:var(--font-mono);font-size:11px;cursor:pointer;padding:3px 0;outline:0}
-.tz-switch .tz-label{font-size:12px}
+
+/* ─── selector de zona horaria ───
+   Dropdown propio en vez de <select> nativo: el popup nativo lo pinta el SO y
+   se queda claro sobre el tema oscuro. Este usa los mismos tokens que el
+   resto del chrome, así que coordina en washi/neon y en claro/oscuro. */
+.tz-switch{position:relative;flex-shrink:0;display:inline-flex}
+.tz-trigger{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 8px 0 9px;border:1px solid var(--line-strong);border-radius:999px;background:transparent;color:var(--ink);cursor:pointer;transition:background .2s ease,border-color .2s ease}
+.tz-trigger:hover{background:color-mix(in oklab,var(--ink) 7%,transparent)}
+.tz-trigger:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
+.tz-switch.open .tz-trigger{background:color-mix(in oklab,var(--accent-2) 14%,transparent);border-color:color-mix(in oklab,var(--accent-2) 55%,transparent)}
+.tz-trigger .flag{display:block;border-radius:2px;flex-shrink:0}
+.tz-trigger .tz-city{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.02em;white-space:nowrap;max-width:104px;overflow:hidden;text-overflow:ellipsis}
+.tz-trigger .tz-caret{flex-shrink:0;color:var(--ink-faint);transition:transform .2s ease,color .2s ease}
+.tz-switch.open .tz-trigger .tz-caret{transform:rotate(180deg);color:var(--accent-2)}
+[data-theme="neon"] .tz-switch.open .tz-trigger{box-shadow:var(--glow)}
+
+.tz-menu{position:absolute;top:calc(100% + 8px);right:0;z-index:40;width:246px;padding:5px;background:var(--bg-elev);border:1px solid var(--line-strong);border-radius:14px;box-shadow:0 24px 52px -22px rgba(0,0,0,.55),0 2px 8px -4px rgba(0,0,0,.25);animation:tzin .16s ease both;overflow:hidden}
+[data-theme="neon"] .tz-menu{box-shadow:0 0 0 1px rgba(95,163,255,.10) inset,0 24px 52px -22px rgba(0,10,40,.9)}
+@keyframes tzin{from{opacity:0;transform:translateY(-6px) scale(.98)}to{opacity:1;transform:none}}
+.tz-menu .tz-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:6px 9px 7px;font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);border-bottom:1px solid var(--line);margin-bottom:4px}
+.tz-opt{display:flex;align-items:center;gap:9px;width:100%;padding:7px 9px;border-radius:9px;background:transparent;color:var(--ink);text-align:left;cursor:pointer;transition:background .14s ease}
+.tz-opt + .tz-opt{margin-top:1px}
+.tz-opt .flag{flex-shrink:0;border-radius:2px}
+.tz-opt .tz-names{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1}
+.tz-opt .tz-n1{font-size:12px;font-weight:600;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tz-opt .tz-n2{font-family:var(--font-mono);font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tz-opt .tz-now{font-family:var(--font-mono);font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink-soft);flex-shrink:0}
+.tz-opt .tz-base{font-family:var(--font-mono);font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border:1px solid color-mix(in oklab,var(--accent) 45%,transparent);border-radius:4px;padding:1px 4px;flex-shrink:0}
+.tz-opt:hover,.tz-opt.cursor{background:color-mix(in oklab,var(--ink) 8%,transparent)}
+.tz-opt:focus-visible{outline:2px solid var(--accent-2);outline-offset:-2px}
+.tz-opt.sel{background:color-mix(in oklab,var(--accent-2) 16%,transparent)}
+.tz-opt.sel .tz-now{color:var(--ink)}
+.tz-opt.sel .tz-n1::after{content:'✓';margin-left:6px;color:var(--accent-2);font-weight:700}
 /* modal de partida del calendario */
 .cal-modal-backdrop{position:fixed;top:0;left:0;right:0;bottom:0;z-index:60;background:rgba(0,0,0,.45);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:24px;overflow:auto}
 .cal-modal{width:min(560px,94vw);max-height:84vh;margin:auto;overflow:auto;background:var(--bg);border:1px solid var(--line-strong);border-radius:16px;padding:16px 18px;box-shadow:0 24px 60px rgba(0,0,0,.35);animation:rowin .22s ease both}
@@ -663,7 +693,9 @@ select{font:inherit;color:inherit}
   .cal-grid{grid-template-columns:1fr}
   .iormc-podium{grid-template-columns:1fr}
   .lang-switch .lang-btn{padding:4px 6px}
-  .tz-switch select{max-width:132px}
+  .tz-trigger .tz-city{display:none}
+  .tz-trigger{padding:0 6px}
+  .tz-menu{width:min(232px,calc(100vw - 24px))}
   .tabs{margin-left:0}
   .section-head .h-left .num{font-size:10px}
   .topbar .brand .wordmark .l1{font-size:14px}

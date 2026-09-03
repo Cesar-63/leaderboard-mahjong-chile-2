@@ -154,6 +154,8 @@ window.I18N = {
     played_sessions: 'Sesiones Jugadas',
     metrics_note: 'Barra más larga = mejor, escalada al rango de la liga',
     timezone: 'Zona horaria',
+    tz_base: 'Sede',
+    tz_base_hint: 'Zona base de la liga: los horarios oficiales se publican en esta hora',
     partida_n: 'Partida de {n} jugadores',
     hora_local: 'Hora local',
     all_times: 'Todos los horarios',
@@ -306,6 +308,8 @@ window.I18N = {
     played_sessions: 'Played Sessions',
     metrics_note: 'Longer bar = better, scaled to league range',
     timezone: 'Time zone',
+    tz_base: 'Home',
+    tz_base_hint: 'League base zone: official times are published in this zone',
     partida_n: 'Game of {n} players',
     hora_local: 'Local time',
     all_times: 'All times',
@@ -458,6 +462,8 @@ window.I18N = {
     played_sessions: 'Sessões Jogadas',
     metrics_note: 'Barra mais longa = melhor, escalada à faixa da liga',
     timezone: 'Fuso horário',
+    tz_base: 'Sede',
+    tz_base_hint: 'Fuso base da liga: os horários oficiais saem neste fuso',
     partida_n: 'Partida de {n} jogadores',
     hora_local: 'Hora local',
     all_times: 'Todos os horários',
@@ -468,14 +474,27 @@ window.I18N = {
 // ── Zonas horarias de la liga (solo la capital de cada país) ──
 // La base del torneo es America/Santiago (Chile). Una opción por país con su
 // bandera; el usuario elige la suya desde la barra superior.
+// `short` es lo que entra en la píldora de la barra superior; `city` es el
+// rótulo completo del desplegable.
 window.TZ_OPTIONS = [
-  { code: 'CL', nat: 'CL', flag: '🇨🇱', city: 'Santiago', tz: 'America/Santiago' },
-  { code: 'UY', nat: 'UY', flag: '🇺🇾', city: 'Montevideo', tz: 'America/Montevideo' },
-  { code: 'AR', nat: 'AR', flag: '🇦🇷', city: 'Buenos Aires', tz: 'America/Argentina/Buenos_Aires' },
-  { code: 'PE', nat: 'PE', flag: '🇵🇪', city: 'Lima', tz: 'America/Lima' },
-  { code: 'BR', nat: 'BR', flag: '🇧🇷', city: 'São Paulo / Brasília', tz: 'America/Sao_Paulo' },
-  { code: 'MX', nat: 'MX', flag: '🇲🇽', city: 'Ciudad de México', tz: 'America/Mexico_City' },
+  { code: 'CL', nat: 'CL', flag: '🇨🇱', city: 'Santiago', short: 'Santiago', tz: 'America/Santiago' },
+  { code: 'UY', nat: 'UY', flag: '🇺🇾', city: 'Montevideo', short: 'Montevideo', tz: 'America/Montevideo' },
+  { code: 'AR', nat: 'AR', flag: '🇦🇷', city: 'Buenos Aires', short: 'Buenos Aires', tz: 'America/Argentina/Buenos_Aires' },
+  { code: 'PE', nat: 'PE', flag: '🇵🇪', city: 'Lima', short: 'Lima', tz: 'America/Lima' },
+  { code: 'BR', nat: 'BR', flag: '🇧🇷', city: 'São Paulo / Brasília', short: 'São Paulo', tz: 'America/Sao_Paulo' },
+  { code: 'MX', nat: 'MX', flag: '🇲🇽', city: 'Ciudad de México', short: 'CDMX', tz: 'America/Mexico_City' },
 ];
+
+// Zona base del torneo: los horarios de la liga se publican en esta hora.
+window.TZ_BASE = 'America/Santiago';
+
+// Hora de pared actual ("21:40") en una zona cualquiera.
+window.tzNow = function (tz, at) {
+  try {
+    return new Intl.DateTimeFormat('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: false })
+      .format(at || new Date());
+  } catch (e) { return '--:--'; }
+};
 
 // País → zona horaria por defecto (para mostrar la hora local de cada participante).
 window.NAT_TZ = {

@@ -117,17 +117,103 @@ function LangSwitch({ value, onChange }) {
   );
 }
 
+// Desplegable de zona horaria. Va a mano en vez de <select> porque el popup
+// nativo lo pinta el sistema operativo: no toma los tokens del tema y en modo
+// oscuro queda una lista blanca sobre el chrome oscuro. Este usa las mismas
+// banderas SVG, tipografías y colores que el resto de la página.
 function TzSwitch({ value, onChange }) {
-  const sel = window.TZ_OPTIONS.find(o => o.tz === (value || 'America/Santiago')) || window.TZ_OPTIONS[0];
+  const opts = window.TZ_OPTIONS;
+  const selIdx = Math.max(0, opts.findIndex(o => o.tz === (value || window.TZ_BASE)));
+  const sel = opts[selIdx];
+  const [open, setOpen] = React.useState(false);
+  const [cursor, setCursor] = React.useState(selIdx);
+  const wrapRef = React.useRef(null);
+  const btnRef = React.useRef(null);
+  const optRefs = React.useRef([]);
+  // Sello de tiempo fijado al abrir: alcanza para la vida útil del menú y
+  // evita dejar un intervalo corriendo por una lista que se ve dos segundos.
+  const [openedAt, setOpenedAt] = React.useState(null);
+
+  const close = React.useCallback((refocus) => {
+    setOpen(false);
+    if (refocus && btnRef.current) btnRef.current.focus();
+  }, []);
+
+  React.useEffect(() => {
+    if (!open) return;
+    const onDocDown = (e) => { if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false); };
+    const onAway = () => setOpen(false);
+    document.addEventListener('mousedown', onDocDown);
+    window.addEventListener('resize', onAway);
+    window.addEventListener('hashchange', onAway);
+    return () => {
+      document.removeEventListener('mousedown', onDocDown);
+      window.removeEventListener('resize', onAway);
+      window.removeEventListener('hashchange', onAway);
+    };
+  }, [open]);
+
+  React.useEffect(() => {
+    if (open && optRefs.current[cursor]) optRefs.current[cursor].focus();
+  }, [open, cursor]);
+
+  const openMenu = (startAt) => {
+    setOpenedAt(new Date());
+    setCursor(startAt !== undefined ? startAt : selIdx);
+    setOpen(true);
+  };
+
+  const pick = (o) => { onChange(o.tz); close(true); };
+
+  const onTriggerKey = (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openMenu(selIdx); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); openMenu(opts.length - 1); }
+  };
+
+  const onListKey = (e) => {
+    if (e.key === 'Escape') { e.preventDefault(); close(true); }
+    else if (e.key === 'ArrowDown') { e.preventDefault(); setCursor((cursor + 1) % opts.length); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setCursor((cursor - 1 + opts.length) % opts.length); }
+    else if (e.key === 'Home') { e.preventDefault(); setCursor(0); }
+    else if (e.key === 'End') { e.preventDefault(); setCursor(opts.length - 1); }
+    else if (e.key === 'Tab') close(false);
+  };
+
   return (
-    <label className="lang-switch tz-switch" title={tr('timezone')}>
-      <span className="tz-label">🕓</span>
-      <select value={sel.tz} onChange={(e) => onChange(e.target.value)}>
-        {window.TZ_OPTIONS.map(o => (
-          <option key={o.tz} value={o.tz}>{o.flag} {o.city}</option>
-        ))}
-      </select>
-    </label>
+    <div className={`tz-switch ${open ? 'open' : ''}`} ref={wrapRef}>
+      <button ref={btnRef} type="button" className="tz-trigger" title={tr('timezone')}
+        aria-label={`${tr('timezone')}: ${sel.city}`} aria-haspopup="listbox" aria-expanded={open}
+        onClick={() => (open ? close(false) : openMenu())} onKeyDown={onTriggerKey}>
+        <Flag nat={sel.nat} size={17} />
+        <span className="tz-city">{sel.short}</span>
+        <svg className="tz-caret" viewBox="0 0 10 6" width="9" height="6" aria-hidden="true">
+          <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+
+      {open && (
+        <div className="tz-menu" role="listbox" aria-label={tr('timezone')} onKeyDown={onListKey}>
+          <div className="tz-head">
+            <span>{tr('timezone')}</span>
+            <span>{tr('hora_local')}</span>
+          </div>
+          {opts.map((o, i) => (
+            <button key={o.tz} type="button" role="option" aria-selected={o.tz === sel.tz}
+              ref={el => (optRefs.current[i] = el)} tabIndex={i === cursor ? 0 : -1}
+              className={`tz-opt ${o.tz === sel.tz ? 'sel' : ''} ${i === cursor ? 'cursor' : ''}`}
+              onMouseEnter={() => setCursor(i)} onClick={() => pick(o)}>
+              <Flag nat={o.nat} size={19} />
+              <span className="tz-names">
+                <span className="tz-n1">{o.city}</span>
+                <span className="tz-n2">{window.COUNTRIES[o.nat] ? window.COUNTRIES[o.nat].name : o.code}</span>
+              </span>
+              {o.tz === window.TZ_BASE && <span className="tz-base" title={tr('tz_base_hint')}>{tr('tz_base')}</span>}
+              <span className="tz-now">{window.tzNow(o.tz, openedAt)}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
