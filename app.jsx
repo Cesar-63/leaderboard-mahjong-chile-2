@@ -211,7 +211,7 @@ function App() {
                 <h1>{tr('standings_title', { div })}</h1>
                 <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>順位表</span>
               </div>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)', textAlign: 'right' }}>
+              <div className="section-meta" style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)', textAlign: 'right' }}>
                 <div>{tr('session_summary', { played: L.sessionsPlayed, total: L.sessionsTotal, per: L.hanchanPerSession })}</div>
                 <div style={{ color: 'var(--ink-faint)' }}>
                   uma {L.rules[div].uma.map(v => v >= 0 ? `+${v}` : `−${Math.abs(v)}`).join(' / ')}

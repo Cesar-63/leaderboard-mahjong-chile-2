@@ -604,6 +604,12 @@ select{font:inherit;color:inherit}
   .rank-num{min-width:18px;font-size:14px}
   .player-cell{gap:8px}
 
+  /* Hero / sección */
+  .section-head{flex-direction:column;align-items:flex-start;gap:4px;padding-bottom:10px}
+  .section-head .h-left{gap:8px;font-size:11px}
+  .section-head h1{font-size:22px;white-space:normal}
+  .section-meta{text-align:left!important;margin-top:2px;display:flex;flex-wrap:wrap;gap:2px 12px;font-size:10px;line-height:1.6}
+
   /* Historial */
   .hanchan-card{grid-template-columns:1fr;gap:8px}
   .code-block,.four-results,.hanchan-card .pos{min-width:0}
@@ -626,7 +632,6 @@ select{font:inherit;color:inherit}
   .lang-switch .lang-btn{padding:4px 6px}
   .tz-switch select{max-width:132px}
   .tabs{margin-left:0}
-  .section-head h1{font-size:26px;white-space:normal}
   .section-head .h-left .num{font-size:10px}
   .topbar .brand .wordmark .l1{font-size:14px}
   .ds-btn{padding:6px 10px}
