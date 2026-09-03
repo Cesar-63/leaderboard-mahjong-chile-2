@@ -52,7 +52,7 @@
 [data-density="comfy"]{--density-row:56px;--density-pad:18px;--density-fs:15px}
 
 *{box-sizing:border-box}
-html,body{margin:0;padding:0;min-height:100%}
+html,body{margin:0;padding:0;min-height:100%;overflow-x:hidden}
 body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased;text-wrap:pretty;transition:background-color .3s ease,color .3s ease}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
 table{border-collapse:collapse}
@@ -378,7 +378,7 @@ select{font:inherit;color:inherit}
 [data-theme="neon"] .code-block .date{font-family:var(--font-mono);font-size:14px}
 .code-block .table{font-family:var(--font-mono);font-size:10px;color:var(--ink-soft)}
 .four-results{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.hanchan-card .pos{display:grid;grid-template-columns:20px 1fr auto;align-items:center;gap:9px;padding:6px 10px;border-radius:8px;background:var(--bg-sunk)}
+.hanchan-card .pos{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:9px;padding:6px 10px;border-radius:8px;background:var(--bg-sunk)}
 .hanchan-card .pos.p1{background:color-mix(in oklab,var(--accent) 11%,var(--bg-sunk))}
 [data-div="B"] .hanchan-card .pos.p1{background:color-mix(in oklab,var(--accent-2) 13%,var(--bg-sunk))}
 .hanchan-card .pos .place{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint)}
@@ -563,4 +563,76 @@ select{font:inherit;color:inherit}
   .comp-wrap{grid-template-columns:1fr}
   .four-results{grid-template-columns:1fr 1fr}
   .topbar .meta{display:none}
+}
+
+/* ─── pantallas angostas / móvil (sitio desktop) ─── */
+/* min-width:0 deja que los contenedores se encojan y scrolleen en vez de
+   forzar el ancho de la pagina (root del desborde horizontal). */
+.standings-wrap,.standings-wrap>*{min-width:0}
+.detail-grid,.detail-grid>*{min-width:0}
+.control-bar>*{min-width:0}
+@media (max-width:760px){
+  .topbar{gap:8px;padding:10px 12px;flex-wrap:wrap}
+  .topbar .brand{min-width:0}
+  .topbar .brand .wordmark{min-width:0}
+  .topbar .brand .wordmark .l1{font-size:15px}
+  .topbar .brand .wordmark .l2{display:none}
+  .topbar .live-pill{display:none}
+  .control-bar{padding:8px 12px 0;gap:8px;flex-wrap:wrap}
+  .div-switch{max-width:100%;min-width:0;flex:1 1 auto;width:100%}
+  .ds-btn{flex:1;justify-content:center;align-items:center;text-align:center}
+  .ds-meta{display:none}
+  .section-head{flex-direction:column;align-items:flex-start;gap:8px}
+  .section-head .h-left{gap:9px}
+  .standings-card{overflow-x:auto;min-width:0}
+  .standings-table{min-width:0}
+  .nat-filter{min-width:0}
+  .side-rail{grid-template-columns:1fr}
+  .detail-grid{grid-template-columns:1fr}
+  .detail-hero .rank-big{flex-wrap:wrap;gap:8px}
+  .comp-wrap{grid-template-columns:1fr}
+  .cal-grid{grid-template-columns:1fr 1fr}
+  .iormc-podium{grid-template-columns:1fr}
+  .main{min-width:0;padding:14px 12px 80px}
+}
+@media (max-width:600px){
+  .standings-table{min-width:0}
+  .standings-table th:nth-child(n+5),.standings-table td:nth-child(n+5){display:none}
+  .standings-table th:first-child,.standings-table td:first-child{width:34px!important;padding-left:6px;padding-right:6px}
+  .standings-row td{padding-left:8px;padding-right:8px}
+  .rank-cell{gap:6px}
+  .rank-num{min-width:18px;font-size:14px}
+  .player-cell{gap:8px}
+
+  /* Hero / sección */
+  .section-head{flex-direction:column;align-items:flex-start;gap:4px;padding-bottom:10px}
+  .section-head .h-left{gap:8px;font-size:11px}
+  .section-head h1{font-size:22px;white-space:normal}
+  .section-meta{text-align:left!important;margin-top:2px;display:flex;flex-wrap:wrap;gap:2px 12px;font-size:10px;line-height:1.6}
+
+  /* Historial */
+  .hanchan-card{grid-template-columns:1fr;gap:8px}
+  .code-block,.four-results,.hanchan-card .pos{min-width:0}
+  .four-results{gap:6px}
+
+  /* IORMC */
+  .iormc-grid,.iormc-grid>*{min-width:0}
+  .race-row{grid-template-columns:22px 28px 1fr 58px;gap:7px}
+  .race-row .rr-bar{display:none}
+  .rr-nm .rr-sub{display:none}
+  .iq-card{min-width:0}
+
+  /* Comparador */
+  .comp-wrap,.comp-wrap>*,.comp-col,.comp-col>*,.comp-pick{min-width:0}
+  .vs-header{flex-wrap:wrap;gap:6px}
+}
+@media (max-width:460px){
+  .cal-grid{grid-template-columns:1fr}
+  .iormc-podium{grid-template-columns:1fr}
+  .lang-switch .lang-btn{padding:4px 6px}
+  .tz-switch select{max-width:132px}
+  .tabs{margin-left:0}
+  .section-head .h-left .num{font-size:10px}
+  .topbar .brand .wordmark .l1{font-size:14px}
+  .ds-btn{padding:6px 10px}
 }

@@ -118,14 +118,13 @@ function LangSwitch({ value, onChange }) {
 }
 
 function TzSwitch({ value, onChange }) {
+  const sel = window.TZ_OPTIONS.find(o => o.tz === (value || 'America/Santiago')) || window.TZ_OPTIONS[0];
   return (
     <label className="lang-switch tz-switch" title={tr('timezone')}>
       <span className="tz-label">🕓</span>
-      <select value={value || 'America/Santiago'} onChange={(e) => onChange(e.target.value)}>
-        {window.TZ_OPTIONS.map(g => (
-          <optgroup key={g.code} label={g.label}>
-            {g.zones.map(z => <option key={z.tz} value={z.tz}>{z.label}</option>)}
-          </optgroup>
+      <select value={sel.tz} onChange={(e) => onChange(e.target.value)}>
+        {window.TZ_OPTIONS.map(o => (
+          <option key={o.tz} value={o.tz}>{o.flag} {o.city}</option>
         ))}
       </select>
     </label>
@@ -212,7 +211,7 @@ function App() {
                 <h1>{tr('standings_title', { div })}</h1>
                 <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>順位表</span>
               </div>
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)', textAlign: 'right' }}>
+              <div className="section-meta" style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)', textAlign: 'right' }}>
                 <div>{tr('session_summary', { played: L.sessionsPlayed, total: L.sessionsTotal, per: L.hanchanPerSession })}</div>
                 <div style={{ color: 'var(--ink-faint)' }}>
                   uma {L.rules[div].uma.map(v => v >= 0 ? `+${v}` : `−${Math.abs(v)}`).join(' / ')}

@@ -381,33 +381,16 @@ window.I18N = {
   },
 };
 
-// ── Zonas horarias de la liga (agrupadas por país) ──
-// La base del torneo es America/Santiago (Chile). Para cada país se listan
-// las zonas elegibles; el usuario elige la suya desde la barra superior.
+// ── Zonas horarias de la liga (solo la capital de cada país) ──
+// La base del torneo es America/Santiago (Chile). Una opción por país con su
+// bandera; el usuario elige la suya desde la barra superior.
 window.TZ_OPTIONS = [
-  { code: 'CL', label: 'Chile', zones: [
-    { tz: 'America/Santiago', label: 'Santiago (UTC-3/-4)' },
-    { tz: 'Pacific/Easter', label: 'Isla de Pascua (UTC-5/-6)' },
-  ]},
-  { code: 'UY', label: 'Uruguay', zones: [{ tz: 'America/Montevideo', label: 'Montevideo (UTC-3)' }]},
-  { code: 'AR', label: 'Argentina', zones: [
-    { tz: 'America/Argentina/Buenos_Aires', label: 'Buenos Aires (UTC-3)' },
-    { tz: 'America/Argentina/Cordoba', label: 'Córdoba (UTC-3)' },
-    { tz: 'America/Argentina/Mendoza', label: 'Mendoza (UTC-3)' },
-  ]},
-  { code: 'PE', label: 'Perú', zones: [{ tz: 'America/Lima', label: 'Lima (UTC-5)' }]},
-  { code: 'BR', label: 'Brasil', zones: [
-    { tz: 'America/Sao_Paulo', label: 'São Paulo / Brasília (UTC-3)' },
-    { tz: 'America/Manaus', label: 'Manaus (UTC-4)' },
-    { tz: 'America/Recife', label: 'Recife (UTC-3)' },
-    { tz: 'America/Rio_Branco', label: 'Rio Branco (UTC-5)' },
-  ]},
-  { code: 'MX', label: 'México', zones: [
-    { tz: 'America/Mexico_City', label: 'Ciudad de México (UTC-6)' },
-    { tz: 'America/Monterrey', label: 'Monterrey (UTC-6)' },
-    { tz: 'America/Tijuana', label: 'Tijuana (UTC-8)' },
-    { tz: 'America/Mazatlan', label: 'Mazatlán (UTC-7)' },
-  ]},
+  { code: 'CL', nat: 'CL', flag: '🇨🇱', city: 'Santiago', tz: 'America/Santiago' },
+  { code: 'UY', nat: 'UY', flag: '🇺🇾', city: 'Montevideo', tz: 'America/Montevideo' },
+  { code: 'AR', nat: 'AR', flag: '🇦🇷', city: 'Buenos Aires', tz: 'America/Argentina/Buenos_Aires' },
+  { code: 'PE', nat: 'PE', flag: '🇵🇪', city: 'Lima', tz: 'America/Lima' },
+  { code: 'BR', nat: 'BR', flag: '🇧🇷', city: 'São Paulo / Brasília', tz: 'America/Sao_Paulo' },
+  { code: 'MX', nat: 'MX', flag: '🇲🇽', city: 'Ciudad de México', tz: 'America/Mexico_City' },
 ];
 
 // País → zona horaria por defecto (para mostrar la hora local de cada participante).

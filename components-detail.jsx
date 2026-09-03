@@ -74,7 +74,7 @@ function PlayerDetail({ playerId, data, onPick }) {
             <div className={`avatar div-${p.div}`} style={{ width: 80, height: 80, fontSize: 22, borderRadius: 18 }}>{initials(p.handle)}</div>
             <div>
               <div className="name">{p.shortName}</div>
-              <div className="sub nat-line"><Flag nat={p.nat} size={18} /><span>{COUNTRIES[p.nat].name}</span><span className="dot-sep">·</span><span>Div {p.div}</span><span className="dot-sep">·</span><span>{p.arch.toUpperCase()}</span></div>
+              <div className="sub nat-line"><Flag nat={p.nat} size={18} /><span>{COUNTRIES[p.nat].name}</span><span className="dot-sep">·</span><span>Div {p.div}</span></div>
             </div>
           </div>
 
@@ -429,9 +429,6 @@ function CalModal({ entry, onClose }) {
   const players = entry.players || [];
   const baseTz = 'America/Santiago';
   const natTz = window.NAT_TZ || {};
-  const tzOptions = window.TZ_OPTIONS || [];
-  const allZones = tzOptions.flatMap(g => g.zones.map(z => z));
-  const cityShort = (label) => String(label || '').split(' (')[0];
   return (
     <div className="cal-modal-backdrop" onClick={onClose}>
       <div className="cal-modal" onClick={e => e.stopPropagation()}>
@@ -458,18 +455,6 @@ function CalModal({ entry, onClose }) {
             })}
           </div>
         )}
-
-        <div className="cm-players">
-          <div className="cm-block">{tr('all_times')} · {window.fmtTzTime(entry.date, entry.time, window.TZ)} · {window.TZ}</div>
-          <div className="cm-grid cm-grid3">
-            {allZones.map(z => (
-              <div className="cm-tzcell" key={z.tz} title={z.label + ' · ' + z.tz}>
-                <span className="ctz-city">{cityShort(z.label)}</span>
-                <span className="ctz-time">{window.fmtTzTime(entry.date, entry.time, z.tz)}</span>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
   );
