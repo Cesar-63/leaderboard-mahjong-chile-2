@@ -154,6 +154,10 @@ window.I18N = {
     played_sessions: 'Sesiones Jugadas',
     metrics_note: 'Barra más larga = mejor, escalada al rango de la liga',
     timezone: 'Zona horaria',
+    tz_base: 'Sede',
+    tz_base_hint: 'Zona base de la liga: los horarios oficiales se publican en esta hora',
+    dia_sig: 'Día siguiente',
+    dia_ant: 'Día anterior',
     partida_n: 'Partida de {n} jugadores',
     hora_local: 'Hora local',
     all_times: 'Todos los horarios',
@@ -306,6 +310,10 @@ window.I18N = {
     played_sessions: 'Played Sessions',
     metrics_note: 'Longer bar = better, scaled to league range',
     timezone: 'Time zone',
+    tz_base: 'Home',
+    tz_base_hint: 'League base zone: official times are published in this zone',
+    dia_sig: 'Next day',
+    dia_ant: 'Previous day',
     partida_n: 'Game of {n} players',
     hora_local: 'Local time',
     all_times: 'All times',
@@ -458,6 +466,10 @@ window.I18N = {
     played_sessions: 'Sessões Jogadas',
     metrics_note: 'Barra mais longa = melhor, escalada à faixa da liga',
     timezone: 'Fuso horário',
+    tz_base: 'Sede',
+    tz_base_hint: 'Fuso base da liga: os horários oficiais saem neste fuso',
+    dia_sig: 'Dia seguinte',
+    dia_ant: 'Dia anterior',
     partida_n: 'Partida de {n} jogadores',
     hora_local: 'Hora local',
     all_times: 'Todos os horários',
@@ -468,41 +480,98 @@ window.I18N = {
 // ── Zonas horarias de la liga (solo la capital de cada país) ──
 // La base del torneo es America/Santiago (Chile). Una opción por país con su
 // bandera; el usuario elige la suya desde la barra superior.
+// `short` es lo que entra en la píldora de la barra superior; `city` es el
+// rótulo completo del desplegable.
 window.TZ_OPTIONS = [
-  { code: 'CL', nat: 'CL', flag: '🇨🇱', city: 'Santiago', tz: 'America/Santiago' },
-  { code: 'UY', nat: 'UY', flag: '🇺🇾', city: 'Montevideo', tz: 'America/Montevideo' },
-  { code: 'AR', nat: 'AR', flag: '🇦🇷', city: 'Buenos Aires', tz: 'America/Argentina/Buenos_Aires' },
-  { code: 'PE', nat: 'PE', flag: '🇵🇪', city: 'Lima', tz: 'America/Lima' },
-  { code: 'BR', nat: 'BR', flag: '🇧🇷', city: 'São Paulo / Brasília', tz: 'America/Sao_Paulo' },
-  { code: 'MX', nat: 'MX', flag: '🇲🇽', city: 'Ciudad de México', tz: 'America/Mexico_City' },
+  { code: 'CL', nat: 'CL', flag: '🇨🇱', city: 'Santiago', short: 'Santiago', tz: 'America/Santiago' },
+  { code: 'UY', nat: 'UY', flag: '🇺🇾', city: 'Montevideo', short: 'Montevideo', tz: 'America/Montevideo' },
+  { code: 'AR', nat: 'AR', flag: '🇦🇷', city: 'Buenos Aires', short: 'Buenos Aires', tz: 'America/Argentina/Buenos_Aires' },
+  { code: 'PE', nat: 'PE', flag: '🇵🇪', city: 'Lima', short: 'Lima', tz: 'America/Lima' },
+  { code: 'BR', nat: 'BR', flag: '🇧🇷', city: 'São Paulo / Brasília', short: 'São Paulo', tz: 'America/Sao_Paulo' },
+  { code: 'MX', nat: 'MX', flag: '🇲🇽', city: 'Ciudad de México', short: 'CDMX', tz: 'America/Mexico_City' },
+  // Japón no tiene jugadores en la liga: está por el mahjong (y porque las
+  // sesiones de noche en Chile caen al día siguiente en Tokio).
+  { code: 'JP', nat: 'JP', flag: '🇯🇵', city: 'Tokio', short: 'Tokio', tz: 'Asia/Tokyo' },
 ];
+
+// Zona base del torneo: los horarios de la liga se publican en esta hora.
+window.TZ_BASE = 'America/Santiago';
+
+// Hora de pared actual ("21:40") en una zona cualquiera.
+window.tzNow = function (tz, at) {
+  try {
+    return new Intl.DateTimeFormat('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: false })
+      .format(at || new Date());
+  } catch (e) { return '--:--'; }
+};
 
 // País → zona horaria por defecto (para mostrar la hora local de cada participante).
 window.NAT_TZ = {
   CL: 'America/Santiago', UY: 'America/Montevideo', AR: 'America/Argentina/Buenos_Aires',
-  PE: 'America/Lima', BR: 'America/Sao_Paulo', MX: 'America/Mexico_City',
+  PE: 'America/Lima', BR: 'America/Sao_Paulo', MX: 'America/Mexico_City', JP: 'Asia/Tokyo',
 };
 
-window.LANG = localStorage.getItem('mjc-lang') || 'es';
-window.TZ = localStorage.getItem('mjc-tz') || 'America/Santiago';
+// localStorage puede tirar excepción (modo privado, cookies bloqueadas); si
+// falla, la preferencia simplemente no persiste y el sitio sigue funcionando.
+function prefGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function prefSet(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* no persiste */ } }
+
+window.LANG = prefGet('mjc-lang') || 'es';
+window.TZ = prefGet('mjc-tz') || 'America/Santiago';
 window.setLang = function (l) {
   window.LANG = l;
-  localStorage.setItem('mjc-lang', l);
+  prefSet('mjc-lang', l);
   window.dispatchEvent(new CustomEvent('langchange'));
 };
 window.setTZ = function (tz) {
   window.TZ = tz;
-  localStorage.setItem('mjc-tz', tz);
+  prefSet('mjc-tz', tz);
   window.dispatchEvent(new CustomEvent('tzchange'));
 };
-window.DARK = localStorage.getItem('mjc-dark') === '1';
-document.documentElement.setAttribute('data-dark', String(window.DARK));
-window.setDark = function (v) {
-  window.DARK = !!v;
-  localStorage.setItem('mjc-dark', window.DARK ? '1' : '0');
+// ── Modo oscuro ──
+// Sin preferencia guardada seguimos la del sistema operativo (el patrón
+// habitual: prefers-color-scheme). En cuanto el usuario toca el switch su
+// elección queda guardada y manda por sobre el sistema, en los dos sentidos:
+// se puede fijar claro aunque el SO esté en oscuro.
+(function () {
+  const KEY = 'mjc-dark';
+  const mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  const systemDark = () => !!(mq && mq.matches);
+
+  function apply(v) {
+    window.DARK = !!v;
+    document.documentElement.setAttribute('data-dark', String(window.DARK));
+    window.dispatchEvent(new CustomEvent('darkchange'));
+  }
+
+  let stored = null;
+  try { stored = localStorage.getItem(KEY); } catch (e) { /* modo privado */ }
+
+  // true mientras no haya elección explícita: es lo que habilita seguir al SO en vivo.
+  window.DARK_FOLLOWS_SYSTEM = stored !== '0' && stored !== '1';
+  window.DARK = window.DARK_FOLLOWS_SYSTEM ? systemDark() : stored === '1';
   document.documentElement.setAttribute('data-dark', String(window.DARK));
-  window.dispatchEvent(new CustomEvent('darkchange'));
-};
+
+  window.setDark = function (v) {
+    window.DARK_FOLLOWS_SYSTEM = false;
+    try { localStorage.setItem(KEY, v ? '1' : '0'); } catch (e) { /* modo privado */ }
+    apply(v);
+  };
+
+  // Volver a "lo que diga el sistema": borra la preferencia guardada.
+  window.clearDarkPreference = function () {
+    try { localStorage.removeItem(KEY); } catch (e) { /* modo privado */ }
+    window.DARK_FOLLOWS_SYSTEM = true;
+    apply(systemDark());
+  };
+
+  if (mq) {
+    const onSystemChange = (e) => { if (window.DARK_FOLLOWS_SYSTEM) apply(e.matches); };
+    // Safari < 14 solo tiene addListener.
+    if (mq.addEventListener) mq.addEventListener('change', onSystemChange);
+    else if (mq.addListener) mq.addListener(onSystemChange);
+  }
+})();
 
 window.tr = function (key, vars) {
   const table = window.I18N[window.LANG] || window.I18N.es;
@@ -516,14 +585,21 @@ window.tr = function (key, vars) {
 };
 
 // Convierte una hora ("23 ago", "22:00") de la base (America/Santiago) a la
-// zona horaria destino y devuelve "22:00" (o "—" si no se puede).
-window.fmtTzTime = function (dateStr, timeStr, toTZ) {
+// zona horaria destino y devuelve { time: "22:00", shift: 0 }.
+//
+// `shift` es la diferencia de día calendario contra la base: +1 si allá ya es
+// el día siguiente, −1 si todavía es el anterior. Con las zonas americanas
+// siempre daba 0, pero las sesiones son de noche en Chile (19:00–22:00) y en
+// Tokio eso cae a la mañana del día siguiente: mostrar "07:00" pelado mandaría
+// a un espectador japonés al día equivocado.
+window.fmtTzParts = function (dateStr, timeStr, toTZ) {
   const MONTHS = { ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5, jul: 6, ago: 7, sep: 8, oct: 9, nov: 10, dic: 11 };
   const parts = String(dateStr || '').split(' ');
   const day = parseInt(parts[0], 10), mon = MONTHS[parts[1]];
   const tm = String(timeStr || '').split(':');
   const h = parseInt(tm[0], 10), mi = parseInt(tm[1], 10);
-  if (isNaN(day) || mon === undefined || isNaN(h)) return timeStr || 'Por definir';
+  const fallback = { time: timeStr || 'Por definir', shift: 0 };
+  if (isNaN(day) || mon === undefined || isNaN(h)) return fallback;
   const year = new Date().getFullYear();
   const fromTZ = 'America/Santiago';
   // instante UTC cuya hora de pared en fromTZ es (day, mon, h:mi) — 2 pasos sufren
@@ -535,9 +611,15 @@ window.fmtTzTime = function (dateStr, timeStr, toTZ) {
     utc += (Date.UTC(year, mon, day, h, mi) - wall);
   }
   try {
-    const out = new Intl.DateTimeFormat('en-GB', { timeZone: toTZ || fromTZ, hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(utc));
-    return out;
+    const at = new Date(utc);
+    const tz = toTZ || fromTZ;
+    const time = new Intl.DateTimeFormat('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: false }).format(at);
+    // 'en-CA' da YYYY-MM-DD, así que comparar como texto ordena bien incluso
+    // cruzando fin de año.
+    const dayIn = (z) => new Intl.DateTimeFormat('en-CA', { timeZone: z, year: 'numeric', month: '2-digit', day: '2-digit' }).format(at);
+    const base = dayIn(fromTZ), local = dayIn(tz);
+    return { time, shift: local === base ? 0 : (local > base ? 1 : -1) };
   } catch (e) {
-    return timeStr;
+    return fallback;
   }
 };
