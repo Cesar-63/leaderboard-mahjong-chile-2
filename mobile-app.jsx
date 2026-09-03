@@ -540,7 +540,8 @@ function MobileApp() {
     const bump = () => setTick(x => x + 1);
     window.addEventListener('langchange', bump);
     window.addEventListener('tzchange', bump);
-    return () => { window.removeEventListener('langchange', bump); window.removeEventListener('tzchange', bump); };
+    window.addEventListener('darkchange', bump);
+    return () => { window.removeEventListener('langchange', bump); window.removeEventListener('tzchange', bump); window.removeEventListener('darkchange', bump); };
   }, []);
   const [route, setRoute] = React.useState(parseRoute);
   const data = window.MJC_DATA;
@@ -564,11 +565,11 @@ function MobileApp() {
   React.useEffect(() => {
     const el = document.documentElement;
     el.setAttribute('data-theme', t.theme);
-    el.setAttribute('data-dark', String(!!t.dark));
+    el.setAttribute('data-dark', String(!!window.DARK));
     el.setAttribute('data-density', 'regular');
     el.setAttribute('data-lang', window.LANG);
     el.setAttribute('data-div', div);
-  }, [t.theme, t.dark, div]);
+  }, [t.theme, div]);
 
   React.useEffect(() => { if (bodyRef.current) bodyRef.current.scrollTop = 0; }, [tab]);
 
@@ -588,7 +589,7 @@ uma ${L.rules[div].uma.map(v => v >= 0 ? '+' + v : '−' + Math.abs(v)).join('/'
 
   return (
     <div className="stage">
-      <IOSDevice dark={!!t.dark || t.theme === 'neon'}>
+      <IOSDevice dark={!!window.DARK || t.theme === 'neon'}>
         <div className="mob">
           <div className="mob-bg"></div>
           <MobHeader title={HEAD.title} jp={HEAD.jp} aside={HEAD.aside}>
@@ -624,7 +625,7 @@ uma ${L.rules[div].uma.map(v => v >= 0 ? '+' + v : '−' + Math.abs(v)).join('/'
         <TweakRadio label="Estilo" value={t.theme}
           options={[{ value: 'washi', label: 'Washi' }, { value: 'neon', label: 'Neon' }]}
           onChange={v => setTweak('theme', v)} />
-        <TweakToggle label="Modo oscuro" value={t.dark} onChange={v => setTweak('dark', v)} />
+        <TweakToggle label={tr('oscuro')} value={window.DARK} onChange={v => setDark(v)} />
         <TweakSection label="Idioma" />
         <TweakRadio label="Display" value={window.LANG}
           options={[

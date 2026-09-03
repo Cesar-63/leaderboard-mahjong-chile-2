@@ -411,6 +411,13 @@ window.setTZ = function (tz) {
   localStorage.setItem('mjc-tz', tz);
   window.dispatchEvent(new CustomEvent('tzchange'));
 };
+window.DARK = localStorage.getItem('mjc-dark') === '1';
+window.setDark = function (v) {
+  window.DARK = !!v;
+  localStorage.setItem('mjc-dark', window.DARK ? '1' : '0');
+  document.documentElement.setAttribute('data-dark', String(window.DARK));
+  window.dispatchEvent(new CustomEvent('darkchange'));
+};
 
 window.tr = function (key, vars) {
   const table = window.I18N[window.LANG] || window.I18N.es;

@@ -138,7 +138,8 @@ function App() {
     const bump = () => setTick(x => x + 1);
     window.addEventListener('langchange', bump);
     window.addEventListener('tzchange', bump);
-    return () => { window.removeEventListener('langchange', bump); window.removeEventListener('tzchange', bump); };
+    window.addEventListener('darkchange', bump);
+    return () => { window.removeEventListener('langchange', bump); window.removeEventListener('tzchange', bump); window.removeEventListener('darkchange', bump); };
   }, []);
   const [route, setRoute] = React.useState(parseRoute);
   const data = window.MJC_DATA;
@@ -161,7 +162,7 @@ function App() {
   React.useEffect(() => {
     const el = document.documentElement;
     el.setAttribute('data-theme', t.theme);
-    el.setAttribute('data-dark', String(!!t.dark));
+    el.setAttribute('data-dark', String(!!window.DARK));
     el.setAttribute('data-density', t.density);
     el.setAttribute('data-lang', window.LANG);
     el.setAttribute('data-div', div);
@@ -195,6 +196,10 @@ function App() {
         </div>
         <LangSwitch value={window.LANG} onChange={(v) => setLang(v)} />
         <TzSwitch value={window.TZ} onChange={(v) => setTZ(v)} />
+        <button className={`lang-switch dark-toggle ${window.DARK ? 'on' : ''}`} onClick={() => setDark(!window.DARK)}
+          title={window.DARK ? tr('oscuro') : 'Modo oscuro'} aria-pressed={!!window.DARK}>
+          {window.DARK ? '☀️' : '🌙'}
+        </button>
       </header>
 
       <div className="control-bar">
@@ -234,7 +239,7 @@ function App() {
         <TweakRadio label={tr('estilo')} value={t.theme}
           options={[{ value: 'washi', label: 'Washi' }, { value: 'neon', label: 'Neon' }]}
           onChange={(v) => setTweak('theme', v)} />
-        <TweakToggle label={tr('oscuro')} value={t.dark} onChange={(v) => setTweak('dark', v)} />
+        <TweakToggle label={tr('oscuro')} value={window.DARK} onChange={(v) => setDark(v)} />
         <TweakSection label="Layout" />
         <TweakRadio label={tr('disposicion_str')} value={t.layout}
           options={[{ value: 'classic', label: tr('clasico') }, { value: 'stacked', label: tr('apilado') }, { value: 'split', label: tr('doble') }]}
