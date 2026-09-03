@@ -305,6 +305,28 @@ select{font:inherit;color:inherit}
 .stat-cell{background:var(--bg-elev);padding:13px}
 .stat-cell .l{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}
 .stat-cell .v{font-family:var(--font-mono);font-weight:700;font-size:21px;margin-top:4px}
+/* Tooltips de stats (stat-tips.jsx). La tarjeta se dibuja sobre el body con
+   position:fixed, porque la grilla de stats recorta con overflow:hidden. */
+.stat-tip-anchor{display:inline-block;cursor:help;border-radius:4px;outline:none;-webkit-tap-highlight-color:transparent}
+.stat-tip-anchor>.v{border-bottom:1px dotted var(--line-strong);display:inline-block}
+.stat-tip-anchor:focus-visible>.v{border-bottom-color:var(--accent);box-shadow:0 2px 0 var(--accent)}
+.stat-tip-anchor>.v.weak{opacity:.6}
+.stat-tip{position:fixed;z-index:80;width:264px;padding:12px 13px;background:var(--bg-elev);color:var(--ink);border:1px solid var(--line-strong);border-radius:12px;box-shadow:0 18px 40px -18px rgba(20,15,5,.5);font-family:var(--font-body);pointer-events:none;animation:st-fade .12s ease-out}
+.st-arrow{position:absolute;width:9px;height:9px;background:var(--bg-elev);transform:translateX(-50%) rotate(45deg)}
+.stat-tip.below .st-arrow{top:-5px;border-left:1px solid var(--line-strong);border-top:1px solid var(--line-strong)}
+.stat-tip.above .st-arrow{bottom:-5px;border-right:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong)}
+.st-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.st-name{font-weight:700;font-size:13px}
+.st-jp{font-family:var(--font-jp);font-size:11px;color:var(--ink-faint)}
+.st-formula{font-family:var(--font-mono);font-size:11px;line-height:1.45;color:var(--ink-soft);margin-top:6px}
+.st-note{font-size:11px;line-height:1.45;color:var(--ink-faint);margin-top:4px}
+.st-sample{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint);margin-top:7px}
+.st-weak{color:var(--warn)}
+.st-dist{display:block;margin:8px auto 0;max-width:100%}
+.st-axis{font-family:var(--font-mono);font-size:8.5px;fill:var(--ink-faint)}
+.st-foot{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-soft);border-top:1px solid var(--line);margin-top:8px;padding-top:7px}
+@keyframes st-fade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.stat-tip{animation:none}}
 .placement-bar{display:flex;gap:2px;height:32px;border-radius:8px;overflow:hidden;margin-top:8px}
 .placement-bar>div{display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:10.5px;font-weight:600;color:#fff;min-width:0;overflow:hidden}
 .placement-bar>div.pl1{background:var(--accent)}

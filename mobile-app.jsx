@@ -259,12 +259,9 @@ function MobDetail({ data, playerId, onPick }) {
         )}
         {p.zone && <div className={`mob-zoneb ${p.zone}`}>{ZONE[p.zone]}</div>}
         <div className="mob-statgrid">
-          <div className="c"><div className="l">Avg Rank</div><div className="v">{p.avgRank.toFixed(2)}</div></div>
-          <div className="c"><div className="l">Avg ±</div><div className="v" style={{ color: p.avgPoints >= 0 ? 'var(--good)' : 'var(--bad)' }}>{fmtPts(p.avgPoints)}</div></div>
-          <div className="c"><div className="l">Win Rate</div><div className="v">{p.winRate.toFixed(1)}%</div></div>
-          <div className="c"><div className="l">Deal-in</div><div className="v" style={{ color: 'var(--bad)' }}>{p.dealInRate.toFixed(1)}%</div></div>
-          <div className="c"><div className="l">Riichi</div><div className="v">{p.riichiRate.toFixed(1)}%</div></div>
-          <div className="c"><div className="l">Open</div><div className="v">{p.openRate.toFixed(1)}%</div></div>
+          {PROFILE_STATS.map(metric => (
+            <StatCell key={metric} metric={metric} player={p} data={data} className="c" />
+          ))}
         </div>
         <div className="mob-ch" style={{ marginBottom: 6 }}><h3>Puestos</h3><span className="jp">順位率</span></div>
         <div className="mob-placebar">
