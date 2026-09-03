@@ -196,9 +196,13 @@ function App() {
         </div>
         <LangSwitch value={window.LANG} onChange={(v) => setLang(v)} />
         <TzSwitch value={window.TZ} onChange={(v) => setTZ(v)} />
-        <button className={`lang-switch dark-toggle ${window.DARK ? 'on' : ''}`} onClick={() => setDark(!window.DARK)}
-          title={window.DARK ? tr('oscuro') : 'Modo oscuro'} aria-pressed={!!window.DARK}>
-          {window.DARK ? '☀️' : '🌙'}
+        <button className={`theme-switch ${window.DARK ? 'on' : ''}`} onClick={() => setDark(!window.DARK)}
+          role="switch" aria-checked={!!window.DARK} title="Modo oscuro">
+          <span className="ts-track">
+            <span className="ts-icon ts-sun"><svg viewBox="0 0 16 16" width="12" height="12"><circle cx="8" cy="8" r="3"/><g stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"><line x1="8" y1="1.5" x2="8" y2="3.2"/><line x1="8" y1="12.8" x2="8" y2="14.5"/><line x1="1.5" y1="8" x2="3.2" y2="8"/><line x1="12.8" y1="8" x2="14.5" y2="8"/><line x1="3.4" y1="3.4" x2="4.6" y2="4.6"/><line x1="11.4" y1="11.4" x2="12.6" y2="12.6"/><line x1="3.4" y1="12.6" x2="4.6" y2="11.4"/><line x1="11.4" y1="4.6" x2="12.6" y2="3.4"/></g></svg></span>
+            <span className="ts-knob"></span>
+            <span className="ts-icon ts-moon"><svg viewBox="0 0 16 16" width="12" height="12"><path d="M12.8 10.2A5 5 0 0 1 5.8 3.2a5 5 0 1 0 7 7z" fill="currentColor"/></svg></span>
+          </span>
         </button>
       </header>
 

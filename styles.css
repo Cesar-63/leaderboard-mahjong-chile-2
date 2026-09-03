@@ -93,9 +93,18 @@ select{font:inherit;color:inherit}
 .lang-btn{appearance:none;border:0;background:transparent;color:var(--ink-soft);font-family:var(--font-mono);font-size:11px;font-weight:600;padding:4px 9px;border-radius:999px;cursor:pointer;letter-spacing:.04em}
 .lang-btn:hover{color:var(--ink)}
 .lang-btn.active{background:var(--accent);color:var(--bg);}
-.dark-toggle{appearance:none;border:1px solid var(--line-strong);border-radius:999px;background:transparent;color:var(--ink);width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;flex-shrink:0}
-.dark-toggle:hover{border-color:var(--accent);color:var(--accent)}
-.dark-toggle.on{background:var(--accent-2);border-color:var(--accent-2);color:#fff}
+.theme-switch{appearance:none;border:0;background:transparent;padding:0;cursor:pointer;flex-shrink:0;display:inline-flex;align-items:center}
+.theme-switch .ts-track{position:relative;display:inline-flex;align-items:center;width:52px;height:28px;border-radius:999px;background:var(--bg-sunk);border:1px solid var(--line-strong);transition:background .25s ease,border-color .25s ease}
+.theme-switch .ts-track .ts-icon{position:absolute;top:50%;transform:translateY(-50%);width:14px;height:14px;display:inline-flex;align-items:center;justify-content:center;color:var(--ink-faint);transition:color .25s ease,opacity .25s ease;z-index:1}
+.theme-switch .ts-sun{left:7px}
+.theme-switch .ts-moon{right:7px}
+.theme-switch .ts-knob{position:absolute;top:2px;left:2px;width:22px;height:22px;border-radius:50%;background:var(--bg-elev);box-shadow:0 1px 3px rgba(0,0,0,.25),inset 0 0 0 1px var(--line-strong);transition:transform .25s cubic-bezier(.5,.1,.2,1),background .25s ease}
+.theme-switch.on .ts-track{background:color-mix(in oklab,var(--accent-2) 22%,var(--bg-sunk));border-color:color-mix(in oklab,var(--accent-2) 45%,transparent)}
+.theme-switch.on .ts-knob{transform:translateX(24px);background:var(--accent-2)}
+.theme-switch.on .ts-sun{opacity:.4}
+.theme-switch.on .ts-moon{color:#fff}
+.theme-switch:not(.on) .ts-moon{opacity:.4}
+.theme-switch:not(.on) .ts-sun{color:var(--accent)}
 .tz-switch{padding:2px 10px;gap:6px;cursor:default}
 .tz-switch select{appearance:none;border:0;background:transparent;color:var(--ink);font:inherit;font-family:var(--font-mono);font-size:11px;cursor:pointer;padding:3px 0;outline:0}
 .tz-switch .tz-label{font-size:12px}
