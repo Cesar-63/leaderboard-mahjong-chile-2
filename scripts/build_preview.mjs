@@ -105,6 +105,13 @@ const shim = `(function () {
   }
 })();`;
 
+// Scripts inline del <head> (el arranque que fija data-dark antes de pintar).
+// Van antes del runtime para que el tema quede puesto igual que en producción.
+const headHtml = (html.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i) || [, ''])[1];
+const inlineHead = [...headHtml.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)]
+  .map((m) => m[1])
+  .join('\n;\n');
+
 // Scripts locales en orden: los .jsx se transpilan acá, así el bundle no
 // necesita Babel en el navegador.
 const scripts = [...html.matchAll(/<script\b([^>]*)\bsrc=["']([^"']+)["']([^>]*)><\/script>/gi)]
@@ -138,7 +145,7 @@ ${styles}
 </style>`;
 
 const body = `<div id="root"></div>
-<script>${safe(shim)}</script>
+<script>${safe(shim)}</script>${inlineHead ? `\n<script>${safe(inlineHead)}</script>` : ''}
 <script>${safe(runtime)}</script>
 <script>${safe(scripts)}</script>`;
 
