@@ -412,6 +412,7 @@ window.setTZ = function (tz) {
   window.dispatchEvent(new CustomEvent('tzchange'));
 };
 window.DARK = localStorage.getItem('mjc-dark') === '1';
+document.documentElement.setAttribute('data-dark', String(window.DARK));
 window.setDark = function (v) {
   window.DARK = !!v;
   localStorage.setItem('mjc-dark', window.DARK ? '1' : '0');
