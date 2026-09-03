@@ -156,6 +156,8 @@ window.I18N = {
     timezone: 'Zona horaria',
     tz_base: 'Sede',
     tz_base_hint: 'Zona base de la liga: los horarios oficiales se publican en esta hora',
+    dia_sig: 'Día siguiente',
+    dia_ant: 'Día anterior',
     partida_n: 'Partida de {n} jugadores',
     hora_local: 'Hora local',
     all_times: 'Todos los horarios',
@@ -310,6 +312,8 @@ window.I18N = {
     timezone: 'Time zone',
     tz_base: 'Home',
     tz_base_hint: 'League base zone: official times are published in this zone',
+    dia_sig: 'Next day',
+    dia_ant: 'Previous day',
     partida_n: 'Game of {n} players',
     hora_local: 'Local time',
     all_times: 'All times',
@@ -464,6 +468,8 @@ window.I18N = {
     timezone: 'Fuso horário',
     tz_base: 'Sede',
     tz_base_hint: 'Fuso base da liga: os horários oficiais saem neste fuso',
+    dia_sig: 'Dia seguinte',
+    dia_ant: 'Dia anterior',
     partida_n: 'Partida de {n} jogadores',
     hora_local: 'Hora local',
     all_times: 'Todos os horários',
@@ -483,6 +489,9 @@ window.TZ_OPTIONS = [
   { code: 'PE', nat: 'PE', flag: '🇵🇪', city: 'Lima', short: 'Lima', tz: 'America/Lima' },
   { code: 'BR', nat: 'BR', flag: '🇧🇷', city: 'São Paulo / Brasília', short: 'São Paulo', tz: 'America/Sao_Paulo' },
   { code: 'MX', nat: 'MX', flag: '🇲🇽', city: 'Ciudad de México', short: 'CDMX', tz: 'America/Mexico_City' },
+  // Japón no tiene jugadores en la liga: está por el mahjong (y porque las
+  // sesiones de noche en Chile caen al día siguiente en Tokio).
+  { code: 'JP', nat: 'JP', flag: '🇯🇵', city: 'Tokio', short: 'Tokio', tz: 'Asia/Tokyo' },
 ];
 
 // Zona base del torneo: los horarios de la liga se publican en esta hora.
@@ -499,7 +508,7 @@ window.tzNow = function (tz, at) {
 // País → zona horaria por defecto (para mostrar la hora local de cada participante).
 window.NAT_TZ = {
   CL: 'America/Santiago', UY: 'America/Montevideo', AR: 'America/Argentina/Buenos_Aires',
-  PE: 'America/Lima', BR: 'America/Sao_Paulo', MX: 'America/Mexico_City',
+  PE: 'America/Lima', BR: 'America/Sao_Paulo', MX: 'America/Mexico_City', JP: 'Asia/Tokyo',
 };
 
 // localStorage puede tirar excepción (modo privado, cookies bloqueadas); si
@@ -576,14 +585,21 @@ window.tr = function (key, vars) {
 };
 
 // Convierte una hora ("23 ago", "22:00") de la base (America/Santiago) a la
-// zona horaria destino y devuelve "22:00" (o "—" si no se puede).
-window.fmtTzTime = function (dateStr, timeStr, toTZ) {
+// zona horaria destino y devuelve { time: "22:00", shift: 0 }.
+//
+// `shift` es la diferencia de día calendario contra la base: +1 si allá ya es
+// el día siguiente, −1 si todavía es el anterior. Con las zonas americanas
+// siempre daba 0, pero las sesiones son de noche en Chile (19:00–22:00) y en
+// Tokio eso cae a la mañana del día siguiente: mostrar "07:00" pelado mandaría
+// a un espectador japonés al día equivocado.
+window.fmtTzParts = function (dateStr, timeStr, toTZ) {
   const MONTHS = { ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5, jul: 6, ago: 7, sep: 8, oct: 9, nov: 10, dic: 11 };
   const parts = String(dateStr || '').split(' ');
   const day = parseInt(parts[0], 10), mon = MONTHS[parts[1]];
   const tm = String(timeStr || '').split(':');
   const h = parseInt(tm[0], 10), mi = parseInt(tm[1], 10);
-  if (isNaN(day) || mon === undefined || isNaN(h)) return timeStr || 'Por definir';
+  const fallback = { time: timeStr || 'Por definir', shift: 0 };
+  if (isNaN(day) || mon === undefined || isNaN(h)) return fallback;
   const year = new Date().getFullYear();
   const fromTZ = 'America/Santiago';
   // instante UTC cuya hora de pared en fromTZ es (day, mon, h:mi) — 2 pasos sufren
@@ -595,9 +611,15 @@ window.fmtTzTime = function (dateStr, timeStr, toTZ) {
     utc += (Date.UTC(year, mon, day, h, mi) - wall);
   }
   try {
-    const out = new Intl.DateTimeFormat('en-GB', { timeZone: toTZ || fromTZ, hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(utc));
-    return out;
+    const at = new Date(utc);
+    const tz = toTZ || fromTZ;
+    const time = new Intl.DateTimeFormat('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit', hour12: false }).format(at);
+    // 'en-CA' da YYYY-MM-DD, así que comparar como texto ordena bien incluso
+    // cruzando fin de año.
+    const dayIn = (z) => new Intl.DateTimeFormat('en-CA', { timeZone: z, year: 'numeric', month: '2-digit', day: '2-digit' }).format(at);
+    const base = dayIn(fromTZ), local = dayIn(tz);
+    return { time, shift: local === base ? 0 : (local > base ? 1 : -1) };
   } catch (e) {
-    return timeStr;
+    return fallback;
   }
 };

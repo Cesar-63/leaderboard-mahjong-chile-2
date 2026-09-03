@@ -137,6 +137,11 @@ select{font:inherit;color:inherit}
 .tz-opt.sel{background:color-mix(in oklab,var(--accent-2) 16%,transparent)}
 .tz-opt.sel .tz-now{color:var(--ink)}
 .tz-opt.sel .tz-n1::after{content:'✓';margin-left:6px;color:var(--accent-2);font-weight:700}
+
+/* Salto de día: la sesión es de noche en Chile, así que en Tokio cae al día
+   siguiente. Va como marca aparte para no leerse como parte del reloj. */
+.tz-shift{font-family:var(--font-mono);font-size:.62em;font-weight:700;line-height:1;top:-.45em;margin-left:2px;padding:1px 3px;border-radius:3px;color:var(--accent-2);background:color-mix(in oklab,var(--accent-2) 16%,transparent);vertical-align:super}
+.cal-modal .cm-tz b .tz-shift{color:var(--accent-2)}
 /* modal de partida del calendario */
 .cal-modal-backdrop{position:fixed;top:0;left:0;right:0;bottom:0;z-index:60;background:rgba(0,0,0,.45);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:24px;overflow:auto}
 .cal-modal{width:min(560px,94vw);max-height:84vh;margin:auto;overflow:auto;background:var(--bg);border:1px solid var(--line-strong);border-radius:16px;padding:16px 18px;box-shadow:0 24px 60px rgba(0,0,0,.35);animation:rowin .22s ease both}
