@@ -6410,6 +6410,95 @@
       "key": "B",
       "players": [
         {
+          "id": "B20",
+          "div": "B",
+          "num": "20",
+          "name": "Sircrab",
+          "shortName": "Sircrab",
+          "handle": "Sircrab",
+          "accountId": 115294059,
+          "discord": "sircrab",
+          "nat": "CL",
+          "games": 10,
+          "points": 314.1,
+          "history": [
+            -13.6,
+            43.5,
+            101.9,
+            101.9,
+            65.4,
+            7.5,
+            -45.6,
+            61.8,
+            -13.8,
+            5.1
+          ],
+          "cum": [
+            -13.6,
+            29.9,
+            131.8,
+            233.7,
+            299.1,
+            306.6,
+            261.0,
+            322.8,
+            309.0,
+            314.1
+          ],
+          "counts": [
+            5,
+            2,
+            2,
+            1
+          ],
+          "absences": 0,
+          "hands": 35,
+          "wins": 10,
+          "dealIns": 4,
+          "riichis": 6,
+          "openHands": 17,
+          "placements": {
+            "p1": 0.5,
+            "p2": 0.2,
+            "p3": 0.2,
+            "p4": 0.1
+          },
+          "avgRank": 1.9,
+          "avgPoints": 31.4,
+          "streak": 7.5,
+          "winRate": 28.6,
+          "dealInRate": 11.4,
+          "riichiRate": 17.1,
+          "openRate": 48.6,
+          "topYaku": [
+            {
+              "name": "Tanyao",
+              "count": 3
+            },
+            {
+              "name": "Pinfu",
+              "count": 2
+            },
+            {
+              "name": "Ittsu",
+              "count": 1
+            },
+            {
+              "name": "Yakuhai Chun",
+              "count": 1
+            },
+            {
+              "name": "Riichi",
+              "count": 1
+            }
+          ],
+          "statsSample": 35,
+          "statsReliable": true,
+          "arch": "con datos",
+          "rank": 1,
+          "zone": "promotion"
+        },
+        {
           "id": "B04",
           "div": "B",
           "num": "04",
@@ -6493,87 +6582,6 @@
             }
           ],
           "statsSample": 24,
-          "statsReliable": true,
-          "arch": "con datos",
-          "rank": 1,
-          "zone": "promotion"
-        },
-        {
-          "id": "B20",
-          "div": "B",
-          "num": "20",
-          "name": "Sircrab",
-          "shortName": "Sircrab",
-          "handle": "Sircrab",
-          "accountId": 115294059,
-          "discord": "sircrab",
-          "nat": "CL",
-          "games": 10,
-          "points": 199.2,
-          "history": [
-            -13.6,
-            43.5,
-            -13.0,
-            101.9,
-            65.4,
-            7.5,
-            -45.6,
-            61.8,
-            -13.8,
-            5.1
-          ],
-          "cum": [
-            -13.6,
-            29.9,
-            16.9,
-            118.8,
-            184.2,
-            191.7,
-            146.1,
-            207.9,
-            194.1,
-            199.2
-          ],
-          "counts": [
-            4,
-            2,
-            3,
-            1
-          ],
-          "absences": 0,
-          "hands": 21,
-          "wins": 5,
-          "dealIns": 3,
-          "riichis": 4,
-          "openHands": 11,
-          "placements": {
-            "p1": 0.4,
-            "p2": 0.2,
-            "p3": 0.3,
-            "p4": 0.1
-          },
-          "avgRank": 2.1,
-          "avgPoints": 19.9,
-          "streak": 7.5,
-          "winRate": 23.8,
-          "dealInRate": 14.3,
-          "riichiRate": 19.0,
-          "openRate": 52.4,
-          "topYaku": [
-            {
-              "name": "Tanyao",
-              "count": 3
-            },
-            {
-              "name": "Ittsu",
-              "count": 1
-            },
-            {
-              "name": "Yakuhai Chun",
-              "count": 1
-            }
-          ],
-          "statsSample": 21,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 2,
@@ -6679,12 +6687,12 @@
           "discord": "24makako",
           "nat": "CL",
           "games": 8,
-          "points": 136.7,
+          "points": 135.7,
           "history": [
             38.7,
             6.9,
-            45.6,
             -66.9,
+            44.6,
             59.5,
             13.9,
             75.6,
@@ -6693,12 +6701,12 @@
           "cum": [
             38.7,
             45.6,
-            91.2,
-            24.3,
-            83.8,
-            97.7,
-            173.3,
-            136.7
+            -21.3,
+            23.3,
+            82.8,
+            96.7,
+            172.3,
+            135.7
           ],
           "counts": [
             4,
@@ -6707,11 +6715,11 @@
             1
           ],
           "absences": 0,
-          "hands": 21,
-          "wins": 7,
-          "dealIns": 2,
-          "riichis": 3,
-          "openHands": 11,
+          "hands": 50,
+          "wins": 10,
+          "dealIns": 6,
+          "riichis": 11,
+          "openHands": 17,
           "placements": {
             "p1": 0.5,
             "p2": 0.25,
@@ -6719,23 +6727,23 @@
             "p4": 0.12
           },
           "avgRank": 1.88,
-          "avgPoints": 17.1,
+          "avgPoints": 17.0,
           "streak": 112.4,
-          "winRate": 33.3,
-          "dealInRate": 9.5,
-          "riichiRate": 14.3,
-          "openRate": 52.4,
+          "winRate": 20.0,
+          "dealInRate": 12.0,
+          "riichiRate": 22.0,
+          "openRate": 34.0,
           "topYaku": [
             {
               "name": "Yakuhai Chun",
+              "count": 5
+            },
+            {
+              "name": "Riichi",
               "count": 4
             },
             {
               "name": "Tanyao",
-              "count": 2
-            },
-            {
-              "name": "Riichi",
               "count": 2
             },
             {
@@ -6747,7 +6755,7 @@
               "count": 1
             }
           ],
-          "statsSample": 21,
+          "statsSample": 50,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 4,
@@ -7031,8 +7039,8 @@
           "history": [
             -1.7,
             -11.8,
-            12.5,
             110.1,
+            12.5,
             12.1,
             8.2,
             9.9,
@@ -7041,7 +7049,7 @@
           "cum": [
             -1.7,
             -13.5,
-            -1.0,
+            96.6,
             109.1,
             121.2,
             129.4,
@@ -7055,11 +7063,11 @@
             1
           ],
           "absences": 0,
-          "hands": 23,
-          "wins": 5,
-          "dealIns": 4,
-          "riichis": 3,
-          "openHands": 8,
+          "hands": 52,
+          "wins": 17,
+          "dealIns": 5,
+          "riichis": 11,
+          "openHands": 16,
           "placements": {
             "p1": 0.12,
             "p2": 0.62,
@@ -7069,33 +7077,33 @@
           "avgRank": 2.25,
           "avgPoints": 10.7,
           "streak": -23.8,
-          "winRate": 21.7,
-          "dealInRate": 17.4,
-          "riichiRate": 13.0,
-          "openRate": 34.8,
+          "winRate": 32.7,
+          "dealInRate": 9.6,
+          "riichiRate": 21.2,
+          "openRate": 30.8,
           "topYaku": [
             {
-              "name": "Yakuhai Haku",
-              "count": 1
+              "name": "Riichi",
+              "count": 9
             },
             {
-              "name": "Ittsu",
-              "count": 1
-            },
-            {
-              "name": "Yakuhai Bakaze",
-              "count": 1
+              "name": "Menzen Tsumo",
+              "count": 5
             },
             {
               "name": "Tanyao",
-              "count": 1
+              "count": 4
             },
             {
-              "name": "Riichi",
-              "count": 1
+              "name": "Yakuhai Bakaze",
+              "count": 3
+            },
+            {
+              "name": "Iipeiko",
+              "count": 3
             }
           ],
-          "statsSample": 23,
+          "statsSample": 52,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 8,
@@ -7201,8 +7209,8 @@
           "history": [
             -16.5,
             -17.4,
-            -9.8,
             -37.4,
+            -9.8,
             17.6,
             -12.6,
             4.0,
@@ -7213,7 +7221,7 @@
           "cum": [
             -16.5,
             -33.9,
-            -43.7,
+            -71.3,
             -81.1,
             -63.5,
             -76.1,
@@ -7229,11 +7237,11 @@
             0
           ],
           "absences": 0,
-          "hands": 23,
-          "wins": 3,
-          "dealIns": 2,
-          "riichis": 3,
-          "openHands": 9,
+          "hands": 52,
+          "wins": 6,
+          "dealIns": 3,
+          "riichis": 7,
+          "openHands": 16,
           "placements": {
             "p1": 0.1,
             "p2": 0.4,
@@ -7243,18 +7251,18 @@
           "avgRank": 2.4,
           "avgPoints": 2.6,
           "streak": 101.8,
-          "winRate": 13.0,
-          "dealInRate": 8.7,
-          "riichiRate": 13.0,
-          "openRate": 39.1,
+          "winRate": 11.5,
+          "dealInRate": 5.8,
+          "riichiRate": 13.5,
+          "openRate": 30.8,
           "topYaku": [
             {
-              "name": "Menzen Tsumo",
-              "count": 2
+              "name": "Riichi",
+              "count": 4
             },
             {
-              "name": "Riichi",
-              "count": 2
+              "name": "Menzen Tsumo",
+              "count": 3
             },
             {
               "name": "Yakuhai Chun",
@@ -7269,7 +7277,7 @@
               "count": 1
             }
           ],
-          "statsSample": 23,
+          "statsSample": 52,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 10,
@@ -7371,11 +7379,11 @@
           "discord": "falsotux",
           "nat": "UY",
           "games": 10,
-          "points": 18.3,
+          "points": -5.7,
           "history": [
             -21.1,
             42.2,
-            53.2,
+            29.2,
             29.2,
             -40.6,
             -20.0,
@@ -7387,55 +7395,63 @@
           "cum": [
             -21.1,
             21.1,
-            74.3,
-            103.5,
-            62.9,
-            42.9,
-            4.6,
-            -8.1,
-            11.4,
-            18.3
+            50.3,
+            79.5,
+            38.9,
+            18.9,
+            -19.4,
+            -32.1,
+            -12.6,
+            -5.7
           ],
           "counts": [
-            2,
-            3,
+            1,
+            4,
             3,
             2
           ],
           "absences": 0,
-          "hands": 23,
-          "wins": 3,
-          "dealIns": 2,
-          "riichis": 3,
-          "openHands": 6,
+          "hands": 37,
+          "wins": 9,
+          "dealIns": 4,
+          "riichis": 9,
+          "openHands": 7,
           "placements": {
-            "p1": 0.2,
-            "p2": 0.3,
+            "p1": 0.1,
+            "p2": 0.4,
             "p3": 0.3,
             "p4": 0.2
           },
-          "avgRank": 2.5,
-          "avgPoints": 1.8,
+          "avgRank": 2.6,
+          "avgPoints": -0.6,
           "streak": -24.6,
-          "winRate": 13.0,
-          "dealInRate": 8.7,
-          "riichiRate": 13.0,
-          "openRate": 26.1,
+          "winRate": 24.3,
+          "dealInRate": 10.8,
+          "riichiRate": 24.3,
+          "openRate": 18.9,
           "topYaku": [
             {
               "name": "Riichi",
+              "count": 7
+            },
+            {
+              "name": "Menzen Tsumo",
+              "count": 4
+            },
+            {
+              "name": "Pinfu",
+              "count": 2
+            },
+            {
+              "name": "Tanyao",
               "count": 2
             },
             {
               "name": "Yakuhai Haku",
               "count": 1
-            },
-            {
-              "name": "Pinfu",
-              "count": 1
             }
           ],
-          "statsSample": 23,
+          "statsSample": 37,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 12,
@@ -7715,8 +7731,8 @@
           "history": [
             -41.7,
             61.9,
-            -48.3,
             -5.8,
+            -48.3,
             -49.8,
             -0.9,
             28.8,
@@ -7727,7 +7743,7 @@
           "cum": [
             -41.7,
             20.2,
-            -28.1,
+            14.4,
             -33.9,
             -83.7,
             -84.6,
@@ -7743,11 +7759,11 @@
             3
           ],
           "absences": 0,
-          "hands": 22,
-          "wins": 5,
-          "dealIns": 3,
-          "riichis": 3,
-          "openHands": 15,
+          "hands": 51,
+          "wins": 11,
+          "dealIns": 9,
+          "riichis": 8,
+          "openHands": 33,
           "placements": {
             "p1": 0.2,
             "p2": 0.3,
@@ -7757,33 +7773,33 @@
           "avgRank": 2.6,
           "avgPoints": -4.3,
           "streak": 41.4,
-          "winRate": 22.7,
-          "dealInRate": 13.6,
-          "riichiRate": 13.6,
-          "openRate": 68.2,
+          "winRate": 21.6,
+          "dealInRate": 17.6,
+          "riichiRate": 15.7,
+          "openRate": 64.7,
           "topYaku": [
             {
               "name": "Tanyao",
-              "count": 2
-            },
-            {
-              "name": "Yakuhai Bakaze",
-              "count": 1
-            },
-            {
-              "name": "Menzen Tsumo",
-              "count": 1
+              "count": 5
             },
             {
               "name": "Riichi",
-              "count": 1
+              "count": 4
+            },
+            {
+              "name": "Yakuhai Bakaze",
+              "count": 2
+            },
+            {
+              "name": "Menzen Tsumo",
+              "count": 2
             },
             {
               "name": "Toitoi",
               "count": 1
             }
           ],
-          "statsSample": 22,
+          "statsSample": 51,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 16,
@@ -7974,11 +7990,11 @@
           "discord": "biscocrow",
           "nat": "UY",
           "games": 8,
-          "points": -103.6,
+          "points": -101.4,
           "history": [
             -15.6,
             -12.4,
-            -49.1,
+            -46.9,
             -46.9,
             0.1,
             9.4,
@@ -7988,41 +8004,45 @@
           "cum": [
             -15.6,
             -28.0,
-            -77.1,
-            -124.0,
-            -123.9,
-            -114.5,
-            -113.3,
-            -103.6
+            -74.9,
+            -121.8,
+            -121.7,
+            -112.3,
+            -111.1,
+            -101.4
           ],
           "counts": [
             0,
             4,
-            3,
-            1
+            4,
+            0
           ],
           "absences": 0,
-          "hands": 24,
-          "wins": 5,
-          "dealIns": 4,
+          "hands": 38,
+          "wins": 7,
+          "dealIns": 7,
           "riichis": 0,
-          "openHands": 16,
+          "openHands": 26,
           "placements": {
             "p1": 0.0,
             "p2": 0.5,
-            "p3": 0.38,
-            "p4": 0.12
+            "p3": 0.5,
+            "p4": 0.0
           },
-          "avgRank": 2.62,
-          "avgPoints": -12.9,
+          "avgRank": 2.5,
+          "avgPoints": -12.7,
           "streak": 20.4,
-          "winRate": 20.8,
-          "dealInRate": 16.7,
+          "winRate": 18.4,
+          "dealInRate": 18.4,
           "riichiRate": 0.0,
-          "openRate": 66.7,
+          "openRate": 68.4,
           "topYaku": [
             {
               "name": "Tanyao",
+              "count": 3
+            },
+            {
+              "name": "Yakuhai Hatsu",
               "count": 2
             },
             {
@@ -8036,13 +8056,9 @@
             {
               "name": "Yakuhai Jikaze",
               "count": 1
-            },
-            {
-              "name": "Yakuhai Hatsu",
-              "count": 1
             }
           ],
-          "statsSample": 24,
+          "statsSample": 38,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 19,
@@ -8288,91 +8304,6 @@
           "zone": "bottom"
         },
         {
-          "id": "B09",
-          "div": "B",
-          "num": "09",
-          "name": "helinder",
-          "shortName": "helinder",
-          "handle": "helinder",
-          "accountId": 104752227,
-          "discord": "helinder",
-          "nat": "UY",
-          "games": 8,
-          "points": -188.3,
-          "history": [
-            18.4,
-            -43.1,
-            8.9,
-            -84.2,
-            63.0,
-            -15.9,
-            -77.9,
-            -57.5
-          ],
-          "cum": [
-            18.4,
-            -24.7,
-            -15.8,
-            -100.0,
-            -37.0,
-            -52.9,
-            -130.8,
-            -188.3
-          ],
-          "counts": [
-            1,
-            2,
-            1,
-            4
-          ],
-          "absences": 0,
-          "hands": 18,
-          "wins": 4,
-          "dealIns": 1,
-          "riichis": 1,
-          "openHands": 12,
-          "placements": {
-            "p1": 0.12,
-            "p2": 0.25,
-            "p3": 0.12,
-            "p4": 0.5
-          },
-          "avgRank": 3.0,
-          "avgPoints": -23.5,
-          "streak": -88.3,
-          "winRate": 22.2,
-          "dealInRate": 5.6,
-          "riichiRate": 5.6,
-          "openRate": 66.7,
-          "topYaku": [
-            {
-              "name": "Chanta",
-              "count": 1
-            },
-            {
-              "name": "Yakuhai Haku",
-              "count": 1
-            },
-            {
-              "name": "Sanshoku Doujun",
-              "count": 1
-            },
-            {
-              "name": "Pinfu",
-              "count": 1
-            },
-            {
-              "name": "Tanyao",
-              "count": 1
-            }
-          ],
-          "statsSample": 18,
-          "statsReliable": true,
-          "arch": "con datos",
-          "rank": 23,
-          "zone": "bottom"
-        },
-        {
           "id": "B19",
           "div": "B",
           "num": "19",
@@ -8452,6 +8383,91 @@
             }
           ],
           "statsSample": 18,
+          "statsReliable": true,
+          "arch": "con datos",
+          "rank": 23,
+          "zone": "bottom"
+        },
+        {
+          "id": "B09",
+          "div": "B",
+          "num": "09",
+          "name": "helinder",
+          "shortName": "helinder",
+          "handle": "helinder",
+          "accountId": 104752227,
+          "discord": "helinder",
+          "nat": "UY",
+          "games": 8,
+          "points": -281.4,
+          "history": [
+            18.4,
+            -43.1,
+            -84.2,
+            -84.2,
+            63.0,
+            -15.9,
+            -77.9,
+            -57.5
+          ],
+          "cum": [
+            18.4,
+            -24.7,
+            -108.9,
+            -193.1,
+            -130.1,
+            -146.0,
+            -223.9,
+            -281.4
+          ],
+          "counts": [
+            1,
+            1,
+            1,
+            5
+          ],
+          "absences": 0,
+          "hands": 32,
+          "wins": 5,
+          "dealIns": 3,
+          "riichis": 3,
+          "openHands": 21,
+          "placements": {
+            "p1": 0.12,
+            "p2": 0.12,
+            "p3": 0.12,
+            "p4": 0.62
+          },
+          "avgRank": 3.25,
+          "avgPoints": -35.2,
+          "streak": -88.3,
+          "winRate": 15.6,
+          "dealInRate": 9.4,
+          "riichiRate": 9.4,
+          "openRate": 65.6,
+          "topYaku": [
+            {
+              "name": "Chanta",
+              "count": 2
+            },
+            {
+              "name": "Yakuhai Haku",
+              "count": 2
+            },
+            {
+              "name": "Sanshoku Doujun",
+              "count": 1
+            },
+            {
+              "name": "Pinfu",
+              "count": 1
+            },
+            {
+              "name": "Tanyao",
+              "count": 1
+            }
+          ],
+          "statsSample": 32,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 24,
@@ -9191,66 +9207,6 @@
           "table": 1,
           "players": [
             {
-              "id": "B22",
-              "name": "24Kakoo",
-              "handle": "24Kakoo",
-              "nat": "CL",
-              "scoreRaw": 40600,
-              "place": 1,
-              "delta": 45.6,
-              "sustitutoDe": null,
-              "esSuplente": false
-            },
-            {
-              "id": "B01",
-              "name": "Misiwasy2",
-              "handle": "Misiwasy2",
-              "nat": "PE",
-              "scoreRaw": 37500,
-              "place": 2,
-              "delta": 12.5,
-              "sustitutoDe": null,
-              "esSuplente": false
-            },
-            {
-              "id": "B03",
-              "name": "HOSHIGAMI",
-              "handle": "HOSHIGAMI",
-              "nat": "CL",
-              "scoreRaw": 30200,
-              "place": 3,
-              "delta": -9.8,
-              "sustitutoDe": null,
-              "esSuplente": false
-            },
-            {
-              "id": "B12",
-              "name": "Onishadow",
-              "handle": "Onishadow",
-              "nat": "UY",
-              "scoreRaw": 11700,
-              "place": 4,
-              "delta": -48.3,
-              "sustitutoDe": null,
-              "esSuplente": false
-            }
-          ],
-          "paipuUrl": "Mahjong Soul Game Log:https://mahjongsoul.game.yo-star.com/?paipu=260721-c0cdeda8-4027-45bf-9e70-a65c5f84efa8_a823579330",
-          "verified": false,
-          "source": "excel"
-        },
-        {
-          "id": "B-S2-M1-G2",
-          "code": "B-S2-M1-G2",
-          "div": "B",
-          "session": 2,
-          "sessionCode": "S2",
-          "hanchan": 2,
-          "date": "20 jul",
-          "weekday": "lun",
-          "table": 1,
-          "players": [
-            {
               "id": "B01",
               "name": "Misiwasy2",
               "handle": "Misiwasy2",
@@ -9295,9 +9251,69 @@
               "esSuplente": false
             }
           ],
+          "paipuUrl": "Mahjong Soul Game Log:https://mahjongsoul.game.yo-star.com/?paipu=260721-c0cdeda8-4027-45bf-9e70-a65c5f84efa8_a823579330",
+          "verified": true,
+          "source": "paipu"
+        },
+        {
+          "id": "B-S2-M1-G2",
+          "code": "B-S2-M1-G2",
+          "div": "B",
+          "session": 2,
+          "sessionCode": "S2",
+          "hanchan": 2,
+          "date": "20 jul",
+          "weekday": "lun",
+          "table": 1,
+          "players": [
+            {
+              "id": "B22",
+              "name": "24Kakoo",
+              "handle": "24Kakoo",
+              "nat": "CL",
+              "scoreRaw": 39600,
+              "place": 1,
+              "delta": 44.6,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "B01",
+              "name": "Misiwasy2",
+              "handle": "Misiwasy2",
+              "nat": "PE",
+              "scoreRaw": 37500,
+              "place": 2,
+              "delta": 12.5,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "B03",
+              "name": "HOSHIGAMI",
+              "handle": "HOSHIGAMI",
+              "nat": "CL",
+              "scoreRaw": 30200,
+              "place": 3,
+              "delta": -9.8,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "B12",
+              "name": "Onishadow",
+              "handle": "Onishadow",
+              "nat": "UY",
+              "scoreRaw": 11700,
+              "place": 4,
+              "delta": -48.3,
+              "sustitutoDe": null,
+              "esSuplente": false
+            }
+          ],
           "paipuUrl": "Mahjong Soul Game Log:https://mahjongsoul.game.yo-star.com/?paipu=260721-d46843c8-94a5-4efe-ab39-cb0520ddb2a7_a823579330",
-          "verified": false,
-          "source": "excel"
+          "verified": true,
+          "source": "paipu"
         },
         {
           "id": "B-S2-M2-G1",
@@ -9311,35 +9327,24 @@
           "table": 2,
           "players": [
             {
-              "id": "B11",
-              "name": "False_tux",
-              "handle": "False_tux",
-              "nat": "UY",
-              "scoreRaw": 48200,
-              "place": 1,
-              "delta": 53.2,
-              "sustitutoDe": null,
-              "esSuplente": false
-            },
-            {
-              "id": "B09",
-              "name": "helinder",
-              "handle": "helinder",
-              "nat": "UY",
-              "scoreRaw": 33900,
-              "place": 2,
-              "delta": 8.9,
-              "sustitutoDe": null,
-              "esSuplente": false
-            },
-            {
               "id": "B20",
               "name": "Sircrab",
               "handle": "Sircrab",
               "nat": "CL",
-              "scoreRaw": 27000,
-              "place": 3,
-              "delta": -13.0,
+              "scoreRaw": 96900,
+              "place": 1,
+              "delta": 101.9,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "B11",
+              "name": "False_tux",
+              "handle": "False_tux",
+              "nat": "UY",
+              "scoreRaw": 54200,
+              "place": 2,
+              "delta": 29.2,
               "sustitutoDe": null,
               "esSuplente": false
             },
@@ -9348,16 +9353,27 @@
               "name": "Cuervo_Gris",
               "handle": "Cuervo_Gris",
               "nat": "UY",
-              "scoreRaw": 10900,
+              "scoreRaw": -6900,
+              "place": 3,
+              "delta": -46.9,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "B09",
+              "name": "helinder",
+              "handle": "helinder",
+              "nat": "UY",
+              "scoreRaw": -24200,
               "place": 4,
-              "delta": -49.1,
+              "delta": -84.2,
               "sustitutoDe": null,
               "esSuplente": false
             }
           ],
           "paipuUrl": "Mahjong Soul Game Log:https://mahjongsoul.game.yo-star.com/?paipu=260723-d85e2435-2a47-48a0-ad7e-a5a9ee629930_a823579330",
-          "verified": false,
-          "source": "excel"
+          "verified": true,
+          "source": "paipu"
         },
         {
           "id": "B-S2-M2-G2",
@@ -11768,92 +11784,92 @@
       "hallOfFame": [
         {
           "tag": "Líder División",
-          "value": "+224.9",
+          "value": "+314.1",
           "sub": "puntos uma",
           "player": {
-            "id": "B04",
+            "id": "B20",
             "div": "B",
-            "num": "04",
-            "name": "cidoku",
-            "shortName": "cidoku",
-            "handle": "cidoku",
-            "accountId": 79312106,
-            "discord": "timetravel_z",
+            "num": "20",
+            "name": "Sircrab",
+            "shortName": "Sircrab",
+            "handle": "Sircrab",
+            "accountId": 115294059,
+            "discord": "sircrab",
             "nat": "CL",
             "games": 10,
-            "points": 224.9,
+            "points": 314.1,
             "history": [
-              52.6,
-              4.5,
-              52.9,
-              4.7,
-              -3.9,
-              59.5,
-              -15.8,
-              18.6,
-              0.9,
-              50.9
+              -13.6,
+              43.5,
+              101.9,
+              101.9,
+              65.4,
+              7.5,
+              -45.6,
+              61.8,
+              -13.8,
+              5.1
             ],
             "cum": [
-              52.6,
-              57.1,
-              110.0,
-              114.7,
-              110.8,
-              170.3,
-              154.5,
-              173.1,
-              174.0,
-              224.9
+              -13.6,
+              29.9,
+              131.8,
+              233.7,
+              299.1,
+              306.6,
+              261.0,
+              322.8,
+              309.0,
+              314.1
             ],
             "counts": [
-              4,
-              4,
+              5,
               2,
-              0
+              2,
+              1
             ],
             "absences": 0,
-            "hands": 24,
-            "wins": 7,
-            "dealIns": 3,
-            "riichis": 5,
-            "openHands": 11,
+            "hands": 35,
+            "wins": 10,
+            "dealIns": 4,
+            "riichis": 6,
+            "openHands": 17,
             "placements": {
-              "p1": 0.4,
-              "p2": 0.4,
+              "p1": 0.5,
+              "p2": 0.2,
               "p3": 0.2,
-              "p4": 0.0
+              "p4": 0.1
             },
-            "avgRank": 1.8,
-            "avgPoints": 22.5,
-            "streak": 54.6,
-            "winRate": 29.2,
-            "dealInRate": 12.5,
-            "riichiRate": 20.8,
-            "openRate": 45.8,
+            "avgRank": 1.9,
+            "avgPoints": 31.4,
+            "streak": 7.5,
+            "winRate": 28.6,
+            "dealInRate": 11.4,
+            "riichiRate": 17.1,
+            "openRate": 48.6,
             "topYaku": [
               {
                 "name": "Tanyao",
                 "count": 3
               },
               {
-                "name": "Riichi",
-                "count": 3
-              },
-              {
-                "name": "Ippatsu",
+                "name": "Pinfu",
                 "count": 2
-              },
-              {
-                "name": "Menzen Tsumo",
-                "count": 1
               },
               {
                 "name": "Ittsu",
                 "count": 1
+              },
+              {
+                "name": "Yakuhai Chun",
+                "count": 1
+              },
+              {
+                "name": "Riichi",
+                "count": 1
               }
             ],
-            "statsSample": 24,
+            "statsSample": 35,
             "statsReliable": true,
             "arch": "con datos",
             "rank": 1,
@@ -11958,68 +11974,80 @@
         },
         {
           "tag": "Muro de Hierro",
-          "value": "5.6%",
+          "value": "5.8%",
           "sub": "deal-in más bajo",
           "player": {
-            "id": "B09",
+            "id": "B03",
             "div": "B",
-            "num": "09",
-            "name": "helinder",
-            "shortName": "helinder",
-            "handle": "helinder",
-            "accountId": 104752227,
-            "discord": "helinder",
-            "nat": "UY",
-            "games": 8,
-            "points": -188.3,
+            "num": "03",
+            "name": "HOSHIGAMI",
+            "shortName": "HOSHIGAMI",
+            "handle": "HOSHIGAMI",
+            "accountId": 138507877,
+            "discord": "pencilhy",
+            "nat": "CL",
+            "games": 10,
+            "points": 25.7,
             "history": [
-              18.4,
-              -43.1,
-              8.9,
-              -84.2,
-              63.0,
-              -15.9,
-              -77.9,
-              -57.5
+              -16.5,
+              -17.4,
+              -37.4,
+              -9.8,
+              17.6,
+              -12.6,
+              4.0,
+              25.7,
+              58.2,
+              13.9
             ],
             "cum": [
-              18.4,
-              -24.7,
-              -15.8,
-              -100.0,
-              -37.0,
-              -52.9,
-              -130.8,
-              -188.3
+              -16.5,
+              -33.9,
+              -71.3,
+              -81.1,
+              -63.5,
+              -76.1,
+              -72.1,
+              -46.4,
+              11.8,
+              25.7
             ],
             "counts": [
               1,
-              2,
-              1,
-              4
+              4,
+              5,
+              0
             ],
             "absences": 0,
-            "hands": 18,
-            "wins": 4,
-            "dealIns": 1,
-            "riichis": 1,
-            "openHands": 12,
+            "hands": 52,
+            "wins": 6,
+            "dealIns": 3,
+            "riichis": 7,
+            "openHands": 16,
             "placements": {
-              "p1": 0.12,
-              "p2": 0.25,
-              "p3": 0.12,
-              "p4": 0.5
+              "p1": 0.1,
+              "p2": 0.4,
+              "p3": 0.5,
+              "p4": 0.0
             },
-            "avgRank": 3.0,
-            "avgPoints": -23.5,
-            "streak": -88.3,
-            "winRate": 22.2,
-            "dealInRate": 5.6,
-            "riichiRate": 5.6,
-            "openRate": 66.7,
+            "avgRank": 2.4,
+            "avgPoints": 2.6,
+            "streak": 101.8,
+            "winRate": 11.5,
+            "dealInRate": 5.8,
+            "riichiRate": 13.5,
+            "openRate": 30.8,
             "topYaku": [
               {
-                "name": "Chanta",
+                "name": "Riichi",
+                "count": 4
+              },
+              {
+                "name": "Menzen Tsumo",
+                "count": 3
+              },
+              {
+                "name": "Yakuhai Chun",
                 "count": 1
               },
               {
@@ -12027,23 +12055,15 @@
                 "count": 1
               },
               {
-                "name": "Sanshoku Doujun",
-                "count": 1
-              },
-              {
-                "name": "Pinfu",
-                "count": 1
-              },
-              {
-                "name": "Tanyao",
+                "name": "Chiitoitsu",
                 "count": 1
               }
             ],
-            "statsSample": 18,
+            "statsSample": 52,
             "statsReliable": true,
             "arch": "con datos",
-            "rank": 23,
-            "zone": "bottom"
+            "rank": 10,
+            "zone": null
           },
           "jp": "放銃"
         },
@@ -12228,7 +12248,7 @@
             "statsSample": 24,
             "statsReliable": true,
             "arch": "con datos",
-            "rank": 1,
+            "rank": 2,
             "zone": "promotion"
           },
           "jp": "平均順位"
@@ -14489,6 +14509,95 @@
       "iormc": "out"
     },
     {
+      "id": "B20",
+      "div": "B",
+      "num": "20",
+      "name": "Sircrab",
+      "shortName": "Sircrab",
+      "handle": "Sircrab",
+      "accountId": 115294059,
+      "discord": "sircrab",
+      "nat": "CL",
+      "games": 10,
+      "points": 314.1,
+      "history": [
+        -13.6,
+        43.5,
+        101.9,
+        101.9,
+        65.4,
+        7.5,
+        -45.6,
+        61.8,
+        -13.8,
+        5.1
+      ],
+      "cum": [
+        -13.6,
+        29.9,
+        131.8,
+        233.7,
+        299.1,
+        306.6,
+        261.0,
+        322.8,
+        309.0,
+        314.1
+      ],
+      "counts": [
+        5,
+        2,
+        2,
+        1
+      ],
+      "absences": 0,
+      "hands": 35,
+      "wins": 10,
+      "dealIns": 4,
+      "riichis": 6,
+      "openHands": 17,
+      "placements": {
+        "p1": 0.5,
+        "p2": 0.2,
+        "p3": 0.2,
+        "p4": 0.1
+      },
+      "avgRank": 1.9,
+      "avgPoints": 31.4,
+      "streak": 7.5,
+      "winRate": 28.6,
+      "dealInRate": 11.4,
+      "riichiRate": 17.1,
+      "openRate": 48.6,
+      "topYaku": [
+        {
+          "name": "Tanyao",
+          "count": 3
+        },
+        {
+          "name": "Pinfu",
+          "count": 2
+        },
+        {
+          "name": "Ittsu",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Chun",
+          "count": 1
+        },
+        {
+          "name": "Riichi",
+          "count": 1
+        }
+      ],
+      "statsSample": 35,
+      "statsReliable": true,
+      "arch": "con datos",
+      "rank": 1,
+      "zone": "promotion"
+    },
+    {
       "id": "B04",
       "div": "B",
       "num": "04",
@@ -14572,87 +14681,6 @@
         }
       ],
       "statsSample": 24,
-      "statsReliable": true,
-      "arch": "con datos",
-      "rank": 1,
-      "zone": "promotion"
-    },
-    {
-      "id": "B20",
-      "div": "B",
-      "num": "20",
-      "name": "Sircrab",
-      "shortName": "Sircrab",
-      "handle": "Sircrab",
-      "accountId": 115294059,
-      "discord": "sircrab",
-      "nat": "CL",
-      "games": 10,
-      "points": 199.2,
-      "history": [
-        -13.6,
-        43.5,
-        -13.0,
-        101.9,
-        65.4,
-        7.5,
-        -45.6,
-        61.8,
-        -13.8,
-        5.1
-      ],
-      "cum": [
-        -13.6,
-        29.9,
-        16.9,
-        118.8,
-        184.2,
-        191.7,
-        146.1,
-        207.9,
-        194.1,
-        199.2
-      ],
-      "counts": [
-        4,
-        2,
-        3,
-        1
-      ],
-      "absences": 0,
-      "hands": 21,
-      "wins": 5,
-      "dealIns": 3,
-      "riichis": 4,
-      "openHands": 11,
-      "placements": {
-        "p1": 0.4,
-        "p2": 0.2,
-        "p3": 0.3,
-        "p4": 0.1
-      },
-      "avgRank": 2.1,
-      "avgPoints": 19.9,
-      "streak": 7.5,
-      "winRate": 23.8,
-      "dealInRate": 14.3,
-      "riichiRate": 19.0,
-      "openRate": 52.4,
-      "topYaku": [
-        {
-          "name": "Tanyao",
-          "count": 3
-        },
-        {
-          "name": "Ittsu",
-          "count": 1
-        },
-        {
-          "name": "Yakuhai Chun",
-          "count": 1
-        }
-      ],
-      "statsSample": 21,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 2,
@@ -14758,12 +14786,12 @@
       "discord": "24makako",
       "nat": "CL",
       "games": 8,
-      "points": 136.7,
+      "points": 135.7,
       "history": [
         38.7,
         6.9,
-        45.6,
         -66.9,
+        44.6,
         59.5,
         13.9,
         75.6,
@@ -14772,12 +14800,12 @@
       "cum": [
         38.7,
         45.6,
-        91.2,
-        24.3,
-        83.8,
-        97.7,
-        173.3,
-        136.7
+        -21.3,
+        23.3,
+        82.8,
+        96.7,
+        172.3,
+        135.7
       ],
       "counts": [
         4,
@@ -14786,11 +14814,11 @@
         1
       ],
       "absences": 0,
-      "hands": 21,
-      "wins": 7,
-      "dealIns": 2,
-      "riichis": 3,
-      "openHands": 11,
+      "hands": 50,
+      "wins": 10,
+      "dealIns": 6,
+      "riichis": 11,
+      "openHands": 17,
       "placements": {
         "p1": 0.5,
         "p2": 0.25,
@@ -14798,23 +14826,23 @@
         "p4": 0.12
       },
       "avgRank": 1.88,
-      "avgPoints": 17.1,
+      "avgPoints": 17.0,
       "streak": 112.4,
-      "winRate": 33.3,
-      "dealInRate": 9.5,
-      "riichiRate": 14.3,
-      "openRate": 52.4,
+      "winRate": 20.0,
+      "dealInRate": 12.0,
+      "riichiRate": 22.0,
+      "openRate": 34.0,
       "topYaku": [
         {
           "name": "Yakuhai Chun",
+          "count": 5
+        },
+        {
+          "name": "Riichi",
           "count": 4
         },
         {
           "name": "Tanyao",
-          "count": 2
-        },
-        {
-          "name": "Riichi",
           "count": 2
         },
         {
@@ -14826,7 +14854,7 @@
           "count": 1
         }
       ],
-      "statsSample": 21,
+      "statsSample": 50,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 4,
@@ -15110,8 +15138,8 @@
       "history": [
         -1.7,
         -11.8,
-        12.5,
         110.1,
+        12.5,
         12.1,
         8.2,
         9.9,
@@ -15120,7 +15148,7 @@
       "cum": [
         -1.7,
         -13.5,
-        -1.0,
+        96.6,
         109.1,
         121.2,
         129.4,
@@ -15134,11 +15162,11 @@
         1
       ],
       "absences": 0,
-      "hands": 23,
-      "wins": 5,
-      "dealIns": 4,
-      "riichis": 3,
-      "openHands": 8,
+      "hands": 52,
+      "wins": 17,
+      "dealIns": 5,
+      "riichis": 11,
+      "openHands": 16,
       "placements": {
         "p1": 0.12,
         "p2": 0.62,
@@ -15148,33 +15176,33 @@
       "avgRank": 2.25,
       "avgPoints": 10.7,
       "streak": -23.8,
-      "winRate": 21.7,
-      "dealInRate": 17.4,
-      "riichiRate": 13.0,
-      "openRate": 34.8,
+      "winRate": 32.7,
+      "dealInRate": 9.6,
+      "riichiRate": 21.2,
+      "openRate": 30.8,
       "topYaku": [
         {
-          "name": "Yakuhai Haku",
-          "count": 1
+          "name": "Riichi",
+          "count": 9
         },
         {
-          "name": "Ittsu",
-          "count": 1
-        },
-        {
-          "name": "Yakuhai Bakaze",
-          "count": 1
+          "name": "Menzen Tsumo",
+          "count": 5
         },
         {
           "name": "Tanyao",
-          "count": 1
+          "count": 4
         },
         {
-          "name": "Riichi",
-          "count": 1
+          "name": "Yakuhai Bakaze",
+          "count": 3
+        },
+        {
+          "name": "Iipeiko",
+          "count": 3
         }
       ],
-      "statsSample": 23,
+      "statsSample": 52,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 8,
@@ -15280,8 +15308,8 @@
       "history": [
         -16.5,
         -17.4,
-        -9.8,
         -37.4,
+        -9.8,
         17.6,
         -12.6,
         4.0,
@@ -15292,7 +15320,7 @@
       "cum": [
         -16.5,
         -33.9,
-        -43.7,
+        -71.3,
         -81.1,
         -63.5,
         -76.1,
@@ -15308,11 +15336,11 @@
         0
       ],
       "absences": 0,
-      "hands": 23,
-      "wins": 3,
-      "dealIns": 2,
-      "riichis": 3,
-      "openHands": 9,
+      "hands": 52,
+      "wins": 6,
+      "dealIns": 3,
+      "riichis": 7,
+      "openHands": 16,
       "placements": {
         "p1": 0.1,
         "p2": 0.4,
@@ -15322,18 +15350,18 @@
       "avgRank": 2.4,
       "avgPoints": 2.6,
       "streak": 101.8,
-      "winRate": 13.0,
-      "dealInRate": 8.7,
-      "riichiRate": 13.0,
-      "openRate": 39.1,
+      "winRate": 11.5,
+      "dealInRate": 5.8,
+      "riichiRate": 13.5,
+      "openRate": 30.8,
       "topYaku": [
         {
-          "name": "Menzen Tsumo",
-          "count": 2
+          "name": "Riichi",
+          "count": 4
         },
         {
-          "name": "Riichi",
-          "count": 2
+          "name": "Menzen Tsumo",
+          "count": 3
         },
         {
           "name": "Yakuhai Chun",
@@ -15348,7 +15376,7 @@
           "count": 1
         }
       ],
-      "statsSample": 23,
+      "statsSample": 52,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 10,
@@ -15450,11 +15478,11 @@
       "discord": "falsotux",
       "nat": "UY",
       "games": 10,
-      "points": 18.3,
+      "points": -5.7,
       "history": [
         -21.1,
         42.2,
-        53.2,
+        29.2,
         29.2,
         -40.6,
         -20.0,
@@ -15466,55 +15494,63 @@
       "cum": [
         -21.1,
         21.1,
-        74.3,
-        103.5,
-        62.9,
-        42.9,
-        4.6,
-        -8.1,
-        11.4,
-        18.3
+        50.3,
+        79.5,
+        38.9,
+        18.9,
+        -19.4,
+        -32.1,
+        -12.6,
+        -5.7
       ],
       "counts": [
-        2,
-        3,
+        1,
+        4,
         3,
         2
       ],
       "absences": 0,
-      "hands": 23,
-      "wins": 3,
-      "dealIns": 2,
-      "riichis": 3,
-      "openHands": 6,
+      "hands": 37,
+      "wins": 9,
+      "dealIns": 4,
+      "riichis": 9,
+      "openHands": 7,
       "placements": {
-        "p1": 0.2,
-        "p2": 0.3,
+        "p1": 0.1,
+        "p2": 0.4,
         "p3": 0.3,
         "p4": 0.2
       },
-      "avgRank": 2.5,
-      "avgPoints": 1.8,
+      "avgRank": 2.6,
+      "avgPoints": -0.6,
       "streak": -24.6,
-      "winRate": 13.0,
-      "dealInRate": 8.7,
-      "riichiRate": 13.0,
-      "openRate": 26.1,
+      "winRate": 24.3,
+      "dealInRate": 10.8,
+      "riichiRate": 24.3,
+      "openRate": 18.9,
       "topYaku": [
         {
           "name": "Riichi",
+          "count": 7
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 4
+        },
+        {
+          "name": "Pinfu",
+          "count": 2
+        },
+        {
+          "name": "Tanyao",
           "count": 2
         },
         {
           "name": "Yakuhai Haku",
           "count": 1
-        },
-        {
-          "name": "Pinfu",
-          "count": 1
         }
       ],
-      "statsSample": 23,
+      "statsSample": 37,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 12,
@@ -15794,8 +15830,8 @@
       "history": [
         -41.7,
         61.9,
-        -48.3,
         -5.8,
+        -48.3,
         -49.8,
         -0.9,
         28.8,
@@ -15806,7 +15842,7 @@
       "cum": [
         -41.7,
         20.2,
-        -28.1,
+        14.4,
         -33.9,
         -83.7,
         -84.6,
@@ -15822,11 +15858,11 @@
         3
       ],
       "absences": 0,
-      "hands": 22,
-      "wins": 5,
-      "dealIns": 3,
-      "riichis": 3,
-      "openHands": 15,
+      "hands": 51,
+      "wins": 11,
+      "dealIns": 9,
+      "riichis": 8,
+      "openHands": 33,
       "placements": {
         "p1": 0.2,
         "p2": 0.3,
@@ -15836,33 +15872,33 @@
       "avgRank": 2.6,
       "avgPoints": -4.3,
       "streak": 41.4,
-      "winRate": 22.7,
-      "dealInRate": 13.6,
-      "riichiRate": 13.6,
-      "openRate": 68.2,
+      "winRate": 21.6,
+      "dealInRate": 17.6,
+      "riichiRate": 15.7,
+      "openRate": 64.7,
       "topYaku": [
         {
           "name": "Tanyao",
-          "count": 2
-        },
-        {
-          "name": "Yakuhai Bakaze",
-          "count": 1
-        },
-        {
-          "name": "Menzen Tsumo",
-          "count": 1
+          "count": 5
         },
         {
           "name": "Riichi",
-          "count": 1
+          "count": 4
+        },
+        {
+          "name": "Yakuhai Bakaze",
+          "count": 2
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 2
         },
         {
           "name": "Toitoi",
           "count": 1
         }
       ],
-      "statsSample": 22,
+      "statsSample": 51,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 16,
@@ -16053,11 +16089,11 @@
       "discord": "biscocrow",
       "nat": "UY",
       "games": 8,
-      "points": -103.6,
+      "points": -101.4,
       "history": [
         -15.6,
         -12.4,
-        -49.1,
+        -46.9,
         -46.9,
         0.1,
         9.4,
@@ -16067,41 +16103,45 @@
       "cum": [
         -15.6,
         -28.0,
-        -77.1,
-        -124.0,
-        -123.9,
-        -114.5,
-        -113.3,
-        -103.6
+        -74.9,
+        -121.8,
+        -121.7,
+        -112.3,
+        -111.1,
+        -101.4
       ],
       "counts": [
         0,
         4,
-        3,
-        1
+        4,
+        0
       ],
       "absences": 0,
-      "hands": 24,
-      "wins": 5,
-      "dealIns": 4,
+      "hands": 38,
+      "wins": 7,
+      "dealIns": 7,
       "riichis": 0,
-      "openHands": 16,
+      "openHands": 26,
       "placements": {
         "p1": 0.0,
         "p2": 0.5,
-        "p3": 0.38,
-        "p4": 0.12
+        "p3": 0.5,
+        "p4": 0.0
       },
-      "avgRank": 2.62,
-      "avgPoints": -12.9,
+      "avgRank": 2.5,
+      "avgPoints": -12.7,
       "streak": 20.4,
-      "winRate": 20.8,
-      "dealInRate": 16.7,
+      "winRate": 18.4,
+      "dealInRate": 18.4,
       "riichiRate": 0.0,
-      "openRate": 66.7,
+      "openRate": 68.4,
       "topYaku": [
         {
           "name": "Tanyao",
+          "count": 3
+        },
+        {
+          "name": "Yakuhai Hatsu",
           "count": 2
         },
         {
@@ -16115,13 +16155,9 @@
         {
           "name": "Yakuhai Jikaze",
           "count": 1
-        },
-        {
-          "name": "Yakuhai Hatsu",
-          "count": 1
         }
       ],
-      "statsSample": 24,
+      "statsSample": 38,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 19,
@@ -16367,91 +16403,6 @@
       "zone": "bottom"
     },
     {
-      "id": "B09",
-      "div": "B",
-      "num": "09",
-      "name": "helinder",
-      "shortName": "helinder",
-      "handle": "helinder",
-      "accountId": 104752227,
-      "discord": "helinder",
-      "nat": "UY",
-      "games": 8,
-      "points": -188.3,
-      "history": [
-        18.4,
-        -43.1,
-        8.9,
-        -84.2,
-        63.0,
-        -15.9,
-        -77.9,
-        -57.5
-      ],
-      "cum": [
-        18.4,
-        -24.7,
-        -15.8,
-        -100.0,
-        -37.0,
-        -52.9,
-        -130.8,
-        -188.3
-      ],
-      "counts": [
-        1,
-        2,
-        1,
-        4
-      ],
-      "absences": 0,
-      "hands": 18,
-      "wins": 4,
-      "dealIns": 1,
-      "riichis": 1,
-      "openHands": 12,
-      "placements": {
-        "p1": 0.12,
-        "p2": 0.25,
-        "p3": 0.12,
-        "p4": 0.5
-      },
-      "avgRank": 3.0,
-      "avgPoints": -23.5,
-      "streak": -88.3,
-      "winRate": 22.2,
-      "dealInRate": 5.6,
-      "riichiRate": 5.6,
-      "openRate": 66.7,
-      "topYaku": [
-        {
-          "name": "Chanta",
-          "count": 1
-        },
-        {
-          "name": "Yakuhai Haku",
-          "count": 1
-        },
-        {
-          "name": "Sanshoku Doujun",
-          "count": 1
-        },
-        {
-          "name": "Pinfu",
-          "count": 1
-        },
-        {
-          "name": "Tanyao",
-          "count": 1
-        }
-      ],
-      "statsSample": 18,
-      "statsReliable": true,
-      "arch": "con datos",
-      "rank": 23,
-      "zone": "bottom"
-    },
-    {
       "id": "B19",
       "div": "B",
       "num": "19",
@@ -16531,6 +16482,91 @@
         }
       ],
       "statsSample": 18,
+      "statsReliable": true,
+      "arch": "con datos",
+      "rank": 23,
+      "zone": "bottom"
+    },
+    {
+      "id": "B09",
+      "div": "B",
+      "num": "09",
+      "name": "helinder",
+      "shortName": "helinder",
+      "handle": "helinder",
+      "accountId": 104752227,
+      "discord": "helinder",
+      "nat": "UY",
+      "games": 8,
+      "points": -281.4,
+      "history": [
+        18.4,
+        -43.1,
+        -84.2,
+        -84.2,
+        63.0,
+        -15.9,
+        -77.9,
+        -57.5
+      ],
+      "cum": [
+        18.4,
+        -24.7,
+        -108.9,
+        -193.1,
+        -130.1,
+        -146.0,
+        -223.9,
+        -281.4
+      ],
+      "counts": [
+        1,
+        1,
+        1,
+        5
+      ],
+      "absences": 0,
+      "hands": 32,
+      "wins": 5,
+      "dealIns": 3,
+      "riichis": 3,
+      "openHands": 21,
+      "placements": {
+        "p1": 0.12,
+        "p2": 0.12,
+        "p3": 0.12,
+        "p4": 0.62
+      },
+      "avgRank": 3.25,
+      "avgPoints": -35.2,
+      "streak": -88.3,
+      "winRate": 15.6,
+      "dealInRate": 9.4,
+      "riichiRate": 9.4,
+      "openRate": 65.6,
+      "topYaku": [
+        {
+          "name": "Chanta",
+          "count": 2
+        },
+        {
+          "name": "Yakuhai Haku",
+          "count": 2
+        },
+        {
+          "name": "Sanshoku Doujun",
+          "count": 1
+        },
+        {
+          "name": "Pinfu",
+          "count": 1
+        },
+        {
+          "name": "Tanyao",
+          "count": 1
+        }
+      ],
+      "statsSample": 32,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 24,
@@ -16733,92 +16769,92 @@
       "count": 24,
       "inA": 12,
       "inB": 12,
-      "avgPoints": 5.7,
-      "avgRank": 2.5,
+      "avgPoints": 10.4,
+      "avgRank": 2.49,
       "best": {
-        "id": "B04",
+        "id": "B20",
         "div": "B",
-        "num": "04",
-        "name": "cidoku",
-        "shortName": "cidoku",
-        "handle": "cidoku",
-        "accountId": 79312106,
-        "discord": "timetravel_z",
+        "num": "20",
+        "name": "Sircrab",
+        "shortName": "Sircrab",
+        "handle": "Sircrab",
+        "accountId": 115294059,
+        "discord": "sircrab",
         "nat": "CL",
         "games": 10,
-        "points": 224.9,
+        "points": 314.1,
         "history": [
-          52.6,
-          4.5,
-          52.9,
-          4.7,
-          -3.9,
-          59.5,
-          -15.8,
-          18.6,
-          0.9,
-          50.9
+          -13.6,
+          43.5,
+          101.9,
+          101.9,
+          65.4,
+          7.5,
+          -45.6,
+          61.8,
+          -13.8,
+          5.1
         ],
         "cum": [
-          52.6,
-          57.1,
-          110.0,
-          114.7,
-          110.8,
-          170.3,
-          154.5,
-          173.1,
-          174.0,
-          224.9
+          -13.6,
+          29.9,
+          131.8,
+          233.7,
+          299.1,
+          306.6,
+          261.0,
+          322.8,
+          309.0,
+          314.1
         ],
         "counts": [
-          4,
-          4,
+          5,
           2,
-          0
+          2,
+          1
         ],
         "absences": 0,
-        "hands": 24,
-        "wins": 7,
-        "dealIns": 3,
-        "riichis": 5,
-        "openHands": 11,
+        "hands": 35,
+        "wins": 10,
+        "dealIns": 4,
+        "riichis": 6,
+        "openHands": 17,
         "placements": {
-          "p1": 0.4,
-          "p2": 0.4,
+          "p1": 0.5,
+          "p2": 0.2,
           "p3": 0.2,
-          "p4": 0.0
+          "p4": 0.1
         },
-        "avgRank": 1.8,
-        "avgPoints": 22.5,
-        "streak": 54.6,
-        "winRate": 29.2,
-        "dealInRate": 12.5,
-        "riichiRate": 20.8,
-        "openRate": 45.8,
+        "avgRank": 1.9,
+        "avgPoints": 31.4,
+        "streak": 7.5,
+        "winRate": 28.6,
+        "dealInRate": 11.4,
+        "riichiRate": 17.1,
+        "openRate": 48.6,
         "topYaku": [
           {
             "name": "Tanyao",
             "count": 3
           },
           {
-            "name": "Riichi",
-            "count": 3
-          },
-          {
-            "name": "Ippatsu",
+            "name": "Pinfu",
             "count": 2
-          },
-          {
-            "name": "Menzen Tsumo",
-            "count": 1
           },
           {
             "name": "Ittsu",
             "count": 1
+          },
+          {
+            "name": "Yakuhai Chun",
+            "count": 1
+          },
+          {
+            "name": "Riichi",
+            "count": 1
           }
         ],
-        "statsSample": 24,
+        "statsSample": 35,
         "statsReliable": true,
         "arch": "con datos",
         "rank": 1,
@@ -16944,8 +16980,8 @@
         "history": [
           -1.7,
           -11.8,
-          12.5,
           110.1,
+          12.5,
           12.1,
           8.2,
           9.9,
@@ -16954,7 +16990,7 @@
         "cum": [
           -1.7,
           -13.5,
-          -1.0,
+          96.6,
           109.1,
           121.2,
           129.4,
@@ -16968,11 +17004,11 @@
           1
         ],
         "absences": 0,
-        "hands": 23,
-        "wins": 5,
-        "dealIns": 4,
-        "riichis": 3,
-        "openHands": 8,
+        "hands": 52,
+        "wins": 17,
+        "dealIns": 5,
+        "riichis": 11,
+        "openHands": 16,
         "placements": {
           "p1": 0.12,
           "p2": 0.62,
@@ -16982,33 +17018,33 @@
         "avgRank": 2.25,
         "avgPoints": 10.7,
         "streak": -23.8,
-        "winRate": 21.7,
-        "dealInRate": 17.4,
-        "riichiRate": 13.0,
-        "openRate": 34.8,
+        "winRate": 32.7,
+        "dealInRate": 9.6,
+        "riichiRate": 21.2,
+        "openRate": 30.8,
         "topYaku": [
           {
-            "name": "Yakuhai Haku",
-            "count": 1
+            "name": "Riichi",
+            "count": 9
           },
           {
-            "name": "Ittsu",
-            "count": 1
-          },
-          {
-            "name": "Yakuhai Bakaze",
-            "count": 1
+            "name": "Menzen Tsumo",
+            "count": 5
           },
           {
             "name": "Tanyao",
-            "count": 1
+            "count": 4
           },
           {
-            "name": "Riichi",
-            "count": 1
+            "name": "Yakuhai Bakaze",
+            "count": 3
+          },
+          {
+            "name": "Iipeiko",
+            "count": 3
           }
         ],
-        "statsSample": 23,
+        "statsSample": 52,
         "statsReliable": true,
         "arch": "con datos",
         "rank": 8,
@@ -17020,8 +17056,8 @@
       "count": 9,
       "inA": 3,
       "inB": 6,
-      "avgPoints": -59.7,
-      "avgRank": 2.63,
+      "avgPoints": -72.5,
+      "avgRank": 2.66,
       "best": {
         "id": "A07",
         "div": "A",
