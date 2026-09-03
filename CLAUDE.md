@@ -21,18 +21,35 @@ mahjong, jugada en sala de torneo de MahjongSoul. Estático, sin backend, sin au
 
 ## Reglas de puntaje
 
-- Puntos iniciales: 30.000 por hanchan.
-- **Uma: +15 / +5 / −5 / −15.**
-- **Sin oka.** Puntos de retorno = puntos iniciales, por lo tanto cada mesa suma
-  cero en puntos de liga.
-- Fórmula: `puntos = (scoreFinal − 30000) / 1000 + uma`.
-- Sin akadora (dora rojo).
-- Penalización por ausencia: PENDIENTE DE CONFIRMAR (la planilla dice −20 en una
-  hoja y −30 en otra). No hardcodear hasta que César lo resuelva.
+**Las reglas no son iguales en las dos divisiones.** Las de cada una viven en
+`sync-config.json` bajo `divisions`; lo de abajo es la referencia, no una fuente
+paralela que haya que mantener sincronizada a mano.
 
-**El Excel manda.** El script no recalcula reglas: lee los resultados ya
-procesados y solo valida consistencia. Si el JSON y el Excel discrepan, gana el
-Excel y el script falla ruidosamente.
+- Puntos iniciales: 30.000 por hanchan, en ambas divisiones.
+- **Uma: A = +15 / +5 / −5 / −15. B = +35 / +5 / −10 / −30.**
+- **Sin oka.** Puntos de retorno = puntos iniciales, por lo tanto cada mesa suma
+  cero en puntos de liga. Los dos umas suman cero, así que la validación de
+  "suma de puntos de liga por mesa = 0" vale para las dos.
+- Fórmula: `puntos = (scoreFinal − 30000) / 1000 + uma`.
+- **Akadora: A no tiene. B juega con 4.** Verificado en el `detail_rule` de los
+  paipus (`dora_count: 4` solo en B) y en los tiles: 0 rojos en 624 manos
+  ganadas de A, 70 en 117 de B. Los rojos ya vienen dentro del `scoreRaw`, así
+  que no cambian nada del pipeline; la suma de scores crudos sigue siendo
+  120.000.
+- **Penalización por ausencia: −30 por hanchan** (una sesión completa ausente son
+  −60). Confirmado por César; vive en `sync-config.json` como
+  `absencePenaltyPerHanchan`, no hardcodeada. La partida cuenta como jugada y el
+  −30 entra en el historial, pero **no ocupa puesto**: `avgRank` y la distribución
+  1º-4º se calculan solo sobre partidas realmente jugadas.
+
+**El paipu manda sobre el Excel** para resultados y puntos cuando existe; el
+Game History es el respaldo para las mesas sin paipu.
+
+**Las mesas del Game History NO están numeradas como en el Calendario.** Solo la
+sesión coincide. El emparejamiento se hace por grupo de jugadores: se asocia cada
+grupo del historial con la mesa del calendario con la que comparta al menos 3 de
+4 jugadores (3 y no 4, para tolerar un suplente). **El número de mesa, la fecha y
+la hora reales los tiene el Calendario.**
 
 ## Pipeline de datos
 
@@ -90,8 +107,10 @@ logs no debe poder ensuciar la tabla.
 ```
 
 - Mesas sin jugar emiten `hanchans: []` y se muestran como fixture pendiente.
-- Resultados de sustitutos llevan `sustitutoDe`; entran en el historial de mesas
-  pero **no** en el cálculo de standings.
+- Resultados de sustitutos llevan `sustitutoDe` y `esSuplente`; entran en el
+  historial de mesas pero **no** en standings ni en estadísticas avanzadas. El
+  suplente puede ser de otra división, ajeno al torneo o incluso un bot.
+- Hay como máximo **un ausente por hanchan**.
 - Standings, promedios y rachas se derivan en build. **Nunca duplicar datos
   calculados dentro del JSON.**
 

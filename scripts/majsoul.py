@@ -10,6 +10,8 @@ import time
 import urllib.request
 import uuid as uuid_lib
 from collections import Counter
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -17,23 +19,32 @@ from typing import Any
 
 PAIPU_RE = re.compile(r"(?P<uuid>\d{6}-[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12})(?P<trailer>_a\d+)?")
 RECORD_URL = "https://record-v2.maj-soul.com:5333/majsoul/game_record/{uuid}"
-# Enumerado estándar de "fans" de Mahjong Soul (el id viene en el paipu y, si
-# falta el nombre, lo resolvemos acá). Verificado contra ids observados:
-# 2=Riichi, 9=Pinfu, 14=Yakuhai Oeste, 31=Junchan, 33=Chinitsu.
+# Enumerado de "fans" de Mahjong Soul: el paipu trae solo `id` y `val` (el campo
+# `name` viene vacío), así que la tabla es la única fuente del nombre.
+# Verificada contra los 72 paipus de data/raw-paipu por la forma de cada yaku:
+# id 16 y 17 aparecen con val 1 y 2 (ittsu y sanshoku, un han menos abiertos),
+# 25 siempre con val 2 (chiitoitsu), 27 con val 2 y 3 (honitsu), 29 con val 5 y 6
+# (chinitsu), 33 aparece exactamente tantas veces como el riichi (ura dora, con
+# val 0 cuando no hay), 32 coincide una a una con los tiles rojos de la mano
+# (aka dora) y 42 salió en una mano de 13 huérfanos (kokushi).
 YAKU_NAMES = {
-    1: "Menzen Tsumo", 2: "Riichi", 3: "Ippatsu", 4: "Chankan", 5: "Rinshan Kaihou",
-    6: "Haitei Raoyue", 7: "Hotei Raoyui", 8: "Tsumo", 9: "Pinfu", 10: "Tanyao",
-    11: "Iipeiko", 12: "Yakuhai Este", 13: "Yakuhai Sur", 14: "Yakuhai Oeste",
-    15: "Yakuhai Norte", 16: "Yakuhai Haku", 17: "Yakuhai Hatsu", 18: "Yakuhai Chun",
-    19: "Daburu Riichi", 20: "Chiitoitsu", 21: "Chanta", 22: "Ittsu",
-    23: "Sanshoku Doujun", 24: "Sanshoku Doukou", 25: "Sankantsu", 26: "Toitoi",
-    27: "Sanankou", 28: "Shousangen", 29: "Honroutou", 30: "Ryanpeikou",
-    31: "Junchan", 32: "Honitsu", 33: "Chinitsu", 34: "Renhou", 35: "Tenhou",
-    36: "Chiihou", 37: "Daisangen", 38: "Suuankou", 39: "Suukantsu", 40: "Tsuuiisou",
-    41: "Ryuuiisou", 42: "Chinroutou", 43: "Kokushi Musou", 44: "Kokushi 13-men",
-    45: "Daisuushii", 46: "Shousuushii", 47: "Chuuren Poutou", 48: "Junsei Chuuren",
-    49: "Suuankou Tanki",
+    1: "Menzen Tsumo", 2: "Riichi", 3: "Chankan", 4: "Rinshan Kaihou",
+    5: "Haitei Raoyue", 6: "Houtei Raoyui", 7: "Yakuhai Haku", 8: "Yakuhai Hatsu",
+    9: "Yakuhai Chun", 10: "Yakuhai Jikaze", 11: "Yakuhai Bakaze", 12: "Tanyao",
+    13: "Iipeiko", 14: "Pinfu", 15: "Chanta", 16: "Ittsu", 17: "Sanshoku Doujun",
+    18: "Daburu Riichi", 19: "Sanshoku Doukou", 20: "Sankantsu", 21: "Toitoi",
+    22: "Sanankou", 23: "Shousangen", 24: "Honroutou", 25: "Chiitoitsu",
+    26: "Junchan", 27: "Honitsu", 28: "Ryanpeikou", 29: "Chinitsu", 30: "Ippatsu",
+    31: "Dora", 32: "Aka Dora", 33: "Ura Dora", 34: "Nukidora",
+    35: "Tenhou", 36: "Chiihou", 37: "Daisangen", 38: "Suuankou", 39: "Tsuuiisou",
+    40: "Ryuuiisou", 41: "Chinroutou", 42: "Kokushi Musou", 43: "Shousuushii",
+    44: "Suukantsu", 45: "Chuuren Poutou", 46: "Suuankou Tanki",
+    47: "Kokushi 13-men", 48: "Daisuushii", 49: "Junsei Chuuren",
 }
+# Dora, aka dora, ura dora y nukidora suman han pero no son yaku: no pueden
+# entrar en el ranking de "yaku más jugados" (si entran, el dora se lleva el
+# primer puesto de todos los jugadores).
+NON_YAKU_FAN_IDS = frozenset({31, 32, 33, 34})
 MS_HOST = "https://mahjongsoul.game.yo-star.com"
 MS_GATEWAY_HOSTS = (
     "https://engs.mahjongsoul.com",
@@ -54,6 +65,10 @@ RECORD_THROTTLED_CODE = 540
 PAIPU_REQUEST_DELAY_SECONDS = 20.0
 MAX_RECORDS_PER_RUN = 3
 THROTTLE_STREAK_LIMIT = 1
+# La lista de partidas del torneo es una sola llamada por página (no baja
+# paipus), así que no toca el límite de fetchGameRecord. Igual va espaciada.
+CONTEST_PAGE_DELAY_SECONDS = 2.0
+MAX_CONTEST_PAGES = 60
 YOSTAR_QUICK_LOGIN = "https://en-sdk-api.yostarplat.com/user/quick-login"
 YOSTAR_SDK_VERSION = "4.16.0"
 YOSTAR_SIGNING_SALT = bytes([
@@ -176,7 +191,50 @@ async def _open_route(pb: Any, channel_class: Any, route_id: str, endpoint: str)
         raise
 
 
-async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cache_dir: Path) -> int:
+async def _login(http: Any, pb: Any, lobby: Any, uid: str, token: str, device_id: str, client_version: str, product_version: str) -> None:
+    auth = pb.ReqOauth2Auth(type=22, code=token, uid=uid, client_version_string=client_version)
+    auth_response = await lobby.oauth2_auth(auth)
+    if auth_response.HasField("error") and auth_response.error.code:
+        stored_detail = _rpc_error_detail(auth_response.error)
+        refreshed_token = await _refresh_yostar_token(http, uid, token, device_id)
+        auth = pb.ReqOauth2Auth(type=22, code=refreshed_token, uid=uid, client_version_string=client_version)
+        auth_response = await lobby.oauth2_auth(auth)
+        if auth_response.HasField("error") and auth_response.error.code:
+            raise PaipuAuthRequired(
+                f"oauth2Auth rechazó el token guardado ({stored_detail}) "
+                f"y el token renovado ({_rpc_error_detail(auth_response.error)})"
+            )
+    check = pb.ReqOauth2Check(type=22, access_token=auth_response.access_token)
+    check_response = await lobby.oauth2_check(check)
+    if check_response.HasField("error") and check_response.error.code:
+        raise PaipuAuthRequired(f"oauth2Check falló ({_rpc_error_detail(check_response.error)})")
+
+    login = pb.ReqOauth2Login(
+        type=22, access_token=auth_response.access_token, reconnect=False,
+        random_key=str(uuid_lib.uuid4()), client_version_string=client_version,
+        currency_platforms=list(MS_CURRENCY_PLATFORMS), tag="en",
+    )
+    login.device.platform = "pc"
+    login.device.hardware = "pc"
+    login.device.os = "Windows"
+    login.device.os_version = "Windows 10"
+    login.device.is_browser = True
+    login.device.software = "Chrome"
+    login.device.sale_platform = "web"
+    login.client_version.resource = product_version
+    login.client_version.package = product_version
+    login_response = await lobby.oauth2_login(login)
+    if login_response.HasField("error") and login_response.error.code:
+        raise PaipuAuthRequired(f"oauth2Login falló ({_rpc_error_detail(login_response.error)})")
+
+
+@asynccontextmanager
+async def majsoul_lobby() -> AsyncIterator[tuple[Any, Any, str]]:
+    """Sesión técnica lista para usar; cede `(pb, lobby, client_version)`.
+
+    Mahjong Soul admite una sola sesión por cuenta: cada corrida hace un único
+    login y lo comparte entre la descarga de paipus y la lectura del torneo.
+    """
     try:
         import aiohttp
         from ms import protocol_pb2 as pb  # type: ignore
@@ -188,7 +246,6 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
     uid = os.environ["MAJSOUL_UID"]
     token = os.environ["MAJSOUL_TOKEN"]
     device_id = os.environ["MAJSOUL_DEVICE_ID"]
-    downloaded = 0
     async with aiohttp.ClientSession() as http:
         product_version = await _fetch_product_version(http)
         client_version = f"WebGL_2022-{product_version}"
@@ -208,124 +265,96 @@ async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cac
             raise PaipuError("No se pudo abrir ninguna ruta de Mahjong Soul (" + "; ".join(connection_errors) + ")")
         lobby = Lobby(channel)
         try:
-            auth = pb.ReqOauth2Auth(type=22, code=token, uid=uid, client_version_string=client_version)
-            auth_response = await lobby.oauth2_auth(auth)
-            if auth_response.HasField("error") and auth_response.error.code:
-                stored_detail = _rpc_error_detail(auth_response.error)
-                refreshed_token = await _refresh_yostar_token(http, uid, token, device_id)
-                auth = pb.ReqOauth2Auth(type=22, code=refreshed_token, uid=uid, client_version_string=client_version)
-                auth_response = await lobby.oauth2_auth(auth)
-                if auth_response.HasField("error") and auth_response.error.code:
-                    raise PaipuAuthRequired(
-                        f"oauth2Auth rechazó el token guardado ({stored_detail}) "
-                        f"y el token renovado ({_rpc_error_detail(auth_response.error)})"
-                    )
-            check = pb.ReqOauth2Check(type=22, access_token=auth_response.access_token)
-            check_response = await lobby.oauth2_check(check)
-            if check_response.HasField("error") and check_response.error.code:
-                raise PaipuAuthRequired(f"oauth2Check falló ({_rpc_error_detail(check_response.error)})")
-
-            login = pb.ReqOauth2Login(
-                type=22, access_token=auth_response.access_token, reconnect=False,
-                random_key=str(uuid_lib.uuid4()), client_version_string=client_version,
-                currency_platforms=list(MS_CURRENCY_PLATFORMS), tag="en",
-            )
-            login.device.platform = "pc"
-            login.device.hardware = "pc"
-            login.device.os = "Windows"
-            login.device.os_version = "Windows 10"
-            login.device.is_browser = True
-            login.device.software = "Chrome"
-            login.device.sale_platform = "web"
-            login.client_version.resource = product_version
-            login.client_version.package = product_version
-            login_response = await lobby.oauth2_login(login)
-            if login_response.HasField("error") and login_response.error.code:
-                raise PaipuAuthRequired(f"oauth2Login falló ({_rpc_error_detail(login_response.error)})")
-
-            cache_dir.mkdir(parents=True, exist_ok=True)
-            failures: list[str] = []
-            pendientes = []
-            for _record_id, record_uuid in records:
-                destination = cache_dir / f"{record_uuid}.pb"
-                if destination.exists() and not destination.read_bytes().lstrip().startswith(b"<?xml"):
-                    continue
-                pendientes.append(record_uuid)
-            # Tope por corrida: el cron completa el resto en las siguientes.
-            tanda, aplazados = pendientes[:MAX_RECORDS_PER_RUN], pendientes[MAX_RECORDS_PER_RUN:]
-            racha_limitada = 0
-            for indice, record_uuid in enumerate(tanda):
-                if indice:
-                    await asyncio.sleep(PAIPU_REQUEST_DELAY_SECONDS)
-                destination = cache_dir / f"{record_uuid}.pb"
-                # game_uuid es el UUID limpio; el sufijo _a<cuenta> del enlace
-                # compartido es solo el ancla de vista y el servidor lo rechaza (1203).
-                request = pb.ReqGameRecord(game_uuid=record_uuid, client_version_string=client_version)
-                try:
-                    response = await lobby.fetch_game_record(request)
-                    if response.HasField("error") and response.error.code:
-                        # readGameRecord marca el registro como visto y es lo que
-                        # habilita la descarga; también va espaciado.
-                        await asyncio.sleep(PAIPU_REQUEST_DELAY_SECONDS)
-                        await lobby.read_game_record(request)
-                        await asyncio.sleep(PAIPU_REQUEST_DELAY_SECONDS)
-                        response = await lobby.fetch_game_record(request)
-                    if response.HasField("error") and response.error.code:
-                        if response.error.code == RECORD_THROTTLED_CODE:
-                            raise PaipuThrottled(
-                                f"Mahjong Soul limitó {record_uuid} ({_rpc_error_detail(response.error)})"
-                            )
-                        raise PaipuError(f"Mahjong Soul rechazó {record_uuid} ({_rpc_error_detail(response.error)})")
-                    raw = bytes(response.data)
-                    if not raw and response.data_url:
-                        url_request = urllib.request.Request(
-                            response.data_url,
-                            headers={"User-Agent": "LigaMahjongChile/1.0 (+paipu-importer)"},
-                        )
-                        with urllib.request.urlopen(url_request, timeout=30) as remote:
-                            raw = remote.read()
-                    if not raw:
-                        raise PaipuError(f"Mahjong Soul devolvió vacío el paipu {record_uuid}")
-                    if raw.lstrip().startswith(b"<?xml"):
-                        raise PaipuAuthRequired(
-                            f"La sesión técnica devolvió XML en vez del paipu {record_uuid}; "
-                            f"el acceso autorizado a este registro sigue fallando"
-                        )
-                    # Guardamos la cabecera (head = RecordGame con los jugadores y
-                    # sus cuenta_id/nickname) más el log (data), para conservar
-                    # toda la info: así se puede mapear por account_id.
-                    container = pb.ResGameRecord()
-                    container.data = raw
-                    if response.HasField("head"):
-                        container.head.CopyFrom(response.head)
-                except PaipuThrottled as exc:
-                    racha_limitada += 1
-                    failures.append(f"{record_uuid}: {exc}")
-                    if racha_limitada >= THROTTLE_STREAK_LIMIT:
-                        aplazados = tanda[indice + 1:] + aplazados
-                        print(
-                            f"Corte por límite de la API (540); quedan {len(aplazados)} paipus "
-                            f"para la próxima corrida.",
-                            file=sys.stderr,
-                        )
-                        break
-                    continue
-                except Exception as exc:
-                    failures.append(f"{record_uuid}: {exc}")
-                    continue
-                destination.write_bytes(container.SerializeToString())
-                downloaded += 1
-                racha_limitada = 0
-            if aplazados:
-                print(f"Aplazados {len(aplazados)} paipus para próximas corridas (tope {MAX_RECORDS_PER_RUN} por ejecución)")
-            if failures:
-                print(
-                    f"AVISO: {len(failures)} paipus no se pudieron descargar con la sesión técnica:\n"
-                    + "\n".join(f"- {item}" for item in failures),
-                    file=sys.stderr,
-                )
+            await _login(http, pb, lobby, uid, token, device_id, client_version, product_version)
+            yield pb, lobby, client_version
         finally:
             await channel.close()
+
+
+async def _fetch_authenticated_records_async(records: list[tuple[str, str]], cache_dir: Path) -> int:
+    downloaded = 0
+    async with majsoul_lobby() as (pb, lobby, client_version):
+        cache_dir.mkdir(parents=True, exist_ok=True)
+        failures: list[str] = []
+        pendientes = []
+        for _record_id, record_uuid in records:
+            destination = cache_dir / f"{record_uuid}.pb"
+            if destination.exists() and not destination.read_bytes().lstrip().startswith(b"<?xml"):
+                continue
+            pendientes.append(record_uuid)
+        # Tope por corrida: el cron completa el resto en las siguientes.
+        tanda, aplazados = pendientes[:MAX_RECORDS_PER_RUN], pendientes[MAX_RECORDS_PER_RUN:]
+        racha_limitada = 0
+        for indice, record_uuid in enumerate(tanda):
+            if indice:
+                await asyncio.sleep(PAIPU_REQUEST_DELAY_SECONDS)
+            destination = cache_dir / f"{record_uuid}.pb"
+            # game_uuid es el UUID limpio; el sufijo _a<cuenta> del enlace
+            # compartido es solo el ancla de vista y el servidor lo rechaza (1203).
+            request = pb.ReqGameRecord(game_uuid=record_uuid, client_version_string=client_version)
+            try:
+                response = await lobby.fetch_game_record(request)
+                if response.HasField("error") and response.error.code:
+                    # readGameRecord marca el registro como visto y es lo que
+                    # habilita la descarga; también va espaciado.
+                    await asyncio.sleep(PAIPU_REQUEST_DELAY_SECONDS)
+                    await lobby.read_game_record(request)
+                    await asyncio.sleep(PAIPU_REQUEST_DELAY_SECONDS)
+                    response = await lobby.fetch_game_record(request)
+                if response.HasField("error") and response.error.code:
+                    if response.error.code == RECORD_THROTTLED_CODE:
+                        raise PaipuThrottled(
+                            f"Mahjong Soul limitó {record_uuid} ({_rpc_error_detail(response.error)})"
+                        )
+                    raise PaipuError(f"Mahjong Soul rechazó {record_uuid} ({_rpc_error_detail(response.error)})")
+                raw = bytes(response.data)
+                if not raw and response.data_url:
+                    url_request = urllib.request.Request(
+                        response.data_url,
+                        headers={"User-Agent": "LigaMahjongChile/1.0 (+paipu-importer)"},
+                    )
+                    with urllib.request.urlopen(url_request, timeout=30) as remote:
+                        raw = remote.read()
+                if not raw:
+                    raise PaipuError(f"Mahjong Soul devolvió vacío el paipu {record_uuid}")
+                if raw.lstrip().startswith(b"<?xml"):
+                    raise PaipuAuthRequired(
+                        f"La sesión técnica devolvió XML en vez del paipu {record_uuid}; "
+                        f"el acceso autorizado a este registro sigue fallando"
+                    )
+                # Guardamos la cabecera (head = RecordGame con los jugadores y
+                # sus cuenta_id/nickname) más el log (data), para conservar
+                # toda la info: así se puede mapear por account_id.
+                container = pb.ResGameRecord()
+                container.data = raw
+                if response.HasField("head"):
+                    container.head.CopyFrom(response.head)
+            except PaipuThrottled as exc:
+                racha_limitada += 1
+                failures.append(f"{record_uuid}: {exc}")
+                if racha_limitada >= THROTTLE_STREAK_LIMIT:
+                    aplazados = tanda[indice + 1:] + aplazados
+                    print(
+                        f"Corte por límite de la API (540); quedan {len(aplazados)} paipus "
+                        f"para la próxima corrida.",
+                        file=sys.stderr,
+                    )
+                    break
+                continue
+            except Exception as exc:
+                failures.append(f"{record_uuid}: {exc}")
+                continue
+            destination.write_bytes(container.SerializeToString())
+            downloaded += 1
+            racha_limitada = 0
+        if aplazados:
+            print(f"Aplazados {len(aplazados)} paipus para próximas corridas (tope {MAX_RECORDS_PER_RUN} por ejecución)")
+        if failures:
+            print(
+                f"AVISO: {len(failures)} paipus no se pudieron descargar con la sesión técnica:\n"
+                + "\n".join(f"- {item}" for item in failures),
+                file=sys.stderr,
+            )
     return downloaded
 
 
@@ -503,6 +532,8 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                 if not hule.zimo and last_discard is not None and last_discard < 4:
                     stats[last_discard]["dealIns"] += 1
                 for fan in hule.fans:
+                    if fan.id in NON_YAKU_FAN_IDS:
+                        continue
                     yaku = YAKU_NAMES.get(fan.id) or fan.name or f"Yaku #{fan.id}"
                     yaku = str(yaku).strip()
                     if yaku:
@@ -538,3 +569,114 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
         record_game_seen=record_game_seen,
         sha256=hashlib.sha256(raw).hexdigest(),
     )
+
+
+@dataclass
+class ContestGame:
+    """Cabecera de una partida jugada en la sala de torneo.
+
+    Sale de `fetchCustomizedContestGameRecords`, que entrega la identidad de los
+    cuatro asientos y la hora de inicio sin descargar el paipu completo.
+    """
+    uuid: str
+    contestId: str
+    division: str
+    startTime: int
+    endTime: int
+    seats: list[dict[str, Any]]
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "uuid": self.uuid, "contestId": self.contestId, "division": self.division,
+            "startTime": self.startTime, "endTime": self.endTime, "seats": self.seats,
+        }
+
+    @classmethod
+    def from_dict(cls, payload: dict[str, Any]) -> "ContestGame":
+        return cls(
+            uuid=str(payload["uuid"]), contestId=str(payload.get("contestId", "")),
+            division=str(payload.get("division", "")), startTime=int(payload.get("startTime", 0)),
+            endTime=int(payload.get("endTime", 0)), seats=list(payload.get("seats", [])),
+        )
+
+
+def _contest_game_from_record(record: Any, contest_id: str, division: str) -> ContestGame:
+    scores = {int(player.seat): int(player.part_point_1) or int(player.total_point) for player in record.result.players}
+    seats = []
+    for account in record.accounts:
+        seats.append({
+            "seat": int(account.seat), "accountId": int(account.account_id),
+            "nickname": str(account.nickname), "scoreRaw": scores.get(int(account.seat)),
+        })
+    seats.sort(key=lambda item: item["seat"])
+    return ContestGame(
+        uuid=str(record.uuid), contestId=contest_id, division=division,
+        startTime=int(record.start_time), endTime=int(record.end_time), seats=seats,
+    )
+
+
+async def _fetch_contest_games_async(contests: dict[str, str]) -> list[ContestGame]:
+    games: list[ContestGame] = []
+    async with majsoul_lobby() as (pb, lobby, _client_version):
+        for division, contest_id in contests.items():
+            info = await lobby.fetch_customized_contest_by_contest_id(
+                pb.ReqFetchCustomizedContestByContestId(contest_id=int(contest_id), lang="en")
+            )
+            if info.HasField("error") and info.error.code:
+                raise PaipuError(
+                    f"No se encontró el torneo {contest_id} de División {division} ({_rpc_error_detail(info.error)})"
+                )
+            unique_id = int(info.contest_info.unique_id)
+            # Las salas son públicas: entrar suele bastar para ver el historial,
+            # pero si el lobby lo rechaza igual se intenta leer las partidas y
+            # el error real aparece recién en fetchCustomizedContestGameRecords.
+            enter_detail = ""
+            try:
+                entered = await lobby.enter_customized_contest(
+                    pb.ReqEnterCustomizedContest(unique_id=unique_id, lang="en")
+                )
+                if entered.HasField("error") and entered.error.code:
+                    enter_detail = _rpc_error_detail(entered.error)
+            except Exception as exc:
+                enter_detail = str(exc)
+            if enter_detail:
+                print(
+                    f"AVISO: la sesión técnica no pudo entrar al torneo {contest_id} "
+                    f"({enter_detail}); se intenta leer el historial igual.",
+                    file=sys.stderr,
+                )
+            last_index = 0
+            for page in range(MAX_CONTEST_PAGES):
+                if page:
+                    await asyncio.sleep(CONTEST_PAGE_DELAY_SECONDS)
+                response = await lobby.fetch_customized_contest_game_records(
+                    pb.ReqFetchCustomizedContestGameRecords(unique_id=unique_id, last_index=last_index)
+                )
+                if response.HasField("error") and response.error.code:
+                    raise PaipuError(
+                        f"fetchCustomizedContestGameRecords falló en el torneo {contest_id} "
+                        f"({_rpc_error_detail(response.error)})"
+                        + (f"; enterCustomizedContest ya había fallado ({enter_detail})" if enter_detail else "")
+                    )
+                for record in response.record_list:
+                    games.append(_contest_game_from_record(record, str(contest_id), division))
+                next_index = int(response.next_index)
+                if not response.record_list or not next_index or next_index == last_index:
+                    break
+                last_index = next_index
+            else:
+                print(
+                    f"AVISO: el torneo {contest_id} superó {MAX_CONTEST_PAGES} páginas; "
+                    f"puede faltar historial antiguo.",
+                    file=sys.stderr,
+                )
+    return games
+
+
+def fetch_contest_games(contests: dict[str, str]) -> list[ContestGame]:
+    """Partidas de las salas de torneo indicadas, como `{división: contestId}`."""
+    if not has_yostar_credentials():
+        raise PaipuAuthRequired(
+            "Faltan MAJSOUL_UID, MAJSOUL_TOKEN y MAJSOUL_DEVICE_ID para leer el torneo"
+        )
+    return asyncio.run(_fetch_contest_games_async(contests))

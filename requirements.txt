@@ -1,3 +1,4 @@
 openpyxl==3.1.5
+tzdata>=2024.1
 protobuf>=4.22,<6
 ms_api @ git+https://github.com/MahjongRepository/mahjong_soul_api.git@5925c3f14da7bee2662358c5d890f585555ef7bd
