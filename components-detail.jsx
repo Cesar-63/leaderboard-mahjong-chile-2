@@ -74,7 +74,7 @@ function PlayerDetail({ playerId, data, onPick }) {
             <div className={`avatar div-${p.div}`} style={{ width: 80, height: 80, fontSize: 22, borderRadius: 18 }}>{initials(p.handle)}</div>
             <div>
               <div className="name">{p.shortName}</div>
-              <div className="sub nat-line"><Flag nat={p.nat} size={18} /><span>{COUNTRIES[p.nat].name}</span><span className="dot-sep">·</span><span>Div {p.div}</span><span className="dot-sep">·</span><span>{p.arch.toUpperCase()}</span></div>
+              <div className="sub nat-line"><Flag nat={p.nat} size={18} /><span>{COUNTRIES[p.nat].name}</span><span className="dot-sep">·</span><span>Div {p.div}</span></div>
             </div>
           </div>
 

@@ -120,8 +120,6 @@ function StandingsView({ data, div, layout, onSelectPlayer }) {
                         <div className="player-handle nat-line">
                           <Flag nat={p.nat} size={15} />
                           <span>{COUNTRIES[p.nat].name}</span>
-                          <span className="dot-sep">·</span>
-                          <span>{p.arch === 'con datos' ? tr('con_datos') : tr('stats_pending')}</span>
                         </div>
                       </div>
                     </div>

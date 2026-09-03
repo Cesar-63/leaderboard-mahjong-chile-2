@@ -585,7 +585,7 @@ select{font:inherit;color:inherit}
   .section-head{flex-direction:column;align-items:flex-start;gap:8px}
   .section-head .h-left{gap:9px}
   .standings-card{overflow-x:auto;min-width:0}
-  .standings-table{min-width:640px}
+  .standings-table{min-width:0}
   .nat-filter{min-width:0}
   .side-rail{grid-template-columns:1fr}
   .detail-grid{grid-template-columns:1fr}
@@ -594,6 +594,10 @@ select{font:inherit;color:inherit}
   .cal-grid{grid-template-columns:1fr 1fr}
   .iormc-podium{grid-template-columns:1fr}
   .main{min-width:0;padding:14px 12px 80px}
+}
+@media (max-width:600px){
+  .standings-table{min-width:0}
+  .standings-table th:nth-child(n+5),.standings-table td:nth-child(n+5){display:none}
 }
 @media (max-width:460px){
   .cal-grid{grid-template-columns:1fr}
