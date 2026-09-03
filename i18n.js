@@ -483,26 +483,67 @@ window.NAT_TZ = {
   PE: 'America/Lima', BR: 'America/Sao_Paulo', MX: 'America/Mexico_City',
 };
 
-window.LANG = localStorage.getItem('mjc-lang') || 'es';
-window.TZ = localStorage.getItem('mjc-tz') || 'America/Santiago';
+// localStorage puede tirar excepción (modo privado, cookies bloqueadas); si
+// falla, la preferencia simplemente no persiste y el sitio sigue funcionando.
+function prefGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function prefSet(k, v) { try { localStorage.setItem(k, v); } catch (e) { /* no persiste */ } }
+
+window.LANG = prefGet('mjc-lang') || 'es';
+window.TZ = prefGet('mjc-tz') || 'America/Santiago';
 window.setLang = function (l) {
   window.LANG = l;
-  localStorage.setItem('mjc-lang', l);
+  prefSet('mjc-lang', l);
   window.dispatchEvent(new CustomEvent('langchange'));
 };
 window.setTZ = function (tz) {
   window.TZ = tz;
-  localStorage.setItem('mjc-tz', tz);
+  prefSet('mjc-tz', tz);
   window.dispatchEvent(new CustomEvent('tzchange'));
 };
-window.DARK = localStorage.getItem('mjc-dark') === '1';
-document.documentElement.setAttribute('data-dark', String(window.DARK));
-window.setDark = function (v) {
-  window.DARK = !!v;
-  localStorage.setItem('mjc-dark', window.DARK ? '1' : '0');
+// ── Modo oscuro ──
+// Sin preferencia guardada seguimos la del sistema operativo (el patrón
+// habitual: prefers-color-scheme). En cuanto el usuario toca el switch su
+// elección queda guardada y manda por sobre el sistema, en los dos sentidos:
+// se puede fijar claro aunque el SO esté en oscuro.
+(function () {
+  const KEY = 'mjc-dark';
+  const mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  const systemDark = () => !!(mq && mq.matches);
+
+  function apply(v) {
+    window.DARK = !!v;
+    document.documentElement.setAttribute('data-dark', String(window.DARK));
+    window.dispatchEvent(new CustomEvent('darkchange'));
+  }
+
+  let stored = null;
+  try { stored = localStorage.getItem(KEY); } catch (e) { /* modo privado */ }
+
+  // true mientras no haya elección explícita: es lo que habilita seguir al SO en vivo.
+  window.DARK_FOLLOWS_SYSTEM = stored !== '0' && stored !== '1';
+  window.DARK = window.DARK_FOLLOWS_SYSTEM ? systemDark() : stored === '1';
   document.documentElement.setAttribute('data-dark', String(window.DARK));
-  window.dispatchEvent(new CustomEvent('darkchange'));
-};
+
+  window.setDark = function (v) {
+    window.DARK_FOLLOWS_SYSTEM = false;
+    try { localStorage.setItem(KEY, v ? '1' : '0'); } catch (e) { /* modo privado */ }
+    apply(v);
+  };
+
+  // Volver a "lo que diga el sistema": borra la preferencia guardada.
+  window.clearDarkPreference = function () {
+    try { localStorage.removeItem(KEY); } catch (e) { /* modo privado */ }
+    window.DARK_FOLLOWS_SYSTEM = true;
+    apply(systemDark());
+  };
+
+  if (mq) {
+    const onSystemChange = (e) => { if (window.DARK_FOLLOWS_SYSTEM) apply(e.matches); };
+    // Safari < 14 solo tiene addListener.
+    if (mq.addEventListener) mq.addEventListener('change', onSystemChange);
+    else if (mq.addListener) mq.addListener(onSystemChange);
+  }
+})();
 
 window.tr = function (key, vars) {
   const table = window.I18N[window.LANG] || window.I18N.es;

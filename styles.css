@@ -22,6 +22,12 @@
   --glow: none;
 }
 
+/* Controles nativos (scrollbars, <select> del móvil, autofill) siguen el tema.
+   data-dark lo escribe el script de arranque del HTML antes de pintar. */
+:root{color-scheme:light}
+[data-dark="true"]{color-scheme:dark}
+[data-dark="false"]{color-scheme:light}
+
 /* ─── WASHI ─── */
 [data-theme="washi"]{--bg:#f4efe6;--bg-elev:#fbf8f0;--bg-sunk:#ebe3d2;--ink:#16130f;--ink-soft:rgba(22,19,15,.78);--ink-faint:rgba(22,19,15,.56);--line:rgba(22,19,15,.14);--line-strong:rgba(22,19,15,.28);--accent:#c8232c;--accent-2:#193a6b;--good:#237a42;--bad:#9f1c22;--warn:#a56a10;--font-display:'Noto Serif JP','EB Garamond',Georgia,serif;--font-body:'Inter',ui-sans-serif,system-ui,sans-serif;--glow:none}
 [data-theme="washi"][data-dark="true"]{--bg:#14110f;--bg-elev:#1d1916;--bg-sunk:#0e0c0a;--ink:#f2ede0;--ink-soft:rgba(242,237,224,.80);--ink-faint:rgba(242,237,224,.58);--line:rgba(242,237,224,.14);--line-strong:rgba(242,237,224,.28);--accent:#e54a52;--accent-2:#6b9ad6;--good:#54d688;--bad:#ff6b6b;--warn:#e3b04b;--shadow:0 12px 32px -16px rgba(0,0,0,.7)}
