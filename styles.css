@@ -378,7 +378,7 @@ select{font:inherit;color:inherit}
 [data-theme="neon"] .code-block .date{font-family:var(--font-mono);font-size:14px}
 .code-block .table{font-family:var(--font-mono);font-size:10px;color:var(--ink-soft)}
 .four-results{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.hanchan-card .pos{display:grid;grid-template-columns:20px 1fr auto;align-items:center;gap:9px;padding:6px 10px;border-radius:8px;background:var(--bg-sunk)}
+.hanchan-card .pos{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:9px;padding:6px 10px;border-radius:8px;background:var(--bg-sunk)}
 .hanchan-card .pos.p1{background:color-mix(in oklab,var(--accent) 11%,var(--bg-sunk))}
 [data-div="B"] .hanchan-card .pos.p1{background:color-mix(in oklab,var(--accent-2) 13%,var(--bg-sunk))}
 .hanchan-card .pos .place{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint)}
@@ -598,6 +598,11 @@ select{font:inherit;color:inherit}
 @media (max-width:600px){
   .standings-table{min-width:0}
   .standings-table th:nth-child(n+5),.standings-table td:nth-child(n+5){display:none}
+  .standings-table th:first-child,.standings-table td:first-child{width:34px!important;padding-left:6px;padding-right:6px}
+  .standings-row td{padding-left:8px;padding-right:8px}
+  .rank-cell{gap:6px}
+  .rank-num{min-width:18px;font-size:14px}
+  .player-cell{gap:8px}
 
   /* Historial */
   .hanchan-card{grid-template-columns:1fr;gap:8px}
