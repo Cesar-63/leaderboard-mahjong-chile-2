@@ -359,9 +359,11 @@ select{font:inherit;color:inherit}
 .st-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
 .st-name{font-weight:700;font-size:13px}
 .st-jp{font-family:var(--font-jp);font-size:11px;color:var(--ink-faint)}
-.st-formula{font-family:var(--font-mono);font-size:11px;line-height:1.45;color:var(--ink-soft);margin-top:6px}
-.st-note{font-size:11px;line-height:1.45;color:var(--ink-faint);margin-top:4px}
-.st-sample{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint);margin-top:7px}
+.st-formula{font-family:var(--font-mono);font-size:11px;line-height:1.45;color:var(--ink-soft);margin-top:4px;display:flex;flex-direction:column;gap:2px}
+.st-fl,.st-sl,.st-pl{font-family:var(--font-mono);font-size:8.5px;letter-spacing:.10em;text-transform:uppercase;color:var(--ink-faint)}
+.st-note{font-size:11px;line-height:1.45;color:var(--ink-faint);margin-top:6px}
+.st-sample{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-soft);margin-top:7px;display:flex;flex-direction:column;gap:2px}
+.st-pos{margin-top:8px;display:flex;flex-direction:column;gap:2px}
 .st-weak{color:var(--warn)}
 .st-dist{display:block;margin:8px auto 0;max-width:100%}
 .st-axis{font-family:var(--font-mono);font-size:8.5px;fill:var(--ink-faint)}

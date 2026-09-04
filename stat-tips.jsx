@@ -170,15 +170,22 @@ function StatTip({ info, color, children }) {
           <span className="st-name">{tr(metric.label)}</span>
           <span className="st-jp">{metric.jp}</span>
         </div>
-        <div className="st-formula">{tr(metric.formula)}</div>
+        <div className="st-formula">
+          <span className="st-fl">{tr('st_how')}</span>
+          {tr(metric.formula)}
+        </div>
         {metric.note && <div className="st-note">{tr(metric.note)}</div>}
         <div className="st-sample">
+          <span className="st-sl">{tr('st_based')}</span>
           {info.num !== null && info.value !== null
             ? tr('st_sample_ratio', { num: info.num, den: info.den, unit: tr(metric.unit) })
             : tr('st_sample_plain', { den: info.den, unit: tr(metric.unit) })}
           {info.weak && <span className="st-weak"> · {tr('st_small_sample')}</span>}
         </div>
-        <StatDistribution info={info} color={color} />
+        <div className="st-pos">
+          <span className="st-pl">{tr('st_position')}</span>
+          <StatDistribution info={info} color={color} />
+        </div>
         {info.rank && (
           <div className="st-foot">
             {tr('st_context', {
