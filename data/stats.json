@@ -973,36 +973,36 @@
       "statsReliable": true
     },
     "B04": {
-      "hands": 64,
-      "wins": 18,
-      "dealIns": 6,
-      "winRate": 28.1,
-      "dealInRate": 9.4,
-      "riichiRate": 25.0,
-      "openRate": 34.4,
+      "hands": 91,
+      "wins": 22,
+      "dealIns": 11,
+      "winRate": 24.2,
+      "dealInRate": 12.1,
+      "riichiRate": 19.8,
+      "openRate": 37.4,
       "damatenRate": 0.0,
-      "avgWinPoints": 6289,
-      "avgDealInPoints": 4517,
-      "avgWinTurn": 10.44,
+      "avgWinPoints": 6018,
+      "avgDealInPoints": 3318,
+      "avgWinTurn": 10.5,
       "topYaku": [
         {
           "name": "Riichi",
-          "count": 9
+          "count": 10
+        },
+        {
+          "name": "Tanyao",
+          "count": 5
         },
         {
           "name": "Ippatsu",
           "count": 4
         },
         {
-          "name": "Tanyao",
+          "name": "Menzen Tsumo",
           "count": 3
         },
         {
           "name": "Pinfu",
-          "count": 3
-        },
-        {
-          "name": "Toitoi",
           "count": 3
         }
       ],
@@ -1189,21 +1189,25 @@
       "statsReliable": true
     },
     "B10": {
-      "hands": 74,
-      "wins": 14,
-      "dealIns": 11,
-      "winRate": 18.9,
-      "dealInRate": 14.9,
-      "riichiRate": 28.4,
-      "openRate": 32.4,
-      "damatenRate": 7.1,
-      "avgWinPoints": 5686,
-      "avgDealInPoints": 8018,
-      "avgWinTurn": 11.14,
+      "hands": 101,
+      "wins": 18,
+      "dealIns": 20,
+      "winRate": 17.8,
+      "dealInRate": 19.8,
+      "riichiRate": 25.7,
+      "openRate": 33.7,
+      "damatenRate": 5.6,
+      "avgWinPoints": 4906,
+      "avgDealInPoints": 6675,
+      "avgWinTurn": 10.61,
       "topYaku": [
         {
           "name": "Riichi",
-          "count": 8
+          "count": 9
+        },
+        {
+          "name": "Pinfu",
+          "count": 3
         },
         {
           "name": "Yakuhai Chun",
@@ -1214,32 +1218,28 @@
           "count": 2
         },
         {
-          "name": "Pinfu",
-          "count": 2
-        },
-        {
           "name": "Honitsu",
-          "count": 1
+          "count": 2
         }
       ],
       "statsReliable": true
     },
     "B11": {
-      "hands": 67,
-      "wins": 18,
-      "dealIns": 8,
-      "winRate": 26.9,
-      "dealInRate": 11.9,
-      "riichiRate": 22.4,
-      "openRate": 22.4,
-      "damatenRate": 11.1,
-      "avgWinPoints": 5939,
-      "avgDealInPoints": 5412,
-      "avgWinTurn": 11.94,
+      "hands": 94,
+      "wins": 23,
+      "dealIns": 11,
+      "winRate": 24.5,
+      "dealInRate": 11.7,
+      "riichiRate": 21.3,
+      "openRate": 24.5,
+      "damatenRate": 8.7,
+      "avgWinPoints": 5387,
+      "avgDealInPoints": 5355,
+      "avgWinTurn": 11.39,
       "topYaku": [
         {
           "name": "Riichi",
-          "count": 11
+          "count": 12
         },
         {
           "name": "Menzen Tsumo",
@@ -1261,21 +1261,21 @@
       "statsReliable": true
     },
     "B12": {
-      "hands": 77,
-      "wins": 16,
-      "dealIns": 15,
-      "winRate": 20.8,
-      "dealInRate": 19.5,
-      "riichiRate": 14.3,
-      "openRate": 59.7,
+      "hands": 89,
+      "wins": 22,
+      "dealIns": 17,
+      "winRate": 24.7,
+      "dealInRate": 19.1,
+      "riichiRate": 12.4,
+      "openRate": 62.9,
       "damatenRate": 0.0,
-      "avgWinPoints": 6538,
-      "avgDealInPoints": 6813,
-      "avgWinTurn": 10.5,
+      "avgWinPoints": 5286,
+      "avgDealInPoints": 6635,
+      "avgWinTurn": 10.36,
       "topYaku": [
         {
           "name": "Tanyao",
-          "count": 6
+          "count": 8
         },
         {
           "name": "Riichi",
@@ -1283,15 +1283,15 @@
         },
         {
           "name": "Yakuhai Bakaze",
-          "count": 3
-        },
-        {
-          "name": "Menzen Tsumo",
-          "count": 2
+          "count": 4
         },
         {
           "name": "Yakuhai Chun",
-          "count": 2
+          "count": 3
+        },
+        {
+          "name": "Yakuhai Jikaze",
+          "count": 3
         }
       ],
       "statsReliable": true
@@ -1369,37 +1369,37 @@
       "statsReliable": true
     },
     "B15": {
-      "hands": 65,
-      "wins": 10,
-      "dealIns": 9,
-      "winRate": 15.4,
-      "dealInRate": 13.8,
-      "riichiRate": 10.8,
-      "openRate": 21.5,
-      "damatenRate": 20.0,
-      "avgWinPoints": 9190,
-      "avgDealInPoints": 6444,
-      "avgWinTurn": 11.3,
+      "hands": 92,
+      "wins": 22,
+      "dealIns": 10,
+      "winRate": 23.9,
+      "dealInRate": 10.9,
+      "riichiRate": 14.1,
+      "openRate": 23.9,
+      "damatenRate": 13.6,
+      "avgWinPoints": 6764,
+      "avgDealInPoints": 5930,
+      "avgWinTurn": 11.18,
       "topYaku": [
         {
           "name": "Riichi",
-          "count": 5
+          "count": 11
+        },
+        {
+          "name": "Pinfu",
+          "count": 7
         },
         {
           "name": "Menzen Tsumo",
           "count": 4
         },
         {
-          "name": "Pinfu",
+          "name": "Tanyao",
           "count": 4
         },
         {
-          "name": "Tanyao",
-          "count": 3
-        },
-        {
-          "name": "Yakuhai Hatsu",
-          "count": 3
+          "name": "Iipeiko",
+          "count": 4
         }
       ],
       "statsReliable": true
@@ -1477,25 +1477,25 @@
       "statsReliable": true
     },
     "B18": {
-      "hands": 67,
-      "wins": 8,
-      "dealIns": 11,
-      "winRate": 11.9,
-      "dealInRate": 16.4,
-      "riichiRate": 14.9,
-      "openRate": 37.3,
+      "hands": 79,
+      "wins": 10,
+      "dealIns": 13,
+      "winRate": 12.7,
+      "dealInRate": 16.5,
+      "riichiRate": 16.5,
+      "openRate": 35.4,
       "damatenRate": 0.0,
-      "avgWinPoints": 6425,
-      "avgDealInPoints": 5082,
-      "avgWinTurn": 12.5,
+      "avgWinPoints": 6600,
+      "avgDealInPoints": 5446,
+      "avgWinTurn": 11.9,
       "topYaku": [
         {
           "name": "Riichi",
-          "count": 3
+          "count": 5
         },
         {
           "name": "Menzen Tsumo",
-          "count": 2
+          "count": 3
         },
         {
           "name": "Yakuhai Haku",
@@ -1513,17 +1513,17 @@
       "statsReliable": true
     },
     "B19": {
-      "hands": 63,
-      "wins": 16,
-      "dealIns": 23,
-      "winRate": 25.4,
-      "dealInRate": 36.5,
-      "riichiRate": 25.4,
-      "openRate": 38.1,
-      "damatenRate": 6.2,
-      "avgWinPoints": 5619,
-      "avgDealInPoints": 6152,
-      "avgWinTurn": 12.0,
+      "hands": 75,
+      "wins": 17,
+      "dealIns": 25,
+      "winRate": 22.7,
+      "dealInRate": 33.3,
+      "riichiRate": 24.0,
+      "openRate": 40.0,
+      "damatenRate": 5.9,
+      "avgWinPoints": 5759,
+      "avgDealInPoints": 6096,
+      "avgWinTurn": 12.35,
       "topYaku": [
         {
           "name": "Riichi",
@@ -1542,7 +1542,7 @@
           "count": 3
         },
         {
-          "name": "Yakuhai Jikaze",
+          "name": "Tanyao",
           "count": 2
         }
       ],
@@ -1657,20 +1657,28 @@
       "statsReliable": true
     },
     "B23": {
-      "hands": 68,
-      "wins": 3,
-      "dealIns": 12,
-      "winRate": 4.4,
-      "dealInRate": 17.6,
-      "riichiRate": 2.9,
-      "openRate": 64.7,
+      "hands": 80,
+      "wins": 5,
+      "dealIns": 14,
+      "winRate": 6.2,
+      "dealInRate": 17.5,
+      "riichiRate": 3.8,
+      "openRate": 65.0,
       "damatenRate": 0.0,
-      "avgWinPoints": 5533,
-      "avgDealInPoints": 3850,
-      "avgWinTurn": 9.0,
+      "avgWinPoints": 7320,
+      "avgDealInPoints": 3536,
+      "avgWinTurn": 10.2,
       "topYaku": [
         {
           "name": "Yakuhai Bakaze",
+          "count": 2
+        },
+        {
+          "name": "Yakuhai Haku",
+          "count": 2
+        },
+        {
+          "name": "Riichi",
           "count": 2
         },
         {
@@ -1679,14 +1687,6 @@
         },
         {
           "name": "Yakuhai Jikaze",
-          "count": 1
-        },
-        {
-          "name": "Yakuhai Haku",
-          "count": 1
-        },
-        {
-          "name": "Riichi",
           "count": 1
         }
       ],
