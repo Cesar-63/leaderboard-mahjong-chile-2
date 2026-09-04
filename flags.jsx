@@ -7,6 +7,9 @@ const COUNTRIES = {
   PE: { code: 'PE', name: 'Perú',      demo: 'Peruano',    accent: '#d91023', alt: '#8f0a17', ink: '#ffffff' },
   BR: { code: 'BR', name: 'Brasil',    demo: 'Brasileño',  accent: '#009c3b', alt: '#ffdf00', ink: '#002776' },
   MX: { code: 'MX', name: 'México',    demo: 'Mexicano',   accent: '#006847', alt: '#ce1126', ink: '#ffffff' },
+  // Japón no es una nacionalidad de la liga: está sólo para la zona horaria
+  // (por eso no entra en COUNTRY_ORDER, que ordena los filtros del roster).
+  JP: { code: 'JP', name: 'Japón',     demo: 'Japonés',    accent: '#bc002d', alt: '#ffffff', ink: '#ffffff' },
 };
 const COUNTRY_ORDER = ['CL', 'UY', 'AR', 'PE', 'BR', 'MX'];
 
@@ -38,6 +41,7 @@ function Flag({ nat, size = 18, className = '', title }) {
     case 'PE': return wrap(<g><rect width="24" height="16" fill="#d91023" /><rect x="8" width="8" height="16" fill="#fff" /><circle cx="12" cy="8" r="2" fill="none" stroke="#c8102e" strokeWidth="0.9" /></g>);
     case 'BR': return wrap(<g><rect width="24" height="16" fill="#009c3b" /><path d="M12 1.8L22.2 8 12 14.2 1.8 8z" fill="#ffdf00" /><circle cx="12" cy="8" r="3.4" fill="#002776" /><path d="M8.9 6.5a6 6 0 016.2 0" fill="none" stroke="#fff" strokeWidth="0.85" /></g>);
     case 'MX': return wrap(<g><rect width="24" height="16" fill="#006847" /><rect x="8" width="8" height="16" fill="#fff" /><rect x="16" width="8" height="16" fill="#ce1126" /><circle cx="12" cy="8" r="1.9" fill="none" stroke="#8c6d2f" strokeWidth="0.9" /><circle cx="12" cy="8" r="0.7" fill="#8c6d2f" /></g>);
+    case 'JP': return wrap(<g><rect width="24" height="16" fill="#fff" /><circle cx="12" cy="8" r="4.8" fill="#bc002d" /></g>);
     default: return wrap(<rect width="24" height="16" fill="#999" />);
   }
 }

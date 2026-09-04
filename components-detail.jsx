@@ -108,12 +108,9 @@ function PlayerDetail({ playerId, data, onPick }) {
           )}
 
           <div className="stat-block">
-            <div className="stat-cell"><div className="l">{tr('lbl_avgrank')} · 平均順位</div><div className="v">{p.avgRank.toFixed(2)}</div></div>
-            <div className="stat-cell"><div className="l">{tr('lbl_avgpts')} · 平均得点</div><div className="v" style={{ color: p.avgPoints >= 0 ? 'var(--good)' : 'var(--bad)' }}>{fmtPts(p.avgPoints)}</div></div>
-            <div className="stat-cell"><div className="l">{tr('lbl_winrate')} · 和了率</div><div className="v">{fmtAdvanced(p, 'winRate', '%')}</div></div>
-            <div className="stat-cell"><div className="l">{tr('lbl_dealin')} · 放銃率</div><div className="v" style={{ color: 'var(--bad)' }}>{fmtAdvanced(p, 'dealInRate', '%')}</div></div>
-            <div className="stat-cell"><div className="l">{tr('lbl_riichi')} · 立直率</div><div className="v">{fmtAdvanced(p, 'riichiRate', '%')}</div></div>
-            <div className="stat-cell"><div className="l">{tr('lbl_open')} · 副露率</div><div className="v">{fmtAdvanced(p, 'openRate', '%')}</div></div>
+            {PROFILE_STATS.map(metric => (
+              <StatCell key={metric} metric={metric} player={p} data={data} />
+            ))}
           </div>
 
           <div>
@@ -425,6 +422,22 @@ function HanchanLog({ data, div }) {
   );
 }
 
+// Hora en una zona, con la marca de salto de día. Sin la marca, una sesión de
+// las 22:00 en Chile se ve como "11:00" en Tokio y no queda dicho que es el día
+// siguiente.
+function TzTime({ date, time, tz }) {
+  const { time: t, shift } = window.fmtTzParts(date, time, tz);
+  if (!shift) return <React.Fragment>{t}</React.Fragment>;
+  return (
+    <React.Fragment>
+      {t}
+      <sup className="tz-shift" title={tr(shift > 0 ? 'dia_sig' : 'dia_ant')}>
+        {shift > 0 ? '+1' : '−1'}
+      </sup>
+    </React.Fragment>
+  );
+}
+
 function CalModal({ entry, onClose }) {
   const players = entry.players || [];
   const baseTz = 'America/Santiago';
@@ -435,7 +448,7 @@ function CalModal({ entry, onClose }) {
         <div className="cm-head">
           <div>
             <div className="cm-title">{entry.round} · {entry.mesa}</div>
-            {entry.date !== 'Por definir' && <div className="cm-sub">{entry.date} · {entry.day} · {window.fmtTzTime(entry.date, entry.time, window.TZ)} · {window.TZ}</div>}
+            {entry.date !== 'Por definir' && <div className="cm-sub">{entry.date} · {entry.day} · <TzTime date={entry.date} time={entry.time} tz={window.TZ} /> · {window.TZ}</div>}
           </div>
           <button className="cm-close" onClick={onClose} aria-label="Cerrar">✕</button>
         </div>
@@ -445,11 +458,10 @@ function CalModal({ entry, onClose }) {
             <div className="cm-block">{tr('hora_local')} · {tr('jugadores')}</div>
             {players.map((pl, i) => {
               const tz = natTz[pl.nat] || baseTz;
-              const local = window.fmtTzTime(entry.date, entry.time, tz);
               return (
                 <div className="cm-player" key={i}>
                   <div className="cm-name"><Flag nat={pl.nat} size={15} />{pl.name}</div>
-                  <div className="cm-tz"><b>{local}</b><span>{tz}</span></div>
+                  <div className="cm-tz"><b><TzTime date={entry.date} time={entry.time} tz={tz} /></b><span>{tz}</span></div>
                 </div>
               );
             })}
@@ -490,7 +502,7 @@ function CalendarView({ data }) {
       </div>
       <div className="round-l">{c.round}</div>
       <div className="meta-l">{c.mesa}</div>
-      <div className="meta-l">{c.date === 'Por definir' ? tr('por_definir') : window.fmtTzTime(c.date, c.time, window.TZ) + ' · ' + window.TZ}</div>
+      <div className="meta-l">{c.date === 'Por definir' ? tr('por_definir') : <React.Fragment><TzTime date={c.date} time={c.time} tz={window.TZ} /> · {window.TZ}</React.Fragment>}</div>
       {c.players && c.players.length > 0 && (
         <div className="cal-players">
           {c.players.map(pl => (

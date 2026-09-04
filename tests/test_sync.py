@@ -63,6 +63,59 @@ def synthetic_hule_paipu(fans):
     return outer.SerializeToString()
 
 
+def wrap_records(records):
+    """Empaqueta (nombre, mensaje) en el contenedor que espera parse_record."""
+    from ms import protocol_pb2 as pb
+    details = pb.GameDetailRecords()
+    for name, message in records:
+        item = pb.Wrapper()
+        item.name = name
+        item.data = message.SerializeToString()
+        details.records.append(item.SerializeToString())
+    outer = pb.Wrapper()
+    outer.name = "GameDetailRecords"
+    outer.data = details.SerializeToString()
+    return outer.SerializeToString()
+
+
+def hand_paipu(*, winner=0, zimo=True, liqi=False, ming=(), dadian=8000, draws=(0, 0, 0, 0),
+               discarder=None, ankan_seat=None, pon_seat=None):
+    """Una mano suelta: robos por asiento, llamadas opcionales y un ganador."""
+    from ms import protocol_pb2 as pb
+    new_round = pb.RecordNewRound()
+    new_round.scores.extend([30000, 30000, 30000, 30000])
+    records = [("RecordNewRound", new_round)]
+    if pon_seat is not None:
+        peng = pb.RecordChiPengGang()
+        peng.seat = pon_seat
+        peng.type = 1
+        records.append(("RecordChiPengGang", peng))
+    if ankan_seat is not None:
+        ankan = pb.RecordAnGangAddGang()
+        ankan.seat = ankan_seat
+        ankan.type = 3
+        records.append(("RecordAnGangAddGang", ankan))
+    for seat, count in enumerate(draws):
+        for _ in range(count):
+            deal = pb.RecordDealTile()
+            deal.seat = seat
+            records.append(("RecordDealTile", deal))
+    if not zimo and discarder is not None:
+        discard = pb.RecordDiscardTile()
+        discard.seat = discarder
+        records.append(("RecordDiscardTile", discard))
+    hule_record = pb.RecordHule()
+    hule_record.scores.extend([30000, 30000, 30000, 30000])
+    hule = hule_record.hules.add()
+    hule.seat = winner
+    hule.zimo = zimo
+    hule.liqi = liqi
+    hule.dadian = dadian
+    hule.ming.extend(ming)
+    records.append(("RecordHule", hule_record))
+    return wrap_records(records)
+
+
 def _division_config():
     return {
         "divisions": {
@@ -95,10 +148,10 @@ def _paipu_game():
         "uuid": "u", "url": "https://x/paipu", "sha256": "x",
         "finalScoresBySeat": [45000, 38500, 32000, 4500],
         "seatStats": [
-            {"hands": 7, "wins": 1, "dealIns": 0, "riichis": 2, "openHands": 1, "yaku": {}},
-            {"hands": 7, "wins": 0, "dealIns": 1, "riichis": 0, "openHands": 2, "yaku": {}},
-            {"hands": 7, "wins": 1, "dealIns": 0, "riichis": 1, "openHands": 0, "yaku": {}},
-            {"hands": 7, "wins": 0, "dealIns": 2, "riichis": 0, "openHands": 1, "yaku": {}},
+            {"hands": 7, "wins": 1, "dealIns": 0, "riichis": 2, "openHands": 1, "damaten": 0, "winPoints": 8000, "dealInPoints": 0, "winTurns": 11, "yaku": {}},
+            {"hands": 7, "wins": 0, "dealIns": 1, "riichis": 0, "openHands": 2, "damaten": 0, "winPoints": 0, "dealInPoints": 5200, "winTurns": 0, "yaku": {}},
+            {"hands": 7, "wins": 1, "dealIns": 0, "riichis": 1, "openHands": 0, "damaten": 1, "winPoints": 5200, "dealInPoints": 0, "winTurns": 9, "yaku": {}},
+            {"hands": 7, "wins": 0, "dealIns": 2, "riichis": 0, "openHands": 1, "damaten": 0, "winPoints": 0, "dealInPoints": 12000, "winTurns": 0, "yaku": {}},
         ],
         "players": [
             {"seat": 0, "account_id": 103, "nickname": "Meme000", "point": 45000},
@@ -172,6 +225,41 @@ class SyncTests(unittest.TestCase):
         health = advanced_stats_health(self._stats([True]), self._status("PUBLICADO"))
         self.assertGreater(health["with_hands"], 0)
         self.assertFalse(health["submitted"] and not health["with_hands"])
+
+    def test_kan_cerrado_no_cuenta_como_mano_abierta(self):
+        # El ankan mantiene la mano menzen: no es furo y no rompe el damaten.
+        raw = hand_paipu(winner=0, ming=["angang(1m,1m,1m,1m)"], ankan_seat=0, draws=(6, 5, 5, 5))
+        parsed = parse_record("260101-00000000-0000-0000-0000-000000000000", raw)
+        self.assertEqual(parsed.seat_stats[0]["openHands"], 0)
+        self.assertEqual(parsed.seat_stats[0]["damaten"], 1)
+
+    def test_pon_cuenta_como_mano_abierta_y_anula_damaten(self):
+        raw = hand_paipu(winner=0, ming=["kezi(1z,1z,1z)"], pon_seat=0, draws=(6, 5, 5, 5))
+        parsed = parse_record("260101-00000000-0000-0000-0000-000000000000", raw)
+        self.assertEqual(parsed.seat_stats[0]["openHands"], 1)
+        self.assertEqual(parsed.seat_stats[0]["damaten"], 0)
+
+    def test_riichi_no_es_damaten(self):
+        raw = hand_paipu(winner=0, liqi=True, draws=(6, 5, 5, 5))
+        parsed = parse_record("260101-00000000-0000-0000-0000-000000000000", raw)
+        self.assertEqual(parsed.seat_stats[0]["damaten"], 0)
+
+    def test_puntos_de_la_mano_van_al_ganador_y_al_que_paga(self):
+        raw = hand_paipu(winner=2, zimo=False, discarder=1, dadian=7700, draws=(4, 4, 4, 4))
+        parsed = parse_record("260101-00000000-0000-0000-0000-000000000000", raw)
+        self.assertEqual(parsed.seat_stats[2]["winPoints"], 7700)
+        self.assertEqual(parsed.seat_stats[1]["dealIns"], 1)
+        self.assertEqual(parsed.seat_stats[1]["dealInPoints"], 7700)
+        self.assertEqual(parsed.seat_stats[0]["dealInPoints"], 0)
+
+    def test_turno_de_la_mano_ganada(self):
+        # Tsumo: el turno es el robo en curso. Ron: el turno que le tocaba.
+        tsumo = parse_record("260101-00000000-0000-0000-0000-000000000000",
+                             hand_paipu(winner=0, zimo=True, draws=(9, 8, 8, 8)))
+        self.assertEqual(tsumo.seat_stats[0]["winTurns"], 9)
+        ron = parse_record("260101-00000000-0000-0000-0000-000000000000",
+                           hand_paipu(winner=3, zimo=False, discarder=2, draws=(7, 7, 7, 6)))
+        self.assertEqual(ron.seat_stats[3]["winTurns"], 7)
 
     def test_paipu_parses_seat_identity(self):
         raw = synthetic_paipu([(1111, "A-P1", 45000), (2222, "A-P2", 38500), (3333, "A-P3", 32000), (4444, "A-P4", 4500)])
