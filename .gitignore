@@ -20,3 +20,7 @@ reports/
 # Preview local: dependencias de build y bundles generados.
 .vendor/
 dist/
+
+# Build de producción (lo genera Vercel en cada deploy).
+dist-site/
+.vercel/

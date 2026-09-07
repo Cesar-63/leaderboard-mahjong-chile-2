@@ -1,0 +1,22 @@
+# Lo que Vercel no necesita para construir ni servir el sitio.
+#
+# No cambia lo que se publica (eso lo define outputDirectory: dist-site), pero
+# evita subir ~12 MB de paipus crudos en cada deploy. Ojo: scripts/ y los
+# .jsx/.css/.js de la raíz SÍ hacen falta, el build los lee.
+
+data/raw-paipu/
+data/liga.json
+data/stats.json
+data/sync-status.json
+tests/
+uploads/
+reports/
+.github/
+.venv/
+__pycache__/
+.vendor/
+dist/
+*.xlsx
+*.pb
+*.md
+requirements.txt
