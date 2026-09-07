@@ -1,8 +1,9 @@
 # Integración Google Sheets → Liga Mahjong Chile
 
 La planilla configurada en `sync-config.json` es el panel administrativo. Los
-organizadores pegan los enlaces de repetición en la hoja **Calendario**, en la
-celda vacía ubicada a la derecha de `Paipu G1` o `Paipu G2`.
+enlaces de repetición van en la hoja **Calendario**, en la celda vacía ubicada a
+la derecha de `Paipu G1` o `Paipu G2`. Los pega un organizador a mano o los
+completa `scripts/fill_calendar_paipus.py --write` desde las salas de torneo.
 
 ## Ejecutar localmente
 
@@ -92,17 +93,18 @@ filtración del sitio pero no la de la planilla.
 ## Buscar los paipus en las salas de torneo
 
 `scripts/fill_calendar_paipus.py` hace el camino inverso al pegado manual: lee
-el historial de partidas de las salas de torneo de División A y B y dice qué
+el historial de partidas de las salas de torneo de División A y B y resuelve qué
 enlace va en cada celda `Paipu G1` / `Paipu G2` todavía vacía.
 
 ```bash
 MAJSOUL_CONTEST_ID_A=... MAJSOUL_CONTEST_ID_B=... python scripts/fill_calendar_paipus.py
 python scripts/fill_calendar_paipus.py --xlsx planilla.xlsx --games-json partidas.json
+python scripts/fill_calendar_paipus.py --write --fetch-logs
 ```
 
-**No escribe en la planilla.** Deja `reports/calendar-paipus.json` y
-`reports/calendar-paipus.csv` con `celda → valor`, y el mismo resumen en el
-Job Summary de GitHub Actions. El pegado lo hace un humano.
+**Sin `--write` no toca la planilla**: deja `reports/calendar-paipus.json` y
+`reports/calendar-paipus.csv` con `celda → valor`, y el mismo resumen en el Job
+Summary de GitHub Actions, para que el pegado lo haga un humano.
 
 Cómo empareja una partida con su mesa:
 
@@ -128,10 +130,57 @@ Avisos: `SIN_MESA` (partida que no calza con ninguna mesa), `AMBIGUA`,
 `MESA_CON_EXTRAS` y `NOMBRE_DESCONOCIDO` (un nombre del Calendario que no está
 en el roster). El job informa y termina OK; con `--fail-on-issues` falla.
 
-`.github/workflows/calendar-paipus.yml` lo corre a diario y a pedido, con los
-secrets `MAJSOUL_CONTEST_ID_A` y `MAJSOUL_CONTEST_ID_B` además de la sesión
-técnica. Comparte el grupo de concurrencia con el sincronizador porque Mahjong
-Soul admite una sola sesión por cuenta.
+### `--write`: pegar las celdas en el Google Sheet
+
+`--write` escribe **solo las celdas `PROPUESTO`**: celda vacía y una única
+partida del torneo que le corresponde. Todo lo demás sigue siendo decisión
+humana — `CONFLICTO` no se sobrescribe nunca y `REVISAR` queda afuera salvo que
+se pida con `--write-revisar`.
+
+El reporte se arma sobre la copia descargada de la planilla, así que justo antes
+del `batchUpdate` el script **relee cada celda destino**: si alguien la llenó en
+el medio, la deja como está y la informa como `OMITIDO`. Cada fila del reporte
+lleva su resultado (`ESCRITO`, `OMITIDO`, `OK`, `ERROR`, o `SIMULADO` cuando se
+corrió sin `--write`).
+
+Escribir necesita credenciales, porque el enlace público de exportación es de
+solo lectura:
+
+1. Crear una cuenta de servicio en Google Cloud y habilitarle la Google Sheets
+   API; descargar su JSON.
+2. Compartir la planilla con el `client_email` de esa cuenta, con permiso de
+   **Editor**.
+3. Guardar el JSON completo en el secret `GOOGLE_SERVICE_ACCOUNT_JSON` (o, en
+   local, `export GOOGLE_SERVICE_ACCOUNT_JSON="$(cat cuenta.json)"`, una ruta en
+   `GOOGLE_APPLICATION_CREDENTIALS`, o `--credentials cuenta.json`).
+
+La cuenta se valida antes de tocar Mahjong Soul: si falta, el script corta ahí
+sin gastar el login. De las credenciales solo se imprime el `client_email`, que
+es justamente lo que hay que compartir en la planilla.
+
+### `--fetch-logs`: completar los paipus que falten
+
+`--fetch-logs` descarga a `data/raw-paipu/` los `.pb` que falten, **en la misma
+sesión técnica** que ya se abrió para leer las salas: Mahjong Soul admite un
+solo login por cuenta, así que leer el torneo y bajar registros van juntos.
+
+Primero se piden los paipus que esta corrida va a pegar (la novedad) y después
+los que el Calendario ya traía. Rige el mismo límite que el sincronizador:
+`MAX_RECORDS_PER_RUN` (3, ajustable con `--max-logs`) por corrida, espaciados
+`PAIPU_REQUEST_DELAY_SECONDS` (20 s) y cortando al primer 540. Un `.pb` que
+quedó guardado como XML (la respuesta de "requiere sesión") cuenta como
+faltante y se vuelve a pedir.
+
+Con esto, una sola corrida deja la celda pegada y su log disponible, y
+`scripts/sync.py` publica las estadísticas avanzadas en la sincronización
+siguiente sin esperar a que alguien copie el enlace a mano.
+
+`.github/workflows/calendar-paipus.yml` lo corre a diario y a pedido con
+`--write --fetch-logs`, con los secrets `MAJSOUL_CONTEST_ID_A`,
+`MAJSOUL_CONTEST_ID_B` y `GOOGLE_SERVICE_ACCOUNT_JSON` además de la sesión
+técnica, y commitea los `.pb` nuevos. Si el secret de Google no está, el job
+avisa y se queda en modo propuesta. Comparte el grupo de concurrencia con el
+sincronizador porque Mahjong Soul admite una sola sesión por cuenta.
 
 ## Automatización
 
@@ -139,8 +188,10 @@ Soul admite una sola sesión por cuenta.
 también permite iniciarla manualmente desde GitHub Actions. Si los datos cambian,
 el workflow hace un commit; Vercel puede desplegar ese commit normalmente.
 
-La planilla debe continuar siendo legible mediante el enlace compartido. No se
-requieren credenciales de Google mientras se mantenga esa configuración.
+La planilla debe continuar siendo legible mediante el enlace compartido: leerla
+no requiere credenciales de Google. Escribir el Calendario sí las pide, y son
+exclusivas de ese camino (`--write`, secret `GOOGLE_SERVICE_ACCOUNT_JSON`); la
+sincronización sigue funcionando sin ellas.
 
 Los paipus recientes de Mahjong Soul pueden exigir autenticación aun cuando el
 enlace de replay sea compartible. En ese caso la tabla y el historial continúan

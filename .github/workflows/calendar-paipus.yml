@@ -3,6 +3,14 @@ name: Paipus del torneo hacia el Calendario
 on:
   workflow_dispatch:
     inputs:
+      write:
+        description: "Pega los paipus propuestos en el Google Sheet"
+        type: boolean
+        default: true
+      fetch_logs:
+        description: "Descarga los paipus que falten en data/raw-paipu"
+        type: boolean
+        default: true
       fail_on_issues:
         description: "Falla el job si hay conflictos o partidas sin mesa"
         type: boolean
@@ -11,8 +19,9 @@ on:
     # 09:20 en Chile (verano) / 08:20 (invierno): después de las sesiones.
     - cron: "20 12 * * *"
 
+# Escribir: los paipus descargados se versionan igual que en sync-data.yml.
 permissions:
-  contents: read
+  contents: write
 
 # Mahjong Soul admite una sola sesión por cuenta: compartir grupo con
 # sync-data.yml impide que los dos workflows hagan login al mismo tiempo y se
@@ -31,19 +40,47 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt
-      - name: Leer las salas de torneo y proponer paipus
+      - name: Leer las salas de torneo y completar el Calendario
         env:
           MAJSOUL_UID: ${{ secrets.MAJSOUL_UID }}
           MAJSOUL_TOKEN: ${{ secrets.MAJSOUL_TOKEN }}
           MAJSOUL_DEVICE_ID: ${{ secrets.MAJSOUL_DEVICE_ID }}
           MAJSOUL_CONTEST_ID_A: ${{ secrets.MAJSOUL_CONTEST_ID_A }}
           MAJSOUL_CONTEST_ID_B: ${{ secrets.MAJSOUL_CONTEST_ID_B }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          # El cron corre sin inputs: por defecto pega y descarga.
+          ESCRIBIR: ${{ inputs.write == null && 'true' || inputs.write }}
+          DESCARGAR: ${{ inputs.fetch_logs == null && 'true' || inputs.fetch_logs }}
         run: |
           ARGS=""
+          if [ "$ESCRIBIR" = "true" ]; then
+            if [ -n "$GOOGLE_SERVICE_ACCOUNT_JSON" ]; then
+              ARGS="$ARGS --write"
+            else
+              echo "::warning::Sin GOOGLE_SERVICE_ACCOUNT_JSON: el job solo propone celdas, no las pega."
+            fi
+          fi
+          if [ "$DESCARGAR" = "true" ]; then
+            ARGS="$ARGS --fetch-logs"
+          fi
           if [ "${{ inputs.fail_on_issues }}" = "true" ]; then
-            ARGS="--fail-on-issues"
+            ARGS="$ARGS --fail-on-issues"
           fi
           python scripts/fill_calendar_paipus.py $ARGS
+      - name: Publicar los paipus descargados
+        if: always()
+        run: |
+          git config user.name "mahjong-chile-bot"
+          git config user.email "actions@users.noreply.github.com"
+          # Igual que en sync-data.yml: sin versionarlos, cada corrida vuelve a
+          # pedirle los mismos registros a Mahjong Soul.
+          git add data/raw-paipu
+          if git diff --cached --quiet; then
+            echo "No hay paipus nuevos"
+            exit 0
+          fi
+          git commit -m "data: descargar paipus del torneo"
+          git push
       - name: Subir el reporte
         if: always()
         uses: actions/upload-artifact@v4
