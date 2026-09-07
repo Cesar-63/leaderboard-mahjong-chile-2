@@ -48,6 +48,13 @@ memoria y `strip_private_fields` los borra antes de escribir `liga.json`,
 `stats.json` y `generated.js`. `tests/test_sync.py::PrivacidadTests` sostiene la
 regla, incluso sobre los archivos ya versionados.
 
+**El sufijo `_a` de los enlaces de paipu se conserva a propósito.** Mahjong Soul
+lo agrega al copiar un enlace desde el cliente y marca quién lo compartió; en la
+planilla es siempre el mismo valor, el de la cuenta que pega los enlaces, no el
+de ningún jugador. `extract_record_id` lo necesita para pedirle el registro a la
+API, así que no se toca. Si algún día lo pega otra persona, el sufijo cambia con
+ella: conviene que sea siempre la cuenta organizadora.
+
 **Lo que queda fuera del código:** `sync-config.json` publica el ID de la
 planilla y hoy la descarga es anónima (`export?format=xlsx` sin credenciales),
 lo que sólo funciona si la planilla es legible con el enlace. Como el repo es
