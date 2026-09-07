@@ -1,0 +1,223 @@
+// Endpoint de interacciones de Discord: /agendar escribe fecha y hora en la
+// hoja Calendario de la planilla.
+//
+// Corre como Vercel Function del mismo proyecto que sirve el sitio. Se usan
+// exports por método HTTP (GET/POST) porque ésa es la forma en que @vercel/node
+// entrega el `Request` web: hace falta el cuerpo crudo, byte a byte, para
+// verificar la firma Ed25519, y un body ya parseado no sirve.
+//
+// El camino crítico son 3 segundos: pasado ese plazo Discord da la interacción
+// por perdida. Por eso el token de Google y los datos del gremio se cachean en
+// el módulo (la lambda tibia se reusa) y la lectura de la planilla arranca en
+// paralelo con las consultas a Discord.
+import { verifyDiscordSignature } from "./_lib/verify.mjs";
+import { parseWhen, WhenError, DEFAULT_TIMEZONE } from "./_lib/time.mjs";
+import { mergeTargets, parseTarget, validateTarget } from "./_lib/target.mjs";
+import { loadConfig, readLeague, readTable, SheetsError, writeSchedule } from "./_lib/sheets.mjs";
+import {
+  callerHandles, fetchChannel, InteractionResponseType, InteractionType,
+  message, optionMap, resolveRoleId,
+} from "./_lib/discord.mjs";
+
+const CONFIG = loadConfig();
+const DEFAULT_STAFF_ROLE_NAME = "Staff";
+
+function json(body, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { "content-type": "application/json" },
+  });
+}
+
+export function GET() {
+  // Sonda de salud: confirma que la función está desplegada y qué le falta
+  // configurar, sin exponer ningún secreto.
+  const env = process.env;
+  return json({
+    service: "liga-mahjong-chile/discord",
+    ready: Boolean(env.DISCORD_PUBLIC_KEY && env.SHEET_ID),
+    configured: {
+      discordPublicKey: Boolean(env.DISCORD_PUBLIC_KEY),
+      sheetId: Boolean(env.SHEET_ID),
+      googleCredentials: Boolean(env.GOOGLE_SERVICE_ACCOUNT_JSON || (env.GOOGLE_SERVICE_ACCOUNT_EMAIL && env.GOOGLE_PRIVATE_KEY)),
+      botToken: Boolean(env.DISCORD_BOT_TOKEN),
+      staffRole: env.DISCORD_STAFF_ROLE_ID ? "por id" : `por nombre (@${env.DISCORD_STAFF_ROLE_NAME || DEFAULT_STAFF_ROLE_NAME})`,
+      timeZone: env.LEAGUE_TIMEZONE || DEFAULT_TIMEZONE,
+    },
+  });
+}
+
+export async function POST(request) {
+  const env = process.env;
+  const rawBody = await request.text();
+  const valid = verifyDiscordSignature({
+    publicKeyHex: env.DISCORD_PUBLIC_KEY,
+    signature: request.headers.get("x-signature-ed25519"),
+    timestamp: request.headers.get("x-signature-timestamp"),
+    rawBody,
+  });
+  if (!valid) return new Response("invalid request signature", { status: 401 });
+
+  let interaction;
+  try {
+    interaction = JSON.parse(rawBody);
+  } catch {
+    return new Response("bad request", { status: 400 });
+  }
+
+  if (interaction.type === InteractionType.PING) {
+    return json({ type: InteractionResponseType.PONG });
+  }
+  if (interaction.type !== InteractionType.APPLICATION_COMMAND) {
+    return json(message("Ese tipo de interacción no está soportado.", { ephemeral: true }));
+  }
+  if (interaction.data?.name !== "agendar") {
+    return json(message(`Comando desconocido: \`${interaction.data?.name}\`.`, { ephemeral: true }));
+  }
+
+  try {
+    return json(await agendar(interaction, env));
+  } catch (error) {
+    const detail = error instanceof SheetsError ? error.message : `${error.name}: ${error.message}`;
+    return json(message(`⚠️ No pude escribir en la planilla. ${detail}`, { ephemeral: true }));
+  }
+}
+
+async function agendar(interaction, env) {
+  const options = optionMap(interaction);
+  const timeZone = env.LEAGUE_TIMEZONE || DEFAULT_TIMEZONE;
+
+  let when;
+  try {
+    when = parseWhen(options.cuando, { timeZone });
+  } catch (error) {
+    if (!(error instanceof WhenError)) throw error;
+    return message(`⚠️ ${error.message}`, { ephemeral: true });
+  }
+
+  const botToken = env.DISCORD_BOT_TOKEN;
+  const channel = interaction.channel || {};
+  const explicit = {
+    division: options.division ? String(options.division).toUpperCase() : undefined,
+    session: options.sesion === undefined ? undefined : Number(options.sesion),
+    table: options.mesa === undefined ? undefined : Number(options.mesa),
+  };
+
+  // La lectura de la planilla no depende de la mesa, así que va en paralelo
+  // con las consultas a Discord.
+  const [league, contextNames, staffRoleId] = await Promise.all([
+    readLeague(env, CONFIG),
+    channelNames(botToken, interaction, channel),
+    env.DISCORD_STAFF_ROLE_ID
+      ? Promise.resolve(env.DISCORD_STAFF_ROLE_ID)
+      : resolveRoleId(botToken, interaction.guild_id, env.DISCORD_STAFF_ROLE_NAME || DEFAULT_STAFF_ROLE_NAME),
+  ]);
+
+  const target = mergeTargets(explicit, ...contextNames.map(parseTarget));
+  const missing = validateTarget(target);
+  if (missing.length) {
+    return message(
+      `⚠️ No pude deducir ${missing.join(", ")} desde este canal` +
+      (contextNames.length ? ` (\`${contextNames.join("` › `")}\`)` : "") +
+      ".\nPasalos a mano: `/agendar cuando:<t:…:F> division:A sesion:3 mesa:2`, " +
+      "o nombrá el hilo con el formato `A · Sesión 3 · Mesa 2`.",
+      { ephemeral: true },
+    );
+  }
+
+  const table = readTable(league.grid, target.division, target.session, target.table);
+  const label = `División ${target.division} · Sesión ${target.session} · Mesa ${target.table}`;
+  if (table.players.every((name) => !name)) {
+    return message(`⚠️ ${label} todavía no tiene jugadores en el Calendario. Falta publicar el sorteo.`, { ephemeral: true });
+  }
+
+  const memberRoles = interaction.member?.roles || [];
+  const isStaff = Boolean(staffRoleId) && memberRoles.includes(staffRoleId);
+  const handles = callerHandles(interaction);
+  const seats = playersFor(handles, league.roster);
+
+  if (!isStaff) {
+    if (!staffRoleId) {
+      // Sin token de bot no se puede resolver @Staff por nombre; entonces el
+      // rol hay que configurarlo por id o nadie tiene el atajo de organizador.
+      console.warn("No se pudo resolver el rol de organizador: falta DISCORD_STAFF_ROLE_ID o DISCORD_BOT_TOKEN");
+    }
+    const seated = seats.filter((player) => sameName(player.name, table.players));
+    if (!seated.length) {
+      return message(
+        `⚠️ Sólo pueden agendar ${label} sus cuatro jugadores (${table.players.filter(Boolean).join(", ")}) o el rol @${env.DISCORD_STAFF_ROLE_NAME || DEFAULT_STAFF_ROLE_NAME}.\n` +
+        `Tu usuario (\`${handles[0] || "desconocido"}\`) ${seats.length ? `figura en el roster como **${seats.map((p) => p.name).join(", ")}**, que no juega en esa mesa` : "no figura en la columna Discord de la planilla"}.`,
+        { ephemeral: true },
+      );
+    }
+    if (table.paipuG1) {
+      return message(
+        `⚠️ ${label} ya tiene resultados cargados (${table.paipuG1Cell}). Reagendarla borraría el registro del calendario; pedile a @${env.DISCORD_STAFF_ROLE_NAME || DEFAULT_STAFF_ROLE_NAME} que lo haga.`,
+        { ephemeral: true },
+      );
+    }
+  }
+
+  const previous = table.date || table.time
+    ? `${table.date || "sin fecha"} ${table.time || ""}`.trim()
+    : null;
+  const result = await writeSchedule(env, {
+    dateCell: table.dateCell,
+    timeCell: table.timeCell,
+    dateISO: when.dateISO,
+    timeHM: when.timeHM,
+  });
+
+  const lines = [
+    `📅 **${label}** queda agendada para <t:${when.epochSeconds}:F> (<t:${when.epochSeconds}:R>).`,
+    `🀄 ${table.players.filter(Boolean).join(" · ")}`,
+  ];
+  if (previous) lines.push(`↩️ Antes decía: ${previous}`);
+  if (isStaff && table.paipuG1) lines.push(`⚠️ Ojo: la mesa ya tenía un paipu cargado en ${table.paipuG1Cell}.`);
+  if (!result.storedAsDate || !result.storedAsTime) {
+    lines.push(
+      "⚠️ Google guardó " + (!result.storedAsDate ? `${table.dateCell}` : `${table.timeCell}`) +
+      " como texto y no como fecha/hora. El sitio lo va a mostrar como «Por definir» hasta que se corrija el formato de la celda.",
+    );
+  }
+  lines.push(`_${table.dateCell} · ${table.timeCell} — el sitio se actualiza en menos de 15 minutos._`);
+  return message(lines.join("\n"));
+}
+
+/** Nombre del hilo y, si se puede, el del canal padre. */
+async function channelNames(botToken, interaction, channel) {
+  const names = [];
+  if (channel.name) names.push(channel.name);
+  const parentId = channel.parent_id;
+  if (parentId) {
+    const parent = await fetchChannel(botToken, parentId);
+    if (parent?.name) names.push(parent.name);
+  } else if (!channel.name && interaction.channel_id) {
+    const fetched = await fetchChannel(botToken, interaction.channel_id);
+    if (fetched?.name) names.push(fetched.name);
+    if (fetched?.parent_id) {
+      const parent = await fetchChannel(botToken, fetched.parent_id);
+      if (parent?.name) names.push(parent.name);
+    }
+  }
+  return names;
+}
+
+/** El Calendario y el roster salen de la misma planilla, pero se comparan sin
+ *  distinguir mayúsculas para que un tipeo de capitalización no deje afuera a
+ *  un jugador de su propia mesa. */
+function sameName(name, candidates) {
+  const wanted = name.trim().toLowerCase();
+  return candidates.some((candidate) => candidate.trim().toLowerCase() === wanted);
+}
+
+function normalizeHandle(value) {
+  return String(value ?? "").trim().toLowerCase().replace(/^@/, "").split("#")[0];
+}
+
+/** Jugadores del roster cuyo handle de Discord coincide con quien invocó. */
+export function playersFor(handles, roster) {
+  const wanted = new Set(handles.map(normalizeHandle).filter(Boolean));
+  if (!wanted.size) return [];
+  return roster.filter((player) => player.discord && wanted.has(normalizeHandle(player.discord)));
+}

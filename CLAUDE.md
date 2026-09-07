@@ -215,6 +215,31 @@ Vercel sirve `dist-site/`, que emite `node scripts/build_site.mjs`. Ver
   `No python entrypoint found`). Las dependencias de build siguen viviendo en
   `.vendor/`.
 
+## Bot de Discord
+
+`/agendar` escribe la fecha y la hora de una mesa en la hoja Calendario. Vive en
+`api/discord.mjs` como Vercel Function del mismo proyecto que sirve el sitio;
+paso a paso completo en `DISCORD_BOT.md`.
+
+- **Es el único camino de escritura a la planilla.** El pipeline la lee por el
+  export público sin credenciales; el bot escribe con una cuenta de servicio de
+  Google cuyo JSON vive en las variables de entorno de Vercel, nunca en el repo.
+- **Escribe dos celdas y nada más:** fecha en la fila `G1 − 2` y hora en `G1 − 1`
+  de la columna de esa mesa. Las constantes de posición están duplicadas en
+  `api/_lib/sheets.mjs` y en `scripts/sync.py`; un test relee el `.py` y falla si
+  se separan.
+- **Sin dependencias de npm.** Firma Ed25519, JWT RS256 de Google y HTTP salen de
+  `node:crypto` y `fetch`. El `package.json` de la raíz sigue sin ser toolchain.
+- **Discord corta a los 3 segundos.** La función responde síncrona: token de
+  Google cacheado en el módulo, y la lectura de la planilla en paralelo con las
+  consultas a Discord. Agregarle trabajo al camino crítico se paga en timeouts.
+- La mesa sale del nombre del hilo (`A · Sesión 3 · Mesa 2`, `a-s3-m2`) o del
+  canal padre; las opciones `division`/`sesion`/`mesa` son el respaldo manual.
+- Sólo agendan los cuatro jugadores de esa mesa —emparejados por la columna
+  **Discord** del roster— y el rol @Staff. Una mesa con paipu ya cargado sólo la
+  reagenda @Staff.
+- Tests: `node --test tests/test_discord_bot.mjs`, con la red simulada.
+
 ## Vistas
 
 1. **Tabla** — clasificación por división, columnas ordenables, sparkline de forma,

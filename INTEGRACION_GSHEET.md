@@ -99,6 +99,14 @@ secrets `MAJSOUL_CONTEST_ID_A` y `MAJSOUL_CONTEST_ID_B` además de la sesión
 técnica. Comparte el grupo de concurrencia con el sincronizador porque Mahjong
 Soul admite una sola sesión por cuenta.
 
+## Escritura desde Discord
+
+Todo lo de arriba es de sólo lectura. La única escritura automatizada sobre la
+planilla es `/agendar`, el comando de Discord que fija fecha y hora de una mesa
+en la hoja Calendario (`DISCORD_BOT.md`). Usa una cuenta de servicio de Google
+con la planilla compartida como Editor; sus credenciales viven en las variables
+de entorno de Vercel y no se necesitan para nada más del pipeline.
+
 ## Automatización
 
 `.github/workflows/sync-data.yml` ejecuta la sincronización cada 15 minutos y
