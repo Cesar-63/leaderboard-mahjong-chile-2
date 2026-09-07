@@ -64,6 +64,16 @@ la hora reales los tiene el Calendario.**
 distintas: el Excel manda para clasificación, y una corrida a medias del parser de
 logs no debe poder ensuciar la tabla.
 
+**El repo es público y `data/generated.js` se sirve tal cual.** La planilla trae
+por jugador su `ID Mahjong Soul` y su Discord; el pipeline los usa en memoria
+(mapear asientos del paipu, emparejar mesas) y los borra antes de escribir.
+`strip_private_fields` en `sync.py` es la última parada: filtra
+`PRIVATE_PLAYER_FIELDS` de forma recursiva porque el mismo dict de jugador se
+repite en `players`, `allPlayers`, `hallOfFame[].player`, `nationalities[].best`
+e `iormc.*`. **Nunca agregar un campo de identidad al payload público**: con el
+account_id cualquiera puede buscar y seguir al jugador dentro del juego. Lo que
+sí es público a propósito: nombre/handle de liga, nacionalidad y resultados.
+
 ## Estadísticas avanzadas (paipu)
 
 `scripts/majsoul.py` cuenta por asiento y mano; `scripts/sync.py` agrega por
