@@ -209,6 +209,11 @@ Vercel sirve `dist-site/`, que emite `node scripts/build_site.mjs`. Ver
   `MJC_MOBILE_REDIRECT=0` apaga la redirección en el build.
 - Agregar un `.jsx` o `.css` nuevo = agregarlo al `<script>`/`<link>` de la
   entrada. El build recorre el HTML, no una lista aparte.
+- **El `package.json` de la raíz no es un toolchain.** No declara dependencias
+  ni bundler: existe porque, sin él, Vercel ve el `requirements.txt` del
+  pipeline y autodetecta el repo como app de Python (el deploy falla con
+  `No python entrypoint found`). Las dependencias de build siguen viviendo en
+  `.vendor/`.
 
 ## Vistas
 

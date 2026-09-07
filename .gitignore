@@ -24,3 +24,8 @@ dist/
 # Build de producción (lo genera Vercel en cada deploy).
 dist-site/
 .vercel/
+
+# El package.json de la raíz no declara dependencias; esto es sólo el rastro
+# que deja npm si alguien corre npm install igual.
+node_modules/
+package-lock.json

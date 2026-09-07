@@ -26,6 +26,19 @@ que haya que escribir.
 Deploy. Queda en `<proyecto>.vercel.app`; el dominio propio se agrega después en
 *Settings → Domains*.
 
+### Si el build falla con "No python entrypoint found"
+
+Es que Vercel está construyendo un commit **sin `vercel.json`** (típicamente
+`main` antes de mezclar esta configuración). Sin instrucciones, Vercel autodetecta
+el tipo de proyecto, ve el `requirements.txt` del pipeline de datos en la raíz,
+concluye que es una app de Python y se va a buscar un `app.py` que no existe. Ni
+llega a mirar el HTML.
+
+Se arregla desplegando un commit que sí traiga `vercel.json` y `package.json`.
+Ese `package.json` no declara dependencias ni bundler: está para que la
+detección apunte a Node y no a Python, incluso si algún día alguien borra o
+mueve el `vercel.json`.
+
 ## 2. Cómo llegan los datos
 
 No hay que hacer nada: la cadena ya está montada y termina en un push a `main`.

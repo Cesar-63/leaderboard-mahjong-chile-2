@@ -1,0 +1,13 @@
+{
+  "name": "leaderboard-mahjong-chile",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Sitio estático de la Liga Mahjong Chile. NO es un toolchain de npm: no hay dependencias ni bundler. Existe para que Vercel detecte el proyecto como Node y no como app de Python por el requirements.txt del pipeline de datos.",
+  "scripts": {
+    "build": "node scripts/build_site.mjs",
+    "preview": "node scripts/build_preview.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
