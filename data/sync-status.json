@@ -941,8 +941,8 @@
       "key": "B-S5-M3-G2",
       "cell": "Calendario!AB44",
       "uuid": "260904-9f30aa44-bd56-4f38-873d-284d408927c0",
-      "status": "ERROR",
-      "message": "No se pudo descargar el paipu: HTTP Error 500: Internal Server Error"
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado (identidad de asientos)"
     },
     {
       "key": "B-S5-M4-G1",
