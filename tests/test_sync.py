@@ -1,3 +1,5 @@
+import json
+import pathlib
 import unittest
 from unittest.mock import patch
 
@@ -6,9 +8,9 @@ from scripts.majsoul import (
     has_yostar_credentials, parse_record,
 )
 from scripts.sync import (
-    CALENDAR_VALUE_COLS, SESSION_G1_ROWS, advanced_stats_health, align_history_with_fixtures,
-    build_excel_results, build_paipu_results, build_public_data, find_absent_player,
-    match_paipu_seats, normalize_nat,
+    CALENDAR_VALUE_COLS, PRIVATE_PLAYER_FIELDS, SESSION_G1_ROWS, advanced_stats_health,
+    align_history_with_fixtures, build_excel_results, build_paipu_results, build_public_data,
+    find_absent_player, match_paipu_seats, normalize_nat, strip_private_fields,
 )
 
 
@@ -492,6 +494,68 @@ class SuplentesYAusenciasTests(unittest.TestCase):
         presentes = {"A01", "A02", "A03"}
         self.assertEqual(find_absent_player(["Bodoque", "Mon_96", "Meme000", "Twining1999"], players, presentes)["id"], "A04")
         self.assertIsNone(find_absent_player(["Bodoque"], players, {"A01"}))
+
+
+def _private_paths(node, path="raíz"):
+    """Todas las rutas donde aparece un campo privado, para que el fallo diga dónde."""
+    hallazgos = []
+    if isinstance(node, dict):
+        for key, value in node.items():
+            if key in PRIVATE_PLAYER_FIELDS:
+                hallazgos.append(f"{path}.{key}")
+            hallazgos.extend(_private_paths(value, f"{path}.{key}"))
+    elif isinstance(node, list):
+        for index, item in enumerate(node):
+            hallazgos.extend(_private_paths(item, f"{path}[{index}]"))
+    return hallazgos
+
+
+class PrivacidadTests(unittest.TestCase):
+    """El account_id de Mahjong Soul y el Discord se usan para armar los datos,
+    pero publicarlos deja que cualquiera busque al jugador dentro del juego."""
+
+    def test_strip_private_fields_limpia_en_profundidad(self):
+        crudo = {
+            "players": [{"id": "A01", "accountId": 101, "discord": "x", "nat": "CL"}],
+            "hallOfFame": [{"player": {"id": "A01", "accountId": 101, "discord": "x"}}],
+            "anidado": {"lista": [[{"accountId": 101}]]},
+        }
+        limpio = strip_private_fields(crudo)
+        self.assertEqual(_private_paths(limpio), [])
+        self.assertEqual(limpio["players"][0], {"id": "A01", "nat": "CL"})
+        # No muta la estructura de entrada: el pipeline sigue necesitándola.
+        self.assertEqual(crudo["players"][0]["accountId"], 101)
+
+    def test_build_public_data_no_publica_identidad_de_mahjong_soul(self):
+        config = _division_config()
+        rosters = _rosters()
+        fixtures = [
+            _fixture("A", 1, 1, ["Bodoque", "Mon_96", "Meme000", "Twining1999"]),
+            _fixture("B", 1, 1, ["X", "Y", "Z", "W"]),
+        ]
+        submissions = [
+            {"key": "A-S1-M1-G1", "division": "A", "session": 1, "table": 1, "players": ["Bodoque", "Mon_96", "Meme000", "Twining1999"], "game": 1, "cell": "Calendario!C11", "url": "https://x/paipu", "uuid": "u", "recordId": "u"},
+        ]
+        histories = {"A-S1-M1-G1": _excel_game()}
+        parsed_games = {"A-S1-M1-G1": _paipu_game()}
+        data, stats = build_public_data(config, rosters, fixtures, submissions, histories, parsed_games)
+        self.assertEqual(_private_paths(data, "liga.json"), [])
+        self.assertEqual(_private_paths(stats, "stats.json"), [])
+        # El account_id se siguió usando para mapear asientos: el paipu pone a
+        # Meme000 (A03) primero, no el orden del fixture.
+        self.assertEqual(data["divisions"]["A"]["matches"][0]["players"][0]["id"], "A03")
+
+    def test_los_datos_versionados_no_traen_identidad(self):
+        raiz = pathlib.Path(__file__).resolve().parent.parent
+        liga = raiz / "data" / "liga.json"
+        generated = raiz / "data" / "generated.js"
+        if not liga.exists():
+            self.skipTest("data/liga.json sólo existe después de correr scripts/sync.py")
+        self.assertEqual(_private_paths(json.loads(liga.read_text(encoding="utf-8")), "liga.json"), [])
+        if generated.exists():
+            crudo = generated.read_text(encoding="utf-8")
+            cuerpo = crudo[crudo.index("window.MJC_DATA = ") + len("window.MJC_DATA = "):].rstrip().rstrip(";")
+            self.assertEqual(_private_paths(json.loads(cuerpo), "generated.js"), [])
 
 
 if __name__ == "__main__":

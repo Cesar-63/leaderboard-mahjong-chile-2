@@ -60,6 +60,26 @@ def json_default(value: Any) -> Any:
     raise TypeError(type(value).__name__)
 
 
+# Identidad que el pipeline necesita en memoria pero que NO se publica: el
+# account_id de Mahjong Soul permite buscar y seguir a un jugador dentro del
+# juego, y el Discord es contacto directo. Se leen de la planilla, se usan para
+# mapear asientos de los paipus y se borran antes de escribir cualquier archivo.
+PRIVATE_PLAYER_FIELDS = ("accountId", "discord")
+
+
+def strip_private_fields(node: Any) -> Any:
+    """Copia la estructura sin los campos de PRIVATE_PLAYER_FIELDS.
+
+    Recursiva a propósito: el mismo dict de jugador aparece en `players`,
+    `allPlayers`, `hallOfFame[].player`, `nationalities[].best` e `iormc.*`, y
+    filtrar sólo una de esas listas dejaría el dato publicado en las otras."""
+    if isinstance(node, dict):
+        return {key: strip_private_fields(value) for key, value in node.items() if key not in PRIVATE_PLAYER_FIELDS}
+    if isinstance(node, list):
+        return [strip_private_fields(item) for item in node]
+    return node
+
+
 def format_date(value: Any) -> tuple[str, str, str | None]:
     if isinstance(value, datetime):
         value = value.date()
@@ -480,7 +500,9 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
         "league": {"season": config["seasonLabel"], "sessionsPlayed": sessions_played, "sessionsTotal": int(config["sessionsTotal"]), "hanchanPerSession": 2, "playersPerDiv": 24, "hanchanPerDiv": max(len(divisions["A"]["matches"]), len(divisions["B"]["matches"])), "hanchanTotal": len(divisions["A"]["matches"]) + len(divisions["B"]["matches"]), "nextSession": next_session, "rules": {key: {"initialPoints": value["initialPoints"], "uma": value["uma"]} for key, value in config["divisions"].items()}},
     }
     add_hall_of_fame(data)
-    return data, stats_output
+    # Última parada antes de que los datos salgan de la función: lo que se
+    # devuelve acá termina en el repo público y en el sitio desplegado.
+    return strip_private_fields(data), strip_private_fields(stats_output)
 
 
 def add_hall_of_fame(data: dict[str, Any]) -> None:

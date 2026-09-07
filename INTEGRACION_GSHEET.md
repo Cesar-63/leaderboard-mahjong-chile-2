@@ -30,13 +30,47 @@ que ya estaban publicadas.
 
 ## Archivos generados
 
-- `data/liga.json`: contrato completo consumido por la interfaz.
+- `data/liga.json`: contrato completo consumido por la interfaz, ya sin los
+  campos de identidad de la planilla.
 - `data/stats.json`: métricas avanzadas derivadas exclusivamente de paipus.
 - `data/sync-status.json`: estado y error de las 168 celdas posibles.
-- `data/generated.js`: versión cargable por la aplicación estática actual.
+- `data/generated.js`: versión cargable por la aplicación estática actual. Es el
+  único de los cuatro que se sirve en el sitio; ver **Privacidad**.
 
 El frontend conserva `data.js` como fallback de desarrollo. Cuando existe
 `data/generated.js`, los datos sincronizados reemplazan el mock.
+
+## Privacidad
+
+La planilla es el panel administrativo y trae, por jugador, su **ID de Mahjong
+Soul** y su **Discord**. Ninguno de los dos sale publicado: `sync.py` los usa en
+memoria y `strip_private_fields` los borra antes de escribir `liga.json`,
+`stats.json` y `generated.js`. `tests/test_sync.py::PrivacidadTests` sostiene la
+regla, incluso sobre los archivos ya versionados.
+
+**El sufijo `_a` de los enlaces de paipu se conserva a propósito.** Mahjong Soul
+lo agrega al copiar un enlace desde el cliente y marca quién lo compartió; en la
+planilla es siempre el mismo valor, el de la cuenta que pega los enlaces, no el
+de ningún jugador. `extract_record_id` lo necesita para pedirle el registro a la
+API, así que no se toca. Si algún día lo pega otra persona, el sufijo cambia con
+ella: conviene que sea siempre la cuenta organizadora.
+
+**Lo que queda fuera del código:** `sync-config.json` publica el ID de la
+planilla y hoy la descarga es anónima (`export?format=xlsx` sin credenciales),
+lo que sólo funciona si la planilla es legible con el enlace. Como el repo es
+público, ese ID basta para que cualquiera exporte la planilla completa —
+incluidos el ID de Mahjong Soul y el Discord de los 48 jugadores. Opciones:
+
+1. **Restringir la planilla** y darle al workflow una cuenta de servicio de
+   Google (secret nuevo, `sync.py` pasa a descargar autenticado). Es el arreglo
+   real; cuesta crear la credencial.
+2. **Sacar las columnas sensibles** de la planilla compartida y dejarlas en otra
+   restringida. `match_paipu_seats` cae a emparejar por nickname cuando el
+   roster no trae `accountId`, así que el pipeline sigue funcionando; se pierde
+   robustez ante cambios de nickname.
+
+Mientras no se haga ninguna de las dos, el arreglo del pipeline tapa la
+filtración del sitio pero no la de la planilla.
 
 ## Autoridad de datos
 
