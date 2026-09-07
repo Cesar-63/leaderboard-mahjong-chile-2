@@ -14,14 +14,10 @@
 // .vendor/ la primera vez. .vendor/ y dist/ no se versionan.
 
 import { execFileSync } from 'node:child_process';
-import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
-const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const VENDOR = path.join(ROOT, '.vendor');
-const DEPS = ['react@18.3.1', 'react-dom@18.3.1', '@babel/standalone@7.29.0'];
+import { ROOT, RUNTIME_FILES, loadBabel, transpileJsx, vendorFile } from './build-vendor.mjs';
 
 function arg(flag, fallback) {
   const i = process.argv.indexOf(flag);
@@ -32,27 +28,7 @@ const ENTRY = arg('--entry', 'index.html');
 const NAME = arg('--name', ENTRY === 'index.html' ? 'preview' : path.basename(ENTRY, '.html').toLowerCase());
 const OUTDIR = path.join(ROOT, arg('--outdir', 'dist'));
 
-// Los builds UMD viven fuera de los "exports" de cada paquete, así que se
-// resuelven por ruta y no con require.resolve().
-const vendorFile = (rel) => path.join(VENDOR, 'node_modules', rel);
-const RUNTIME_FILES = [
-  'react/umd/react.production.min.js',
-  'react-dom/umd/react-dom.production.min.js',
-];
-const BABEL_FILE = '@babel/standalone/babel.min.js';
-
-function ensureVendor() {
-  const missing = [...RUNTIME_FILES, BABEL_FILE].some((rel) => !fs.existsSync(vendorFile(rel)));
-  if (!missing) return;
-  console.log('· instalando dependencias de build en .vendor/ (una sola vez)…');
-  fs.mkdirSync(VENDOR, { recursive: true });
-  const pkg = path.join(VENDOR, 'package.json');
-  if (!fs.existsSync(pkg)) fs.writeFileSync(pkg, JSON.stringify({ name: 'preview-vendor', private: true }, null, 2));
-  execFileSync('npm', ['install', '--no-audit', '--no-fund', ...DEPS], { cwd: VENDOR, stdio: 'inherit' });
-}
-
-ensureVendor();
-const Babel = createRequire(import.meta.url)(vendorFile(BABEL_FILE));
+const Babel = loadBabel();
 
 const read = (rel) => fs.readFileSync(path.join(ROOT, rel), 'utf8');
 const stripQuery = (src) => src.split('?')[0];
@@ -120,7 +96,7 @@ const scripts = [...html.matchAll(/<script\b([^>]*)\bsrc=["']([^"']+)["']([^>]*)
   .map(({ attrs, src }) => {
     const code = read(src);
     if (/text\/babel/i.test(attrs) || src.endsWith('.jsx')) {
-      const out = Babel.transform(code, { presets: [['react', { runtime: 'classic' }]], filename: src }).code;
+      const out = transpileJsx(Babel, code, src);
       return `/* ${src} (jsx→js) */\n${out}`;
     }
     return `/* ${src} */\n${code}`;
