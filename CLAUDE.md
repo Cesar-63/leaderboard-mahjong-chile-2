@@ -187,6 +187,29 @@ Para ver una rama sin desplegar ni tocar `main`:
 El script instala solo sus dependencias en `.vendor/` la primera vez. `.vendor/`
 y `dist/` no se versionan, y nada de esto entra al deploy de Vercel.
 
+## Deploy
+
+Vercel sirve `dist-site/`, que emite `node scripts/build_site.mjs`. Ver
+`DEPLOY_VERCEL.md` para el paso a paso; lo que importa acá:
+
+- **El sitio servido no es el repo tal cual.** El build transpila el JSX,
+  reemplaza el React de desarrollo de unpkg por el de producción servido desde
+  el propio dominio (4,2 MB → 139 KB de runtime) y publica cada `.js`/`.css`
+  como `/static/<nombre>.<hash>.<ext>` con cache inmutable. El HTML no lleva
+  hash: se revalida siempre y por eso el commit de datos del bot se ve al
+  instante.
+- **Abrir `index.html` con `python3 -m http.server` sigue funcionando igual**, y
+  es lo que hay que usar para desarrollar: el build es sólo para producción.
+- **Los datos no se conectan desde Vercel.** `sync-data.yml` commitea
+  `data/generated.js` a `main` y Vercel redespliega con ese push. Los secretos
+  de Mahjong Soul viven en GitHub Actions; Vercel no necesita ninguna variable
+  de entorno.
+- **Un teléfono que entra a `/` cae en `/Mobile.html`** (`max-width: 820px` y
+  `pointer: coarse`). `?desktop=1` fuerza la vista de escritorio;
+  `MJC_MOBILE_REDIRECT=0` apaga la redirección en el build.
+- Agregar un `.jsx` o `.css` nuevo = agregarlo al `<script>`/`<link>` de la
+  entrada. El build recorre el HTML, no una lista aparte.
+
 ## Vistas
 
 1. **Tabla** — clasificación por división, columnas ordenables, sparkline de forma,
