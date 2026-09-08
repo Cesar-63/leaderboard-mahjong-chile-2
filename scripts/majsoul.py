@@ -24,6 +24,11 @@ RECORD_URL = "https://record-v2.maj-soul.com:5333/majsoul/game_record/{uuid}"
 # paipus de data/raw-paipu: los 76 eventos type=2 caen siempre en un asiento que
 # ya había llamado, y 62 de los 76 type=3 en asientos sin ninguna llamada.
 ANKAN_TYPE = 3
+# Combinación declarada tal como la escribe el paipu: "kezi(6z,6z,6z)". Se
+# guarda con una letra por delante para que la mano ganada quepa en un string:
+# k=pon, s=chi, g=kan abierto, a=kan cerrado.
+MELD_RE = re.compile(r"^(\w+)\((.*)\)$")
+MELD_PREFIX = {"kezi": "k", "shunzi": "s", "minggang": "g", "angang": "a"}
 # Enumerado de "fans" de Mahjong Soul: el paipu trae solo `id` y `val` (el campo
 # `name` viene vacío), así que la tabla es la única fuente del nombre.
 # Verificada contra los 72 paipus de data/raw-paipu por la forma de cada yaku:
@@ -489,6 +494,14 @@ def _protobuf_module():
     return pb
 
 
+def parse_meld(combo: Any) -> str:
+    """Codifica "kezi(6z,6z,6z)" como "k6z6z6z" (ver MELD_PREFIX)."""
+    match = MELD_RE.match(str(combo))
+    if not match:
+        return str(combo)
+    return MELD_PREFIX.get(match.group(1), "?") + "".join(match.group(2).split(","))
+
+
 def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
     if raw.lstrip().startswith(b"<?xml"):
         raise PaipuAuthRequired("El registro reciente requiere una sesión técnica de Mahjong Soul")
@@ -527,7 +540,8 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
         {"hands": 0, "wins": 0, "tsumo": 0, "ron": 0, "dealIns": 0,
          "kans": 0, "doras": 0, "uraDoras": 0, "maxHonba": 0,
          "riichis": 0, "openHands": 0, "damaten": 0,
-         "winPoints": 0, "dealInPoints": 0, "winTurns": 0, "yaku": Counter()}
+         "winPoints": 0, "dealInPoints": 0, "winTurns": 0, "yaku": Counter(),
+         "wonHands": []}
         for _ in range(4)
     ]
     final_scores: list[int] = []
@@ -612,15 +626,19 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                 stats[seat]["tsumo" if hule.zimo else "ron"] += 1
                 # `ming` lista las combinaciones declaradas; el kan cerrado
                 # aparece como "angang(...)" y no rompe el menzen.
-                menzen = all(str(combo).startswith("angang") for combo in hule.ming)
+                melds = [parse_meld(combo) for combo in hule.ming]
+                menzen = all(meld.startswith("a") for meld in melds)
                 if menzen and not hule.liqi:
                     stats[seat]["damaten"] += 1
                 # `dadian` es el valor de la mano, sin palos de riichi ni honba.
                 stats[seat]["winPoints"] += int(hule.dadian)
                 stats[seat]["winTurns"] += draws[seat] if hule.zimo else draws[seat] + 1
+                paga = None
                 if not hule.zimo and last_discard is not None and last_discard < 4:
                     stats[last_discard]["dealIns"] += 1
                     stats[last_discard]["dealInPoints"] += int(hule.dadian)
+                    paga = last_discard
+                yakus = []
                 for fan in hule.fans:
                     if fan.id in NON_YAKU_FAN_IDS:
                         continue
@@ -628,6 +646,18 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                     yaku = str(yaku).strip()
                     if yaku:
                         stats[seat]["yaku"][yaku] += 1
+                        yakus.append(yaku)
+                # La mano completa, para poder mostrarla ficha por ficha: la
+                # parte oculta y la ganadora van por separado de los melds
+                # porque se dibujan distinto (los melds, volteados).
+                stats[seat]["wonHands"].append({
+                    "yaku": yakus, "hand": "".join(hule.hand), "win": hule.hu_tile,
+                    "melds": melds, "dora": "".join(hule.doras),
+                    "points": int(hule.dadian), "fu": int(hule.fu),
+                    "tsumo": bool(hule.zimo), "riichi": bool(hule.liqi),
+                    "turn": draws[seat] if hule.zimo else draws[seat] + 1,
+                    "loserSeat": paga,
+                })
         elif name == "RecordNoTile" and message.scores:
             score_info = message.scores[0]
             if score_info.old_scores and score_info.delta_scores:

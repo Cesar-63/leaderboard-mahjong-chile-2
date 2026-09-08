@@ -81,7 +81,8 @@ def wrap_records(records):
 
 
 def hand_paipu(*, winner=0, zimo=True, liqi=False, ming=(), dadian=8000, draws=(0, 0, 0, 0),
-               discarder=None, ankan_seat=None, pon_seat=None):
+               discarder=None, ankan_seat=None, pon_seat=None, hand=(), hu_tile="",
+               fans=(), doras=(), fu=0):
     """Una mano suelta: robos por asiento, llamadas opcionales y un ganador."""
     from ms import protocol_pb2 as pb
     new_round = pb.RecordNewRound()
@@ -114,6 +115,14 @@ def hand_paipu(*, winner=0, zimo=True, liqi=False, ming=(), dadian=8000, draws=(
     hule.liqi = liqi
     hule.dadian = dadian
     hule.ming.extend(ming)
+    hule.hand.extend(hand)
+    hule.hu_tile = hu_tile
+    hule.doras.extend(doras)
+    hule.fu = fu
+    for fan_id, val in fans:
+        fan = hule.fans.add()
+        fan.id = fan_id
+        fan.val = val
     records.append(("RecordHule", hule_record))
     return wrap_records(records)
 
@@ -244,6 +253,37 @@ class SyncTests(unittest.TestCase):
         parsed = parse_record("260101-00000000-0000-0000-0000-000000000000", raw)
         self.assertEqual(parsed.seat_stats[0]["openHands"], 1)
         self.assertEqual(parsed.seat_stats[0]["damaten"], 0)
+
+    def test_la_mano_ganada_guarda_fichas_melds_y_yaku(self):
+        # Cada mano ganada se guarda entera para poder mostrarla ficha por
+        # ficha: oculta, ficha ganadora y melds codificados (ver MELD_PREFIX).
+        raw = hand_paipu(
+            winner=0, zimo=False, discarder=2, liqi=False, dadian=5800, fu=40,
+            draws=(9, 9, 9, 9), hand=["2m", "3m", "4m", "6p", "6p"], hu_tile="4m",
+            ming=["shunzi(3s,2s,4s)", "angang(1z,1z,1z,1z)"],
+            fans=[(12, 1), (31, 2)], doras=["9m"],
+        )
+        parsed = parse_record("260101-00000000-0000-0000-0000-000000000000", raw)
+        mano = parsed.seat_stats[0]["wonHands"][0]
+        self.assertEqual(mano["hand"], "2m3m4m6p6p")
+        self.assertEqual(mano["win"], "4m")
+        # El chi se guarda tal cual lo escribe el paipu; ordenarlo es cosa de la vista.
+        self.assertEqual(mano["melds"], ["s3s2s4s", "a1z1z1z1z"])
+        # El dora suma han pero no es yaku: no entra en la lista.
+        self.assertEqual(mano["yaku"], ["Tanyao"])
+        self.assertEqual(mano["dora"], "9m")
+        self.assertEqual((mano["points"], mano["fu"]), (5800, 40))
+        self.assertEqual((mano["tsumo"], mano["riichi"]), (False, False))
+        self.assertEqual(mano["turn"], 10)
+        self.assertEqual(mano["loserSeat"], 2)
+
+    def test_la_mano_ganada_por_tsumo_no_apunta_a_nadie(self):
+        raw = hand_paipu(winner=1, zimo=True, draws=(4, 4, 4, 4), fans=[(2, 1)])
+        parsed = parse_record("260101-00000000-0000-0000-0000-000000000000", raw)
+        mano = parsed.seat_stats[1]["wonHands"][0]
+        self.assertIsNone(mano["loserSeat"])
+        self.assertTrue(mano["tsumo"])
+        self.assertEqual(mano["turn"], 4)
 
     def test_riichi_no_es_damaten(self):
         raw = hand_paipu(winner=0, liqi=True, draws=(6, 5, 5, 5))
@@ -381,6 +421,53 @@ class SyncTests(unittest.TestCase):
         self.assertEqual(player["yakus"][-1], {"name": "Chinitsu", "count": 2})
         self.assertEqual(stats["players"]["A03"]["yakus"], player["yakus"])
         self.assertNotIn("topYaku", player)
+
+    def test_build_public_data_publica_las_manos_ganadas_por_jugador(self):
+        # Las manos van en un mapa aparte, por id de jugador, con la sesión y
+        # la mesa del calendario pegadas a cada una.
+        config = _division_config()
+        rosters = _rosters()
+        names = ["Bodoque", "Mon_96", "Meme000", "Twining1999"]
+        fixtures = [{"division": "A", "session": 1, "table": 1, "players": names, "date": "12 abr", "weekday": "sáb", "dateISO": "2026-04-12", "time": None}]
+        submissions = [{"key": "A-S1-M1-G1", "division": "A", "session": 1, "table": 1, "players": names, "game": 1, "cell": "Calendario!C11", "url": "https://x/paipu", "uuid": "u", "recordId": "u"}]
+        game = _paipu_game()
+        game["seatStats"][0]["wonHands"] = [{
+            "yaku": ["Tanyao"], "hand": "2m3m4m6p6p", "win": "4m",
+            "melds": ["s3s2s4s"], "dora": "9m", "points": 5800, "fu": 40,
+            "tsumo": False, "riichi": True, "turn": 10, "loserSeat": 1,
+        }]
+
+        data, _ = build_public_data(config, rosters, fixtures, submissions, {}, {"A-S1-M1-G1": game})
+
+        manos = data["yakuHands"]["A03"]
+        self.assertEqual(len(manos), 1)
+        self.assertEqual((manos[0]["session"], manos[0]["table"], manos[0]["hanchan"]), (1, 1, 1))
+        self.assertEqual(manos[0]["yaku"], ["Tanyao"])
+        self.assertEqual(manos[0]["hand"], "2m3m4m6p6p")
+        # El asiento 1 es Bodoque: se publica su nombre de liga.
+        self.assertEqual(manos[0]["loser"], "Bodoque")
+        # Los jugadores sin manos ganadas no aparecen en el mapa.
+        self.assertNotIn("A02", data["yakuHands"])
+
+    def test_las_manos_ganadas_no_nombran_a_un_asiento_fuera_del_roster(self):
+        # Si el que pagó el ron no es del roster (suplente, bot), no se publica
+        # ninguna identidad suya.
+        config = _division_config()
+        rosters = _rosters()
+        names = ["Bodoque", "Mon_96", "Meme000", "Twining1999"]
+        fixtures = [{"division": "A", "session": 1, "table": 1, "players": names, "date": "12 abr", "weekday": "sáb", "dateISO": "2026-04-12", "time": None}]
+        submissions = [{"key": "A-S1-M1-G1", "division": "A", "session": 1, "table": 1, "players": names, "game": 1, "cell": "Calendario!C11", "url": "https://x/paipu", "uuid": "u", "recordId": "u"}]
+        game = _paipu_game()
+        game["players"][1] = {"seat": 1, "account_id": 999, "nickname": "Suplente", "point": 38500}
+        game["seatStats"][0]["wonHands"] = [{
+            "yaku": ["Riichi"], "hand": "2m3m4m6p6p", "win": "4m", "melds": [],
+            "dora": "", "points": 5800, "fu": 40, "tsumo": False, "riichi": True,
+            "turn": 10, "loserSeat": 1,
+        }]
+
+        data, _ = build_public_data(config, rosters, fixtures, submissions, {}, {"A-S1-M1-G1": game})
+
+        self.assertIsNone(data["yakuHands"]["A03"][0]["loser"])
 
     def test_build_public_data_uses_fixture_order_when_paipu_has_no_identity(self):
         config = _division_config()

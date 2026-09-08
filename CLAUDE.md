@@ -95,6 +95,17 @@ jugador y publica las tasas. Definiciones, alineadas con amae-koromo:
 - Las cuatro últimas se miden sobre manos ganadas o deal-ins, no sobre el total:
   su denominador es chico y hay que degradarlas (`STAT_MIN_SAMPLE` en
   `stat-tips.jsx`), no mostrarlas como dato firme.
+- **Cada mano ganada se guarda entera**, en `yakuHands` del payload público: un
+  mapa `id de jugador → manos`, cada una con sus fichas (`hand` oculta, `win`,
+  `melds`, `dora`), puntos, fu, turno, sesión/mesa/hanchan del calendario y a
+  quién le pagaron el ron. Va como mapa aparte y **no colgando de cada jugador**
+  porque el mismo dict de jugador se repite en `players`, `allPlayers`,
+  `hallOfFame`, `nationalities` e `iormc`: colgarlo ahí multiplicaría el payload.
+  Del que pagó sólo se nombra a los del roster; de un suplente no se publica
+  identidad. Los melds se codifican con una letra por delante (`k` pon, `s` chi,
+  `g` kan abierto, `a` kan cerrado) para que la mano quepa en un string.
+  `tiles.jsx` las dibuja: la cara de la ficha es lo único que hay que tocar para
+  cambiar el set gráfico.
 - `stat-tips.jsx` es la fuente única de qué mide cada casilla: rótulo, fórmula,
   denominador y tooltip salen del mismo registro, y lo usan tanto la vista de
   escritorio como la del teléfono. Agregar una métrica = una entrada ahí, sus
