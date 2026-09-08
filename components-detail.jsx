@@ -4,6 +4,12 @@ function accentFor(div) { return div === 'B' ? 'var(--accent-2)' : 'var(--accent
 // Dos primeras letras para el círculo del avatar (el handle completo se desborda)
 function initials(h) { return (h || '').slice(0, 2); }
 
+// La planilla guarda el enlace como "Mahjong Soul Game Log:https://…" en algunas
+// filas y pelado en otras: se limpia siempre antes de usarlo como href.
+function paipuHref(url) {
+  return String(url || '').replace(/^Mahjong Soul Game Log:/, '');
+}
+
 const HOF_KEYS = ['leader', 'wins', 'defense', 'riichi', 'consistency', 'recent'];
 function hallOfFameCopy(record, index) {
   const key = record.key || HOF_KEYS[index];
@@ -332,7 +338,7 @@ function PlayerDetail({ playerId, data, onPick }) {
         </div>
       </div>
       {openYaku && (
-        <YakuHandsModal yaku={openYaku} hands={yakuHands} player={p} color={color}
+        <YakuHandsModal yaku={openYaku} hands={yakuHands} player={p} data={data} color={color}
           onClose={() => setOpenYaku(null)} />
       )}
     </div>
@@ -341,7 +347,7 @@ function PlayerDetail({ playerId, data, onPick }) {
 
 // Popup con cada mano ganada que incluyó un yaku. Se cierra con Escape, con el
 // fondo o con la X; mientras está abierto el fondo no scrollea.
-function YakuHandsModal({ yaku, hands, player, color, onClose }) {
+function YakuHandsModal({ yaku, hands, player, data, color, onClose }) {
   React.useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', onKey);
@@ -365,7 +371,7 @@ function YakuHandsModal({ yaku, hands, player, color, onClose }) {
           <button className="cm-close" onClick={onClose} aria-label={tr('cerrar')}>✕</button>
         </div>
         <div className="yaku-hand-list">
-          {hands.map((h, i) => <YakuHandRow key={i} hand={h} yaku={yaku} />)}
+          {hands.map((h, i) => <YakuHandRow key={i} hand={h} yaku={yaku} player={player} data={data} />)}
         </div>
       </div>
     </div>,
@@ -373,8 +379,13 @@ function YakuHandsModal({ yaku, hands, player, color, onClose }) {
   );
 }
 
-function YakuHandRow({ hand, yaku }) {
+function YakuHandRow({ hand, yaku, player, data }) {
   const otros = (hand.yaku || []).filter(y => y !== yaku);
+  // La mano no guarda el enlace: se llega a la partida por su código, que es lo
+  // mismo que ya guarda (sesión, mesa, hanchan). Así no se duplica la URL 1.285
+  // veces en el payload.
+  const code = `${player.div}-S${hand.session}-M${hand.table}-G${hand.hanchan}`;
+  const match = (data.divisions[player.div].matches || []).find(m => m.id === code);
   return (
     <div className="yaku-hand">
       <div className="yaku-hand-head">
@@ -382,6 +393,10 @@ function YakuHandRow({ hand, yaku }) {
         <span className={`how ${hand.tsumo ? 'tsumo' : 'ron'}`}>
           {hand.tsumo ? tr('by_tsumo') : (hand.loser ? tr('by_ron_from', { rival: hand.loser }) : tr('by_ron'))}
         </span>
+        {match && match.paipuUrl && (
+          <a className="paipu-link" href={paipuHref(match.paipuUrl)} target="_blank" rel="noopener noreferrer"
+            onClick={e => e.stopPropagation()}>{tr('view_paipu')}</a>
+        )}
         <span className="pts">{(hand.points || 0).toLocaleString('es-CL')}</span>
       </div>
       <HandTiles hand={hand.hand} win={hand.win} melds={hand.melds} />
@@ -654,7 +669,7 @@ function HanchanLog({ data, div }) {
               <div className="code">{m.code}</div>
               <div className="date">{m.sessionCode} · H{m.hanchan}</div>
               <div className="table">{tr('mesa', { n: m.table })} · {m.date}</div>
-              {m.paipuUrl && <a href={m.paipuUrl.replace(/^Mahjong Soul Game Log:/, '')} target="_blank" rel="noopener noreferrer" className="paipu-link">{tr('view_paipu')}</a>}
+              {m.paipuUrl && <a href={paipuHref(m.paipuUrl)} target="_blank" rel="noopener noreferrer" className="paipu-link">{tr('view_paipu')}</a>}
             </div>
             <div className="four-results">
               {m.players.map((pl, i) => (
