@@ -109,6 +109,7 @@ window.I18N = {
     radar_open: 'Apertura',
     radar_placement: 'Posición',
     radar_points: 'Puntos',
+    radar_summary: 'Lectura general',
     /* tooltips de stats: fórmula, nota y muestra */
     fx_avgrank: 'suma de puestos / hanchan con puesto',
     fx_avgpts: 'puntos de liga / hanchan jugadas',
@@ -290,6 +291,7 @@ window.I18N = {
     radar_open: 'Open',
     radar_placement: 'Placement',
     radar_points: 'Points',
+    radar_summary: 'At a glance',
     /* stat tooltips: formula, note and sample */
     fx_avgrank: 'sum of placements / ranked hanchan',
     fx_avgpts: 'league points / hanchan played',
@@ -471,6 +473,7 @@ window.I18N = {
     radar_open: 'Abertura',
     radar_placement: 'Posição',
     radar_points: 'Pontos',
+    radar_summary: 'Visão geral',
     /* tooltips das stats: fórmula, nota e amostra */
     fx_avgrank: 'soma das posições / hanchan com posição',
     fx_avgpts: 'pontos de liga / hanchan jogadas',

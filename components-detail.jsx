@@ -130,7 +130,8 @@ function PlayerDetail({ playerId, data, onPick }) {
             <div className="ch-head stats-overview-head"><div><h3>{tr('stats_overview')}</h3><p>{tr('stats_overview_hint')}</p></div></div>
             <div className="stats-overview-layout">
               <div className="profile-radar" style={{ '--profile-accent': color }}>
-                <RadarChart key={p.id} stats={radar} color={color} size={300} />
+                <div className="profile-radar-label">{tr('radar_summary')}</div>
+                <RadarChart key={p.id} stats={radar} color={color} size={340} />
                 <div className="profile-radar-caption">{tr('profile_title')}</div>
               </div>
               <ProfileStatGroups player={p} data={data} />
