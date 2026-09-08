@@ -4,7 +4,6 @@
 // (no queda ninguna dependencia de CDN ni de rutas relativas).
 //
 //   node scripts/build_preview.mjs                  -> dist/preview.html (escritorio)
-//   node scripts/build_preview.mjs --entry Mobile.html --name mobile
 //
 // Emite dos archivos por corrida:
 //   dist/<name>.html           documento completo, para abrir con file:// o http.server

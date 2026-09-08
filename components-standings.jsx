@@ -4,6 +4,14 @@ const { useState, useEffect, useRef, useMemo } = React;
 
 function fmtPts(n) { return (n >= 0 ? '+' : '') + n.toFixed(1); }
 function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+function currentSessionNumber(data) {
+  if (data.league.currentSession) return data.league.currentSession;
+  const scheduled = data.calendar
+    .filter(c => c.date && c.date !== 'Por definir')
+    .map(c => c.session || parseInt((c.round || '').replace(/\D/g, ''), 10) || 0);
+  const played = ['A', 'B'].flatMap(div => data.divisions[div].matches.map(m => m.session || 0));
+  return Math.max(data.league.sessionsPlayed || 1, ...scheduled, ...played);
+}
 function fmtAdvanced(player, key, suffix = '', decimals = 1) {
   return player.statsSample > 0 ? player[key].toFixed(decimals) + suffix : '—';
 }
@@ -152,10 +160,10 @@ function StandingsView({ data, div, layout, onSelectPlayer }) {
 
 function SideRail({ data, div }) {
   const divData = data.divisions[div];
-  const next = data.calendar.find(c => c.div === div) || data.calendar[0];
   const recent = [...divData.matches].slice(-3).reverse();
   const L = data.league;
-  const pct = Math.round((L.sessionsPlayed / L.sessionsTotal) * 100);
+  const currentSession = currentSessionNumber(data);
+  const pct = Math.round((currentSession / L.sessionsTotal) * 100);
 
   const MONTHS = { ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5, jul: 6, ago: 7, sep: 8, oct: 9, nov: 10, dic: 11 };
   const toDate = (s) => {
@@ -168,13 +176,14 @@ function SideRail({ data, div }) {
     return d;
   };
   const today = new Date(); today.setHours(0, 0, 0, 0);
-  const nextDate = toDate(next.date);
-  const past = nextDate && nextDate < today;
-  const sessNum = parseInt((next.round || '').replace(/[^0-9]/g, ''), 10);
-  const sess = divData.sessions.find(s => s.n === sessNum);
-  const sessionDone = sess && sess.status === 'played';
-  const seasonDone = L.sessionsPlayed >= L.sessionsTotal;
-  const state = (seasonDone || sessionDone) ? 'waiting' : (past || !nextDate ? 'unscheduled' : 'ready');
+  const divisionCalendar = data.calendar.filter(c => c.div === div);
+  const next = divisionCalendar
+    .map(c => ({ entry: c, date: toDate(c.date) }))
+    .filter(item => item.date && item.date >= today)
+    .sort((a, b) => a.date - b.date || String(a.entry.time).localeCompare(String(b.entry.time)))[0]?.entry;
+  const undated = divisionCalendar.some(c => !toDate(c.date));
+  const seasonDone = currentSession >= L.sessionsTotal && divData.sessions.every(s => s.status === 'played');
+  const state = next ? 'ready' : (seasonDone ? 'waiting' : undated ? 'unscheduled' : 'waiting');
 
   return (
     <div className="side-rail">
@@ -221,6 +230,7 @@ function SideRail({ data, div }) {
                   <div key={pl.id} className={`pp ${i === 0 ? 'first' : ''}`}>
                     <Flag nat={pl.nat} size={14} />
                     <div style={{ fontWeight: 700 }}>{fmtPts(pl.delta)}</div>
+                    <div className="pn" title={pl.name}>{pl.shortName || pl.name}</div>
                   </div>
                 ))}
               </div>
@@ -236,7 +246,7 @@ function SideRail({ data, div }) {
         <div className="mini-grid">
           <div>
             <div className="ml">{tr('sessions_lbl')}</div>
-            <div className="mv">{L.sessionsPlayed}<span className="mf">/{L.sessionsTotal}</span></div>
+            <div className="mv">{currentSession}<span className="mf">/{L.sessionsTotal}</span></div>
           </div>
           <div>
             <div className="ml">{tr('hanchan_div', { div })}</div>
@@ -254,7 +264,7 @@ function SideRail({ data, div }) {
         <div style={{ marginTop: 14 }}>
           <div className="prog-track"><div className={`prog-fill div-${div}`} style={{ width: pct + '%' }}></div></div>
           <div style={{ marginTop: 6, fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-soft)' }}>
-            {tr('season_progress', { played: L.sessionsPlayed, total: L.sessionsTotal, pct })}
+            {tr('season_progress', { played: currentSession, total: L.sessionsTotal, pct })}
           </div>
         </div>
       </div>

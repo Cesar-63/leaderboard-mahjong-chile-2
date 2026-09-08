@@ -307,6 +307,7 @@ select{font:inherit;color:inherit}
 .recent-row .pp{display:flex;flex-direction:column;align-items:center;gap:1px;font-family:var(--font-mono);font-size:9.5px;color:var(--ink-soft)}
 .recent-row .pp.first{color:var(--accent);font-weight:700}
 [data-div="B"] .recent-row .pp.first{color:var(--accent-2)}
+.recent-row .pp .pn{width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center;font-size:7.5px;font-weight:500;color:var(--ink-faint)}
 
 .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .mini-grid .ml{font-family:var(--font-mono);font-size:9.5px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.08em}
@@ -499,17 +500,17 @@ select{font:inherit;color:inherit}
 [data-theme="neon"] .code-block .date{font-family:var(--font-mono);font-size:14px}
 .code-block .table{font-family:var(--font-mono);font-size:10px;color:var(--ink-soft)}
 .four-results{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.hanchan-card .pos{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:9px;padding:6px 10px;border-radius:8px;background:var(--bg-sunk)}
-.hanchan-card .pos.p1{background:color-mix(in oklab,var(--accent) 11%,var(--bg-sunk))}
-[data-div="B"] .hanchan-card .pos.p1{background:color-mix(in oklab,var(--accent-2) 13%,var(--bg-sunk))}
-.hanchan-card .pos .place{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint)}
-.hanchan-card .pos.p1 .place{color:var(--accent);font-weight:700}
-[data-div="B"] .hanchan-card .pos.p1 .place{color:var(--accent-2)}
-.hanchan-card .pos .nm{font-size:12.5px;font-weight:500;min-width:0}
-.hanchan-card .pos .nm .h{font-family:var(--font-mono);font-size:9.5px;color:var(--ink-faint);display:block}
-.hanchan-card .pos .dl{font-family:var(--font-mono);font-weight:700;font-size:12.5px}
-.hanchan-card .pos .dl.pos{color:var(--good)}
-.hanchan-card .pos .dl.neg{color:var(--bad)}
+.hanchan-card .four-results>.pos{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:9px;padding:6px 10px;border-radius:8px;background:var(--bg-sunk)}
+.hanchan-card .four-results>.pos.p1{background:color-mix(in oklab,var(--accent) 11%,var(--bg-sunk))}
+[data-div="B"] .hanchan-card .four-results>.pos.p1{background:color-mix(in oklab,var(--accent-2) 13%,var(--bg-sunk))}
+.hanchan-card .four-results>.pos .place{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint)}
+.hanchan-card .four-results>.pos.p1 .place{color:var(--accent);font-weight:700}
+[data-div="B"] .hanchan-card .four-results>.pos.p1 .place{color:var(--accent-2)}
+.hanchan-card .four-results>.pos .nm{font-size:12.5px;font-weight:500;min-width:0}
+.hanchan-card .four-results>.pos .nm .h{font-family:var(--font-mono);font-size:9.5px;color:var(--ink-faint);display:block}
+.hanchan-card .four-results>.pos .dl{font-family:var(--font-mono);font-weight:700;font-size:12.5px;text-align:right;min-width:5ch;font-variant-numeric:tabular-nums}
+.hanchan-card .four-results>.pos .dl.pos{color:var(--good)}
+.hanchan-card .four-results>.pos .dl.neg{color:var(--bad)}
 
 /* ─── calendar ─── */
 .cal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
@@ -718,6 +719,13 @@ select{font:inherit;color:inherit}
   .comp-wrap{grid-template-columns:1fr}
   .cal-grid{grid-template-columns:1fr 1fr}
   .iormc-podium{grid-template-columns:1fr}
+  /* En el historial, dos resultados por fila dejan muy poco espacio para
+     nombres largos y puntajes. Una fila por jugador conserva la jerarquía y
+     evita superposiciones en teléfonos y tablets angostas. */
+  .four-results{grid-template-columns:1fr}
+  .hanchan-card .four-results>.pos{grid-template-columns:auto auto minmax(0,1fr) auto}
+  .hanchan-card .four-results>.pos .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hanchan-card .four-results>.pos .nm .h{overflow:hidden;text-overflow:ellipsis}
   .main{min-width:0;padding:14px 12px 80px}
   .profile-stat-groups{grid-template-columns:1fr}
   .profile-stat-group:nth-child(even){border-left:0}
@@ -743,7 +751,7 @@ select{font:inherit;color:inherit}
 
   /* Historial */
   .hanchan-card{grid-template-columns:1fr;gap:8px}
-  .code-block,.four-results,.hanchan-card .pos{min-width:0}
+  .code-block,.four-results,.hanchan-card .four-results>.pos{min-width:0}
   .four-results{gap:6px}
 
   /* IORMC */

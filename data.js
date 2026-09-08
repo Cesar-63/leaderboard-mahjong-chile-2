@@ -212,6 +212,7 @@
     allPlayers, nationalities, iormc, calendar,
     league: {
       season: 'Temporada 2026',
+      currentSession: SESSIONS_PLAYED,
       sessionsPlayed: SESSIONS_PLAYED, sessionsTotal: SESSIONS_TOTAL,
       hanchanPerSession: HANCHAN_PER_SESSION, playersPerDiv: 24,
       hanchanPerDiv: divA.matches.length,
