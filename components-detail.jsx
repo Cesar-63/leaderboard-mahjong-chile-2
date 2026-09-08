@@ -87,7 +87,11 @@ function PlayerDetail({ playerId, data, onPick }) {
   // scripts/sync.py. No debe recortarse ni completarse en el cliente: si un
   // jugador muestra pocos yakus significa que faltan datos de partidas
   // procesadas, no que la interfaz deba inventarlos.
-  const yakus = Array.isArray(p.yakus) ? p.yakus : [];
+  // `yakus` es el formato nuevo del pipeline. Los datos versionados de ramas
+  // anteriores todavía usan `topYaku`; ambos contienen registros reales.
+  const yakus = Array.isArray(p.yakus)
+    ? p.yakus
+    : Array.isArray(p.topYaku) ? p.topYaku : [];
   const yakumanNames = new Set([
     'Tenhou', 'Chiihou', 'Daisangen', 'Suuankou', 'Tsuuiisou', 'Ryuuiisou',
     'Chinroutou', 'Kokushi Musou', 'Shousuushii', 'Suukantsu', 'Chuuren Poutou',
