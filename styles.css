@@ -591,7 +591,9 @@ select{font:inherit;color:inherit}
 /* Kan cerrado: las dos de los extremos van boca abajo. */
 .mj-tile.back{background:linear-gradient(178deg,#2f6f5e,#22523f);border-color:rgba(0,0,0,.35);color:transparent}
 .mj-tile.back>*{visibility:hidden}
-.mj-hand{display:flex;align-items:flex-end;gap:10px;overflow-x:auto;padding-bottom:2px;scrollbar-width:thin}
+/* overflow-x:auto también recorta arriba y abajo: el aire es para que el
+   anillo de la ficha ganadora, que además se levanta 2px, no salga cortado. */
+.mj-hand{display:flex;align-items:flex-end;gap:10px;overflow-x:auto;padding:5px 4px 4px;margin:0 -4px;scrollbar-width:thin}
 .mj-group{display:flex;gap:2px}
 .mj-group.win{padding-left:2px}
 .mj-meld{display:flex;gap:2px;padding-left:8px;border-left:1px dashed var(--line-strong)}
@@ -616,7 +618,7 @@ select{font:inherit;color:inherit}
   .mj-tile{--tile-w:23px}
   /* En el teléfono la mano se parte en dos filas antes que esconderse detrás
      de un scroll: se mira entera de una. */
-  .mj-hand{gap:7px 8px;flex-wrap:wrap;overflow-x:visible}
+  .mj-hand{gap:7px 8px;flex-wrap:wrap;overflow-x:visible;margin:0}
   .mj-group{flex-wrap:wrap;row-gap:4px}
   .mj-meld{padding-left:5px}
   .yaku-row{grid-template-columns:104px 1fr 30px;gap:9px;font-size:12.5px}
