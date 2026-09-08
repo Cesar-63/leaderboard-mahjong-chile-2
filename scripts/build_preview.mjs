@@ -69,6 +69,7 @@ const runtime = RUNTIME_FILES.map((rel) => fs.readFileSync(vendorFile(rel), 'utf
 // El sitio lee localStorage sin guardas; en un visor sandboxed el acceso puede
 // lanzar y dejar la página en blanco. Este shim degrada a memoria.
 const shim = `(function () {
+  window.__LOCAL_PREVIEW__ = true;
   try { window.localStorage.getItem('probe'); } catch (e) {
     var mem = {};
     Object.defineProperty(window, 'localStorage', { value: {

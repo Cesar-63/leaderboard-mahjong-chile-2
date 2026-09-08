@@ -15,18 +15,100 @@ function hallOfFameCopy(record, index) {
 
 function metricsToRadar(p, leaguePlayers = []) {
   const hasStats = p.statsSample > 0;
-  const pointValues = leaguePlayers.map(player => Number(player.avgPoints)).filter(Number.isFinite);
-  const minPoints = Math.min(...pointValues, p.avgPoints, 0);
-  const maxPoints = Math.max(...pointValues, p.avgPoints, 0);
-  const pointRange = maxPoints - minPoints || 1;
+  const peers = leaguePlayers.length ? leaguePlayers : [p];
+  const percentile = (value, getter, higherIsBetter = true) => {
+    const values = peers.map(getter).filter(Number.isFinite);
+    if (!Number.isFinite(value) || !values.length) return 0;
+    const noWorse = values.filter(peerValue => higherIsBetter ? peerValue <= value : peerValue >= value).length;
+    return clamp01(noWorse / values.length);
+  };
   return [
-    { label: tr('radar_wins'), display: hasStats ? p.winRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.winRate / 100) : 0 },
-    { label: tr('radar_defense'), display: hasStats ? (100 - p.dealInRate).toFixed(0) + '%' : '—', value: hasStats ? clamp01((100 - p.dealInRate) / 100) : 0 },
-    { label: tr('radar_riichi'), display: hasStats ? p.riichiRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.riichiRate / 100) : 0 },
-    { label: tr('radar_open'), display: hasStats ? p.openRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.openRate / 100) : 0 },
-    { label: tr('radar_placement'), display: p.avgRank.toFixed(2), value: clamp01((4 - p.avgRank) / 3) },
-    { label: tr('radar_points'), display: fmtPts(p.avgPoints), value: clamp01((p.avgPoints - minPoints) / pointRange) },
+    { label: tr('radar_wins'), display: hasStats ? p.winRate.toFixed(0) + '%' : '—', value: hasStats ? percentile(p.winRate, player => player.statsSample > 0 ? player.winRate : NaN) : 0 },
+    { label: tr('radar_defense'), display: hasStats ? (100 - p.dealInRate).toFixed(0) + '%' : '—', value: hasStats ? percentile(p.dealInRate, player => player.statsSample > 0 ? player.dealInRate : NaN, false) : 0 },
+    { label: tr('radar_placement'), display: p.avgRank.toFixed(2), value: percentile(p.avgRank, player => player.avgRank, false) },
+    { label: tr('radar_points'), display: fmtPts(p.avgPoints), value: percentile(p.avgPoints, player => player.avgPoints) },
   ];
+}
+
+function ProfileStyleTendencies({ player, leaguePlayers }) {
+  const median = (key) => {
+    const values = leaguePlayers.filter(peer => peer.statsSample > 0).map(peer => peer[key]).filter(Number.isFinite).sort((a, b) => a - b);
+    if (!values.length) return 0;
+    const middle = Math.floor(values.length / 2);
+    return values.length % 2 ? values[middle] : (values[middle - 1] + values[middle]) / 2;
+  };
+  const metrics = [
+    { label: tr('radar_riichi'), value: player.riichiRate, median: median('riichiRate') },
+    { label: tr('radar_open'), value: player.openRate, median: median('openRate') },
+  ];
+  return <div className="profile-tendencies">
+    <div className="profile-tendencies-title">{tr('play_tendency')}</div>
+    {metrics.map(metric => <div className="profile-tendency" key={metric.label}>
+      <span>{metric.label}</span>
+      <div className="profile-tendency-track" style={{ '--value': `${clamp01(metric.value / 100) * 100}%`, '--median': `${clamp01(metric.median / 100) * 100}%` }}>
+        <i className="median" title={`${tr('league_median')}: ${metric.median.toFixed(0)}%`} />
+        <i className="value" />
+      </div>
+      <strong>{player.statsSample > 0 ? `${metric.value.toFixed(0)}%` : '—'}</strong>
+    </div>)}
+    <div className="profile-tendencies-legend"><i />{tr('league_median')}</div>
+  </div>;
+}
+
+const PREVIEW_YAKUS = [
+  { name: 'Riichi', count: 11 }, { name: 'Tanyao', count: 5 }, { name: 'Ippatsu', count: 4 },
+  { name: 'Yakuhai Bakaze', count: 4 }, { name: 'Yakuhai Jikaze', count: 4 }, { name: 'Menzen Tsumo', count: 3 },
+  { name: 'Yakuhai Haku', count: 3 }, { name: 'Pinfu', count: 3 }, { name: 'Yakuhai Hatsu', count: 3 },
+  { name: 'Honitsu', count: 2 }, { name: 'Toitoi', count: 2 }, { name: 'Sanshoku Doujun', count: 2 },
+  { name: 'Chanta', count: 2 }, { name: 'Yakuhai Chun', count: 1 }, { name: 'Iipeikou', count: 1 }, { name: 'Haitei', count: 1 },
+];
+
+function yakuGlyph(name) {
+  const glyphs = { Riichi: '立', Tanyao: '断', Ippatsu: '一', Pinfu: '平', 'Menzen Tsumo': '門' };
+  return glyphs[name] || '役';
+}
+
+function yakuStory(top) {
+  const names = top.map(yaku => yaku.name);
+  const has = name => names.some(candidate => candidate.toLowerCase().includes(name));
+  if (names.length < 3) return { title: tr('yaku_story_varied_title'), text: tr('yaku_story_limited_text', { first: names[0] }) };
+  if (has('riichi') && has('ippatsu')) return { title: tr('yaku_story_pressure_title'), text: tr('yaku_story_pressure_text', { first: names[0], second: names[1], third: names[2] }) };
+  if (has('tanyao') || has('pinfu')) return { title: tr('yaku_story_simple_title'), text: tr('yaku_story_simple_text', { first: names[0], second: names[1], third: names[2] }) };
+  if (names.filter(name => /^yakuhai\b/i.test(name)).length >= 2) return { title: tr('yaku_story_honors_title'), text: tr('yaku_story_honors_text', { first: names[0], second: names[1], third: names[2] }) };
+  return { title: tr('yaku_story_varied_title'), text: tr('yaku_story_varied_text', { first: names[0], second: names[1], third: names[2] }) };
+}
+
+function YakuProfile({ yakus, color }) {
+  if (!yakus.length) return <div className="yaku-empty">{tr('yaku_empty')}</div>;
+  const sorted = [...yakus].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+  const total = sorted.reduce((sum, yaku) => sum + yaku.count, 0);
+  const top = sorted.slice(0, 3);
+  const remaining = sorted.slice(3);
+  const yakuhai = remaining.filter(yaku => /^yakuhai\b/i.test(yaku.name));
+  const other = remaining.filter(yaku => !/^yakuhai\b/i.test(yaku.name));
+  const yakuhaiTotal = yakuhai.reduce((sum, yaku) => sum + yaku.count, 0);
+  const story = yakuStory(top);
+  const pct = count => total ? Math.round(count / total * 100) : 0;
+  return <div className="yaku-profile" style={{ '--yaku-accent': color }}>
+    <div className="yaku-signature">
+      <div className="yaku-story"><div className="block-label">{tr('yaku_story_label')}</div><h4>{story.title}</h4><p>{story.text}</p></div>
+      <div className="yaku-top-three">{top.map((yaku, index) => <div className="yaku-top" key={yaku.name}>
+        <span className="yaku-top-rank">{index === 0 ? tr('yaku_high') : tr('yaku_rank_n', { n: index + 1 })}</span>
+        <i>{yakuGlyph(yaku.name)}</i><strong>{yaku.name}</strong><b>{yaku.count} · {pct(yaku.count)}%</b>
+      </div>)}</div>
+    </div>
+    <div className="yaku-rest-label">{tr('yaku_other_title')}</div>
+    <div className="yaku-ledger">
+      {!!yakuhai.length && <div className="yaku-yakuhai-group">
+        <div><strong>{tr('yaku_yakuhai_group')}</strong><span>{tr('yaku_yakuhai_hint')}</span></div>
+        <div className="yaku-yakuhai-items">{yakuhai.map(yaku => <span key={yaku.name}>{yaku.name.replace(/^Yakuhai\s*/i, '')} <b>{yaku.count} · {pct(yaku.count)}%</b></span>)}</div>
+        <div className="yaku-yakuhai-total"><strong>{yakuhaiTotal}</strong><span>{pct(yakuhaiTotal)}% {tr('yaku_total_suffix')}</span></div>
+      </div>}
+      {other.map(yaku => <div className="yaku-ledger-row" key={yaku.name}>
+        <span>{yaku.name}</span><div><i style={{ width: `${Math.max(4, pct(yaku.count))}%` }} /></div><b>{yaku.count}</b><small>{pct(yaku.count)}%</small>
+      </div>)}
+    </div>
+  </div>;
 }
 
 function placementSegments(p) {
@@ -89,9 +171,11 @@ function PlayerDetail({ playerId, data, onPick }) {
   // procesadas, no que la interfaz deba inventarlos.
   // `yakus` es el formato nuevo del pipeline. Los datos versionados de ramas
   // anteriores todavía usan `topYaku`; ambos contienen registros reales.
-  const yakus = Array.isArray(p.yakus)
+  const sourceYakus = Array.isArray(p.yakus)
     ? p.yakus
     : Array.isArray(p.topYaku) ? p.topYaku : [];
+  const yakus = sourceYakus.length || !window.__LOCAL_PREVIEW__ ? sourceYakus : PREVIEW_YAKUS;
+  const usingPreviewYakus = !sourceYakus.length && yakus.length > 0;
   const yakumanNames = new Set([
     'Tenhou', 'Chiihou', 'Daisangen', 'Suuankou', 'Tsuuiisou', 'Ryuuiisou',
     'Chinroutou', 'Kokushi Musou', 'Shousuushii', 'Suukantsu', 'Chuuren Poutou',
@@ -116,10 +200,7 @@ function PlayerDetail({ playerId, data, onPick }) {
     return { key: 'generic', glyph: '✦' };
   };
   const recordIcons = { leader: '王', wins: '和', defense: '守', riichi: '立', consistency: '均', recent: '昇', saki: '咲' };
-  const [showAllYakus, setShowAllYakus] = React.useState(false);
   const totalYaku = yakus.reduce((sum, y) => sum + y.count, 0);
-  const maxYaku = Math.max(...yakus.map(y => y.count), 1);
-  const visibleYakus = showAllYakus ? yakus : yakus.slice(0, 6);
 
   return (
     <div className="tab-panel">
@@ -205,9 +286,10 @@ function PlayerDetail({ playerId, data, onPick }) {
             <div className="ch-head stats-overview-head"><div><h3>{tr('stats_overview')}</h3><p>{tr('stats_overview_hint')}</p></div></div>
             <div className="stats-overview-layout">
               <div className="profile-radar" style={{ '--profile-accent': color }}>
-                <div className="profile-radar-label">{tr('radar_summary')}</div>
+                <div className="profile-radar-label">{tr('radar_competitive')}</div>
                 <RadarChart key={p.id} stats={radar} color={color} size={340} />
-                <div className="profile-radar-caption">{tr('profile_title')}</div>
+                <div className="profile-radar-caption">{tr('radar_relative_caption')}</div>
+                <ProfileStyleTendencies player={p} leaguePlayers={data.divisions[p.div].players} />
               </div>
               <ProfileStatGroups player={p} data={data} />
             </div>
@@ -219,17 +301,8 @@ function PlayerDetail({ playerId, data, onPick }) {
           </div>
 
           <div className="chart-card detail-full yaku-card">
-            <div className="ch-head yaku-head"><div><h3>{tr('yaku_title')}</h3><p>{tr('yaku_summary', { types: yakus.length, total: totalYaku })}</p></div><span className="jp">役一覧</span></div>
-            <div className="yaku-list">
-              {visibleYakus.map((y, i) => (
-                <div className="yaku-row" key={y.name}>
-                  <div className="yaku-name"><div className="name">{y.name}</div><span>{y.count >= maxYaku * .7 ? tr('yaku_high') : tr('yaku_frequency')}</span></div>
-                  <div className="bar"><div style={{ width: `${(y.count / maxYaku) * 100}%`, background: color, animationDelay: `${i * 80}ms` }} /></div>
-                  <div className="count"><strong>{y.count}</strong><small>{totalYaku ? `${Math.round(y.count / totalYaku * 100)}%` : '—'}</small></div>
-                </div>
-              ))}
-            </div>
-            {yakus.length > 6 && <button type="button" className="yaku-toggle" onClick={() => setShowAllYakus(v => !v)}>{showAllYakus ? tr('yaku_show_less') : tr('yaku_show_all', { n: yakus.length })}</button>}
+            <div className="ch-head yaku-head"><div><h3>{tr('yaku_title')}</h3><p>{tr('yaku_summary', { types: yakus.length, total: totalYaku })}{usingPreviewYakus ? ` · ${tr('preview_data')}` : ''}</p></div><span className="jp">役一覧</span></div>
+            <YakuProfile yakus={yakus} color={color} />
         </div>
       </div>
     </div>
@@ -402,7 +475,7 @@ function Comparator({ data }) {
               <NatTag nat={p.nat} showName size={16} />
               <span>#{p.rank} · {p.games} han</span>
             </div>
-            <RadarChart key={side + animKey} stats={metricsToRadar(p)} color={side === 'a' ? 'var(--accent)' : 'var(--accent-2)'} size={260} />
+            <RadarChart key={side + animKey} stats={metricsToRadar(p, data.divisions[p.div].players)} color={side === 'a' ? 'var(--accent)' : 'var(--accent-2)'} size={260} />
           </div>
         ))}
       </div>
