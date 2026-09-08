@@ -4,6 +4,15 @@ function accentFor(div) { return div === 'B' ? 'var(--accent-2)' : 'var(--accent
 // Dos primeras letras para el círculo del avatar (el handle completo se desborda)
 function initials(h) { return (h || '').slice(0, 2); }
 
+const HOF_KEYS = ['leader', 'wins', 'defense', 'riichi', 'consistency', 'recent'];
+function hallOfFameCopy(record, index) {
+  const key = record.key || HOF_KEYS[index];
+  return {
+    tag: tr(`hof_${key}_title`),
+    sub: tr(`hof_${key}_subtitle`),
+  };
+}
+
 function metricsToRadar(p) {
   const hasStats = p.statsSample > 0;
   return [
@@ -567,12 +576,13 @@ function HallOfFame({ data }) {
             </span>
           </div>
           <div className="hof-grid">
-            {data.divisions[d].hallOfFame.map((h, i) => (
-              <div className={`hof-card div-${d}`} key={i} style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 45}ms` }}>
+            {data.divisions[d].hallOfFame.map((h, i) => {
+              const copy = hallOfFameCopy(h, i);
+              return <div className={`hof-card div-${d}`} key={h.key || i} style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 45}ms` }}>
                 <div className="jp-mark">{h.jp}</div>
-                <div className="tag">{h.tag}</div>
+                <div className="tag">{copy.tag}</div>
                 <div className="value" style={{ color: accentFor(d) }}>{h.value}</div>
-                <div className="sub">{h.sub}</div>
+                <div className="sub">{copy.sub}</div>
                 <div className="player-line">
                   <div className={`avatar div-${d}`}>{initials(h.player.handle)}</div>
                   <div>
@@ -582,8 +592,8 @@ function HallOfFame({ data }) {
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              </div>;
+            })}
           </div>
         </div>
       ))}

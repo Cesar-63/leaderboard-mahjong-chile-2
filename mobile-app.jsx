@@ -504,12 +504,13 @@ function MobMore({ data, onPick }) {
             <span className={`div-chip ${d}`}>DIVISIÓN {d}</span><span className="ln"></span>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--ink-faint)' }}>殿堂</span>
           </div>
-          {data.divisions[d].hallOfFame.map((h, i) => (
-            <div className={`mob-hof div-${d}`} key={i} style={{ animationDelay: `${i * 30}ms` }}>
+          {data.divisions[d].hallOfFame.map((h, i) => {
+            const copy = hallOfFameCopy(h, i);
+            return <div className={`mob-hof div-${d}`} key={h.key || i} style={{ animationDelay: `${i * 30}ms` }}>
               <div className="jpm">{h.jp}</div>
-              <div className="tg">{h.tag}</div>
+              <div className="tg">{copy.tag}</div>
               <div className="vl" style={{ color: accentFor(d) }}>{h.value}</div>
-              <div className="sb">{h.sub}</div>
+              <div className="sb">{copy.sub}</div>
               <div className="pl">
                 <div className={`avatar div-${d}`}>{initials(h.player.handle)}</div>
                 <div>
@@ -519,8 +520,8 @@ function MobMore({ data, onPick }) {
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            </div>;
+          })}
         </React.Fragment>
       ))}
     </div>

@@ -198,12 +198,12 @@
     const top = by(p => p.points), topWin = by(p => p.winRate), lowDeal = by(p => p.dealInRate, true);
     const speed = by(p => p.riichiRate), iron = by(p => p.avgRank, true), streak = by(p => p.streak);
     return [
-      { tag: 'Líder División', value: (top.points >= 0 ? '+' : '') + top.points.toFixed(1), sub: 'puntos uma/oka', player: top, jp: '王座' },
-      { tag: 'Más manos ganadas', value: topWin.winRate.toFixed(1) + '%', sub: 'porcentaje de victorias', player: topWin, jp: '和了率' },
-      { tag: 'Muro de Hierro', value: lowDeal.dealInRate.toFixed(1) + '%', sub: 'menos ron pagado', player: lowDeal, jp: '放銃' },
-      { tag: 'Velocidad', value: speed.riichiRate.toFixed(1) + '%', sub: 'manos con riichi', player: speed, jp: '立直' },
-      { tag: 'Consistencia', value: iron.avgRank.toFixed(2), sub: 'puesto promedio', player: iron, jp: '平均順位' },
-      { tag: 'Racha Caliente', value: (streak.streak >= 0 ? '+' : '') + streak.streak.toFixed(0), sub: 'últimas 4 hanchan', player: streak, jp: '連勝' },
+      { key: 'leader', value: (top.points >= 0 ? '+' : '') + top.points.toFixed(1), player: top, jp: '王座' },
+      { key: 'wins', value: topWin.winRate.toFixed(1) + '%', player: topWin, jp: '和了率' },
+      { key: 'defense', value: lowDeal.dealInRate.toFixed(1) + '%', player: lowDeal, jp: '放銃' },
+      { key: 'riichi', value: speed.riichiRate.toFixed(1) + '%', player: speed, jp: '立直' },
+      { key: 'consistency', value: iron.avgRank.toFixed(2), player: iron, jp: '平均順位' },
+      { key: 'recent', value: (streak.streak >= 0 ? '+' : '') + streak.streak.toFixed(0), player: streak, jp: '連勝' },
     ];
   }
 
