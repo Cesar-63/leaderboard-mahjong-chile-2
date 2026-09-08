@@ -69,7 +69,7 @@ function RadarChart({ stats, color = 'var(--accent)', size = 280 }) {
 
   const padV = 28;
   return (
-    <svg ref={ref} className="radar-svg" viewBox={`-12 ${-padV} ${size + 24} ${size + padV * 2}`}>
+    <svg ref={ref} className="radar-svg" viewBox={`-44 ${-padV} ${size + 88} ${size + padV * 2}`}>
       {/* rings */}
       {[0.25, 0.5, 0.75, 1].map((r, i) => (
         <polygon key={i} points={ring(r)} fill="none" stroke="var(--line)" strokeWidth="1" />
@@ -107,16 +107,18 @@ function RadarChart({ stats, color = 'var(--accent)', size = 280 }) {
       {/* labels */}
       {stats.map((s, i) => {
         const [x, y] = labelPoints[i];
+        const horizontal = Math.cos(angleAt(i));
+        const anchor = horizontal > .3 ? 'start' : horizontal < -.3 ? 'end' : 'middle';
         return (
           <g key={i}>
-            <text x={x} y={y} textAnchor="middle" dominantBaseline="middle"
+            <text x={x} y={y} textAnchor={anchor} dominantBaseline="middle"
               fontFamily="var(--font-mono)" fontSize="10"
               letterSpacing="0.06em" fill="var(--ink-soft)"
               style={{ textTransform: 'uppercase' }}
             >
               {s.label}
             </text>
-            <text x={x} y={y + 12} textAnchor="middle" dominantBaseline="middle"
+            <text x={x} y={y + 12} textAnchor={anchor} dominantBaseline="middle"
               fontFamily="var(--font-mono)" fontSize="11" fontWeight="700"
               fill="var(--ink)"
             >
