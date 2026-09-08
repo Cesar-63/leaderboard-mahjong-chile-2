@@ -104,8 +104,13 @@ jugador y publica las tasas. Definiciones, alineadas con amae-koromo:
   Del que pagó sólo se nombra a los del roster; de un suplente no se publica
   identidad. Los melds se codifican con una letra por delante (`k` pon, `s` chi,
   `g` kan abierto, `a` kan cerrado) para que la mano quepa en un string.
-  `tiles.jsx` las dibuja: la cara de la ficha es lo único que hay que tocar para
-  cambiar el set gráfico.
+  `tiles.jsx` las dibuja y `tile-art.js` guarda las 37 caras en SVG, sacadas del
+  set de FluffyStuff (dominio público, CC0). En `tile-art.js` va **sólo la cara**,
+  sobre fondo transparente y en un lienzo de 300x400: el cuerpo de la ficha
+  —marfil, borde, sombra, reverso del kan cerrado— lo pone el CSS de `.mj-tile`,
+  que es lo que sigue al tema. Cambiar de set = regenerar ese archivo. El blanco
+  (haku) viene en blanco a propósito en el set original y el marco se lo pone el
+  CSS.
 - `stat-tips.jsx` es la fuente única de qué mide cada casilla: rótulo, fórmula,
   denominador y tooltip salen del mismo registro, y lo usan tanto la vista de
   escritorio como la del teléfono. Agregar una métrica = una entrada ahí, sus

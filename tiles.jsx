@@ -4,10 +4,10 @@
 // para los honores (東南西北白發中, en ese orden). El cinco rojo llega como
 // "0m"/"0p"/"0s" y se dibuja como un 5 en rojo.
 //
-// TileFace es la única parte que dibuja: hoy es una ficha tipográfica (número
-// + palo) construida con CSS, sin ningún archivo. Cuando exista un set de
-// imágenes, se reemplaza SÓLO TileFace por un <img src={TILE_SRC[code]}> y
-// todo lo demás (manos, melds, popup) sigue igual.
+// La cara sale de `tile-art.js` (set FluffyStuff, dominio público): sólo el
+// dibujo, sobre fondo transparente. El cuerpo de la ficha —marfil, borde,
+// sombra— lo pone el CSS de .mj-tile. Si una cara falta, TileFace cae a una
+// ficha tipográfica (número + palo) para no dejar el hueco en blanco.
 
 const TILE_SUIT = { m: '萬', p: '筒', s: '索' };
 const TILE_HONOR = { '1z': '東', '2z': '南', '3z': '西', '4z': '北', '5z': '白', '6z': '發', '7z': '中' };
@@ -27,8 +27,21 @@ function tileLabel(code) {
   return `${t.num} ${TILE_SUIT_NAME[t.suit] || t.suit}${t.red ? ' rojo' : ''}`;
 }
 
-// Cara de la ficha. Único punto a cambiar cuando lleguen las imágenes.
+// El SVG se convierte a data URI una sola vez por ficha: son 37 y se repiten
+// en cada mano, así que no vale la pena rehacerlo en cada render.
+const TILE_ART_URI = {};
+function tileArt(code) {
+  if (!(code in TILE_ART_URI)) {
+    const svg = (window.TILE_ART || {})[code];
+    TILE_ART_URI[code] = svg ? `data:image/svg+xml,${encodeURIComponent(svg)}` : null;
+  }
+  return TILE_ART_URI[code];
+}
+
 function TileFace({ code }) {
+  const art = tileArt(code);
+  if (art) return <img className="mj-face" src={art} alt="" draggable="false" />;
+  // Sin arte para esta ficha: número y palo, que igual se lee.
   const t = parseTile(code);
   if (t.honor) return <span className={`mj-honor h-${t.code}`}>{TILE_HONOR[t.code] || t.code}</span>;
   return (
@@ -41,7 +54,7 @@ function TileFace({ code }) {
 
 function Tile({ code, size = 34, state = '', title }) {
   const t = parseTile(code);
-  const clases = ['mj-tile', `suit-${t.suit}`, t.red ? 'red' : '', state].filter(Boolean).join(' ');
+  const clases = ['mj-tile', `suit-${t.suit}`, `tile-${t.code}`, t.red ? 'red' : '', state].filter(Boolean).join(' ');
   return (
     <span className={clases} style={{ '--tile-w': `${size}px` }}
       title={title || tileLabel(code)} role="img" aria-label={tileLabel(code)}>
