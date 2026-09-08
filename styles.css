@@ -331,8 +331,10 @@ select{font:inherit;color:inherit}
 .hp-stat .l{font-size:9.5px;color:var(--ink-soft);font-family:var(--font-mono);letter-spacing:.06em;text-transform:uppercase}
 
 /* ─── player detail ─── */
-.detail-grid{display:grid;grid-template-columns:390px 1fr;gap:22px;align-items:start}
+.detail-grid{display:grid;grid-template-columns:390px 1fr;gap:22px;align-items:stretch}
 .detail-hero{background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--radius-lg);padding:26px;display:flex;flex-direction:column;gap:18px;box-shadow:var(--shadow)}
+.detail-summary{min-width:0}
+.detail-full{grid-column:1/-1;min-width:0}
 .detail-hero.div-A{border-top:3px solid var(--accent)}
 .detail-hero.div-B{border-top:3px solid var(--accent-2)}
 [data-theme="neon"] .detail-hero{border-color:var(--line-strong);background:linear-gradient(180deg,color-mix(in oklab,var(--accent-2) 6%,var(--bg-elev)),var(--bg-elev))}
@@ -406,8 +408,19 @@ select{font:inherit;color:inherit}
 .placement-bar>div.pl4{background:color-mix(in oklab,var(--ink) 65%,var(--ink-faint))}
 .placement-legend{display:flex;gap:2px;margin-top:6px;font-family:var(--font-mono);font-size:10px;color:var(--ink-soft)}
 .placement-legend>span{text-align:center;min-width:0;overflow:hidden;white-space:nowrap}
+.quick-profile-summary{margin-top:auto;padding-top:18px;border-top:1px solid var(--line)}
+.quick-profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin-top:10px}
+.quick-profile-grid>div{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.quick-profile-grid span,.quick-form>span{color:var(--ink-faint);font-family:var(--font-mono);font-size:9px;letter-spacing:.05em;text-transform:uppercase}
+.quick-profile-grid strong,.quick-form strong{font-family:var(--font-mono);font-size:14px;font-variant-numeric:tabular-nums}
+.quick-profile-grid .positive,.quick-form .positive{color:var(--good)}
+.quick-profile-grid .negative,.quick-form .negative{color:var(--bad)}
+.quick-form{display:flex;align-items:center;gap:10px;margin-top:18px;padding-top:11px;border-top:1px dashed var(--line)}
+.quick-form-dots{display:flex;gap:5px;flex:1}
+.quick-form-dots span{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;font:700 10px var(--font-mono);background:var(--bg-sunk)}
+.quick-form-dots .positive{color:var(--good);background:color-mix(in oklab,var(--good) 13%,var(--bg-sunk))}
+.quick-form-dots .negative{color:var(--bad);background:color-mix(in oklab,var(--bad) 11%,var(--bg-sunk))}
 
-.detail-right{display:flex;flex-direction:column;gap:16px}
 .chart-card{background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--radius-lg);padding:22px;box-shadow:var(--shadow)}
 [data-theme="neon"] .chart-card{border-color:var(--line-strong);background:linear-gradient(180deg,color-mix(in oklab,var(--accent-2) 5%,var(--bg-elev)),var(--bg-elev))}
 .ch-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
@@ -420,7 +433,8 @@ select{font:inherit;color:inherit}
 .radar-legend .rl{display:flex;justify-content:space-between;gap:10px;font-family:var(--font-mono);font-size:11px;padding-bottom:6px;border-bottom:1px solid var(--line)}
 .radar-legend .rl:last-child{border-bottom:none}
 .radar-legend .rl .v{font-weight:700}
-.line-svg{width:100%;height:220px;overflow:visible}
+.line-svg{display:block;width:min(100%,1100px);height:auto;margin:0 auto;overflow:visible}
+.line-chart-wrap.compact .line-svg{width:100%;max-width:none}
 .line-chart-wrap{min-width:0}
 .line-summary{display:flex;gap:20px;margin:0 0 4px 40px}
 .line-summary>div{display:flex;align-items:baseline;gap:7px}
@@ -662,6 +676,7 @@ select{font:inherit;color:inherit}
   .standings-wrap,.standings-wrap.layout-split{grid-template-columns:1fr}
   .side-rail{position:static;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
   .detail-grid{grid-template-columns:1fr}
+  .detail-full{grid-column:auto}
   .radar-wrap{grid-template-columns:1fr}
   .iormc-grid{grid-template-columns:1fr}
   .iormc-podium{grid-template-columns:1fr 1fr}

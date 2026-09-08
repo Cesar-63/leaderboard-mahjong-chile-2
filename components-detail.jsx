@@ -31,6 +31,33 @@ function placementSegments(p) {
     .filter(s => s.v > 0);
 }
 
+function QuickProfileSummary({ player }) {
+  const history = player.history || [];
+  const recent = history.slice(-5);
+  const best = Math.max(...history, 0);
+  const worst = Math.min(...history, 0);
+  const mostCommon = [player.placements.p1, player.placements.p2, player.placements.p3, player.placements.p4]
+    .reduce((bestIndex, value, index, all) => value > all[bestIndex] ? index : bestIndex, 0) + 1;
+  return (
+    <div className="quick-profile-summary">
+      <div className="block-label">{tr('quick_summary')}</div>
+      <div className="quick-profile-grid">
+        <div><span>{tr('quick_played')}</span><strong>{player.games}</strong></div>
+        <div><span>{tr('quick_common_place')}</span><strong>{mostCommon}°</strong></div>
+        <div><span>{tr('quick_best_game')}</span><strong className="positive">{best >= 0 ? '+' : ''}{best.toFixed(1)}</strong></div>
+        <div><span>{tr('quick_worst_game')}</span><strong className="negative">{worst.toFixed(1)}</strong></div>
+      </div>
+      <div className="quick-form">
+        <span>{tr('quick_recent')}</span>
+        <div className="quick-form-dots">
+          {recent.map((value, index) => <span key={index} className={value >= 0 ? 'positive' : 'negative'} title={`${value >= 0 ? '+' : ''}${value.toFixed(1)}`}>{value >= 0 ? '+' : '−'}</span>)}
+        </div>
+        <strong className={history.at(-1) >= 0 ? 'positive' : 'negative'}>{history.length ? `${history.at(-1) >= 0 ? '+' : ''}${history.at(-1).toFixed(1)}` : '—'}</strong>
+      </div>
+    </div>
+  );
+}
+
 function PlayerSelect({ value, onChange, data, style }) {
   return (
     <select value={value} onChange={e => onChange(e.target.value)} style={style}>
@@ -123,10 +150,10 @@ function PlayerDetail({ playerId, data, onPick }) {
               ))}
             </div>
           </div>
+          <QuickProfileSummary player={p} />
         </div>
 
-        <div className="detail-right">
-          <div className="chart-card">
+          <div className="chart-card detail-summary">
             <div className="ch-head stats-overview-head"><div><h3>{tr('stats_overview')}</h3><p>{tr('stats_overview_hint')}</p></div></div>
             <div className="stats-overview-layout">
               <div className="profile-radar" style={{ '--profile-accent': color }}>
@@ -138,12 +165,12 @@ function PlayerDetail({ playerId, data, onPick }) {
             </div>
           </div>
 
-          <div className="chart-card line-card">
+          <div className="chart-card line-card detail-full">
             <div className="ch-head"><h3>{tr('evolution_title')} · {p.games} {tr('hanchan')}</h3><span className="jp">スコア推移</span></div>
             <LineChart key={p.id} values={p.cum} color={color} />
           </div>
 
-          <div className="chart-card">
+          <div className="chart-card detail-full">
             <div className="ch-head"><h3>{tr('yaku_title')}</h3><span className="jp">役一覧</span></div>
             <div className="yaku-list">
               {yakus.map((y, i) => (
@@ -154,7 +181,6 @@ function PlayerDetail({ playerId, data, onPick }) {
                 </div>
               ))}
             </div>
-          </div>
         </div>
       </div>
     </div>

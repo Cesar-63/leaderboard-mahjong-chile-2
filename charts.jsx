@@ -169,7 +169,7 @@ function LineChart({ values, height = 220, color = 'var(--accent)', compact = fa
         <div><span>{tr('chart_peak')}</span><strong>{signed(peak)}</strong></div>
         <div><span>{tr('chart_best_game')}</span><strong style={{ color }}>{signed(bestGame)}</strong></div>
       </div>}
-      <svg className="line-svg" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" role="img" aria-label={tr('chart_aria', { n: values.length, points: signed(current) })}>
+      <svg className="line-svg" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet" role="img" aria-label={tr('chart_aria', { n: values.length, points: signed(current) })}>
       {/* grid */}
       {yTicks.map((t, i) => {
         const y = padT + (1 - (t - min) / range) * (height - padT - padB);
