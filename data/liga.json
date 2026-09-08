@@ -96,7 +96,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 1,
-          "zone": "title"
+          "zone": "playoff"
         },
         {
           "id": "A03",
@@ -195,7 +195,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 2,
-          "zone": "title",
+          "zone": "playoff",
           "natRank": 1,
           "iormc": "qualified"
         },
@@ -296,7 +296,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 3,
-          "zone": "title",
+          "zone": "playoff",
           "natRank": 2,
           "iormc": "qualified"
         },
@@ -321,8 +321,8 @@
             34.7,
             27.3,
             -2.6,
-            -3.3,
-            20.9
+            20.9,
+            -3.3
           ],
           "cum": [
             -4.3,
@@ -335,7 +335,7 @@
             43.6,
             70.9,
             68.3,
-            65.0,
+            89.2,
             85.9
           ],
           "counts": [
@@ -345,15 +345,15 @@
             1
           ],
           "absences": 0,
-          "hands": 126,
-          "wins": 25,
-          "dealIns": 8,
-          "riichis": 24,
-          "openHands": 33,
+          "hands": 150,
+          "wins": 29,
+          "dealIns": 11,
+          "riichis": 28,
+          "openHands": 36,
           "damaten": 1,
-          "winPoints": 147800,
-          "dealInPoints": 51600,
-          "winTurns": 265,
+          "winPoints": 174000,
+          "dealInPoints": 55600,
+          "winTurns": 308,
           "placements": {
             "p1": 0.42,
             "p2": 0.08,
@@ -363,21 +363,25 @@
           "avgRank": 2.17,
           "avgPoints": 7.2,
           "streak": 42.3,
-          "winRate": 19.8,
-          "dealInRate": 6.3,
-          "riichiRate": 19.0,
-          "openRate": 26.2,
-          "damatenRate": 4.0,
-          "avgWinPoints": 5912,
-          "avgDealInPoints": 6450,
-          "avgWinTurn": 10.6,
+          "winRate": 19.3,
+          "dealInRate": 7.3,
+          "riichiRate": 18.7,
+          "openRate": 24.0,
+          "damatenRate": 3.4,
+          "avgWinPoints": 6000,
+          "avgDealInPoints": 5055,
+          "avgWinTurn": 10.62,
           "topYaku": [
             {
               "name": "Riichi",
-              "count": 14
+              "count": 17
             },
             {
               "name": "Menzen Tsumo",
+              "count": 7
+            },
+            {
+              "name": "Pinfu",
               "count": 7
             },
             {
@@ -385,19 +389,15 @@
               "count": 5
             },
             {
-              "name": "Pinfu",
+              "name": "Tanyao",
               "count": 5
-            },
-            {
-              "name": "Yakuhai Bakaze",
-              "count": 4
             }
           ],
-          "statsSample": 126,
+          "statsSample": 150,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 4,
-          "zone": "title"
+          "zone": "playoff"
         },
         {
           "id": "A07",
@@ -492,7 +492,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 5,
-          "zone": null
+          "zone": "playoff"
         },
         {
           "id": "A24",
@@ -591,7 +591,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 6,
-          "zone": null
+          "zone": "playoff"
         },
         {
           "id": "A16",
@@ -686,7 +686,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 7,
-          "zone": null,
+          "zone": "playoff",
           "natRank": 3,
           "iormc": "qualified"
         },
@@ -711,8 +711,8 @@
             -8.0,
             47.5,
             -6.1,
-            11.9,
-            -22.9
+            -22.9,
+            11.9
           ],
           "cum": [
             50.2,
@@ -725,7 +725,7 @@
             42.5,
             90.0,
             83.9,
-            95.8,
+            61.0,
             72.9
           ],
           "counts": [
@@ -735,15 +735,15 @@
             2
           ],
           "absences": 0,
-          "hands": 120,
-          "wins": 29,
-          "dealIns": 8,
-          "riichis": 26,
-          "openHands": 42,
+          "hands": 144,
+          "wins": 34,
+          "dealIns": 12,
+          "riichis": 31,
+          "openHands": 48,
           "damaten": 2,
-          "winPoints": 139300,
-          "dealInPoints": 25700,
-          "winTurns": 335,
+          "winPoints": 164400,
+          "dealInPoints": 39900,
+          "winTurns": 393,
           "placements": {
             "p1": 0.17,
             "p2": 0.42,
@@ -753,41 +753,41 @@
           "avgRank": 2.42,
           "avgPoints": 6.1,
           "streak": 30.4,
-          "winRate": 24.2,
-          "dealInRate": 6.7,
-          "riichiRate": 21.7,
-          "openRate": 35.0,
-          "damatenRate": 6.9,
-          "avgWinPoints": 4803,
-          "avgDealInPoints": 3212,
-          "avgWinTurn": 11.55,
+          "winRate": 23.6,
+          "dealInRate": 8.3,
+          "riichiRate": 21.5,
+          "openRate": 33.3,
+          "damatenRate": 5.9,
+          "avgWinPoints": 4835,
+          "avgDealInPoints": 3325,
+          "avgWinTurn": 11.56,
           "topYaku": [
             {
               "name": "Riichi",
-              "count": 10
+              "count": 12
             },
             {
               "name": "Tanyao",
-              "count": 7
+              "count": 8
             },
             {
               "name": "Menzen Tsumo",
-              "count": 5
+              "count": 6
             },
             {
               "name": "Honitsu",
-              "count": 3
+              "count": 4
             },
             {
               "name": "Yakuhai Haku",
-              "count": 3
+              "count": 4
             }
           ],
-          "statsSample": 120,
+          "statsSample": 144,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 8,
-          "zone": null,
+          "zone": "playoff",
           "natRank": 4,
           "iormc": "qualified"
         },
@@ -1008,8 +1008,8 @@
             -13.4,
             -1.7,
             12.1,
-            31.6,
-            -4.1
+            -4.1,
+            31.6
           ],
           "cum": [
             5.5,
@@ -1022,7 +1022,7 @@
             -30.0,
             -31.7,
             -19.6,
-            12.0,
+            -23.7,
             7.9
           ],
           "counts": [
@@ -1032,15 +1032,15 @@
             3
           ],
           "absences": 0,
-          "hands": 113,
-          "wins": 29,
-          "dealIns": 18,
-          "riichis": 13,
-          "openHands": 50,
+          "hands": 137,
+          "wins": 38,
+          "dealIns": 22,
+          "riichis": 22,
+          "openHands": 55,
           "damaten": 3,
-          "winPoints": 111600,
-          "dealInPoints": 98100,
-          "winTurns": 330,
+          "winPoints": 146500,
+          "dealInPoints": 111300,
+          "winTurns": 416,
           "placements": {
             "p1": 0.33,
             "p2": 0.17,
@@ -1050,37 +1050,37 @@
           "avgRank": 2.42,
           "avgPoints": 0.7,
           "streak": 37.9,
-          "winRate": 25.7,
-          "dealInRate": 15.9,
-          "riichiRate": 11.5,
-          "openRate": 44.2,
-          "damatenRate": 10.3,
-          "avgWinPoints": 3848,
-          "avgDealInPoints": 5450,
-          "avgWinTurn": 11.38,
+          "winRate": 27.7,
+          "dealInRate": 16.1,
+          "riichiRate": 16.1,
+          "openRate": 40.1,
+          "damatenRate": 7.9,
+          "avgWinPoints": 3855,
+          "avgDealInPoints": 5059,
+          "avgWinTurn": 10.95,
           "topYaku": [
             {
+              "name": "Riichi",
+              "count": 11
+            },
+            {
+              "name": "Menzen Tsumo",
+              "count": 7
+            },
+            {
               "name": "Tanyao",
+              "count": 6
+            },
+            {
+              "name": "Yakuhai Jikaze",
               "count": 5
             },
             {
               "name": "Yakuhai Hatsu",
               "count": 5
-            },
-            {
-              "name": "Riichi",
-              "count": 5
-            },
-            {
-              "name": "Yakuhai Haku",
-              "count": 4
-            },
-            {
-              "name": "Yakuhai Jikaze",
-              "count": 4
             }
           ],
-          "statsSample": 113,
+          "statsSample": 137,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 11,
@@ -2067,8 +2067,8 @@
             -13.0,
             9.6,
             -26.0,
-            -40.2,
-            6.1
+            6.1,
+            -40.2
           ],
           "cum": [
             12.8,
@@ -2081,7 +2081,7 @@
             -97.1,
             -87.5,
             -113.5,
-            -153.7,
+            -107.4,
             -147.6
           ],
           "counts": [
@@ -2091,15 +2091,15 @@
             2
           ],
           "absences": 0,
-          "hands": 122,
-          "wins": 24,
-          "dealIns": 24,
-          "riichis": 26,
-          "openHands": 55,
+          "hands": 146,
+          "wins": 28,
+          "dealIns": 29,
+          "riichis": 30,
+          "openHands": 68,
           "damaten": 0,
-          "winPoints": 117300,
-          "dealInPoints": 134700,
-          "winTurns": 252,
+          "winPoints": 127600,
+          "dealInPoints": 158800,
+          "winTurns": 306,
           "placements": {
             "p1": 0.0,
             "p2": 0.25,
@@ -2109,14 +2109,14 @@
           "avgRank": 2.92,
           "avgPoints": -12.3,
           "streak": -50.5,
-          "winRate": 19.7,
-          "dealInRate": 19.7,
-          "riichiRate": 21.3,
-          "openRate": 45.1,
+          "winRate": 19.2,
+          "dealInRate": 19.9,
+          "riichiRate": 20.5,
+          "openRate": 46.6,
           "damatenRate": 0.0,
-          "avgWinPoints": 4888,
-          "avgDealInPoints": 5612,
-          "avgWinTurn": 10.5,
+          "avgWinPoints": 4557,
+          "avgDealInPoints": 5476,
+          "avgWinTurn": 10.93,
           "topYaku": [
             {
               "name": "Riichi",
@@ -2124,7 +2124,7 @@
             },
             {
               "name": "Tanyao",
-              "count": 5
+              "count": 6
             },
             {
               "name": "Yakuhai Bakaze",
@@ -2139,7 +2139,7 @@
               "count": 4
             }
           ],
-          "statsSample": 122,
+          "statsSample": 146,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 22,
@@ -2349,6 +2349,7 @@
           "sessionCode": "S1",
           "hanchan": 1,
           "date": "18 jul",
+          "dateISO": "2026-07-18",
           "weekday": "sáb",
           "table": 1,
           "players": [
@@ -2409,6 +2410,7 @@
           "sessionCode": "S1",
           "hanchan": 2,
           "date": "18 jul",
+          "dateISO": "2026-07-18",
           "weekday": "sáb",
           "table": 1,
           "players": [
@@ -2469,6 +2471,7 @@
           "sessionCode": "S1",
           "hanchan": 1,
           "date": "10 jul",
+          "dateISO": "2026-07-10",
           "weekday": "vie",
           "table": 2,
           "players": [
@@ -2529,6 +2532,7 @@
           "sessionCode": "S1",
           "hanchan": 2,
           "date": "10 jul",
+          "dateISO": "2026-07-10",
           "weekday": "vie",
           "table": 2,
           "players": [
@@ -2589,6 +2593,7 @@
           "sessionCode": "S1",
           "hanchan": 1,
           "date": "09 jul",
+          "dateISO": "2026-07-09",
           "weekday": "jue",
           "table": 3,
           "players": [
@@ -2649,6 +2654,7 @@
           "sessionCode": "S1",
           "hanchan": 2,
           "date": "09 jul",
+          "dateISO": "2026-07-09",
           "weekday": "jue",
           "table": 3,
           "players": [
@@ -2709,6 +2715,7 @@
           "sessionCode": "S1",
           "hanchan": 1,
           "date": "11 jul",
+          "dateISO": "2026-07-11",
           "weekday": "sáb",
           "table": 4,
           "players": [
@@ -2769,6 +2776,7 @@
           "sessionCode": "S1",
           "hanchan": 2,
           "date": "11 jul",
+          "dateISO": "2026-07-11",
           "weekday": "sáb",
           "table": 4,
           "players": [
@@ -2829,6 +2837,7 @@
           "sessionCode": "S1",
           "hanchan": 1,
           "date": "14 jul",
+          "dateISO": "2026-07-14",
           "weekday": "mar",
           "table": 5,
           "players": [
@@ -2889,6 +2898,7 @@
           "sessionCode": "S1",
           "hanchan": 2,
           "date": "14 jul",
+          "dateISO": "2026-07-14",
           "weekday": "mar",
           "table": 5,
           "players": [
@@ -2949,6 +2959,7 @@
           "sessionCode": "S1",
           "hanchan": 1,
           "date": "11 jul",
+          "dateISO": "2026-07-11",
           "weekday": "sáb",
           "table": 6,
           "players": [
@@ -3009,6 +3020,7 @@
           "sessionCode": "S1",
           "hanchan": 2,
           "date": "11 jul",
+          "dateISO": "2026-07-11",
           "weekday": "sáb",
           "table": 6,
           "players": [
@@ -3069,6 +3081,7 @@
           "sessionCode": "S2",
           "hanchan": 1,
           "date": "22 jul",
+          "dateISO": "2026-07-22",
           "weekday": "mié",
           "table": 1,
           "players": [
@@ -3129,6 +3142,7 @@
           "sessionCode": "S2",
           "hanchan": 2,
           "date": "22 jul",
+          "dateISO": "2026-07-22",
           "weekday": "mié",
           "table": 1,
           "players": [
@@ -3189,6 +3203,7 @@
           "sessionCode": "S2",
           "hanchan": 1,
           "date": "20 jul",
+          "dateISO": "2026-07-20",
           "weekday": "lun",
           "table": 2,
           "players": [
@@ -3249,6 +3264,7 @@
           "sessionCode": "S2",
           "hanchan": 2,
           "date": "20 jul",
+          "dateISO": "2026-07-20",
           "weekday": "lun",
           "table": 2,
           "players": [
@@ -3309,6 +3325,7 @@
           "sessionCode": "S2",
           "hanchan": 1,
           "date": "26 jul",
+          "dateISO": "2026-07-26",
           "weekday": "dom",
           "table": 3,
           "players": [
@@ -3369,6 +3386,7 @@
           "sessionCode": "S2",
           "hanchan": 2,
           "date": "26 jul",
+          "dateISO": "2026-07-26",
           "weekday": "dom",
           "table": 3,
           "players": [
@@ -3429,6 +3447,7 @@
           "sessionCode": "S2",
           "hanchan": 1,
           "date": "19 jul",
+          "dateISO": "2026-07-19",
           "weekday": "dom",
           "table": 4,
           "players": [
@@ -3489,6 +3508,7 @@
           "sessionCode": "S2",
           "hanchan": 2,
           "date": "19 jul",
+          "dateISO": "2026-07-19",
           "weekday": "dom",
           "table": 4,
           "players": [
@@ -3549,6 +3569,7 @@
           "sessionCode": "S2",
           "hanchan": 1,
           "date": "27 jul",
+          "dateISO": "2026-07-27",
           "weekday": "lun",
           "table": 5,
           "players": [
@@ -3609,6 +3630,7 @@
           "sessionCode": "S2",
           "hanchan": 2,
           "date": "27 jul",
+          "dateISO": "2026-07-27",
           "weekday": "lun",
           "table": 5,
           "players": [
@@ -3669,6 +3691,7 @@
           "sessionCode": "S2",
           "hanchan": 1,
           "date": "20 jul",
+          "dateISO": "2026-07-20",
           "weekday": "lun",
           "table": 6,
           "players": [
@@ -3729,6 +3752,7 @@
           "sessionCode": "S2",
           "hanchan": 2,
           "date": "20 jul",
+          "dateISO": "2026-07-20",
           "weekday": "lun",
           "table": 6,
           "players": [
@@ -3789,6 +3813,7 @@
           "sessionCode": "S3",
           "hanchan": 1,
           "date": "29 jul",
+          "dateISO": "2026-07-29",
           "weekday": "mié",
           "table": 1,
           "players": [
@@ -3849,6 +3874,7 @@
           "sessionCode": "S3",
           "hanchan": 2,
           "date": "29 jul",
+          "dateISO": "2026-07-29",
           "weekday": "mié",
           "table": 1,
           "players": [
@@ -3909,6 +3935,7 @@
           "sessionCode": "S3",
           "hanchan": 1,
           "date": "02 ago",
+          "dateISO": "2026-08-02",
           "weekday": "dom",
           "table": 2,
           "players": [
@@ -3969,6 +3996,7 @@
           "sessionCode": "S3",
           "hanchan": 2,
           "date": "02 ago",
+          "dateISO": "2026-08-02",
           "weekday": "dom",
           "table": 2,
           "players": [
@@ -4029,6 +4057,7 @@
           "sessionCode": "S3",
           "hanchan": 1,
           "date": "29 jul",
+          "dateISO": "2026-07-29",
           "weekday": "mié",
           "table": 3,
           "players": [
@@ -4089,6 +4118,7 @@
           "sessionCode": "S3",
           "hanchan": 2,
           "date": "29 jul",
+          "dateISO": "2026-07-29",
           "weekday": "mié",
           "table": 3,
           "players": [
@@ -4149,6 +4179,7 @@
           "sessionCode": "S3",
           "hanchan": 1,
           "date": "03 ago",
+          "dateISO": "2026-08-03",
           "weekday": "lun",
           "table": 4,
           "players": [
@@ -4209,6 +4240,7 @@
           "sessionCode": "S3",
           "hanchan": 2,
           "date": "03 ago",
+          "dateISO": "2026-08-03",
           "weekday": "lun",
           "table": 4,
           "players": [
@@ -4269,6 +4301,7 @@
           "sessionCode": "S3",
           "hanchan": 1,
           "date": "29 jul",
+          "dateISO": "2026-07-29",
           "weekday": "mié",
           "table": 5,
           "players": [
@@ -4329,6 +4362,7 @@
           "sessionCode": "S3",
           "hanchan": 2,
           "date": "29 jul",
+          "dateISO": "2026-07-29",
           "weekday": "mié",
           "table": 5,
           "players": [
@@ -4389,6 +4423,7 @@
           "sessionCode": "S3",
           "hanchan": 1,
           "date": "31 jul",
+          "dateISO": "2026-07-31",
           "weekday": "vie",
           "table": 6,
           "players": [
@@ -4449,6 +4484,7 @@
           "sessionCode": "S3",
           "hanchan": 2,
           "date": "31 jul",
+          "dateISO": "2026-07-31",
           "weekday": "vie",
           "table": 6,
           "players": [
@@ -4509,6 +4545,7 @@
           "sessionCode": "S4",
           "hanchan": 1,
           "date": "12 ago",
+          "dateISO": "2026-08-12",
           "weekday": "mié",
           "table": 1,
           "players": [
@@ -4569,6 +4606,7 @@
           "sessionCode": "S4",
           "hanchan": 2,
           "date": "12 ago",
+          "dateISO": "2026-08-12",
           "weekday": "mié",
           "table": 1,
           "players": [
@@ -4629,6 +4667,7 @@
           "sessionCode": "S4",
           "hanchan": 1,
           "date": "16 ago",
+          "dateISO": "2026-08-16",
           "weekday": "dom",
           "table": 2,
           "players": [
@@ -4689,6 +4728,7 @@
           "sessionCode": "S4",
           "hanchan": 2,
           "date": "16 ago",
+          "dateISO": "2026-08-16",
           "weekday": "dom",
           "table": 2,
           "players": [
@@ -4749,6 +4789,7 @@
           "sessionCode": "S4",
           "hanchan": 1,
           "date": "09 ago",
+          "dateISO": "2026-08-09",
           "weekday": "dom",
           "table": 3,
           "players": [
@@ -4809,6 +4850,7 @@
           "sessionCode": "S4",
           "hanchan": 2,
           "date": "09 ago",
+          "dateISO": "2026-08-09",
           "weekday": "dom",
           "table": 3,
           "players": [
@@ -4869,6 +4911,7 @@
           "sessionCode": "S4",
           "hanchan": 1,
           "date": "11 ago",
+          "dateISO": "2026-08-11",
           "weekday": "mar",
           "table": 4,
           "players": [
@@ -4929,6 +4972,7 @@
           "sessionCode": "S4",
           "hanchan": 2,
           "date": "11 ago",
+          "dateISO": "2026-08-11",
           "weekday": "mar",
           "table": 4,
           "players": [
@@ -4989,6 +5033,7 @@
           "sessionCode": "S4",
           "hanchan": 1,
           "date": "14 ago",
+          "dateISO": "2026-08-14",
           "weekday": "vie",
           "table": 5,
           "players": [
@@ -5049,6 +5094,7 @@
           "sessionCode": "S4",
           "hanchan": 2,
           "date": "14 ago",
+          "dateISO": "2026-08-14",
           "weekday": "vie",
           "table": 5,
           "players": [
@@ -5109,6 +5155,7 @@
           "sessionCode": "S4",
           "hanchan": 1,
           "date": "10 ago",
+          "dateISO": "2026-08-10",
           "weekday": "lun",
           "table": 6,
           "players": [
@@ -5169,6 +5216,7 @@
           "sessionCode": "S4",
           "hanchan": 2,
           "date": "10 ago",
+          "dateISO": "2026-08-10",
           "weekday": "lun",
           "table": 6,
           "players": [
@@ -5229,6 +5277,7 @@
           "sessionCode": "S5",
           "hanchan": 1,
           "date": "23 ago",
+          "dateISO": "2026-08-23",
           "weekday": "dom",
           "table": 1,
           "players": [
@@ -5289,6 +5338,7 @@
           "sessionCode": "S5",
           "hanchan": 2,
           "date": "23 ago",
+          "dateISO": "2026-08-23",
           "weekday": "dom",
           "table": 1,
           "players": [
@@ -5349,6 +5399,7 @@
           "sessionCode": "S5",
           "hanchan": 1,
           "date": "23 ago",
+          "dateISO": "2026-08-23",
           "weekday": "dom",
           "table": 2,
           "players": [
@@ -5409,6 +5460,7 @@
           "sessionCode": "S5",
           "hanchan": 2,
           "date": "23 ago",
+          "dateISO": "2026-08-23",
           "weekday": "dom",
           "table": 2,
           "players": [
@@ -5469,6 +5521,7 @@
           "sessionCode": "S5",
           "hanchan": 1,
           "date": "22 ago",
+          "dateISO": "2026-08-22",
           "weekday": "sáb",
           "table": 3,
           "players": [
@@ -5529,6 +5582,7 @@
           "sessionCode": "S5",
           "hanchan": 2,
           "date": "22 ago",
+          "dateISO": "2026-08-22",
           "weekday": "sáb",
           "table": 3,
           "players": [
@@ -5589,6 +5643,7 @@
           "sessionCode": "S5",
           "hanchan": 1,
           "date": "21 ago",
+          "dateISO": "2026-08-21",
           "weekday": "vie",
           "table": 4,
           "players": [
@@ -5649,6 +5704,7 @@
           "sessionCode": "S5",
           "hanchan": 2,
           "date": "21 ago",
+          "dateISO": "2026-08-21",
           "weekday": "vie",
           "table": 4,
           "players": [
@@ -5708,8 +5764,9 @@
           "session": 5,
           "sessionCode": "S5",
           "hanchan": 1,
-          "date": "Por definir",
-          "weekday": "—",
+          "date": "27 ago",
+          "dateISO": "2026-08-27",
+          "weekday": "jue",
           "table": 5,
           "players": [
             {
@@ -5768,8 +5825,9 @@
           "session": 5,
           "sessionCode": "S5",
           "hanchan": 2,
-          "date": "Por definir",
-          "weekday": "—",
+          "date": "27 ago",
+          "dateISO": "2026-08-27",
+          "weekday": "jue",
           "table": 5,
           "players": [
             {
@@ -5829,6 +5887,7 @@
           "sessionCode": "S5",
           "hanchan": 1,
           "date": "24 ago",
+          "dateISO": "2026-08-24",
           "weekday": "lun",
           "table": 6,
           "players": [
@@ -5889,6 +5948,7 @@
           "sessionCode": "S5",
           "hanchan": 2,
           "date": "24 ago",
+          "dateISO": "2026-08-24",
           "weekday": "lun",
           "table": 6,
           "players": [
@@ -5948,8 +6008,9 @@
           "session": 6,
           "sessionCode": "S6",
           "hanchan": 1,
-          "date": "Por definir",
-          "weekday": "—",
+          "date": "07 sep",
+          "dateISO": "2026-09-07",
+          "weekday": "lun",
           "table": 2,
           "players": [
             {
@@ -6008,8 +6069,9 @@
           "session": 6,
           "sessionCode": "S6",
           "hanchan": 2,
-          "date": "Por definir",
-          "weekday": "—",
+          "date": "07 sep",
+          "dateISO": "2026-09-07",
+          "weekday": "lun",
           "table": 2,
           "players": [
             {
@@ -6068,68 +6130,9 @@
           "session": 6,
           "sessionCode": "S6",
           "hanchan": 1,
-          "date": "Por definir",
-          "weekday": "—",
-          "table": 4,
-          "players": [
-            {
-              "id": "A02",
-              "name": "Mon_96",
-              "handle": "Mon_96",
-              "nat": "CL",
-              "scoreRaw": 46600,
-              "place": 1,
-              "delta": 31.6,
-              "sustitutoDe": null,
-              "esSuplente": false
-            },
-            {
-              "id": "A04",
-              "name": "Tobippi",
-              "handle": "Tobippi",
-              "nat": "CL",
-              "scoreRaw": 36900,
-              "place": 2,
-              "delta": 11.9,
-              "sustitutoDe": null,
-              "esSuplente": false
-            },
-            {
-              "id": "A22",
-              "name": "MasterFofo",
-              "handle": "MasterFofo",
-              "nat": "AR",
-              "scoreRaw": 31700,
-              "place": 3,
-              "delta": -3.3,
-              "sustitutoDe": null,
-              "esSuplente": false
-            },
-            {
-              "id": "A05",
-              "name": "Uznaiker",
-              "handle": "Uznaiker",
-              "nat": "MX",
-              "scoreRaw": 4800,
-              "place": 4,
-              "delta": -40.2,
-              "sustitutoDe": null,
-              "esSuplente": false
-            }
-          ],
-          "paipuUrl": null,
-          "verified": false,
-          "source": "excel"
-        },
-        {
-          "id": "A-S6-M4-G2",
-          "code": "A-S6-M4-G2",
-          "div": "A",
-          "session": 6,
-          "sessionCode": "S6",
-          "hanchan": 2,
-          "date": "Por definir",
-          "weekday": "—",
+          "date": "08 sep",
+          "dateISO": "2026-09-08",
+          "weekday": "mar",
           "table": 4,
           "players": [
             {
@@ -6177,17 +6180,78 @@
               "esSuplente": false
             }
           ],
-          "paipuUrl": null,
-          "verified": false,
-          "source": "excel"
+          "paipuUrl": "https://mahjongsoul.game.yo-star.com/?paipu=260908-b8e873d8-9ee2-43e3-a301-3bdc25fc3fcb",
+          "verified": true,
+          "source": "paipu"
+        },
+        {
+          "id": "A-S6-M4-G2",
+          "code": "A-S6-M4-G2",
+          "div": "A",
+          "session": 6,
+          "sessionCode": "S6",
+          "hanchan": 2,
+          "date": "08 sep",
+          "dateISO": "2026-09-08",
+          "weekday": "mar",
+          "table": 4,
+          "players": [
+            {
+              "id": "A02",
+              "name": "Mon_96",
+              "handle": "Mon_96",
+              "nat": "CL",
+              "scoreRaw": 46600,
+              "place": 1,
+              "delta": 31.6,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A04",
+              "name": "Tobippi",
+              "handle": "Tobippi",
+              "nat": "CL",
+              "scoreRaw": 36900,
+              "place": 2,
+              "delta": 11.9,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A22",
+              "name": "MasterFofo",
+              "handle": "MasterFofo",
+              "nat": "AR",
+              "scoreRaw": 31700,
+              "place": 3,
+              "delta": -3.3,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A05",
+              "name": "Uznaiker",
+              "handle": "Uznaiker",
+              "nat": "MX",
+              "scoreRaw": 4800,
+              "place": 4,
+              "delta": -40.2,
+              "sustitutoDe": null,
+              "esSuplente": false
+            }
+          ],
+          "paipuUrl": "https://mahjongsoul.game.yo-star.com/?paipu=260908-57ac72cd-b360-484a-bf83-521198b53975",
+          "verified": true,
+          "source": "paipu"
         }
       ],
       "sessions": [
         {
           "n": 1,
           "code": "S1",
-          "date": "18 jul",
-          "weekday": "sáb",
+          "date": "09 jul",
+          "weekday": "jue",
           "div": "A",
           "matches": 12,
           "status": "played"
@@ -6195,8 +6259,8 @@
         {
           "n": 2,
           "code": "S2",
-          "date": "22 jul",
-          "weekday": "mié",
+          "date": "19 jul",
+          "weekday": "dom",
           "div": "A",
           "matches": 12,
           "status": "played"
@@ -6213,8 +6277,8 @@
         {
           "n": 4,
           "code": "S4",
-          "date": "12 ago",
-          "weekday": "mié",
+          "date": "09 ago",
+          "weekday": "dom",
           "div": "A",
           "matches": 12,
           "status": "played"
@@ -6222,8 +6286,8 @@
         {
           "n": 5,
           "code": "S5",
-          "date": "23 ago",
-          "weekday": "dom",
+          "date": "21 ago",
+          "weekday": "vie",
           "div": "A",
           "matches": 12,
           "status": "played"
@@ -6231,8 +6295,8 @@
         {
           "n": 6,
           "code": "S6",
-          "date": "Por definir",
-          "weekday": "—",
+          "date": "07 sep",
+          "weekday": "lun",
           "div": "A",
           "matches": 4,
           "status": "partial"
@@ -6345,7 +6409,7 @@
             "statsReliable": true,
             "arch": "con datos",
             "rank": 1,
-            "zone": "title"
+            "zone": "playoff"
           },
           "jp": "王座"
         },
@@ -6446,112 +6510,108 @@
             "statsReliable": true,
             "arch": "con datos",
             "rank": 1,
-            "zone": "title"
+            "zone": "playoff"
           },
           "jp": "和了率"
         },
         {
           "tag": "Muro de Hierro",
-          "value": "6.3%",
+          "value": "6.5%",
           "sub": "deal-in más bajo",
           "player": {
-            "id": "A22",
+            "id": "A17",
             "div": "A",
-            "num": "22",
-            "name": "MasterFofo",
-            "shortName": "MasterFofo",
-            "handle": "MasterFofo",
-            "nat": "AR",
-            "games": 12,
-            "points": 85.9,
+            "num": "17",
+            "name": "AuroraShine",
+            "shortName": "AuroraShine",
+            "handle": "AuroraShine",
+            "nat": "BR",
+            "games": 10,
+            "points": 243.2,
             "history": [
-              -4.3,
-              -57.3,
-              -14.8,
-              60.8,
-              27.0,
-              -4.3,
-              1.8,
-              34.7,
-              27.3,
-              -2.6,
-              -3.3,
-              20.9
+              12.1,
+              0.3,
+              34.2,
+              25.4,
+              32.6,
+              12.1,
+              77.5,
+              29.8,
+              -25.8,
+              45.0
             ],
             "cum": [
-              -4.3,
-              -61.6,
-              -76.4,
-              -15.6,
-              11.4,
-              7.1,
-              8.9,
-              43.6,
-              70.9,
-              68.3,
-              65.0,
-              85.9
+              12.1,
+              12.4,
+              46.6,
+              72.0,
+              104.6,
+              116.7,
+              194.2,
+              224.0,
+              198.2,
+              243.2
             ],
             "counts": [
-              5,
-              1,
-              5,
+              6,
+              3,
+              0,
               1
             ],
             "absences": 0,
-            "hands": 126,
-            "wins": 25,
+            "hands": 123,
+            "wins": 37,
             "dealIns": 8,
-            "riichis": 24,
-            "openHands": 33,
-            "damaten": 1,
-            "winPoints": 147800,
-            "dealInPoints": 51600,
-            "winTurns": 265,
+            "riichis": 17,
+            "openHands": 36,
+            "damaten": 5,
+            "winPoints": 200800,
+            "dealInPoints": 15400,
+            "winTurns": 431,
             "placements": {
-              "p1": 0.42,
-              "p2": 0.08,
-              "p3": 0.42,
-              "p4": 0.08
+              "p1": 0.6,
+              "p2": 0.3,
+              "p3": 0.0,
+              "p4": 0.1
             },
-            "avgRank": 2.17,
-            "avgPoints": 7.2,
-            "streak": 42.3,
-            "winRate": 19.8,
-            "dealInRate": 6.3,
-            "riichiRate": 19.0,
-            "openRate": 26.2,
-            "damatenRate": 4.0,
-            "avgWinPoints": 5912,
-            "avgDealInPoints": 6450,
-            "avgWinTurn": 10.6,
+            "avgRank": 1.6,
+            "avgPoints": 24.3,
+            "streak": 126.5,
+            "winRate": 30.1,
+            "dealInRate": 6.5,
+            "riichiRate": 13.8,
+            "openRate": 29.3,
+            "damatenRate": 13.5,
+            "avgWinPoints": 5427,
+            "avgDealInPoints": 1925,
+            "avgWinTurn": 11.65,
             "topYaku": [
               {
                 "name": "Riichi",
-                "count": 14
+                "count": 15
+              },
+              {
+                "name": "Pinfu",
+                "count": 8
               },
               {
                 "name": "Menzen Tsumo",
                 "count": 7
               },
               {
-                "name": "Yakuhai Jikaze",
+                "name": "Tanyao",
                 "count": 5
               },
               {
-                "name": "Pinfu",
+                "name": "Yakuhai Chun",
                 "count": 5
-              },
-              {
-                "name": "Yakuhai Bakaze",
-                "count": 4
               }
             ],
-            "statsSample": 126,
+            "statsSample": 123,
             "statsReliable": true,
             "arch": "con datos",
-            "rank": 4,
-            "zone": "title"
+            "rank": 1,
+            "zone": "playoff"
           },
           "jp": "放銃"
         },
@@ -6652,7 +6712,7 @@
             "statsReliable": true,
             "arch": "con datos",
             "rank": 7,
-            "zone": null,
+            "zone": "playoff",
             "natRank": 3,
             "iormc": "qualified"
           },
@@ -6755,7 +6815,7 @@
             "statsReliable": true,
             "arch": "con datos",
             "rank": 1,
-            "zone": "title"
+            "zone": "playoff"
           },
           "jp": "平均順位"
         },
@@ -6856,7 +6916,7 @@
             "statsReliable": true,
             "arch": "con datos",
             "rank": 1,
-            "zone": "title"
+            "zone": "playoff"
           },
           "jp": "連勝"
         }
@@ -6958,7 +7018,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 1,
-          "zone": "promotion"
+          "zone": "playoff"
         },
         {
           "id": "B15",
@@ -7053,7 +7113,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 2,
-          "zone": "promotion"
+          "zone": "playoff"
         },
         {
           "id": "B20",
@@ -7148,7 +7208,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 3,
-          "zone": "promotion"
+          "zone": "playoff"
         },
         {
           "id": "B05",
@@ -7243,7 +7303,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 4,
-          "zone": "promotion"
+          "zone": "playoff"
         },
         {
           "id": "B22",
@@ -7338,7 +7398,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 5,
-          "zone": null
+          "zone": "playoff"
         },
         {
           "id": "B08",
@@ -7433,7 +7493,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 6,
-          "zone": null
+          "zone": "playoff"
         },
         {
           "id": "B13",
@@ -7528,7 +7588,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 7,
-          "zone": null
+          "zone": "playoff"
         },
         {
           "id": "B14",
@@ -7623,7 +7683,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 8,
-          "zone": null
+          "zone": "playoff"
         },
         {
           "id": "B17",
@@ -9155,6 +9215,7 @@
           "sessionCode": "S1",
           "hanchan": 1,
           "date": "12 jul",
+          "dateISO": "2026-07-12",
           "weekday": "dom",
           "table": 1,
           "players": [
@@ -9215,6 +9276,7 @@
           "sessionCode": "S1",
           "hanchan": 2,
           "date": "12 jul",
+          "dateISO": "2026-07-12",
           "weekday": "dom",
           "table": 1,
           "players": [
@@ -9275,6 +9337,7 @@
           "sessionCode": "S1",
           "hanchan": 1,
           "date": "12 jul",
+          "dateISO": "2026-07-12",
           "weekday": "dom",
           "table": 2,
           "players": [
@@ -9335,6 +9398,7 @@
           "sessionCode": "S1",
           "hanchan": 2,
           "date": "12 jul",
+          "dateISO": "2026-07-12",
           "weekday": "dom",
           "table": 2,
           "players": [
@@ -9395,6 +9459,7 @@
           "sessionCode": "S1",
           "hanchan": 1,
           "date": "12 jul",
+          "dateISO": "2026-07-12",
           "weekday": "dom",
           "table": 3,
           "players": [
@@ -9455,6 +9520,7 @@
           "sessionCode": "S1",
           "hanchan": 2,
           "date": "12 jul",
+          "dateISO": "2026-07-12",
           "weekday": "dom",
           "table": 3,
           "players": [
@@ -9515,6 +9581,7 @@
           "sessionCode": "S1",
           "hanchan": 1,
           "date": "13 jul",
+          "dateISO": "2026-07-13",
           "weekday": "lun",
           "table": 4,
           "players": [
@@ -9575,6 +9642,7 @@
           "sessionCode": "S1",
           "hanchan": 2,
           "date": "13 jul",
+          "dateISO": "2026-07-13",
           "weekday": "lun",
           "table": 4,
           "players": [
@@ -9635,6 +9703,7 @@
           "sessionCode": "S1",
           "hanchan": 1,
           "date": "12 jul",
+          "dateISO": "2026-07-12",
           "weekday": "dom",
           "table": 5,
           "players": [
@@ -9695,6 +9764,7 @@
           "sessionCode": "S1",
           "hanchan": 2,
           "date": "12 jul",
+          "dateISO": "2026-07-12",
           "weekday": "dom",
           "table": 5,
           "players": [
@@ -9755,6 +9825,7 @@
           "sessionCode": "S1",
           "hanchan": 1,
           "date": "16 jul",
+          "dateISO": "2026-07-16",
           "weekday": "jue",
           "table": 6,
           "players": [
@@ -9815,6 +9886,7 @@
           "sessionCode": "S1",
           "hanchan": 2,
           "date": "16 jul",
+          "dateISO": "2026-07-16",
           "weekday": "jue",
           "table": 6,
           "players": [
@@ -9875,6 +9947,7 @@
           "sessionCode": "S2",
           "hanchan": 1,
           "date": "20 jul",
+          "dateISO": "2026-07-20",
           "weekday": "lun",
           "table": 1,
           "players": [
@@ -9935,6 +10008,7 @@
           "sessionCode": "S2",
           "hanchan": 2,
           "date": "20 jul",
+          "dateISO": "2026-07-20",
           "weekday": "lun",
           "table": 1,
           "players": [
@@ -9995,6 +10069,7 @@
           "sessionCode": "S2",
           "hanchan": 1,
           "date": "22 jul",
+          "dateISO": "2026-07-22",
           "weekday": "mié",
           "table": 2,
           "players": [
@@ -10055,6 +10130,7 @@
           "sessionCode": "S2",
           "hanchan": 2,
           "date": "22 jul",
+          "dateISO": "2026-07-22",
           "weekday": "mié",
           "table": 2,
           "players": [
@@ -10115,6 +10191,7 @@
           "sessionCode": "S2",
           "hanchan": 1,
           "date": "20 jul",
+          "dateISO": "2026-07-20",
           "weekday": "lun",
           "table": 3,
           "players": [
@@ -10175,6 +10252,7 @@
           "sessionCode": "S2",
           "hanchan": 2,
           "date": "20 jul",
+          "dateISO": "2026-07-20",
           "weekday": "lun",
           "table": 3,
           "players": [
@@ -10235,6 +10313,7 @@
           "sessionCode": "S2",
           "hanchan": 1,
           "date": "24 jul",
+          "dateISO": "2026-07-24",
           "weekday": "vie",
           "table": 4,
           "players": [
@@ -10295,6 +10374,7 @@
           "sessionCode": "S2",
           "hanchan": 2,
           "date": "24 jul",
+          "dateISO": "2026-07-24",
           "weekday": "vie",
           "table": 4,
           "players": [
@@ -10355,6 +10435,7 @@
           "sessionCode": "S2",
           "hanchan": 1,
           "date": "23 jul",
+          "dateISO": "2026-07-23",
           "weekday": "jue",
           "table": 5,
           "players": [
@@ -10415,6 +10496,7 @@
           "sessionCode": "S2",
           "hanchan": 2,
           "date": "23 jul",
+          "dateISO": "2026-07-23",
           "weekday": "jue",
           "table": 5,
           "players": [
@@ -10475,6 +10557,7 @@
           "sessionCode": "S2",
           "hanchan": 1,
           "date": "27 jul",
+          "dateISO": "2026-07-27",
           "weekday": "lun",
           "table": 6,
           "players": [
@@ -10535,6 +10618,7 @@
           "sessionCode": "S2",
           "hanchan": 2,
           "date": "27 jul",
+          "dateISO": "2026-07-27",
           "weekday": "lun",
           "table": 6,
           "players": [
@@ -10595,6 +10679,7 @@
           "sessionCode": "S3",
           "hanchan": 1,
           "date": "30 jul",
+          "dateISO": "2026-07-30",
           "weekday": "jue",
           "table": 1,
           "players": [
@@ -10655,6 +10740,7 @@
           "sessionCode": "S3",
           "hanchan": 2,
           "date": "30 jul",
+          "dateISO": "2026-07-30",
           "weekday": "jue",
           "table": 1,
           "players": [
@@ -10715,6 +10801,7 @@
           "sessionCode": "S3",
           "hanchan": 1,
           "date": "03 ago",
+          "dateISO": "2026-08-03",
           "weekday": "lun",
           "table": 2,
           "players": [
@@ -10775,6 +10862,7 @@
           "sessionCode": "S3",
           "hanchan": 2,
           "date": "03 ago",
+          "dateISO": "2026-08-03",
           "weekday": "lun",
           "table": 2,
           "players": [
@@ -10835,6 +10923,7 @@
           "sessionCode": "S3",
           "hanchan": 1,
           "date": "01 ago",
+          "dateISO": "2026-08-01",
           "weekday": "sáb",
           "table": 3,
           "players": [
@@ -10895,6 +10984,7 @@
           "sessionCode": "S3",
           "hanchan": 2,
           "date": "01 ago",
+          "dateISO": "2026-08-01",
           "weekday": "sáb",
           "table": 3,
           "players": [
@@ -10955,6 +11045,7 @@
           "sessionCode": "S3",
           "hanchan": 1,
           "date": "02 ago",
+          "dateISO": "2026-08-02",
           "weekday": "dom",
           "table": 4,
           "players": [
@@ -11015,6 +11106,7 @@
           "sessionCode": "S3",
           "hanchan": 2,
           "date": "02 ago",
+          "dateISO": "2026-08-02",
           "weekday": "dom",
           "table": 4,
           "players": [
@@ -11075,6 +11167,7 @@
           "sessionCode": "S3",
           "hanchan": 1,
           "date": "30 jul",
+          "dateISO": "2026-07-30",
           "weekday": "jue",
           "table": 5,
           "players": [
@@ -11135,6 +11228,7 @@
           "sessionCode": "S3",
           "hanchan": 2,
           "date": "30 jul",
+          "dateISO": "2026-07-30",
           "weekday": "jue",
           "table": 5,
           "players": [
@@ -11195,6 +11289,7 @@
           "sessionCode": "S3",
           "hanchan": 1,
           "date": "03 ago",
+          "dateISO": "2026-08-03",
           "weekday": "lun",
           "table": 6,
           "players": [
@@ -11255,6 +11350,7 @@
           "sessionCode": "S3",
           "hanchan": 2,
           "date": "03 ago",
+          "dateISO": "2026-08-03",
           "weekday": "lun",
           "table": 6,
           "players": [
@@ -11315,6 +11411,7 @@
           "sessionCode": "S4",
           "hanchan": 1,
           "date": "08 ago",
+          "dateISO": "2026-08-08",
           "weekday": "sáb",
           "table": 1,
           "players": [
@@ -11375,6 +11472,7 @@
           "sessionCode": "S4",
           "hanchan": 2,
           "date": "08 ago",
+          "dateISO": "2026-08-08",
           "weekday": "sáb",
           "table": 1,
           "players": [
@@ -11435,6 +11533,7 @@
           "sessionCode": "S4",
           "hanchan": 1,
           "date": "09 ago",
+          "dateISO": "2026-08-09",
           "weekday": "dom",
           "table": 2,
           "players": [
@@ -11495,6 +11594,7 @@
           "sessionCode": "S4",
           "hanchan": 2,
           "date": "09 ago",
+          "dateISO": "2026-08-09",
           "weekday": "dom",
           "table": 2,
           "players": [
@@ -11555,6 +11655,7 @@
           "sessionCode": "S4",
           "hanchan": 1,
           "date": "08 ago",
+          "dateISO": "2026-08-08",
           "weekday": "sáb",
           "table": 3,
           "players": [
@@ -11615,6 +11716,7 @@
           "sessionCode": "S4",
           "hanchan": 2,
           "date": "08 ago",
+          "dateISO": "2026-08-08",
           "weekday": "sáb",
           "table": 3,
           "players": [
@@ -11675,6 +11777,7 @@
           "sessionCode": "S4",
           "hanchan": 1,
           "date": "19 ago",
+          "dateISO": "2026-08-19",
           "weekday": "mié",
           "table": 4,
           "players": [
@@ -11735,6 +11838,7 @@
           "sessionCode": "S4",
           "hanchan": 2,
           "date": "19 ago",
+          "dateISO": "2026-08-19",
           "weekday": "mié",
           "table": 4,
           "players": [
@@ -11795,6 +11899,7 @@
           "sessionCode": "S4",
           "hanchan": 1,
           "date": "09 ago",
+          "dateISO": "2026-08-09",
           "weekday": "dom",
           "table": 5,
           "players": [
@@ -11855,6 +11960,7 @@
           "sessionCode": "S4",
           "hanchan": 2,
           "date": "09 ago",
+          "dateISO": "2026-08-09",
           "weekday": "dom",
           "table": 5,
           "players": [
@@ -11915,6 +12021,7 @@
           "sessionCode": "S4",
           "hanchan": 1,
           "date": "15 ago",
+          "dateISO": "2026-08-15",
           "weekday": "sáb",
           "table": 6,
           "players": [
@@ -11975,6 +12082,7 @@
           "sessionCode": "S4",
           "hanchan": 2,
           "date": "15 ago",
+          "dateISO": "2026-08-15",
           "weekday": "sáb",
           "table": 6,
           "players": [
@@ -12035,6 +12143,7 @@
           "sessionCode": "S5",
           "hanchan": 1,
           "date": "30 ago",
+          "dateISO": "2026-08-30",
           "weekday": "dom",
           "table": 1,
           "players": [
@@ -12095,6 +12204,7 @@
           "sessionCode": "S5",
           "hanchan": 2,
           "date": "30 ago",
+          "dateISO": "2026-08-30",
           "weekday": "dom",
           "table": 1,
           "players": [
@@ -12154,8 +12264,9 @@
           "session": 5,
           "sessionCode": "S5",
           "hanchan": 1,
-          "date": "Por definir",
-          "weekday": "—",
+          "date": "29 ago",
+          "dateISO": "2026-08-29",
+          "weekday": "sáb",
           "table": 2,
           "players": [
             {
@@ -12214,8 +12325,9 @@
           "session": 5,
           "sessionCode": "S5",
           "hanchan": 2,
-          "date": "Por definir",
-          "weekday": "—",
+          "date": "29 ago",
+          "dateISO": "2026-08-29",
+          "weekday": "sáb",
           "table": 2,
           "players": [
             {
@@ -12274,8 +12386,9 @@
           "session": 5,
           "sessionCode": "S5",
           "hanchan": 1,
-          "date": "Por definir",
-          "weekday": "—",
+          "date": "04 sep",
+          "dateISO": "2026-09-04",
+          "weekday": "vie",
           "table": 3,
           "players": [
             {
@@ -12334,8 +12447,9 @@
           "session": 5,
           "sessionCode": "S5",
           "hanchan": 2,
-          "date": "Por definir",
-          "weekday": "—",
+          "date": "04 sep",
+          "dateISO": "2026-09-04",
+          "weekday": "vie",
           "table": 3,
           "players": [
             {
@@ -12394,8 +12508,9 @@
           "session": 5,
           "sessionCode": "S5",
           "hanchan": 1,
-          "date": "Por definir",
-          "weekday": "—",
+          "date": "21 ago",
+          "dateISO": "2026-08-21",
+          "weekday": "vie",
           "table": 4,
           "players": [
             {
@@ -12454,8 +12569,9 @@
           "session": 5,
           "sessionCode": "S5",
           "hanchan": 2,
-          "date": "Por definir",
-          "weekday": "—",
+          "date": "21 ago",
+          "dateISO": "2026-08-21",
+          "weekday": "vie",
           "table": 4,
           "players": [
             {
@@ -12515,6 +12631,7 @@
           "sessionCode": "S5",
           "hanchan": 1,
           "date": "21 ago",
+          "dateISO": "2026-08-21",
           "weekday": "vie",
           "table": 5,
           "players": [
@@ -12575,6 +12692,7 @@
           "sessionCode": "S5",
           "hanchan": 2,
           "date": "21 ago",
+          "dateISO": "2026-08-21",
           "weekday": "vie",
           "table": 5,
           "players": [
@@ -12635,6 +12753,7 @@
           "sessionCode": "S5",
           "hanchan": 1,
           "date": "24 ago",
+          "dateISO": "2026-08-24",
           "weekday": "lun",
           "table": 6,
           "players": [
@@ -12695,6 +12814,7 @@
           "sessionCode": "S5",
           "hanchan": 2,
           "date": "24 ago",
+          "dateISO": "2026-08-24",
           "weekday": "lun",
           "table": 6,
           "players": [
@@ -12788,8 +12908,8 @@
         {
           "n": 5,
           "code": "S5",
-          "date": "30 ago",
-          "weekday": "dom",
+          "date": "21 ago",
+          "weekday": "vie",
           "div": "B",
           "matches": 12,
           "status": "played"
@@ -12911,7 +13031,7 @@
             "statsReliable": true,
             "arch": "con datos",
             "rank": 1,
-            "zone": "promotion"
+            "zone": "playoff"
           },
           "jp": "王座"
         },
@@ -13012,7 +13132,7 @@
             "statsReliable": true,
             "arch": "con datos",
             "rank": 7,
-            "zone": null
+            "zone": "playoff"
           },
           "jp": "和了率"
         },
@@ -13113,7 +13233,7 @@
             "statsReliable": true,
             "arch": "con datos",
             "rank": 2,
-            "zone": "promotion"
+            "zone": "playoff"
           },
           "jp": "放銃"
         },
@@ -13315,7 +13435,7 @@
             "statsReliable": true,
             "arch": "con datos",
             "rank": 1,
-            "zone": "promotion"
+            "zone": "playoff"
           },
           "jp": "平均順位"
         },
@@ -13416,7 +13536,7 @@
             "statsReliable": true,
             "arch": "con datos",
             "rank": 2,
-            "zone": "promotion"
+            "zone": "playoff"
           },
           "jp": "連勝"
         }
@@ -13517,7 +13637,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 1,
-      "zone": "title"
+      "zone": "playoff"
     },
     {
       "id": "A03",
@@ -13616,7 +13736,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 2,
-      "zone": "title",
+      "zone": "playoff",
       "natRank": 1,
       "iormc": "qualified"
     },
@@ -13717,7 +13837,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 3,
-      "zone": "title",
+      "zone": "playoff",
       "natRank": 2,
       "iormc": "qualified"
     },
@@ -13742,8 +13862,8 @@
         34.7,
         27.3,
         -2.6,
-        -3.3,
-        20.9
+        20.9,
+        -3.3
       ],
       "cum": [
         -4.3,
@@ -13756,7 +13876,7 @@
         43.6,
         70.9,
         68.3,
-        65.0,
+        89.2,
         85.9
       ],
       "counts": [
@@ -13766,15 +13886,15 @@
         1
       ],
       "absences": 0,
-      "hands": 126,
-      "wins": 25,
-      "dealIns": 8,
-      "riichis": 24,
-      "openHands": 33,
+      "hands": 150,
+      "wins": 29,
+      "dealIns": 11,
+      "riichis": 28,
+      "openHands": 36,
       "damaten": 1,
-      "winPoints": 147800,
-      "dealInPoints": 51600,
-      "winTurns": 265,
+      "winPoints": 174000,
+      "dealInPoints": 55600,
+      "winTurns": 308,
       "placements": {
         "p1": 0.42,
         "p2": 0.08,
@@ -13784,21 +13904,25 @@
       "avgRank": 2.17,
       "avgPoints": 7.2,
       "streak": 42.3,
-      "winRate": 19.8,
-      "dealInRate": 6.3,
-      "riichiRate": 19.0,
-      "openRate": 26.2,
-      "damatenRate": 4.0,
-      "avgWinPoints": 5912,
-      "avgDealInPoints": 6450,
-      "avgWinTurn": 10.6,
+      "winRate": 19.3,
+      "dealInRate": 7.3,
+      "riichiRate": 18.7,
+      "openRate": 24.0,
+      "damatenRate": 3.4,
+      "avgWinPoints": 6000,
+      "avgDealInPoints": 5055,
+      "avgWinTurn": 10.62,
       "topYaku": [
         {
           "name": "Riichi",
-          "count": 14
+          "count": 17
         },
         {
           "name": "Menzen Tsumo",
+          "count": 7
+        },
+        {
+          "name": "Pinfu",
           "count": 7
         },
         {
@@ -13806,19 +13930,15 @@
           "count": 5
         },
         {
-          "name": "Pinfu",
+          "name": "Tanyao",
           "count": 5
-        },
-        {
-          "name": "Yakuhai Bakaze",
-          "count": 4
         }
       ],
-      "statsSample": 126,
+      "statsSample": 150,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 4,
-      "zone": "title"
+      "zone": "playoff"
     },
     {
       "id": "A07",
@@ -13913,7 +14033,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 5,
-      "zone": null
+      "zone": "playoff"
     },
     {
       "id": "A24",
@@ -14012,7 +14132,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 6,
-      "zone": null
+      "zone": "playoff"
     },
     {
       "id": "A16",
@@ -14107,7 +14227,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 7,
-      "zone": null,
+      "zone": "playoff",
       "natRank": 3,
       "iormc": "qualified"
     },
@@ -14132,8 +14252,8 @@
         -8.0,
         47.5,
         -6.1,
-        11.9,
-        -22.9
+        -22.9,
+        11.9
       ],
       "cum": [
         50.2,
@@ -14146,7 +14266,7 @@
         42.5,
         90.0,
         83.9,
-        95.8,
+        61.0,
         72.9
       ],
       "counts": [
@@ -14156,15 +14276,15 @@
         2
       ],
       "absences": 0,
-      "hands": 120,
-      "wins": 29,
-      "dealIns": 8,
-      "riichis": 26,
-      "openHands": 42,
+      "hands": 144,
+      "wins": 34,
+      "dealIns": 12,
+      "riichis": 31,
+      "openHands": 48,
       "damaten": 2,
-      "winPoints": 139300,
-      "dealInPoints": 25700,
-      "winTurns": 335,
+      "winPoints": 164400,
+      "dealInPoints": 39900,
+      "winTurns": 393,
       "placements": {
         "p1": 0.17,
         "p2": 0.42,
@@ -14174,41 +14294,41 @@
       "avgRank": 2.42,
       "avgPoints": 6.1,
       "streak": 30.4,
-      "winRate": 24.2,
-      "dealInRate": 6.7,
-      "riichiRate": 21.7,
-      "openRate": 35.0,
-      "damatenRate": 6.9,
-      "avgWinPoints": 4803,
-      "avgDealInPoints": 3212,
-      "avgWinTurn": 11.55,
+      "winRate": 23.6,
+      "dealInRate": 8.3,
+      "riichiRate": 21.5,
+      "openRate": 33.3,
+      "damatenRate": 5.9,
+      "avgWinPoints": 4835,
+      "avgDealInPoints": 3325,
+      "avgWinTurn": 11.56,
       "topYaku": [
         {
           "name": "Riichi",
-          "count": 10
+          "count": 12
         },
         {
           "name": "Tanyao",
-          "count": 7
+          "count": 8
         },
         {
           "name": "Menzen Tsumo",
-          "count": 5
+          "count": 6
         },
         {
           "name": "Honitsu",
-          "count": 3
+          "count": 4
         },
         {
           "name": "Yakuhai Haku",
-          "count": 3
+          "count": 4
         }
       ],
-      "statsSample": 120,
+      "statsSample": 144,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 8,
-      "zone": null,
+      "zone": "playoff",
       "natRank": 4,
       "iormc": "qualified"
     },
@@ -14429,8 +14549,8 @@
         -13.4,
         -1.7,
         12.1,
-        31.6,
-        -4.1
+        -4.1,
+        31.6
       ],
       "cum": [
         5.5,
@@ -14443,7 +14563,7 @@
         -30.0,
         -31.7,
         -19.6,
-        12.0,
+        -23.7,
         7.9
       ],
       "counts": [
@@ -14453,15 +14573,15 @@
         3
       ],
       "absences": 0,
-      "hands": 113,
-      "wins": 29,
-      "dealIns": 18,
-      "riichis": 13,
-      "openHands": 50,
+      "hands": 137,
+      "wins": 38,
+      "dealIns": 22,
+      "riichis": 22,
+      "openHands": 55,
       "damaten": 3,
-      "winPoints": 111600,
-      "dealInPoints": 98100,
-      "winTurns": 330,
+      "winPoints": 146500,
+      "dealInPoints": 111300,
+      "winTurns": 416,
       "placements": {
         "p1": 0.33,
         "p2": 0.17,
@@ -14471,37 +14591,37 @@
       "avgRank": 2.42,
       "avgPoints": 0.7,
       "streak": 37.9,
-      "winRate": 25.7,
-      "dealInRate": 15.9,
-      "riichiRate": 11.5,
-      "openRate": 44.2,
-      "damatenRate": 10.3,
-      "avgWinPoints": 3848,
-      "avgDealInPoints": 5450,
-      "avgWinTurn": 11.38,
+      "winRate": 27.7,
+      "dealInRate": 16.1,
+      "riichiRate": 16.1,
+      "openRate": 40.1,
+      "damatenRate": 7.9,
+      "avgWinPoints": 3855,
+      "avgDealInPoints": 5059,
+      "avgWinTurn": 10.95,
       "topYaku": [
         {
+          "name": "Riichi",
+          "count": 11
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 7
+        },
+        {
           "name": "Tanyao",
+          "count": 6
+        },
+        {
+          "name": "Yakuhai Jikaze",
           "count": 5
         },
         {
           "name": "Yakuhai Hatsu",
           "count": 5
-        },
-        {
-          "name": "Riichi",
-          "count": 5
-        },
-        {
-          "name": "Yakuhai Haku",
-          "count": 4
-        },
-        {
-          "name": "Yakuhai Jikaze",
-          "count": 4
         }
       ],
-      "statsSample": 113,
+      "statsSample": 137,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 11,
@@ -15488,8 +15608,8 @@
         -13.0,
         9.6,
         -26.0,
-        -40.2,
-        6.1
+        6.1,
+        -40.2
       ],
       "cum": [
         12.8,
@@ -15502,7 +15622,7 @@
         -97.1,
         -87.5,
         -113.5,
-        -153.7,
+        -107.4,
         -147.6
       ],
       "counts": [
@@ -15512,15 +15632,15 @@
         2
       ],
       "absences": 0,
-      "hands": 122,
-      "wins": 24,
-      "dealIns": 24,
-      "riichis": 26,
-      "openHands": 55,
+      "hands": 146,
+      "wins": 28,
+      "dealIns": 29,
+      "riichis": 30,
+      "openHands": 68,
       "damaten": 0,
-      "winPoints": 117300,
-      "dealInPoints": 134700,
-      "winTurns": 252,
+      "winPoints": 127600,
+      "dealInPoints": 158800,
+      "winTurns": 306,
       "placements": {
         "p1": 0.0,
         "p2": 0.25,
@@ -15530,14 +15650,14 @@
       "avgRank": 2.92,
       "avgPoints": -12.3,
       "streak": -50.5,
-      "winRate": 19.7,
-      "dealInRate": 19.7,
-      "riichiRate": 21.3,
-      "openRate": 45.1,
+      "winRate": 19.2,
+      "dealInRate": 19.9,
+      "riichiRate": 20.5,
+      "openRate": 46.6,
       "damatenRate": 0.0,
-      "avgWinPoints": 4888,
-      "avgDealInPoints": 5612,
-      "avgWinTurn": 10.5,
+      "avgWinPoints": 4557,
+      "avgDealInPoints": 5476,
+      "avgWinTurn": 10.93,
       "topYaku": [
         {
           "name": "Riichi",
@@ -15545,7 +15665,7 @@
         },
         {
           "name": "Tanyao",
-          "count": 5
+          "count": 6
         },
         {
           "name": "Yakuhai Bakaze",
@@ -15560,7 +15680,7 @@
           "count": 4
         }
       ],
-      "statsSample": 122,
+      "statsSample": 146,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 22,
@@ -15853,7 +15973,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 1,
-      "zone": "promotion"
+      "zone": "playoff"
     },
     {
       "id": "B15",
@@ -15948,7 +16068,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 2,
-      "zone": "promotion"
+      "zone": "playoff"
     },
     {
       "id": "B20",
@@ -16043,7 +16163,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 3,
-      "zone": "promotion"
+      "zone": "playoff"
     },
     {
       "id": "B05",
@@ -16138,7 +16258,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 4,
-      "zone": "promotion"
+      "zone": "playoff"
     },
     {
       "id": "B22",
@@ -16233,7 +16353,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 5,
-      "zone": null
+      "zone": "playoff"
     },
     {
       "id": "B08",
@@ -16328,7 +16448,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 6,
-      "zone": null
+      "zone": "playoff"
     },
     {
       "id": "B13",
@@ -16423,7 +16543,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 7,
-      "zone": null
+      "zone": "playoff"
     },
     {
       "id": "B14",
@@ -16518,7 +16638,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 8,
-      "zone": null
+      "zone": "playoff"
     },
     {
       "id": "B17",
@@ -18142,7 +18262,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 2,
-        "zone": "promotion"
+        "zone": "playoff"
       }
     },
     {
@@ -18245,7 +18365,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 1,
-        "zone": "title"
+        "zone": "playoff"
       }
     },
     {
@@ -18348,7 +18468,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 1,
-        "zone": "promotion"
+        "zone": "playoff"
       }
     },
     {
@@ -18661,7 +18781,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 5,
-        "zone": null
+        "zone": "playoff"
       }
     }
   ],
@@ -18766,7 +18886,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 2,
-        "zone": "title",
+        "zone": "playoff",
         "natRank": 1,
         "iormc": "qualified"
       },
@@ -18867,7 +18987,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 3,
-        "zone": "title",
+        "zone": "playoff",
         "natRank": 2,
         "iormc": "qualified"
       },
@@ -18964,7 +19084,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 7,
-        "zone": null,
+        "zone": "playoff",
         "natRank": 3,
         "iormc": "qualified"
       },
@@ -18989,8 +19109,8 @@
           -8.0,
           47.5,
           -6.1,
-          11.9,
-          -22.9
+          -22.9,
+          11.9
         ],
         "cum": [
           50.2,
@@ -19003,7 +19123,7 @@
           42.5,
           90.0,
           83.9,
-          95.8,
+          61.0,
           72.9
         ],
         "counts": [
@@ -19013,15 +19133,15 @@
           2
         ],
         "absences": 0,
-        "hands": 120,
-        "wins": 29,
-        "dealIns": 8,
-        "riichis": 26,
-        "openHands": 42,
+        "hands": 144,
+        "wins": 34,
+        "dealIns": 12,
+        "riichis": 31,
+        "openHands": 48,
         "damaten": 2,
-        "winPoints": 139300,
-        "dealInPoints": 25700,
-        "winTurns": 335,
+        "winPoints": 164400,
+        "dealInPoints": 39900,
+        "winTurns": 393,
         "placements": {
           "p1": 0.17,
           "p2": 0.42,
@@ -19031,41 +19151,41 @@
         "avgRank": 2.42,
         "avgPoints": 6.1,
         "streak": 30.4,
-        "winRate": 24.2,
-        "dealInRate": 6.7,
-        "riichiRate": 21.7,
-        "openRate": 35.0,
-        "damatenRate": 6.9,
-        "avgWinPoints": 4803,
-        "avgDealInPoints": 3212,
-        "avgWinTurn": 11.55,
+        "winRate": 23.6,
+        "dealInRate": 8.3,
+        "riichiRate": 21.5,
+        "openRate": 33.3,
+        "damatenRate": 5.9,
+        "avgWinPoints": 4835,
+        "avgDealInPoints": 3325,
+        "avgWinTurn": 11.56,
         "topYaku": [
           {
             "name": "Riichi",
-            "count": 10
+            "count": 12
           },
           {
             "name": "Tanyao",
-            "count": 7
+            "count": 8
           },
           {
             "name": "Menzen Tsumo",
-            "count": 5
+            "count": 6
           },
           {
             "name": "Honitsu",
-            "count": 3
+            "count": 4
           },
           {
             "name": "Yakuhai Haku",
-            "count": 3
+            "count": 4
           }
         ],
-        "statsSample": 120,
+        "statsSample": 144,
         "statsReliable": true,
         "arch": "con datos",
         "rank": 8,
-        "zone": null,
+        "zone": "playoff",
         "natRank": 4,
         "iormc": "qualified"
       }
@@ -19189,8 +19309,8 @@
           -13.4,
           -1.7,
           12.1,
-          31.6,
-          -4.1
+          -4.1,
+          31.6
         ],
         "cum": [
           5.5,
@@ -19203,7 +19323,7 @@
           -30.0,
           -31.7,
           -19.6,
-          12.0,
+          -23.7,
           7.9
         ],
         "counts": [
@@ -19213,15 +19333,15 @@
           3
         ],
         "absences": 0,
-        "hands": 113,
-        "wins": 29,
-        "dealIns": 18,
-        "riichis": 13,
-        "openHands": 50,
+        "hands": 137,
+        "wins": 38,
+        "dealIns": 22,
+        "riichis": 22,
+        "openHands": 55,
         "damaten": 3,
-        "winPoints": 111600,
-        "dealInPoints": 98100,
-        "winTurns": 330,
+        "winPoints": 146500,
+        "dealInPoints": 111300,
+        "winTurns": 416,
         "placements": {
           "p1": 0.33,
           "p2": 0.17,
@@ -19231,37 +19351,37 @@
         "avgRank": 2.42,
         "avgPoints": 0.7,
         "streak": 37.9,
-        "winRate": 25.7,
-        "dealInRate": 15.9,
-        "riichiRate": 11.5,
-        "openRate": 44.2,
-        "damatenRate": 10.3,
-        "avgWinPoints": 3848,
-        "avgDealInPoints": 5450,
-        "avgWinTurn": 11.38,
+        "winRate": 27.7,
+        "dealInRate": 16.1,
+        "riichiRate": 16.1,
+        "openRate": 40.1,
+        "damatenRate": 7.9,
+        "avgWinPoints": 3855,
+        "avgDealInPoints": 5059,
+        "avgWinTurn": 10.95,
         "topYaku": [
           {
+            "name": "Riichi",
+            "count": 11
+          },
+          {
+            "name": "Menzen Tsumo",
+            "count": 7
+          },
+          {
             "name": "Tanyao",
+            "count": 6
+          },
+          {
+            "name": "Yakuhai Jikaze",
             "count": 5
           },
           {
             "name": "Yakuhai Hatsu",
             "count": 5
-          },
-          {
-            "name": "Riichi",
-            "count": 5
-          },
-          {
-            "name": "Yakuhai Haku",
-            "count": 4
-          },
-          {
-            "name": "Yakuhai Jikaze",
-            "count": 4
           }
         ],
-        "statsSample": 113,
+        "statsSample": 137,
         "statsReliable": true,
         "arch": "con datos",
         "rank": 11,
@@ -19952,7 +20072,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 2,
-        "zone": "title",
+        "zone": "playoff",
         "natRank": 1,
         "iormc": "qualified"
       },
@@ -20053,7 +20173,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 3,
-        "zone": "title",
+        "zone": "playoff",
         "natRank": 2,
         "iormc": "qualified"
       },
@@ -20150,7 +20270,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 7,
-        "zone": null,
+        "zone": "playoff",
         "natRank": 3,
         "iormc": "qualified"
       },
@@ -20175,8 +20295,8 @@
           -8.0,
           47.5,
           -6.1,
-          11.9,
-          -22.9
+          -22.9,
+          11.9
         ],
         "cum": [
           50.2,
@@ -20189,7 +20309,7 @@
           42.5,
           90.0,
           83.9,
-          95.8,
+          61.0,
           72.9
         ],
         "counts": [
@@ -20199,15 +20319,15 @@
           2
         ],
         "absences": 0,
-        "hands": 120,
-        "wins": 29,
-        "dealIns": 8,
-        "riichis": 26,
-        "openHands": 42,
+        "hands": 144,
+        "wins": 34,
+        "dealIns": 12,
+        "riichis": 31,
+        "openHands": 48,
         "damaten": 2,
-        "winPoints": 139300,
-        "dealInPoints": 25700,
-        "winTurns": 335,
+        "winPoints": 164400,
+        "dealInPoints": 39900,
+        "winTurns": 393,
         "placements": {
           "p1": 0.17,
           "p2": 0.42,
@@ -20217,41 +20337,41 @@
         "avgRank": 2.42,
         "avgPoints": 6.1,
         "streak": 30.4,
-        "winRate": 24.2,
-        "dealInRate": 6.7,
-        "riichiRate": 21.7,
-        "openRate": 35.0,
-        "damatenRate": 6.9,
-        "avgWinPoints": 4803,
-        "avgDealInPoints": 3212,
-        "avgWinTurn": 11.55,
+        "winRate": 23.6,
+        "dealInRate": 8.3,
+        "riichiRate": 21.5,
+        "openRate": 33.3,
+        "damatenRate": 5.9,
+        "avgWinPoints": 4835,
+        "avgDealInPoints": 3325,
+        "avgWinTurn": 11.56,
         "topYaku": [
           {
             "name": "Riichi",
-            "count": 10
+            "count": 12
           },
           {
             "name": "Tanyao",
-            "count": 7
+            "count": 8
           },
           {
             "name": "Menzen Tsumo",
-            "count": 5
+            "count": 6
           },
           {
             "name": "Honitsu",
-            "count": 3
+            "count": 4
           },
           {
             "name": "Yakuhai Haku",
-            "count": 3
+            "count": 4
           }
         ],
-        "statsSample": 120,
+        "statsSample": 144,
         "statsReliable": true,
         "arch": "con datos",
         "rank": 8,
-        "zone": null,
+        "zone": "playoff",
         "natRank": 4,
         "iormc": "qualified"
       },
@@ -20373,8 +20493,8 @@
           -13.4,
           -1.7,
           12.1,
-          31.6,
-          -4.1
+          -4.1,
+          31.6
         ],
         "cum": [
           5.5,
@@ -20387,7 +20507,7 @@
           -30.0,
           -31.7,
           -19.6,
-          12.0,
+          -23.7,
           7.9
         ],
         "counts": [
@@ -20397,15 +20517,15 @@
           3
         ],
         "absences": 0,
-        "hands": 113,
-        "wins": 29,
-        "dealIns": 18,
-        "riichis": 13,
-        "openHands": 50,
+        "hands": 137,
+        "wins": 38,
+        "dealIns": 22,
+        "riichis": 22,
+        "openHands": 55,
         "damaten": 3,
-        "winPoints": 111600,
-        "dealInPoints": 98100,
-        "winTurns": 330,
+        "winPoints": 146500,
+        "dealInPoints": 111300,
+        "winTurns": 416,
         "placements": {
           "p1": 0.33,
           "p2": 0.17,
@@ -20415,37 +20535,37 @@
         "avgRank": 2.42,
         "avgPoints": 0.7,
         "streak": 37.9,
-        "winRate": 25.7,
-        "dealInRate": 15.9,
-        "riichiRate": 11.5,
-        "openRate": 44.2,
-        "damatenRate": 10.3,
-        "avgWinPoints": 3848,
-        "avgDealInPoints": 5450,
-        "avgWinTurn": 11.38,
+        "winRate": 27.7,
+        "dealInRate": 16.1,
+        "riichiRate": 16.1,
+        "openRate": 40.1,
+        "damatenRate": 7.9,
+        "avgWinPoints": 3855,
+        "avgDealInPoints": 5059,
+        "avgWinTurn": 10.95,
         "topYaku": [
           {
+            "name": "Riichi",
+            "count": 11
+          },
+          {
+            "name": "Menzen Tsumo",
+            "count": 7
+          },
+          {
             "name": "Tanyao",
+            "count": 6
+          },
+          {
+            "name": "Yakuhai Jikaze",
             "count": 5
           },
           {
             "name": "Yakuhai Hatsu",
             "count": 5
-          },
-          {
-            "name": "Riichi",
-            "count": 5
-          },
-          {
-            "name": "Yakuhai Haku",
-            "count": 4
-          },
-          {
-            "name": "Yakuhai Jikaze",
-            "count": 4
           }
         ],
-        "statsSample": 113,
+        "statsSample": 137,
         "statsReliable": true,
         "arch": "con datos",
         "rank": 11,
@@ -21739,6 +21859,7 @@
   ],
   "league": {
     "season": "Temporada 2026",
+    "currentSession": 6,
     "sessionsPlayed": 5,
     "sessionsTotal": 7,
     "hanchanPerSession": 2,
