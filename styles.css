@@ -450,9 +450,10 @@ select{font:inherit;color:inherit}
 .radar-legend .rl .v{font-weight:700}
 .line-svg{display:block;width:min(100%,1100px);height:auto;margin:0 auto;overflow:visible}
 .line-chart-wrap.compact .line-svg{width:100%;max-width:none}
-.line-chart-wrap{min-width:0}
+.line-chart-wrap{position:relative;min-width:0}
 .line-hover-card{position:absolute;z-index:3;left:50%;top:2px;transform:translateX(-50%);display:flex;align-items:baseline;gap:10px;padding:7px 10px;border:1px solid var(--line-strong);border-radius:8px;background:var(--bg-elev);box-shadow:var(--shadow);font-family:var(--font-mono);font-size:10px;pointer-events:none;white-space:nowrap}.line-hover-card strong{color:var(--accent)}.line-hover-card span{color:var(--ink-soft)}.line-hover-card small{max-width:420px;overflow:hidden;text-overflow:ellipsis;color:var(--ink-faint)}
 .line-hover-card{top:10px;display:block;min-width:280px;max-width:min(520px,80%);padding:13px 15px;border-radius:10px;font-size:11px;white-space:normal}.line-hover-head{display:flex;align-items:baseline;justify-content:space-between;gap:18px}.line-hover-head strong{font-size:13px}.line-hover-head b{font-size:15px;color:var(--good)}.line-hover-label{margin-top:6px;color:var(--ink-soft);font-family:var(--font-mono);font-size:10px}.line-hover-card small{display:block;margin-top:8px;max-width:none;line-height:1.4;color:var(--ink-faint);font-size:10px}
+.line-hover-card{padding:14px 15px;border-color:color-mix(in oklab,var(--line-strong) 82%,var(--ink));box-shadow:0 18px 38px -15px rgba(20,15,5,.62)}.line-hover-card em{display:block;margin-bottom:7px;color:var(--accent);font-family:var(--font-mono);font-size:8px;font-style:normal;font-weight:700;letter-spacing:.14em;text-transform:uppercase}.line-hover-head{padding-bottom:10px;border-bottom:1px solid var(--line)}.line-hover-head strong{font-family:var(--font-body);font-size:14px;color:var(--ink)}.line-hover-head b{font-family:var(--font-mono);font-size:16px;color:var(--ink)}.line-hover-label{display:grid;grid-template-columns:1fr auto;gap:7px 14px;margin-top:10px}.line-hover-label span{font-family:var(--font-body);font-size:11px;color:var(--ink-soft)}.line-hover-label strong{font-family:var(--font-mono);font-size:11px;text-align:right}.line-hover-label .positive{color:var(--good)}.line-hover-label .negative{color:var(--bad)}.line-hover-meta{margin-top:9px;color:var(--ink-faint);font-family:var(--font-mono);font-size:9px}.line-hover-card small{padding-top:9px;border-top:1px solid var(--line);font-family:var(--font-body);font-size:10.5px;color:var(--ink-soft)}.line-hover-card small span{display:block;margin-bottom:3px;color:var(--ink-faint);font-family:var(--font-mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase}
 .line-summary{display:flex;gap:20px;margin:0 0 4px 40px}
 .line-summary>div{display:flex;align-items:baseline;gap:7px}
 .line-summary span{color:var(--ink-faint);font-family:var(--font-mono);font-size:8.5px;letter-spacing:.08em;text-transform:uppercase}
@@ -513,6 +514,48 @@ select{font:inherit;color:inherit}
 .achievements-card{padding-bottom:20px}.achievement-groups{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;max-width:1050px;margin:0 auto}.achievement-label{margin-bottom:8px;color:var(--accent);font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}.record-medals{display:flex;flex-wrap:wrap;gap:10px}.record-medal{display:flex;align-items:center;gap:10px;min-width:190px;padding:10px 12px;border:1px solid color-mix(in oklab,#d6a849 58%,var(--line));border-radius:10px;background:linear-gradient(145deg,color-mix(in oklab,#f3d88b 22%,var(--bg-elev)),color-mix(in oklab,#b98224 8%,var(--bg-sunk)));box-shadow:inset 0 1px 0 color-mix(in oklab,#fff 50%,transparent)}.record-medal>span{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#c18a2b;color:#fff1b1;font-size:18px}.record-medal strong,.record-medal small{display:block}.record-medal strong{font-family:var(--font-mono);font-size:10px}.record-medal small{margin-top:3px;color:var(--ink-faint);font-size:10px}
 .achievement-medals-all{display:flex;align-items:flex-start;justify-content:center;flex-wrap:wrap;gap:12px;min-height:102px}.record-medal-compact{min-width:92px}.yakuman-medal-icon.record{font-size:15px;background:radial-gradient(circle at 35% 28%,#ffe8a1,#b97718 68%,#75480c)}.yakuman-medal-icon.saki{font-size:19px;background:radial-gradient(circle at 35% 28%,#fff0bc,#c28b2b 68%,#805517)}.achievements-empty{display:flex;justify-content:center;align-items:center;gap:12px;min-height:92px;color:var(--ink-faint);text-align:left}.achievements-empty>span{font-size:26px;opacity:.55}.achievements-empty strong,.achievements-empty small{display:block}.achievements-empty strong{font-family:var(--font-mono);font-size:11px;color:var(--ink-soft)}.achievements-empty small{margin-top:4px;font-size:11px}
 @keyframes barfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* Vitrina de logros: emblemas compactos, agrupados por familia. */
+.achievement-map{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;width:100%;align-self:center}
+.achievement-family{min-width:0;padding:13px 12px;border-radius:12px;background:color-mix(in oklab,var(--bg-sunk) 55%,transparent);border:1px solid color-mix(in oklab,var(--line) 72%,transparent)}
+.achievement-family-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;color:var(--ink-soft);font-family:var(--font-mono);font-size:8.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+.achievement-family-head small{display:grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border-radius:9px;background:var(--bg-elev);color:var(--ink-faint);font-size:8px}
+.achievement-emblems{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:11px}
+.achievement-emblem-wrap{position:relative;display:grid;place-items:center}
+.achievement-emblem{width:58px;height:58px;display:grid;place-items:center;border-radius:12px;font-family:var(--font-jp);font-size:14px;font-weight:700;cursor:help;transition:transform .16s ease,filter .16s ease;outline:none}
+.achievement-emblem:hover,.achievement-emblem:focus-visible{transform:translateY(-3px);filter:saturate(1.12) brightness(1.04)}
+.family-yakuman .achievement-emblem{color:#68470f;background:linear-gradient(145deg,#f8e6a6,#d3a33d 62%,#a8731c)}
+.family-record .achievement-emblem{color:#fff1eb;background:linear-gradient(145deg,color-mix(in oklab,var(--accent) 68%,#fff),var(--accent) 65%,color-mix(in oklab,var(--accent) 72%,#3b1510))}
+.family-distinction .achievement-emblem{color:#edf4ff;background:linear-gradient(145deg,color-mix(in oklab,var(--accent-2) 62%,#fff),var(--accent-2) 64%,color-mix(in oklab,var(--accent-2) 72%,#111d31))}
+.achievement-tooltip{position:absolute;z-index:12;left:50%;bottom:calc(100% + 9px);width:190px;padding:10px 11px;transform:translate(-50%,4px);visibility:hidden;opacity:0;pointer-events:none;border:1px solid var(--line-strong);border-radius:10px;background:var(--bg-elev);box-shadow:0 14px 32px -16px rgba(20,15,5,.55);transition:opacity .13s ease,transform .13s ease;text-align:left}
+.achievement-tooltip::after{content:"";position:absolute;left:50%;bottom:-5px;width:9px;height:9px;transform:translateX(-50%) rotate(45deg);background:var(--bg-elev);border-right:1px solid var(--line-strong);border-bottom:1px solid var(--line-strong)}
+.achievement-emblem-wrap:hover .achievement-tooltip,.achievement-emblem:focus-visible+.achievement-tooltip{visibility:visible;opacity:1;transform:translate(-50%,0)}
+.achievement-tooltip strong,.achievement-tooltip span{display:block}.achievement-tooltip strong{font-size:11px;color:var(--ink)}.achievement-tooltip span{margin-top:5px;color:var(--ink-faint);font-size:10px;line-height:1.4}
+@media(max-width:760px){.achievement-map{grid-template-columns:1fr}.achievement-family{padding:12px}.achievement-emblem{width:52px;height:52px}.achievement-tooltip{width:170px}}
+
+/* La tarjeta comparte columna con el gráfico: tres estantes verticales usan
+   mejor su ancho y mantienen visibles también las categorías aún vacías. */
+.achievements-card .achievement-map{grid-template-columns:1fr;gap:0;margin:auto 0}
+.achievements-card .achievement-family{display:grid;grid-template-columns:112px minmax(0,1fr);align-items:center;gap:12px;padding:15px 2px;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent}
+.achievements-card .achievement-family:last-child{border-bottom:0}
+.achievements-card .achievement-family-head{display:block;margin:0;padding-left:4px}
+.achievements-card .achievement-family-head strong{display:block;line-height:1.35}
+.achievements-card .achievement-family-head small{display:inline-grid;margin-top:7px;background:var(--bg-sunk)}
+.achievements-card .achievement-emblems{justify-content:flex-start;gap:13px}
+.achievement-emblem-wrap.locked .achievement-emblem{clip-path:none;border:1px dashed var(--line-strong);border-radius:12px;background:transparent!important;color:var(--ink-faint)!important;font-family:var(--font-mono);font-size:13px;opacity:.62;filter:none}
+.achievement-emblem-wrap.locked .achievement-emblem:hover{transform:none;filter:none}
+@media(max-width:460px){.achievements-card .achievement-family{grid-template-columns:1fr;gap:10px}.achievements-card .achievement-emblems{justify-content:center}.achievements-card .achievement-family-head{text-align:center}}
+
+/* Acabado de los emblemas: volumen contenido y variación por logro. */
+.achievement-emblem{position:relative;cursor:default;font-size:16px;text-shadow:0 1px 1px rgba(255,255,255,.25);filter:drop-shadow(0 5px 5px rgba(45,31,12,.16))}
+.achievement-emblem::before{content:"";position:absolute;inset:3px;border-radius:9px;background:linear-gradient(120deg,rgba(255,255,255,.32),transparent 38%,rgba(255,255,255,.08) 63%,transparent);opacity:.8}
+.achievement-emblem:hover,.achievement-emblem:focus-visible{transform:translateY(-4px) rotate(1.5deg) scale(1.04);filter:drop-shadow(0 9px 7px rgba(45,31,12,.24)) saturate(1.08)}
+.family-yakuman .achievement-emblem.kokushi{background:linear-gradient(145deg,#fff0b0,#d7a536 58%,#936113);color:#5e3b08}.family-yakuman .achievement-emblem.daisangen{background:conic-gradient(from 210deg,#c93333 0 33%,#f2ead3 33% 66%,#3d8d58 66%);color:#fff;text-shadow:0 1px 3px rgba(35,20,10,.7)}.family-yakuman .achievement-emblem.suuankou{background:linear-gradient(145deg,#756d62,#302d29 62%,#171513);color:#f0d890}
+.family-record .achievement-emblem.record-leader{background:linear-gradient(145deg,#ff7770,#d9292f 58%,#92161d)}.family-record .achievement-emblem.record-wins{background:linear-gradient(145deg,#ff8d78,#dc4234 60%,#9a241d)}.family-record .achievement-emblem.record-defense{background:linear-gradient(145deg,#6f93bd,#315d8d 60%,#193959)}.family-record .achievement-emblem.record-riichi{background:linear-gradient(145deg,#efbf62,#bd7c20 60%,#754711)}.family-record .achievement-emblem.record-consistency{background:linear-gradient(145deg,#7da083,#4c7555 60%,#294b31)}.family-record .achievement-emblem.record-recent{background:linear-gradient(145deg,#967abc,#6c4c96 60%,#3f285d)}
+.family-distinction .achievement-emblem.distinction-saki{background:linear-gradient(145deg,#87a8c7,#426d98 60%,#244462);color:#f2f7ff}
+.achievement-tooltip{width:218px;padding:13px 14px;border-color:color-mix(in oklab,var(--line-strong) 82%,var(--ink));background:color-mix(in oklab,var(--bg-elev) 96%,var(--ink));box-shadow:0 18px 38px -15px rgba(20,15,5,.62)}
+.achievement-tooltip em{display:block;margin-bottom:7px;color:var(--accent);font-family:var(--font-mono);font-size:8px;font-style:normal;font-weight:700;letter-spacing:.14em;text-transform:uppercase}.achievement-tooltip strong{font-family:var(--font-body);font-size:13px;font-weight:700;color:var(--ink)}.achievement-tooltip span{font-family:var(--font-body);font-size:11px;line-height:1.5;color:var(--ink-soft)}.achievement-tooltip b{display:block;margin-top:9px;padding-top:8px;border-top:1px solid var(--line);color:var(--good);font-family:var(--font-mono);font-size:12px}
+.achievement-emblem-wrap.locked .achievement-emblem{cursor:default;text-shadow:none;filter:none}.achievement-emblem-wrap.locked .achievement-emblem::before{display:none}
 
 /* ─── comparator ─── */
 .vs-header{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11px}
@@ -841,3 +884,55 @@ select{font:inherit;color:inherit}
   .topbar .brand .wordmark .l1{font-size:14px}
   .ds-btn{padding:6px 10px}
 }
+
+/* Insignias planas: sellos editoriales alineados con el lenguaje del sitio. */
+.achievement-emblem{
+  --badge-color:var(--accent);
+  overflow:hidden;
+  border:1px solid color-mix(in oklab,var(--badge-color) 48%,var(--line));
+  border-radius:10px;
+  background:color-mix(in oklab,var(--badge-color) 8%,var(--bg-elev))!important;
+  color:var(--badge-color)!important;
+  box-shadow:none;
+  filter:none;
+  text-shadow:none;
+}
+.achievement-emblem::before{
+  inset:5px;
+  border:1px solid color-mix(in oklab,var(--badge-color) 20%,transparent);
+  border-radius:6px;
+  background:none;
+  opacity:1;
+}
+.achievement-emblem::after{
+  content:"";
+  position:absolute;
+  right:7px;
+  bottom:7px;
+  width:4px;
+  height:4px;
+  border-radius:50%;
+  background:var(--badge-color);
+  opacity:.55;
+}
+.achievement-emblem:hover,.achievement-emblem:focus-visible{
+  transform:translateY(-2px);
+  background:color-mix(in oklab,var(--badge-color) 13%,var(--bg-elev))!important;
+  box-shadow:0 7px 16px -13px color-mix(in oklab,var(--badge-color) 65%,transparent);
+  filter:none;
+}
+.family-yakuman .achievement-emblem{--badge-color:#a87518}
+.family-record .achievement-emblem.record-leader{--badge-color:#b82b31}
+.family-record .achievement-emblem.record-wins{--badge-color:#c6533f}
+.family-record .achievement-emblem.record-defense{--badge-color:#315f8d}
+.family-record .achievement-emblem.record-riichi{--badge-color:#a66b19}
+.family-record .achievement-emblem.record-consistency{--badge-color:#4d7655}
+.family-record .achievement-emblem.record-recent{--badge-color:#6d4e91}
+.family-distinction .achievement-emblem.distinction-saki{--badge-color:#426f99}
+.achievement-emblem-wrap.locked .achievement-emblem{
+  border:1px dashed var(--line-strong);
+  background:transparent!important;
+  color:var(--ink-faint)!important;
+  box-shadow:none;
+}
+.achievement-emblem-wrap.locked .achievement-emblem::after{display:none}

@@ -168,7 +168,7 @@ function LineChart({ values, height = 220, color = 'var(--accent)', compact = fa
 
   return (
     <div className={`line-chart-wrap${compact ? ' compact' : ''}`}>
-      {hovered !== null && <div className="line-hover-card">{(() => { const { match, names } = pointDetails(hovered); const delta = match?.players?.find(player => player.id === playerId)?.delta; return <><div className="line-hover-head"><strong>{match ? `${match.sessionCode} · H${match.hanchan}` : `H${hovered + 1}`}</strong><b>{signed(values[hovered])}</b></div><div className="line-hover-label">{tr('chart_hover_accumulated')} · {tr('chart_hover_match')} {delta !== undefined ? signed(delta) : '—'}</div>{names && <small>{names}</small>}</>; })()}</div>}
+      {hovered !== null && <div className="line-hover-card">{(() => { const { match, names } = pointDetails(hovered); const delta = match?.players?.find(player => player.id === playerId)?.delta; return <><em>{tr('chart_hover_category')}</em><div className="line-hover-head"><strong>{match ? `${match.sessionCode} · H${match.hanchan}` : `H${hovered + 1}`}</strong><b>{signed(values[hovered])}</b></div><div className="line-hover-label"><span>{tr('chart_hover_accumulated')}</span><strong>{signed(values[hovered])}</strong><span>{tr('chart_hover_match')}</span><strong className={delta >= 0 ? 'positive' : 'negative'}>{delta !== undefined ? signed(delta) : '—'}</strong></div>{match && <div className="line-hover-meta">{tr('chart_hover_table', { n: match.table })}{match.date ? ` · ${match.date}` : ''}</div>}{names && <small><span>{tr('chart_hover_players')}</span>{names}</small>}</>; })()}</div>}
       {!compact && <div className="line-summary">
         <div><span>{tr('chart_current')}</span><strong style={{ color: current >= 0 ? 'var(--good)' : 'var(--bad)' }}>{signed(current)}</strong></div>
         <div><span>{tr('chart_peak')}</span><strong>{signed(peak)}</strong></div>
@@ -191,9 +191,7 @@ function LineChart({ values, height = 220, color = 'var(--accent)', compact = fa
       <path ref={strokeRef} className="stroke" d={d} stroke={color} />
       {/* points */}
       {pts.map((p, i) => <g key={i} className="line-checkpoint">
-        <circle onMouseEnter={() => setHovered(i)} onMouseLeave={() => setHovered(null)} cx={p[0]} cy={p[1]} r={i === pts.length - 1 ? 4 : 3} fill="var(--bg-elev)" stroke={color} strokeWidth="2">
-          <title>{(() => { const match = matches[i]; const names = match?.players?.map(player => player.shortName || player.name).join(', '); return `${tr('chart_point_title', { n: i + 1, points: signed(values[i]) })}${match ? ` · ${match.sessionCode} · H${match.hanchan}${names ? ` · ${names}` : ''}` : ''}`; })()}</title>
-        </circle>
+        <circle onMouseEnter={() => setHovered(i)} onMouseLeave={() => setHovered(null)} cx={p[0]} cy={p[1]} r={i === pts.length - 1 ? 4 : 3} fill="var(--bg-elev)" stroke={color} strokeWidth="2" />
         {!compact && <text className="point-value" x={p[0]} y={p[1] < padT + 18 ? p[1] + 16 : p[1] - 9} textAnchor="middle">{signed(values[i])}</text>}
       </g>)}
       <circle className="point" cx={pts[pts.length - 1][0]} cy={pts[pts.length - 1][1]} r="4" fill={color} />

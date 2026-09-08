@@ -186,12 +186,12 @@ function PlayerDetail({ playerId, data, onPick }) {
   const recordAchievements = (data.divisions[p.div].hallOfFame || [])
     .map((record, index) => ({ record, index }))
     .filter(({ record }) => record.player && record.player.id === p.id)
-    .map(({ record, index }) => { const key = record.key || ['leader', 'wins', 'defense', 'riichi', 'consistency', 'recent'][index] || 'record'; return { name: tr(`hof_${key}_title`), key, value: record.value }; });
+    .map(({ record, index }) => { const key = record.key || ['leader', 'wins', 'defense', 'riichi', 'consistency', 'recent'][index] || 'record'; return { name: tr(`hof_${key}_title`), detail: tr(`hof_${key}_subtitle`), key, value: record.value }; });
   const closestToZero = data.divisions[p.div].players
     .filter(player => Number.isFinite(player.points))
     .sort((a, b) => Math.abs(a.points) - Math.abs(b.points))[0];
   if (closestToZero && closestToZero.id === p.id) {
-    recordAchievements.push({ name: tr('achievement_saki'), key: 'saki', value: fmtPts(p.points) });
+    recordAchievements.push({ name: tr('achievement_saki'), detail: tr('achievement_saki_hint'), key: 'saki', value: fmtPts(p.points) });
   }
   const yakumanBadge = name => {
     if (name === 'Kokushi Musou') return { key: 'kokushi', glyph: '十三' };
@@ -199,6 +199,7 @@ function PlayerDetail({ playerId, data, onPick }) {
     if (name === 'Suuankou') return { key: 'suuankou', glyph: '四暗' };
     return { key: 'generic', glyph: '✦' };
   };
+  const recordIcons = { leader: '王', wins: '和', defense: '守', riichi: '立', consistency: '均', recent: '昇', saki: '咲' };
   const totalYaku = yakus.reduce((sum, y) => sum + y.count, 0);
 
   return (
@@ -274,10 +275,11 @@ function PlayerDetail({ playerId, data, onPick }) {
 
         <div className="chart-card detail-full achievements-card">
           <div className="ch-head yaku-head"><div><h3>{tr('achievements_title')}</h3><p>{tr('achievements_hint')}</p></div><span className="jp">勲章</span></div>
-          {(yakumans.length || recordAchievements.length) ? <div className="achievement-medals-all">
-            {yakumans.map(y => <div className="yakuman-medal" key={y.name} title={`${y.name} ×${y.count}`}><div className={`yakuman-medal-icon ${yakumanBadge(y.name).key}`}>{yakumanBadge(y.name).glyph}</div><div className="yakuman-medal-name">{y.name}</div><div className="yakuman-medal-count">×{y.count}</div></div>)}
-            {recordAchievements.map(record => { const recordIcons = { leader: '♛', wins: '和', defense: '盾', riichi: '立', consistency: '≈', recent: '↗' }; return <div className="yakuman-medal record-medal-compact" key={`${record.key}-${record.name}`}><div className={`yakuman-medal-icon record record-${record.key}`}>{recordIcons[record.key] || '✦'}</div><div className="yakuman-medal-name">{record.name}</div><div className="yakuman-medal-count">{record.value || '★'}</div></div>; })}
-          </div> : <div className="achievements-empty"><span>☹</span><div><strong>{tr('achievement_empty_title')}</strong><small>{tr('achievement_empty_hint')}</small></div></div>}
+          <div className="achievement-map">
+            <div className="achievement-family family-yakuman"><div className="achievement-family-head"><strong>{tr('yakuman_title')}</strong><small>{yakumans.length}</small></div><div className="achievement-emblems">{yakumans.map(y => { const badge = yakumanBadge(y.name); return <div className="achievement-emblem-wrap" key={y.name}><div className={`achievement-emblem ${badge.key}`} tabIndex="0">{badge.glyph}</div><div className="achievement-tooltip"><em>YAKUMAN</em><strong>{y.name}</strong><span>{tr('achievement_yakuman_detail', { n: y.count })}</span><b>×{y.count}</b></div></div>; })}{Array.from({ length: Math.max(0, 3 - yakumans.length) }, (_, i) => <div className="achievement-emblem-wrap locked" key={`yakuman-locked-${i}`}><div className="achievement-emblem">◇</div><div className="achievement-tooltip"><strong>{tr('achievement_locked')}</strong><span>{tr('achievement_locked_yakuman')}</span></div></div>)}</div></div>
+            <div className="achievement-family family-record"><div className="achievement-family-head"><strong>{tr('records_title')}</strong><small>{recordAchievements.filter(record => record.key !== 'saki').length}</small></div><div className="achievement-emblems">{recordAchievements.filter(record => record.key !== 'saki').map(record => <div className="achievement-emblem-wrap" key={`${record.key}-${record.name}`}><div className={`achievement-emblem record-${record.key}`} tabIndex="0">{recordIcons[record.key] || '賞'}</div><div className="achievement-tooltip"><em>{tr('records_title')}</em><strong>{record.name}</strong><span>{record.detail}</span><b>{record.value}</b></div></div>)}{Array.from({ length: Math.max(0, 3 - recordAchievements.filter(record => record.key !== 'saki').length) }, (_, i) => <div className="achievement-emblem-wrap locked" key={`record-locked-${i}`}><div className="achievement-emblem">◇</div><div className="achievement-tooltip"><strong>{tr('achievement_locked')}</strong><span>{tr('achievement_locked_record')}</span></div></div>)}</div></div>
+            <div className="achievement-family family-distinction"><div className="achievement-family-head"><strong>{tr('achievement_distinctions')}</strong><small>{recordAchievements.filter(record => record.key === 'saki').length}</small></div><div className="achievement-emblems">{recordAchievements.filter(record => record.key === 'saki').map(record => <div className="achievement-emblem-wrap" key={record.key}><div className="achievement-emblem distinction-saki" tabIndex="0">咲</div><div className="achievement-tooltip"><em>{tr('achievement_distinctions')}</em><strong>{record.name}</strong><span>{record.detail}</span><b>{record.value}</b></div></div>)}{Array.from({ length: Math.max(0, 3 - recordAchievements.filter(record => record.key === 'saki').length) }, (_, i) => <div className="achievement-emblem-wrap locked" key={`distinction-locked-${i}`}><div className="achievement-emblem">◇</div><div className="achievement-tooltip"><strong>{tr('achievement_locked')}</strong><span>{tr('achievement_locked_distinction')}</span></div></div>)}</div></div>
+          </div>
         </div>
 
           <div className="chart-card detail-summary">
