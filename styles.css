@@ -455,17 +455,17 @@ select{font:inherit;color:inherit}
 [data-theme="neon"] .code-block .date{font-family:var(--font-mono);font-size:14px}
 .code-block .table{font-family:var(--font-mono);font-size:10px;color:var(--ink-soft)}
 .four-results{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.hanchan-card .pos{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:9px;padding:6px 10px;border-radius:8px;background:var(--bg-sunk)}
-.hanchan-card .pos.p1{background:color-mix(in oklab,var(--accent) 11%,var(--bg-sunk))}
-[data-div="B"] .hanchan-card .pos.p1{background:color-mix(in oklab,var(--accent-2) 13%,var(--bg-sunk))}
-.hanchan-card .pos .place{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint)}
-.hanchan-card .pos.p1 .place{color:var(--accent);font-weight:700}
-[data-div="B"] .hanchan-card .pos.p1 .place{color:var(--accent-2)}
-.hanchan-card .pos .nm{font-size:12.5px;font-weight:500;min-width:0}
-.hanchan-card .pos .nm .h{font-family:var(--font-mono);font-size:9.5px;color:var(--ink-faint);display:block}
-.hanchan-card .pos .dl{font-family:var(--font-mono);font-weight:700;font-size:12.5px}
-.hanchan-card .pos .dl.pos{color:var(--good)}
-.hanchan-card .pos .dl.neg{color:var(--bad)}
+.hanchan-card .four-results>.pos{display:grid;grid-template-columns:auto auto 1fr auto;align-items:center;gap:9px;padding:6px 10px;border-radius:8px;background:var(--bg-sunk)}
+.hanchan-card .four-results>.pos.p1{background:color-mix(in oklab,var(--accent) 11%,var(--bg-sunk))}
+[data-div="B"] .hanchan-card .four-results>.pos.p1{background:color-mix(in oklab,var(--accent-2) 13%,var(--bg-sunk))}
+.hanchan-card .four-results>.pos .place{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint)}
+.hanchan-card .four-results>.pos.p1 .place{color:var(--accent);font-weight:700}
+[data-div="B"] .hanchan-card .four-results>.pos.p1 .place{color:var(--accent-2)}
+.hanchan-card .four-results>.pos .nm{font-size:12.5px;font-weight:500;min-width:0}
+.hanchan-card .four-results>.pos .nm .h{font-family:var(--font-mono);font-size:9.5px;color:var(--ink-faint);display:block}
+.hanchan-card .four-results>.pos .dl{font-family:var(--font-mono);font-weight:700;font-size:12.5px;text-align:right;min-width:5ch;font-variant-numeric:tabular-nums}
+.hanchan-card .four-results>.pos .dl.pos{color:var(--good)}
+.hanchan-card .four-results>.pos .dl.neg{color:var(--bad)}
 
 /* ─── calendar ─── */
 .cal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
@@ -674,9 +674,9 @@ select{font:inherit;color:inherit}
      nombres largos y puntajes. Una fila por jugador conserva la jerarquía y
      evita superposiciones en teléfonos y tablets angostas. */
   .four-results{grid-template-columns:1fr}
-  .hanchan-card .pos{grid-template-columns:auto auto minmax(0,1fr) auto}
-  .hanchan-card .pos .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .hanchan-card .pos .nm .h{overflow:hidden;text-overflow:ellipsis}
+  .hanchan-card .four-results>.pos{grid-template-columns:auto auto minmax(0,1fr) auto}
+  .hanchan-card .four-results>.pos .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hanchan-card .four-results>.pos .nm .h{overflow:hidden;text-overflow:ellipsis}
   .main{min-width:0;padding:14px 12px 80px}
 }
 @media (max-width:600px){
@@ -696,7 +696,7 @@ select{font:inherit;color:inherit}
 
   /* Historial */
   .hanchan-card{grid-template-columns:1fr;gap:8px}
-  .code-block,.four-results,.hanchan-card .pos{min-width:0}
+  .code-block,.four-results,.hanchan-card .four-results>.pos{min-width:0}
   .four-results{gap:6px}
 
   /* IORMC */
