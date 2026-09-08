@@ -487,11 +487,14 @@ function CalendarView({ data }) {
   };
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const sessNum = (c) => c.session || parseInt((c.round || '').replace(/\D/g, ''), 10) || 0;
+  const currentSession = currentSessionNumber(data);
   const byDate = (a, b) => (toDate(a.date) - toDate(b.date)) || (a.div === 'B' ? 1 : 0) - (b.div === 'B' ? 1 : 0);
   // Próximas: con fecha válida y no pasada (>= hoy). Pasadas quedan ocultas.
   const upcoming = data.calendar.filter(c => { const d = toDate(c.date); return d && d >= today; }).sort(byDate);
   // Por definir: sin fecha.
-  const porDef = data.calendar.filter(c => !toDate(c.date)).sort((a, b) => sessNum(a) - sessNum(b) || (a.table || 0) - (b.table || 0));
+  const porDef = data.calendar
+    .filter(c => !toDate(c.date) && sessNum(c) === currentSession)
+    .sort((a, b) => (a.table || 0) - (b.table || 0));
   const renderCard = (c, i) => (
     <button className={`cal-card ${c.status === 'highlight' ? 'highlight' : ''} div-${c.div}`} key={c.round + c.mesa + c.div}
          onClick={() => setModal(c)}
