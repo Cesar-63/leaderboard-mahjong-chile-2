@@ -35,7 +35,7 @@ const OUTDIR = path.resolve(ROOT, arg('--outdir', 'dist-site'));
 
 // Entradas del sitio. El nombre de salida se mantiene igual al de la fuente
 // para no romper enlaces ya compartidos.
-const ENTRIES = ['index.html', 'Mobile.html'];
+const ENTRIES = ['index.html'];
 
 // Directorios que se copian tal cual, en la raíz de la salida.
 const COPY_DIRS = ['assets'];

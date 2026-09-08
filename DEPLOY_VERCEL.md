@@ -91,14 +91,9 @@ HTML autocontenido para compartir una rama sin desplegarla.)
 
 ## 4. Escritorio y móvil
 
-Hay dos entradas, `index.html` y `Mobile.html`, y las dos se publican.
-
-- `/` siempre sirve la aplicación web responsive, también en teléfonos y
-  dispositivos plegables. No hay detección de dispositivo ni redirección
-  automática a un marco de teléfono.
-- `Mobile.html` se conserva sólo como una maqueta alternativa accesible de
-  forma explícita.
-- `/mobile` y `/movil` son atajos a `/Mobile.html`.
+`/` sirve una única aplicación web responsive para escritorio, teléfonos y
+dispositivos plegables. No hay detección de dispositivo, redirecciones ni una
+segunda vista con marco de teléfono.
 
 ## 5. Detalles que conviene saber
 
