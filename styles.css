@@ -355,6 +355,18 @@ select{font:inherit;color:inherit}
 .stat-cell{background:var(--bg-elev);padding:13px}
 .stat-cell .l{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}
 .stat-cell .v{font-family:var(--font-mono);font-weight:700;font-size:21px;margin-top:4px}
+.stats-overview-head{margin-bottom:18px}
+.stats-overview-head>div{min-width:0}
+.stats-overview-head p{margin:7px 0 0;color:var(--ink-faint);font-size:12px;line-height:1.45}
+.profile-stat-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.profile-stat-group{min-width:0;padding:13px;border:1px solid var(--line);border-radius:13px;background:var(--bg-sunk)}
+.profile-stat-group-title{margin-bottom:3px;color:var(--accent);font-family:var(--font-mono);font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.profile-stat-group-cells{display:flex;flex-direction:column}
+.profile-stat-group :is(.stat-cell,.c){display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 1px;border-top:1px solid var(--line);background:transparent}
+.profile-stat-group :is(.stat-cell,.c):first-child{border-top:0}
+.profile-stat-group :is(.stat-cell,.c) .l{font-family:var(--font-body);font-size:12.5px;letter-spacing:0;text-transform:none;color:var(--ink-soft)}
+.profile-stat-group :is(.stat-cell,.c) .v{margin:0;font-family:var(--font-mono);font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;text-align:right}
+.profile-stat-groups.mobile{margin-bottom:14px}
 /* Tooltips de stats (stat-tips.jsx). La tarjeta se dibuja sobre el body con
    position:fixed, porque la grilla de stats recorta con overflow:hidden. */
 .stat-tip-anchor{display:inline-block;cursor:help;border-radius:4px;outline:none;-webkit-tap-highlight-color:transparent}
@@ -671,6 +683,7 @@ select{font:inherit;color:inherit}
   .cal-grid{grid-template-columns:1fr 1fr}
   .iormc-podium{grid-template-columns:1fr}
   .main{min-width:0;padding:14px 12px 80px}
+  .profile-stat-groups{grid-template-columns:1fr}
 }
 @media (max-width:600px){
   .standings-table{min-width:0}

@@ -199,9 +199,9 @@
     const speed = by(p => p.riichiRate), iron = by(p => p.avgRank, true), streak = by(p => p.streak);
     return [
       { tag: 'Líder División', value: (top.points >= 0 ? '+' : '') + top.points.toFixed(1), sub: 'puntos uma/oka', player: top, jp: '王座' },
-      { tag: 'Mejor Win Rate', value: topWin.winRate.toFixed(1) + '%', sub: 'manos ganadas', player: topWin, jp: '和了率' },
-      { tag: 'Muro de Hierro', value: lowDeal.dealInRate.toFixed(1) + '%', sub: 'deal-in más bajo', player: lowDeal, jp: '放銃' },
-      { tag: 'Velocidad', value: speed.riichiRate.toFixed(1) + '%', sub: 'riichi rate', player: speed, jp: '立直' },
+      { tag: 'Más manos ganadas', value: topWin.winRate.toFixed(1) + '%', sub: 'porcentaje de victorias', player: topWin, jp: '和了率' },
+      { tag: 'Muro de Hierro', value: lowDeal.dealInRate.toFixed(1) + '%', sub: 'menos rones pagados', player: lowDeal, jp: '放銃' },
+      { tag: 'Velocidad', value: speed.riichiRate.toFixed(1) + '%', sub: 'manos con riichi', player: speed, jp: '立直' },
       { tag: 'Consistencia', value: iron.avgRank.toFixed(2), sub: 'puesto promedio', player: iron, jp: '平均順位' },
       { tag: 'Racha Caliente', value: (streak.streak >= 0 ? '+' : '') + streak.streak.toFixed(0), sub: 'últimas 4 hanchan', player: streak, jp: '連勝' },
     ];

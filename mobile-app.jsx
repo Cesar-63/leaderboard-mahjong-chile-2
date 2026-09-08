@@ -150,13 +150,13 @@ function MobStandings({ data, div, onPick }) {
   const order = [podium[1], podium[0], podium[2]];
   const col = div === 'B' ? 'var(--accent-2)' : 'var(--accent)';
   const SORTS = [
-    { k: 'rank', l: 'Puntos' }, { k: 'avg', l: 'Avg #' },
-    { k: 'win', l: 'Win %' }, { k: 'dealin', l: 'Deal-in %' },
+    { k: 'rank', l: tr('points') }, { k: 'avg', l: tr('lbl_avgrank') },
+    { k: 'win', l: tr('lbl_winrate') }, { k: 'dealin', l: tr('lbl_dealin') },
   ];
-  const secondary = (p) => sort === 'win' ? `${p.winRate.toFixed(1)}% win`
-    : sort === 'dealin' ? `${p.dealInRate.toFixed(1)}% deal-in`
-    : sort === 'avg' ? `avg ${p.avgRank.toFixed(2)}`
-    : `${p.games} han · avg ${p.avgRank.toFixed(2)}`;
+  const secondary = (p) => sort === 'win' ? `${p.winRate.toFixed(1)}% ${tr('lbl_winrate').toLowerCase()}`
+    : sort === 'dealin' ? `${p.dealInRate.toFixed(1)}% ${tr('lbl_dealin').toLowerCase()}`
+    : sort === 'avg' ? `${tr('lbl_avgrank')} ${p.avgRank.toFixed(2)}`
+    : `${p.games} han · ${tr('lbl_avgrank').toLowerCase()} ${p.avgRank.toFixed(2)}`;
 
   return (
     <div className="mob-screen">
@@ -259,11 +259,7 @@ function MobDetail({ data, playerId, onPick }) {
           </div>
         )}
         {p.zone && <div className={`mob-zoneb ${p.zone}`}>{ZONE[p.zone]}</div>}
-        <div className="mob-statgrid">
-          {PROFILE_STATS.map(metric => (
-            <StatCell key={metric} metric={metric} player={p} data={data} className="c" />
-          ))}
-        </div>
+        <ProfileStatGroups player={p} data={data} mobile />
         <div className="mob-ch" style={{ marginBottom: 6 }}><h3>Puestos</h3><span className="jp">順位率</span></div>
         <div className="mob-placebar">
           {placementSegments(p).map(s => (
@@ -276,7 +272,7 @@ function MobDetail({ data, playerId, onPick }) {
       </div>
 
       <div className="mob-card">
-        <div className="mob-ch"><h3>Perfil de Juego</h3><span className="jp">プレイスタイル</span></div>
+        <div className="mob-ch"><h3>{tr('profile_title')}</h3><span className="jp">プレイスタイル</span></div>
         <DualRadar key={p.id} a={radar} size={240} color={col} />
         <div className="mob-legend">
           {radar.map(s => <div className="r" key={s.label}><span>{s.label}</span><span className="v" style={{ color: col }}>{s.display}</span></div>)}
@@ -289,7 +285,7 @@ function MobDetail({ data, playerId, onPick }) {
       </div>
 
       <div className="mob-card">
-        <div className="mob-ch"><h3>Yaku Más Jugados</h3><span className="jp">役の頻度</span></div>
+        <div className="mob-ch"><h3>{tr('yaku_title')}</h3><span className="jp">役の頻度</span></div>
         <div className="mob-yaku">
           {yakus.map((y, i) => (
             <div className="r" key={y.name}>
@@ -313,14 +309,14 @@ function MobCompare({ data }) {
   React.useEffect(() => { setK(v => v + 1); }, [aId, bId]);
 
   const metrics = [
-    { key: 'points', l: 'Puntos', jp: '総合', low: false, f: fmtPts },
-    { key: 'avgRank', l: 'Avg #', jp: '平均順位', low: true, f: v => v.toFixed(2) },
-    { key: 'winRate', l: 'Win', jp: '和了率', low: false, f: v => v.toFixed(1) },
-    { key: 'dealInRate', l: 'Deal-in', jp: '放銃率', low: true, f: v => v.toFixed(1) },
-    { key: 'riichiRate', l: 'Riichi', jp: '立直率', low: false, f: v => v.toFixed(1) },
-    { key: 'openRate', l: 'Open', jp: '副露率', low: false, f: v => v.toFixed(1) },
-    { key: 'avgPoints', l: 'Avg ±', jp: '平均得点', low: false, f: fmtPts },
-    { key: 'firstRate', l: '1° Rate', jp: 'トップ率', low: false, f: v => (v * 100).toFixed(0) + '%' },
+    { key: 'points', l: tr('points'), jp: '総合', low: false, f: fmtPts },
+    { key: 'avgRank', l: tr('lbl_avgrank'), jp: '平均順位', low: true, f: v => v.toFixed(2) },
+    { key: 'winRate', l: tr('lbl_winrate'), jp: '和了率', low: false, f: v => v.toFixed(1) },
+    { key: 'dealInRate', l: tr('lbl_dealin'), jp: '放銃率', low: true, f: v => v.toFixed(1) },
+    { key: 'riichiRate', l: tr('lbl_riichi'), jp: '立直率', low: false, f: v => v.toFixed(1) },
+    { key: 'openRate', l: tr('lbl_open'), jp: '副露率', low: false, f: v => v.toFixed(1) },
+    { key: 'avgPoints', l: tr('lbl_avgpts'), jp: '平均得点', low: false, f: fmtPts },
+    { key: 'firstRate', l: tr('top_rate'), jp: 'トップ率', low: false, f: v => (v * 100).toFixed(0) + '%' },
   ];
   const scales = React.useMemo(() => {
     const enriched = data.allPlayers.map(p => ({ ...p, firstRate: p.placements.p1 }));
@@ -363,8 +359,8 @@ function MobCompare({ data }) {
       </div>
 
       <div className="mob-card">
-        <div className="mob-ch"><h3>Métricas</h3><span className="jp">成績比較</span></div>
-        <div className="mob-metnote">Barra más larga = mejor</div>
+        <div className="mob-ch"><h3>{tr('metrics_title')}</h3><span className="jp">成績比較</span></div>
+        <div className="mob-metnote">{tr('metrics_note')}</div>
         {metrics.map(m => {
           const av = readVal(a, m.key), bv = readVal(b, m.key);
           const aw = m.low ? av < bv : av > bv, bw = m.low ? bv < av : bv > av;
