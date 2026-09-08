@@ -13,15 +13,19 @@ function hallOfFameCopy(record, index) {
   };
 }
 
-function metricsToRadar(p) {
+function metricsToRadar(p, leaguePlayers = []) {
   const hasStats = p.statsSample > 0;
+  const pointValues = leaguePlayers.map(player => Number(player.avgPoints)).filter(Number.isFinite);
+  const minPoints = Math.min(...pointValues, p.avgPoints, 0);
+  const maxPoints = Math.max(...pointValues, p.avgPoints, 0);
+  const pointRange = maxPoints - minPoints || 1;
   return [
-    { label: tr('radar_wins'), display: hasStats ? p.winRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.winRate / 30) : 0 },
-    { label: tr('radar_defense'), display: hasStats ? (100 - p.dealInRate).toFixed(0) + '%' : '—', value: hasStats ? clamp01((20 - p.dealInRate) / 14) : 0 },
-    { label: tr('radar_riichi'), display: hasStats ? p.riichiRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.riichiRate / 32) : 0 },
-    { label: tr('radar_open'), display: hasStats ? p.openRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.openRate / 50) : 0 },
-    { label: tr('radar_placement'), display: p.avgRank.toFixed(2), value: clamp01((4 - p.avgRank) / 1.5) },
-    { label: tr('radar_points'), display: fmtPts(p.avgPoints), value: clamp01((p.avgPoints + 12) / 30) },
+    { label: tr('radar_wins'), display: hasStats ? p.winRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.winRate / 100) : 0 },
+    { label: tr('radar_defense'), display: hasStats ? (100 - p.dealInRate).toFixed(0) + '%' : '—', value: hasStats ? clamp01((100 - p.dealInRate) / 100) : 0 },
+    { label: tr('radar_riichi'), display: hasStats ? p.riichiRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.riichiRate / 100) : 0 },
+    { label: tr('radar_open'), display: hasStats ? p.openRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.openRate / 100) : 0 },
+    { label: tr('radar_placement'), display: p.avgRank.toFixed(2), value: clamp01((4 - p.avgRank) / 3) },
+    { label: tr('radar_points'), display: fmtPts(p.avgPoints), value: clamp01((p.avgPoints - minPoints) / pointRange) },
   ];
 }
 
@@ -78,12 +82,35 @@ function PlayerDetail({ playerId, data, onPick }) {
   const divSize = data.divisions[p.div].players.length;
   const color = accentFor(p.div);
 
-  const radar = metricsToRadar(p);
+  const radar = metricsToRadar(p, data.divisions[p.div].players);
   // La lista completa se genera a partir de los paipus de Mahjong Soul en
   // scripts/sync.py. No debe recortarse ni completarse en el cliente: si un
   // jugador muestra pocos yakus significa que faltan datos de partidas
   // procesadas, no que la interfaz deba inventarlos.
   const yakus = Array.isArray(p.yakus) ? p.yakus : [];
+  const yakumanNames = new Set([
+    'Tenhou', 'Chiihou', 'Daisangen', 'Suuankou', 'Tsuuiisou', 'Ryuuiisou',
+    'Chinroutou', 'Kokushi Musou', 'Shousuushii', 'Suukantsu', 'Chuuren Poutou',
+    'Suuankou Tanki', 'Kokushi 13-men', 'Daisuushii', 'Junsei Chuuren',
+  ]);
+  const derivedYakumans = yakus.filter(y => yakumanNames.has(y.name));
+  const yakumans = Array.isArray(p.yakumans) ? p.yakumans : derivedYakumans;
+  const recordAchievements = (data.divisions[p.div].hallOfFame || [])
+    .map((record, index) => ({ record, index }))
+    .filter(({ record }) => record.player && record.player.id === p.id)
+    .map(({ record, index }) => { const key = record.key || ['leader', 'wins', 'defense', 'riichi', 'consistency', 'recent'][index] || 'record'; return { name: tr(`hof_${key}_title`), key, value: record.value }; });
+  const closestToZero = data.divisions[p.div].players
+    .filter(player => Number.isFinite(player.points))
+    .sort((a, b) => Math.abs(a.points) - Math.abs(b.points))[0];
+  if (closestToZero && closestToZero.id === p.id) {
+    recordAchievements.push({ name: tr('achievement_saki'), key: 'saki', value: fmtPts(p.points) });
+  }
+  const yakumanBadge = name => {
+    if (name === 'Kokushi Musou') return { key: 'kokushi', glyph: '十三' };
+    if (name === 'Daisangen') return { key: 'daisangen', glyph: '中發白' };
+    if (name === 'Suuankou') return { key: 'suuankou', glyph: '四暗' };
+    return { key: 'generic', glyph: '✦' };
+  };
   const [showAllYakus, setShowAllYakus] = React.useState(false);
   const totalYaku = yakus.reduce((sum, y) => sum + y.count, 0);
   const maxYaku = Math.max(...yakus.map(y => y.count), 1);
@@ -160,6 +187,14 @@ function PlayerDetail({ playerId, data, onPick }) {
           <QuickProfileSummary player={p} />
         </div>
 
+        <div className="chart-card detail-full achievements-card">
+          <div className="ch-head yaku-head"><div><h3>{tr('achievements_title')}</h3><p>{tr('achievements_hint')}</p></div><span className="jp">勲章</span></div>
+          {(yakumans.length || recordAchievements.length) ? <div className="achievement-medals-all">
+            {yakumans.map(y => <div className="yakuman-medal" key={y.name} title={`${y.name} ×${y.count}`}><div className={`yakuman-medal-icon ${yakumanBadge(y.name).key}`}>{yakumanBadge(y.name).glyph}</div><div className="yakuman-medal-name">{y.name}</div><div className="yakuman-medal-count">×{y.count}</div></div>)}
+            {recordAchievements.map(record => { const recordIcons = { leader: '♛', wins: '和', defense: '盾', riichi: '立', consistency: '≈', recent: '↗' }; return <div className="yakuman-medal record-medal-compact" key={`${record.key}-${record.name}`}><div className={`yakuman-medal-icon record record-${record.key}`}>{recordIcons[record.key] || '✦'}</div><div className="yakuman-medal-name">{record.name}</div><div className="yakuman-medal-count">{record.value || '★'}</div></div>; })}
+          </div> : <div className="achievements-empty"><span>☹</span><div><strong>{tr('achievement_empty_title')}</strong><small>{tr('achievement_empty_hint')}</small></div></div>}
+        </div>
+
           <div className="chart-card detail-summary">
             <div className="ch-head stats-overview-head"><div><h3>{tr('stats_overview')}</h3><p>{tr('stats_overview_hint')}</p></div></div>
             <div className="stats-overview-layout">
@@ -173,8 +208,8 @@ function PlayerDetail({ playerId, data, onPick }) {
           </div>
 
           <div className="chart-card line-card detail-full">
-            <div className="ch-head"><h3>{tr('evolution_title')} · {p.games} {tr('hanchan')}</h3><span className="jp">スコア推移</span></div>
-            <LineChart key={p.id} values={p.cum} color={color} />
+            <div className="ch-head"><h3>{tr('evolution_title')} · {tr('evolution_accumulated')} · {p.games} {tr('hanchan')}</h3><span className="jp">スコア推移</span></div>
+            <LineChart key={p.id} values={p.cum} color={color} playerId={p.id} matches={data.divisions[p.div].matches.filter(match => match.players.some(player => player.id === p.id))} />
           </div>
 
           <div className="chart-card detail-full yaku-card">

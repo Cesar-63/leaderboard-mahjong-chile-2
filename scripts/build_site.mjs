@@ -139,9 +139,7 @@ function buildEntry(entry) {
     const rel = stripQuery(src);
     const file = emitLocalFile(rel);
     if (!file) {
-      // data/generated.js sólo existe después de correr scripts/sync.py; sin
-      // él la app se queda con el mock de data.js, que es el comportamiento
-      // declarado del sitio.
+      // Los datos publicados deben venir del pipeline de sincronización.
       console.warn(`  ! ${rel} no existe, se omite`);
       return '';
     }

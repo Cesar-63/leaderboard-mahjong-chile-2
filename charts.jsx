@@ -129,7 +129,7 @@ function RadarChart({ stats, color = 'var(--accent)', size = 280 }) {
   );
 }
 
-function LineChart({ values, height = 220, color = 'var(--accent)', compact = false }) {
+function LineChart({ values, height = 220, color = 'var(--accent)', compact = false, matches = [], playerId }) {
   const width = 600;
   const padL = 40, padR = 18, padT = compact ? 18 : 28, padB = 34;
   if (!values || values.length === 0) return null;
@@ -148,6 +148,8 @@ function LineChart({ values, height = 220, color = 'var(--accent)', compact = fa
   const peak = Math.max(...values);
   const bestGame = Math.max(...deltas);
   const signed = (v) => `${v > 0 ? '+' : ''}${Number(v.toFixed(1))}`;
+  const [hovered, setHovered] = React.useState(null);
+  const pointDetails = i => { const match = matches[i]; const names = match?.players?.map(player => player.shortName || player.name).join(' · '); return { match, names }; };
 
   const strokeRef = React.useRef(null);
   React.useEffect(() => {
@@ -164,6 +166,7 @@ function LineChart({ values, height = 220, color = 'var(--accent)', compact = fa
 
   return (
     <div className={`line-chart-wrap${compact ? ' compact' : ''}`}>
+      {hovered !== null && <div className="line-hover-card">{(() => { const { match, names } = pointDetails(hovered); const delta = match?.players?.find(player => player.id === playerId)?.delta; return <><div className="line-hover-head"><strong>{match ? `${match.sessionCode} · H${match.hanchan}` : `H${hovered + 1}`}</strong><b>{signed(values[hovered])}</b></div><div className="line-hover-label">{tr('chart_hover_accumulated')} · {tr('chart_hover_match')} {delta !== undefined ? signed(delta) : '—'}</div>{names && <small>{names}</small>}</>; })()}</div>}
       {!compact && <div className="line-summary">
         <div><span>{tr('chart_current')}</span><strong style={{ color: current >= 0 ? 'var(--good)' : 'var(--bad)' }}>{signed(current)}</strong></div>
         <div><span>{tr('chart_peak')}</span><strong>{signed(peak)}</strong></div>
@@ -186,8 +189,8 @@ function LineChart({ values, height = 220, color = 'var(--accent)', compact = fa
       <path ref={strokeRef} className="stroke" d={d} stroke={color} />
       {/* points */}
       {pts.map((p, i) => <g key={i} className="line-checkpoint">
-        <circle cx={p[0]} cy={p[1]} r={i === pts.length - 1 ? 4 : 3} fill="var(--bg-elev)" stroke={color} strokeWidth="2">
-          <title>{tr('chart_point_title', { n: i + 1, points: signed(values[i]) })}</title>
+        <circle onMouseEnter={() => setHovered(i)} onMouseLeave={() => setHovered(null)} cx={p[0]} cy={p[1]} r={i === pts.length - 1 ? 4 : 3} fill="var(--bg-elev)" stroke={color} strokeWidth="2">
+          <title>{(() => { const match = matches[i]; const names = match?.players?.map(player => player.shortName || player.name).join(', '); return `${tr('chart_point_title', { n: i + 1, points: signed(values[i]) })}${match ? ` · ${match.sessionCode} · H${match.hanchan}${names ? ` · ${names}` : ''}` : ''}`; })()}</title>
         </circle>
         {!compact && <text className="point-value" x={p[0]} y={p[1] < padT + 18 ? p[1] + 16 : p[1] - 9} textAnchor="middle">{signed(values[i])}</text>}
       </g>)}
