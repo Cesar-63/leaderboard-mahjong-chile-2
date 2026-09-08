@@ -51,7 +51,8 @@ function PlayerDetail({ playerId, data, onPick }) {
     { label: 'AVG #',   display: p.avgRank.toFixed(2), value: clamp01((4 - p.avgRank) / 1.5) },
     { label: 'POINTS',  display: fmtPts(p.avgPoints), value: clamp01((p.avgPoints + 12) / 30) },
   ];
-  const maxYaku = Math.max(...p.topYaku.map(y => y.count), 1);
+  const yakus = p.yakus || p.topYaku || [];
+  const maxYaku = Math.max(...yakus.map(y => y.count), 1);
 
   return (
     <div className="tab-panel">
@@ -148,9 +149,9 @@ function PlayerDetail({ playerId, data, onPick }) {
           </div>
 
           <div className="chart-card">
-            <div className="ch-head"><h3>{tr('yaku_title')}</h3><span className="jp">役の頻度</span></div>
+            <div className="ch-head"><h3>{tr('yaku_title')}</h3><span className="jp">役一覧</span></div>
             <div className="yaku-list">
-              {p.topYaku.map((y, i) => (
+              {yakus.map((y, i) => (
                 <div className="yaku-row" key={y.name}>
                   <div className="name">{y.name}</div>
                   <div className="bar"><div style={{ width: `${(y.count / maxYaku) * 100}%`, background: color, animationDelay: `${i * 80}ms` }} /></div>

@@ -220,7 +220,8 @@ function MobDetail({ data, playerId, onPick }) {
   const col = accentFor(p.div);
   const size = data.divisions[p.div].players.length;
   const radar = metricsToRadar(p);
-  const maxY = Math.max(...p.topYaku.map(y => y.count), 1);
+  const yakus = p.yakus || p.topYaku || [];
+  const maxY = Math.max(...yakus.map(y => y.count), 1);
   const ZONE = { playoff: '1-8 Eliminatorias', title: '1-8 Eliminatorias', relegation: 'Zona de Descenso', promotion: '1-8 Eliminatorias', bottom: 'Zona baja' };
 
   return (
@@ -290,7 +291,7 @@ function MobDetail({ data, playerId, onPick }) {
       <div className="mob-card">
         <div className="mob-ch"><h3>Yaku Más Jugados</h3><span className="jp">役の頻度</span></div>
         <div className="mob-yaku">
-          {p.topYaku.map((y, i) => (
+          {yakus.map((y, i) => (
             <div className="r" key={y.name}>
               <span>{y.name}</span>
               <div className="bar"><div style={{ width: `${(y.count / maxY) * 100}%`, background: col, animationDelay: `${i * 70}ms` }} /></div>

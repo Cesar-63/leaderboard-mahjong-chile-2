@@ -128,7 +128,7 @@
       delete p.archRates;
 
       const shuffled = [...YAKU].sort(() => rand() - 0.5);
-      p.topYaku = shuffled.slice(0, 5).map((y, idx) => ({
+      p.yakus = shuffled.map((y, idx) => ({
         name: y, count: Math.max(1, Math.round(p.games * r(0.25, 0.9) / (idx * 0.45 + 1))),
       })).sort((a, b) => b.count - a.count);
     });

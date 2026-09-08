@@ -444,12 +444,12 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
             player["avgWinPoints"] = round(player["winPoints"] / wins) if wins else 0
             player["avgDealInPoints"] = round(player["dealInPoints"] / deal_ins) if deal_ins else 0
             player["avgWinTurn"] = round(player["winTurns"] / wins, 2) if wins else 0
-            player["topYaku"] = [{"name": name, "count": count} for name, count in player["yakuCounts"].most_common(5)]
+            player["yakus"] = [{"name": name, "count": count} for name, count in player["yakuCounts"].most_common()]
             player["statsSample"] = hands
             player["statsReliable"] = hands >= int(config["minimumAdvancedStatsHands"])
             player["arch"] = "con datos" if player["statsReliable"] else "stats pendientes"
             stats_output["players"][player["id"]] = {key: player[key] for key in ("hands", "wins", "dealIns", "winRate", "dealInRate", "riichiRate", "openRate",
-                "damatenRate", "avgWinPoints", "avgDealInPoints", "avgWinTurn", "topYaku", "statsReliable")}
+                "damatenRate", "avgWinPoints", "avgDealInPoints", "avgWinTurn", "yakus", "statsReliable")}
             del player["yakuCounts"]
         players.sort(key=lambda item: (-item["points"], item["avgRank"] if item["games"] else 99, item["name"].lower()))
         for index, player in enumerate(players, start=1):
