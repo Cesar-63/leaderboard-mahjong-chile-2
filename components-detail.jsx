@@ -85,8 +85,16 @@ function yakuStory(top) {
   return { title: tr('yaku_story_varied_title'), text: tr('yaku_story_varied_text', args) };
 }
 
-function YakuProfile({ yakus, color }) {
+// `canOpen`/`onOpen` son opcionales: sin manos ganadas en los datos el perfil se
+// ve igual, sólo que nada abre. Cada yaku que sí las tiene se vuelve un botón,
+// en las tres formas en que aparece: top 3, grupo de yakuhai y ledger.
+function YakuProfile({ yakus, color, canOpen, onOpen }) {
   if (!yakus.length) return <div className="yaku-empty">{tr('yaku_empty')}</div>;
+  // Envuelve un yaku en botón si tiene manos que mostrar; si no, lo deja tal cual.
+  const openable = (name, className, key, children, Tag = 'div') => (canOpen && canOpen(name)
+    ? <button type="button" className={`${className} clickable`} key={key}
+        onClick={() => onOpen(name)} title={tr('yaku_open_hands', { yaku: name })}>{children}</button>
+    : <Tag className={className} key={key}>{children}</Tag>);
   const sorted = [...yakus].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
   const total = sorted.reduce((sum, yaku) => sum + yaku.count, 0);
   const top = sorted.slice(0, 3);
@@ -99,21 +107,21 @@ function YakuProfile({ yakus, color }) {
   return <div className="yaku-profile" style={{ '--yaku-accent': color }}>
     <div className="yaku-signature">
       <div className="yaku-story"><div className="block-label">{tr('yaku_story_label')}</div><h4>{story.title}</h4><p>{story.text}</p></div>
-      <div className="yaku-top-three">{top.map((yaku, index) => <div className="yaku-top" key={yaku.name}>
+      <div className="yaku-top-three">{top.map((yaku, index) => openable(yaku.name, 'yaku-top', yaku.name, <React.Fragment>
         <span className="yaku-top-rank">{index === 0 ? tr('yaku_high') : tr('yaku_rank_n', { n: index + 1 })}</span>
         <i>{yakuGlyph(yaku.name)}</i><strong>{yaku.name}</strong><b>{yaku.count} · {pct(yaku.count)}%</b>
-      </div>)}</div>
+      </React.Fragment>))}</div>
     </div>
     <div className="yaku-rest-label">{tr('yaku_other_title')}</div>
     <div className="yaku-ledger">
       {!!yakuhai.length && <div className="yaku-yakuhai-group">
         <div><strong>{tr('yaku_yakuhai_group')}</strong><span>{tr('yaku_yakuhai_hint')}</span></div>
-        <div className="yaku-yakuhai-items">{yakuhai.map(yaku => <span key={yaku.name}>{yaku.name.replace(/^Yakuhai\s*/i, '')} <b>{yaku.count} · {pct(yaku.count)}%</b></span>)}</div>
+        <div className="yaku-yakuhai-items">{yakuhai.map(yaku => openable(yaku.name, 'yaku-yakuhai-item', yaku.name, <React.Fragment><span>{yaku.name.replace(/^Yakuhai\s*/i, '')}</span> <b>{yaku.count} · {pct(yaku.count)}%</b></React.Fragment>, 'span'))}</div>
         <div className="yaku-yakuhai-total"><strong>{yakuhaiTotal}</strong><span>{pct(yakuhaiTotal)}% {tr('yaku_total_suffix')}</span></div>
       </div>}
-      {other.map(yaku => <div className="yaku-ledger-row" key={yaku.name}>
+      {other.map(yaku => openable(yaku.name, 'yaku-ledger-row', yaku.name, <React.Fragment>
         <span>{yaku.name}</span><div><i style={{ width: `${Math.max(4, pct(yaku.count))}%` }} /></div><b>{yaku.count}</b><small>{pct(yaku.count)}%</small>
-      </div>)}
+      </React.Fragment>))}
     </div>
   </div>;
 }
@@ -211,6 +219,12 @@ function PlayerDetail({ playerId, data, onPick }) {
   const leagueRecords = recordAchievements.filter(record => !distinctionKeys.has(record.key));
   const distinctions = recordAchievements.filter(record => distinctionKeys.has(record.key));
   const totalYaku = yakus.reduce((sum, y) => sum + y.count, 0);
+  // Las manos ganadas sólo existen después de correr scripts/sync.py sobre los
+  // paipus: sin ellas el perfil de yakus se ve igual, pero sin abrir nada.
+  const wonHands = (data.yakuHands || {})[p.id] || [];
+  const [openYaku, setOpenYaku] = React.useState(null);
+  React.useEffect(() => { setOpenYaku(null); }, [p.id]);
+  const yakuHands = openYaku ? wonHands.filter(h => (h.yaku || []).includes(openYaku)) : [];
 
   return (
     <div className="tab-panel">
@@ -312,8 +326,72 @@ function PlayerDetail({ playerId, data, onPick }) {
 
           <div className="chart-card detail-full yaku-card">
             <div className="ch-head yaku-head"><div><h3>{tr('yaku_title')}</h3><p>{tr('yaku_summary', { types: yakus.length, total: totalYaku })}{usingPreviewYakus ? ` · ${tr('preview_data')}` : ''}</p></div><span className="jp">役一覧</span></div>
-            <YakuProfile yakus={yakus} color={color} />
+            <YakuProfile yakus={yakus} color={color}
+              canOpen={name => wonHands.some(h => (h.yaku || []).includes(name))}
+              onOpen={setOpenYaku} />
         </div>
+      </div>
+      {openYaku && (
+        <YakuHandsModal yaku={openYaku} hands={yakuHands} player={p} color={color}
+          onClose={() => setOpenYaku(null)} />
+      )}
+    </div>
+  );
+}
+
+// Popup con cada mano ganada que incluyó un yaku. Se cierra con Escape, con el
+// fondo o con la X; mientras está abierto el fondo no scrollea.
+function YakuHandsModal({ yaku, hands, player, color, onClose }) {
+  React.useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    const previo = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = previo; };
+  }, [onClose]);
+
+  const total = hands.reduce((sum, h) => sum + (h.points || 0), 0);
+  const promedio = hands.length ? Math.round(total / hands.length) : 0;
+  return ReactDOM.createPortal(
+    <div className="cal-modal-backdrop" onClick={onClose}>
+      <div className="cal-modal yaku-modal" role="dialog" aria-modal="true" aria-label={yaku}
+        style={{ '--modal-accent': color }} onClick={e => e.stopPropagation()}>
+        <div className="cm-head">
+          <div>
+            <div className="cm-kicker">{player.shortName} · {tr('yaku_title')}</div>
+            <div className="cm-title">{yaku}</div>
+            <div className="cm-sub">{tr('yaku_modal_summary', { n: hands.length, avg: promedio.toLocaleString('es-CL') })}</div>
+          </div>
+          <button className="cm-close" onClick={onClose} aria-label={tr('cerrar')}>✕</button>
+        </div>
+        <div className="yaku-hand-list">
+          {hands.map((h, i) => <YakuHandRow key={i} hand={h} yaku={yaku} />)}
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
+function YakuHandRow({ hand, yaku }) {
+  const otros = (hand.yaku || []).filter(y => y !== yaku);
+  return (
+    <div className="yaku-hand">
+      <div className="yaku-hand-head">
+        <span className="where">{tr('sesion_n', { n: hand.session })} · {tr('mesa', { n: hand.table })} · {tr('hanchan_n', { n: hand.hanchan })}</span>
+        <span className={`how ${hand.tsumo ? 'tsumo' : 'ron'}`}>
+          {hand.tsumo ? tr('by_tsumo') : (hand.loser ? tr('by_ron_from', { rival: hand.loser }) : tr('by_ron'))}
+        </span>
+        <span className="pts">{(hand.points || 0).toLocaleString('es-CL')}</span>
+      </div>
+      <HandTiles hand={hand.hand} win={hand.win} melds={hand.melds} />
+      <div className="yaku-hand-foot">
+        {otros.length > 0 && <span className="others">{otros.join(' · ')}</span>}
+        <span className="meta">
+          {hand.riichi && <em className="badge-riichi">{tr('badge_riichi')}</em>}
+          {tr('hand_fu', { n: hand.fu })} · {tr('hand_turn', { n: hand.turn })}
+          {hand.dora ? <React.Fragment> · <span className="dora">{tr('hand_dora')}</span>{(hand.dora.match(/.{2}/g) || []).map((c, i) => <Tile key={i} code={c} size={18} />)}</React.Fragment> : null}
+        </span>
       </div>
     </div>
   );
