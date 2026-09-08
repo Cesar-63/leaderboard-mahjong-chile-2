@@ -10,7 +10,7 @@ from scripts.majsoul import (
 from scripts.sync import (
     CALENDAR_VALUE_COLS, PRIVATE_PLAYER_FIELDS, SESSION_G1_ROWS, advanced_stats_health,
     align_history_with_fixtures, build_excel_results, build_paipu_results, build_public_data,
-    find_absent_player, match_paipu_seats, normalize_nat, strip_private_fields,
+    date_from_paipu_uuid, find_absent_player, match_paipu_seats, normalize_nat, strip_private_fields,
 )
 
 
@@ -195,6 +195,10 @@ class SyncTests(unittest.TestCase):
         self.assertEqual(normalize_nat("Brasil/Brazil/Brasileira"), "BR")
         self.assertEqual(normalize_nat("Méxicana"), "MX")
         self.assertEqual(normalize_nat("Chileno"), "CL")
+
+    def test_fecha_del_paipu_sale_del_prefijo_del_uuid(self):
+        self.assertEqual(date_from_paipu_uuid("260907-abc"), ("07 sep", "lun", "2026-09-07"))
+        self.assertEqual(date_from_paipu_uuid("uuid-invalido"), ("Por definir", "—", None))
 
     def test_yostar_credentials_require_all_three_values(self):
         with patch.dict("os.environ", {"MAJSOUL_UID": "uid", "MAJSOUL_TOKEN": "token"}, clear=True):
@@ -405,6 +409,57 @@ def _history(key, session, table, game, names, scores=(45000, 38500, 32000, 4500
                                "delta": round((s - 30000) / 1000 + umas[i], 1)}
                               for i, (n, s) in enumerate(zip(names, scores))],
                   "sourceCell": "X!B2"}}
+
+
+class SesionActualTests(unittest.TestCase):
+    def test_una_fecha_agendada_inicia_la_sesion(self):
+        fixtures = [
+            _fixture("B", 6, 4, ["X", "Y", "Z", "W"], date="09 sep"),
+        ]
+        fixtures[0]["dateISO"] = "2026-09-09"
+        fixtures[0]["time"] = "21:00"
+
+        data, _ = build_public_data(_division_config(), _rosters(), fixtures, [], {}, {})
+
+        self.assertEqual(data["league"]["currentSession"], 6)
+        self.assertEqual(data["league"]["nextSession"], {"code": "S6", "date": "09 sep", "day": "sáb"})
+        self.assertEqual(data["calendar"][0]["status"], "highlight")
+
+    def test_una_partida_jugada_inicia_la_sesion_aunque_no_tenga_fecha(self):
+        fixtures = [
+            _fixture("A", 6, 1, ["Bodoque", "Mon_96", "Meme000", "Twining1999"], date="Por definir"),
+        ]
+        fixtures[0]["dateISO"] = None
+        histories = _history(
+            "A-S6-M1-G1", 6, 1, 1,
+            ["Bodoque", "Mon_96", "Meme000", "Twining1999"],
+        )
+
+        data, _ = build_public_data(_division_config(), _rosters(), fixtures, [], histories, {})
+
+        self.assertEqual(data["league"]["currentSession"], 6)
+        self.assertEqual(data["league"]["nextSession"]["code"], "S6")
+
+    def test_chip_de_sesion_usa_la_fecha_mas_temprana_entre_paipu_y_fixture(self):
+        names = ["Bodoque", "Mon_96", "Meme000", "Twining1999"]
+        fixtures = [
+            _fixture("A", 6, 1, names, date="09 sep"),
+            _fixture("A", 6, 2, names, date="Por definir"),
+        ]
+        fixtures[0]["dateISO"] = "2026-09-09"
+        fixtures[1]["dateISO"] = None
+        submissions = [{
+            "key": "A-S6-M2-G1", "division": "A", "session": 6, "table": 2,
+            "players": names, "game": 1, "cell": "Calendario!F52",
+            "url": "https://mahjongsoul.game.yo-star.com/?paipu=260907-abc",
+            "uuid": "260907-abc", "recordId": "260907-abc",
+        }]
+        histories = _history("A-S6-M2-G1", 6, 2, 1, names)
+
+        data, _ = build_public_data(_division_config(), _rosters(), fixtures, submissions, histories, {})
+
+        session = next(s for s in data["divisions"]["A"]["sessions"] if s["n"] == 6)
+        self.assertEqual(session["date"], "07 sep")
 
 
 class MesasRenumeradasTests(unittest.TestCase):

@@ -257,6 +257,7 @@ function App() {
   const selectPlayer = (p) => navigate({ tab: 'detail', playerId: p.id });
   const currentPlayerId = playerId || data.divisions[div].players[0].id;
   const scoped = DIV_SCOPED.includes(tab);
+  const currentSession = currentSessionNumber(data);
 
   return (
     <div className="app">
@@ -273,7 +274,7 @@ function App() {
         <div className="meta">
           <span><b>2</b> {tr('divisiones')}</span>
           <span><b>{L.playersPerDiv * 2}</b> {tr('jugadores')}</span>
-          <span><b>{L.sessionsPlayed}</b>/{L.sessionsTotal} {tr('sesiones_noun')}</span>
+          <span><b>{currentSession}</b>/{L.sessionsTotal} {tr('sesiones_noun')}</span>
           <span><b>{L.hanchanTotal}</b> {tr('hanchan')}</span>
         </div>
         <div className="live-pill">
@@ -309,7 +310,7 @@ function App() {
                 <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>順位表</span>
               </div>
               <div className="section-meta" style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)', textAlign: 'right' }}>
-                <div>{tr('session_summary', { played: L.sessionsPlayed, total: L.sessionsTotal, per: L.hanchanPerSession })}</div>
+                <div>{tr('session_summary', { played: currentSession, total: L.sessionsTotal, per: L.hanchanPerSession })}</div>
                 <div style={{ color: 'var(--ink-faint)' }}>
                   uma {L.rules[div].uma.map(v => v >= 0 ? `+${v}` : `−${Math.abs(v)}`).join(' / ')}
                 </div>
