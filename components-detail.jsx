@@ -4,15 +4,28 @@ function accentFor(div) { return div === 'B' ? 'var(--accent-2)' : 'var(--accent
 // Dos primeras letras para el círculo del avatar (el handle completo se desborda)
 function initials(h) { return (h || '').slice(0, 2); }
 
-function metricsToRadar(p) {
+const HOF_KEYS = ['leader', 'wins', 'defense', 'riichi', 'consistency', 'recent'];
+function hallOfFameCopy(record, index) {
+  const key = record.key || HOF_KEYS[index];
+  return {
+    tag: tr(`hof_${key}_title`),
+    sub: tr(`hof_${key}_subtitle`),
+  };
+}
+
+function metricsToRadar(p, leaguePlayers = []) {
   const hasStats = p.statsSample > 0;
+  const pointValues = leaguePlayers.map(player => Number(player.avgPoints)).filter(Number.isFinite);
+  const minPoints = Math.min(...pointValues, p.avgPoints, 0);
+  const maxPoints = Math.max(...pointValues, p.avgPoints, 0);
+  const pointRange = maxPoints - minPoints || 1;
   return [
-    { label: 'WIN', display: hasStats ? p.winRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.winRate / 30) : 0 },
-    { label: 'DEF', display: hasStats ? (100 - p.dealInRate).toFixed(0) + '%' : '—', value: hasStats ? clamp01((20 - p.dealInRate) / 14) : 0 },
-    { label: 'RIICHI', display: hasStats ? p.riichiRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.riichiRate / 32) : 0 },
-    { label: 'OPEN', display: hasStats ? p.openRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.openRate / 50) : 0 },
-    { label: 'AVG#', display: p.avgRank.toFixed(2), value: clamp01((4 - p.avgRank) / 1.5) },
-    { label: 'PTS', display: fmtPts(p.avgPoints), value: clamp01((p.avgPoints + 12) / 30) },
+    { label: tr('radar_wins'), display: hasStats ? p.winRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.winRate / 100) : 0 },
+    { label: tr('radar_defense'), display: hasStats ? (100 - p.dealInRate).toFixed(0) + '%' : '—', value: hasStats ? clamp01((100 - p.dealInRate) / 100) : 0 },
+    { label: tr('radar_riichi'), display: hasStats ? p.riichiRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.riichiRate / 100) : 0 },
+    { label: tr('radar_open'), display: hasStats ? p.openRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.openRate / 100) : 0 },
+    { label: tr('radar_placement'), display: p.avgRank.toFixed(2), value: clamp01((4 - p.avgRank) / 3) },
+    { label: tr('radar_points'), display: fmtPts(p.avgPoints), value: clamp01((p.avgPoints - minPoints) / pointRange) },
   ];
 }
 
@@ -20,6 +33,33 @@ function placementSegments(p) {
   return [p.placements.p1, p.placements.p2, p.placements.p3, p.placements.p4]
     .map((v, i) => ({ place: i + 1, v }))
     .filter(s => s.v > 0);
+}
+
+function QuickProfileSummary({ player }) {
+  const history = player.history || [];
+  const recent = history.slice(-5);
+  const best = Math.max(...history, 0);
+  const worst = Math.min(...history, 0);
+  const mostCommon = [player.placements.p1, player.placements.p2, player.placements.p3, player.placements.p4]
+    .reduce((bestIndex, value, index, all) => value > all[bestIndex] ? index : bestIndex, 0) + 1;
+  return (
+    <div className="quick-profile-summary">
+      <div className="block-label">{tr('quick_summary')}</div>
+      <div className="quick-profile-grid">
+        <div><span>{tr('quick_played')}</span><strong>{player.games}</strong></div>
+        <div><span>{tr('quick_common_place')}</span><strong>{mostCommon}°</strong></div>
+        <div><span>{tr('quick_best_game')}</span><strong className="positive">{best >= 0 ? '+' : ''}{best.toFixed(1)}</strong></div>
+        <div><span>{tr('quick_worst_game')}</span><strong className="negative">{worst.toFixed(1)}</strong></div>
+      </div>
+      <div className="quick-form">
+        <span>{tr('quick_recent')}</span>
+        <div className="quick-form-dots">
+          {recent.map((value, index) => <span key={index} className={value >= 0 ? 'positive' : 'negative'} title={`${value >= 0 ? '+' : ''}${value.toFixed(1)}`}>{value >= 0 ? '+' : '−'}</span>)}
+        </div>
+        <strong className={history.at(-1) >= 0 ? 'positive' : 'negative'}>{history.length ? `${history.at(-1) >= 0 ? '+' : ''}${history.at(-1).toFixed(1)}` : '—'}</strong>
+      </div>
+    </div>
+  );
 }
 
 function PlayerSelect({ value, onChange, data, style }) {
@@ -42,16 +82,39 @@ function PlayerDetail({ playerId, data, onPick }) {
   const divSize = data.divisions[p.div].players.length;
   const color = accentFor(p.div);
 
-  const hasStats = p.statsSample > 0;
-  const radar = [
-    { label: 'WIN',     display: hasStats ? p.winRate.toFixed(1) + '%' : '—', value: hasStats ? clamp01(p.winRate / 30) : 0 },
-    { label: 'DEFENSE', display: hasStats ? (100 - p.dealInRate).toFixed(1) + '%' : '—', value: hasStats ? clamp01((20 - p.dealInRate) / 14) : 0 },
-    { label: 'RIICHI',  display: hasStats ? p.riichiRate.toFixed(1) + '%' : '—', value: hasStats ? clamp01(p.riichiRate / 32) : 0 },
-    { label: 'OPEN',    display: hasStats ? p.openRate.toFixed(1) + '%' : '—', value: hasStats ? clamp01(p.openRate / 50) : 0 },
-    { label: 'AVG #',   display: p.avgRank.toFixed(2), value: clamp01((4 - p.avgRank) / 1.5) },
-    { label: 'POINTS',  display: fmtPts(p.avgPoints), value: clamp01((p.avgPoints + 12) / 30) },
-  ];
-  const maxYaku = Math.max(...p.topYaku.map(y => y.count), 1);
+  const radar = metricsToRadar(p, data.divisions[p.div].players);
+  // La lista completa se genera a partir de los paipus de Mahjong Soul en
+  // scripts/sync.py. No debe recortarse ni completarse en el cliente: si un
+  // jugador muestra pocos yakus significa que faltan datos de partidas
+  // procesadas, no que la interfaz deba inventarlos.
+  const yakus = Array.isArray(p.yakus) ? p.yakus : [];
+  const yakumanNames = new Set([
+    'Tenhou', 'Chiihou', 'Daisangen', 'Suuankou', 'Tsuuiisou', 'Ryuuiisou',
+    'Chinroutou', 'Kokushi Musou', 'Shousuushii', 'Suukantsu', 'Chuuren Poutou',
+    'Suuankou Tanki', 'Kokushi 13-men', 'Daisuushii', 'Junsei Chuuren',
+  ]);
+  const derivedYakumans = yakus.filter(y => yakumanNames.has(y.name));
+  const yakumans = Array.isArray(p.yakumans) ? p.yakumans : derivedYakumans;
+  const recordAchievements = (data.divisions[p.div].hallOfFame || [])
+    .map((record, index) => ({ record, index }))
+    .filter(({ record }) => record.player && record.player.id === p.id)
+    .map(({ record, index }) => { const key = record.key || ['leader', 'wins', 'defense', 'riichi', 'consistency', 'recent'][index] || 'record'; return { name: tr(`hof_${key}_title`), key, value: record.value }; });
+  const closestToZero = data.divisions[p.div].players
+    .filter(player => Number.isFinite(player.points))
+    .sort((a, b) => Math.abs(a.points) - Math.abs(b.points))[0];
+  if (closestToZero && closestToZero.id === p.id) {
+    recordAchievements.push({ name: tr('achievement_saki'), key: 'saki', value: fmtPts(p.points) });
+  }
+  const yakumanBadge = name => {
+    if (name === 'Kokushi Musou') return { key: 'kokushi', glyph: '十三' };
+    if (name === 'Daisangen') return { key: 'daisangen', glyph: '中發白' };
+    if (name === 'Suuankou') return { key: 'suuankou', glyph: '四暗' };
+    return { key: 'generic', glyph: '✦' };
+  };
+  const [showAllYakus, setShowAllYakus] = React.useState(false);
+  const totalYaku = yakus.reduce((sum, y) => sum + y.count, 0);
+  const maxYaku = Math.max(...yakus.map(y => y.count), 1);
+  const visibleYakus = showAllYakus ? yakus : yakus.slice(0, 6);
 
   return (
     <div className="tab-panel">
@@ -108,12 +171,6 @@ function PlayerDetail({ playerId, data, onPick }) {
             </div>
           )}
 
-          <div className="stat-block">
-            {PROFILE_STATS.map(metric => (
-              <StatCell key={metric} metric={metric} player={p} data={data} />
-            ))}
-          </div>
-
           <div>
             <div className="block-label">{tr('placement_title')} · 順位率</div>
             <div className="placement-bar">
@@ -127,38 +184,46 @@ function PlayerDetail({ playerId, data, onPick }) {
               ))}
             </div>
           </div>
+          <QuickProfileSummary player={p} />
         </div>
 
-        <div className="detail-right">
-          <div className="chart-card">
-            <div className="ch-head"><h3>{tr('profile_title')}</h3><span className="jp">プレイスタイル</span></div>
-            <div className="radar-wrap">
-              <RadarChart key={p.id} stats={radar} color={color} size={300} />
-              <div className="radar-legend">
-                {radar.map(s => (
-                  <div className="rl" key={s.label}><span>{s.label}</span><span className="v" style={{ color }}>{s.display}</span></div>
-                ))}
+        <div className="chart-card detail-full achievements-card">
+          <div className="ch-head yaku-head"><div><h3>{tr('achievements_title')}</h3><p>{tr('achievements_hint')}</p></div><span className="jp">勲章</span></div>
+          {(yakumans.length || recordAchievements.length) ? <div className="achievement-medals-all">
+            {yakumans.map(y => <div className="yakuman-medal" key={y.name} title={`${y.name} ×${y.count}`}><div className={`yakuman-medal-icon ${yakumanBadge(y.name).key}`}>{yakumanBadge(y.name).glyph}</div><div className="yakuman-medal-name">{y.name}</div><div className="yakuman-medal-count">×{y.count}</div></div>)}
+            {recordAchievements.map(record => { const recordIcons = { leader: '♛', wins: '和', defense: '盾', riichi: '立', consistency: '≈', recent: '↗' }; return <div className="yakuman-medal record-medal-compact" key={`${record.key}-${record.name}`}><div className={`yakuman-medal-icon record record-${record.key}`}>{recordIcons[record.key] || '✦'}</div><div className="yakuman-medal-name">{record.name}</div><div className="yakuman-medal-count">{record.value || '★'}</div></div>; })}
+          </div> : <div className="achievements-empty"><span>☹</span><div><strong>{tr('achievement_empty_title')}</strong><small>{tr('achievement_empty_hint')}</small></div></div>}
+        </div>
+
+          <div className="chart-card detail-summary">
+            <div className="ch-head stats-overview-head"><div><h3>{tr('stats_overview')}</h3><p>{tr('stats_overview_hint')}</p></div></div>
+            <div className="stats-overview-layout">
+              <div className="profile-radar" style={{ '--profile-accent': color }}>
+                <div className="profile-radar-label">{tr('radar_summary')}</div>
+                <RadarChart key={p.id} stats={radar} color={color} size={340} />
+                <div className="profile-radar-caption">{tr('profile_title')}</div>
               </div>
+              <ProfileStatGroups player={p} data={data} />
             </div>
           </div>
 
-          <div className="chart-card line-card">
-            <div className="ch-head"><h3>{tr('evolution_title')} · {p.games} {tr('hanchan')}</h3><span className="jp">スコア推移</span></div>
-            <LineChart key={p.id} values={p.cum} color={color} />
+          <div className="chart-card line-card detail-full">
+            <div className="ch-head"><h3>{tr('evolution_title')} · {tr('evolution_accumulated')} · {p.games} {tr('hanchan')}</h3><span className="jp">スコア推移</span></div>
+            <LineChart key={p.id} values={p.cum} color={color} playerId={p.id} matches={data.divisions[p.div].matches.filter(match => match.players.some(player => player.id === p.id))} />
           </div>
 
-          <div className="chart-card">
-            <div className="ch-head"><h3>{tr('yaku_title')}</h3><span className="jp">役の頻度</span></div>
+          <div className="chart-card detail-full yaku-card">
+            <div className="ch-head yaku-head"><div><h3>{tr('yaku_title')}</h3><p>{tr('yaku_summary', { types: yakus.length, total: totalYaku })}</p></div><span className="jp">役一覧</span></div>
             <div className="yaku-list">
-              {p.topYaku.map((y, i) => (
+              {visibleYakus.map((y, i) => (
                 <div className="yaku-row" key={y.name}>
-                  <div className="name">{y.name}</div>
+                  <div className="yaku-name"><div className="name">{y.name}</div><span>{y.count >= maxYaku * .7 ? tr('yaku_high') : tr('yaku_frequency')}</span></div>
                   <div className="bar"><div style={{ width: `${(y.count / maxYaku) * 100}%`, background: color, animationDelay: `${i * 80}ms` }} /></div>
-                  <div className="count">{y.count}</div>
+                  <div className="count"><strong>{y.count}</strong><small>{totalYaku ? `${Math.round(y.count / totalYaku * 100)}%` : '—'}</small></div>
                 </div>
               ))}
             </div>
-          </div>
+            {yakus.length > 6 && <button type="button" className="yaku-toggle" onClick={() => setShowAllYakus(v => !v)}>{showAllYakus ? tr('yaku_show_less') : tr('yaku_show_all', { n: yakus.length })}</button>}
         </div>
       </div>
     </div>
@@ -286,10 +351,10 @@ function Comparator({ data }) {
   const metrics = [
     { key: 'points', label: tr('points'), jp: '総合', lower: false, fmt: fmtPts },
     { key: 'avgRank', label: tr('lbl_avgrank'), jp: '平均順位', lower: true, fmt: v => v.toFixed(2) },
-    { key: 'winRate', label: tr('win_rate'), jp: '和了率', lower: false, fmt: v => v.toFixed(1) + '%' },
-    { key: 'dealInRate', label: tr('deal_in'), jp: '放銃率', lower: true, fmt: v => v.toFixed(1) + '%' },
-    { key: 'riichiRate', label: tr('riichi'), jp: '立直率', lower: false, fmt: v => v.toFixed(1) + '%' },
-    { key: 'openRate', label: tr('open'), jp: '副露率', lower: false, fmt: v => v.toFixed(1) + '%' },
+    { key: 'winRate', label: tr('lbl_winrate'), jp: '和了率', lower: false, fmt: v => v.toFixed(1) + '%' },
+    { key: 'dealInRate', label: tr('lbl_dealin'), jp: '放銃率', lower: true, fmt: v => v.toFixed(1) + '%' },
+    { key: 'riichiRate', label: tr('lbl_riichi'), jp: '立直率', lower: false, fmt: v => v.toFixed(1) + '%' },
+    { key: 'openRate', label: tr('lbl_open'), jp: '副露率', lower: false, fmt: v => v.toFixed(1) + '%' },
     { key: 'avgPoints', label: tr('lbl_avgpts'), jp: '平均得点', lower: false, fmt: fmtPts },
     { key: 'firstRate', label: tr('top_rate'), jp: 'トップ率', lower: false, fmt: v => (v * 100).toFixed(0) + '%' },
   ];
@@ -338,8 +403,8 @@ function Comparator({ data }) {
 
       <div className="metrics-card">
         <div className="metrics-head">
-          <span className="block-label">Métricas · 成績比較</span>
-          <span className="metrics-note">Barra más larga = mejor, escalada al rango de la liga</span>
+          <span className="block-label">{tr('metrics_title')} · 成績比較</span>
+          <span className="metrics-note">{tr('metrics_note')}</span>
         </div>
         {metrics.map(m => {
           const av = readVal(a, m.key), bv = readVal(b, m.key);
@@ -602,12 +667,13 @@ function HallOfFame({ data }) {
             </span>
           </div>
           <div className="hof-grid">
-            {data.divisions[d].hallOfFame.map((h, i) => (
-              <div className={`hof-card div-${d}`} key={i} style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 45}ms` }}>
+            {data.divisions[d].hallOfFame.map((h, i) => {
+              const copy = hallOfFameCopy(h, i);
+              return <div className={`hof-card div-${d}`} key={h.key || i} style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 45}ms` }}>
                 <div className="jp-mark">{h.jp}</div>
-                <div className="tag">{h.tag}</div>
+                <div className="tag">{copy.tag}</div>
                 <div className="value" style={{ color: accentFor(d) }}>{h.value}</div>
-                <div className="sub">{h.sub}</div>
+                <div className="sub">{copy.sub}</div>
                 <div className="player-line">
                   <div className={`avatar div-${d}`}>{initials(h.player.handle)}</div>
                   <div>
@@ -617,8 +683,8 @@ function HallOfFame({ data }) {
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              </div>;
+            })}
           </div>
         </div>
       ))}

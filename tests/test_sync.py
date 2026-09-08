@@ -362,6 +362,26 @@ class SyncTests(unittest.TestCase):
         self.assertEqual(match["source"], "paipu")
         self.assertEqual(match["players"][0]["id"], "A03")
 
+    def test_build_public_data_publica_todos_los_yakus_del_jugador(self):
+        config = _division_config()
+        rosters = _rosters()
+        names = ["Bodoque", "Mon_96", "Meme000", "Twining1999"]
+        fixtures = [{"division": "A", "session": 1, "table": 1, "players": names, "date": "12 abr", "weekday": "sáb", "dateISO": "2026-04-12", "time": None}]
+        submissions = [{"key": "A-S1-M1-G1", "division": "A", "session": 1, "table": 1, "players": names, "game": 1, "cell": "Calendario!C11", "url": "https://x/paipu", "uuid": "u", "recordId": "u"}]
+        game = _paipu_game()
+        game["seatStats"][0]["yaku"] = {
+            "Riichi": 8, "Pinfu": 7, "Tanyao": 6, "Ippatsu": 5,
+            "Menzen Tsumo": 4, "Honitsu": 3, "Chinitsu": 2,
+        }
+
+        data, stats = build_public_data(config, rosters, fixtures, submissions, {}, {"A-S1-M1-G1": game})
+
+        player = next(p for p in data["divisions"]["A"]["players"] if p["id"] == "A03")
+        self.assertEqual(len(player["yakus"]), 7)
+        self.assertEqual(player["yakus"][-1], {"name": "Chinitsu", "count": 2})
+        self.assertEqual(stats["players"]["A03"]["yakus"], player["yakus"])
+        self.assertNotIn("topYaku", player)
+
     def test_build_public_data_uses_fixture_order_when_paipu_has_no_identity(self):
         config = _division_config()
         rosters = _rosters()

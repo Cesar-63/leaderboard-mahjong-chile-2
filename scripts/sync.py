@@ -457,12 +457,16 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
             player["avgWinPoints"] = round(player["winPoints"] / wins) if wins else 0
             player["avgDealInPoints"] = round(player["dealInPoints"] / deal_ins) if deal_ins else 0
             player["avgWinTurn"] = round(player["winTurns"] / wins, 2) if wins else 0
-            player["topYaku"] = [{"name": name, "count": count} for name, count in player["yakuCounts"].most_common(5)]
+            # Publicamos el catálogo completo observado en los paipus del
+            # jugador. La interfaz decide cómo resumirlo visualmente, pero el
+            # pipeline no debe quedarse sólo con los cinco más frecuentes:
+            # hacerlo aquí perdería información histórica.
+            player["yakus"] = [{"name": name, "count": count} for name, count in player["yakuCounts"].most_common()]
             player["statsSample"] = hands
             player["statsReliable"] = hands >= int(config["minimumAdvancedStatsHands"])
             player["arch"] = "con datos" if player["statsReliable"] else "stats pendientes"
             stats_output["players"][player["id"]] = {key: player[key] for key in ("hands", "wins", "dealIns", "winRate", "dealInRate", "riichiRate", "openRate",
-                "damatenRate", "avgWinPoints", "avgDealInPoints", "avgWinTurn", "topYaku", "statsReliable")}
+                "damatenRate", "avgWinPoints", "avgDealInPoints", "avgWinTurn", "yakus", "statsReliable")}
             del player["yakuCounts"]
         players.sort(key=lambda item: (-item["points"], item["avgRank"] if item["games"] else 99, item["name"].lower()))
         for index, player in enumerate(players, start=1):
@@ -543,12 +547,12 @@ def add_hall_of_fame(data: dict[str, Any]) -> None:
             candidates = [p for p in players if p["games"] > 0]
             return (min if lower else max)(candidates or players, key=lambda p: p[field])
         records = [
-            {"tag": "Líder División", "value": f"{top['points']:+.1f}", "sub": "puntos uma", "player": top, "jp": "王座"},
-            {"tag": "Mejor Win Rate", "value": f"{best('winRate')['winRate']:.1f}%", "sub": "manos ganadas", "player": best("winRate"), "jp": "和了率"},
-            {"tag": "Muro de Hierro", "value": f"{best('dealInRate', True)['dealInRate']:.1f}%", "sub": "deal-in más bajo", "player": best("dealInRate", True), "jp": "放銃"},
-            {"tag": "Velocidad", "value": f"{best('riichiRate')['riichiRate']:.1f}%", "sub": "riichi rate", "player": best("riichiRate"), "jp": "立直"},
-            {"tag": "Consistencia", "value": f"{best('avgRank', True)['avgRank']:.2f}", "sub": "puesto promedio", "player": best("avgRank", True), "jp": "平均順位"},
-            {"tag": "Racha Caliente", "value": f"{best('streak')['streak']:+.1f}", "sub": "últimas 4 hanchan", "player": best("streak"), "jp": "連勝"},
+            {"key": "leader", "value": f"{top['points']:+.1f}", "player": top, "jp": "王座"},
+            {"key": "wins", "value": f"{best('winRate')['winRate']:.1f}%", "player": best("winRate"), "jp": "和了率"},
+            {"key": "defense", "value": f"{best('dealInRate', True)['dealInRate']:.1f}%", "player": best("dealInRate", True), "jp": "放銃"},
+            {"key": "riichi", "value": f"{best('riichiRate')['riichiRate']:.1f}%", "player": best("riichiRate"), "jp": "立直"},
+            {"key": "consistency", "value": f"{best('avgRank', True)['avgRank']:.2f}", "player": best("avgRank", True), "jp": "平均順位"},
+            {"key": "recent", "value": f"{best('streak')['streak']:+.1f}", "player": best("streak"), "jp": "連勝"},
         ]
         data["divisions"][division]["hallOfFame"] = records
 

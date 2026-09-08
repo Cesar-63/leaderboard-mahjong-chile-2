@@ -211,7 +211,7 @@ function StatCell({ metric, player, data, className = 'stat-cell' }) {
       : undefined;
   return (
     <div className={className}>
-      <div className="l">{tr(info.metric.label)} · {info.metric.jp}</div>
+      <div className="l">{tr(info.metric.label)}</div>
       <StatTip info={info} color={color}>
         <div className={`v${info.weak ? ' weak' : ''}`} style={tone}>{info.display}</div>
       </StatTip>
@@ -225,3 +225,28 @@ const PROFILE_STATS = [
   'avgRank', 'avgPoints', 'winRate', 'dealInRate', 'riichiRate', 'openRate',
   'damatenRate', 'avgWinPoints', 'avgDealInPoints', 'avgWinTurn',
 ];
+
+const PROFILE_STAT_GROUPS = [
+  { label: 'stats_results', metrics: ['avgRank', 'avgPoints'] },
+  { label: 'stats_efficiency', metrics: ['winRate', 'dealInRate'] },
+  { label: 'stats_style', metrics: ['riichiRate', 'openRate', 'damatenRate'] },
+  { label: 'stats_value_speed', metrics: ['avgWinPoints', 'avgDealInPoints', 'avgWinTurn'] },
+];
+
+function ProfileStatGroups({ player, data, mobile = false }) {
+  return (
+    <div className={`profile-stat-groups${mobile ? ' mobile' : ''}`}>
+      {PROFILE_STAT_GROUPS.map(group => (
+        <section className="profile-stat-group" key={group.label}>
+          <div className="profile-stat-group-title">{tr(group.label)}</div>
+          <div className="profile-stat-group-cells">
+            {group.metrics.map(metric => (
+              <StatCell key={metric} metric={metric} player={player} data={data}
+                className={mobile ? 'c' : 'stat-cell'} />
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  );
+}
