@@ -281,7 +281,7 @@ function MobDetail({ data, playerId, onPick }) {
 
       <div className="mob-card">
         <div className="mob-ch"><h3>Evolución · {p.games} hanchan</h3><span className="jp">推移</span></div>
-        <LineChart key={p.id} values={p.cum} color={col} height={150} />
+        <LineChart key={p.id} values={p.cum} color={col} height={150} compact />
       </div>
 
       <div className="mob-card">

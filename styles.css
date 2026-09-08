@@ -421,11 +421,20 @@ select{font:inherit;color:inherit}
 .radar-legend .rl:last-child{border-bottom:none}
 .radar-legend .rl .v{font-weight:700}
 .line-svg{width:100%;height:220px;overflow:visible}
+.line-chart-wrap{min-width:0}
+.line-summary{display:flex;gap:20px;margin:0 0 4px 40px}
+.line-summary>div{display:flex;align-items:baseline;gap:7px}
+.line-summary span{color:var(--ink-faint);font-family:var(--font-mono);font-size:8.5px;letter-spacing:.08em;text-transform:uppercase}
+.line-summary strong{font-family:var(--font-mono);font-size:12px;font-variant-numeric:tabular-nums}
 .line-svg .grid{stroke:var(--line);stroke-width:1;stroke-dasharray:2 4}
 .line-svg .axis{stroke:var(--line-strong)}
 .line-svg .axis-label{font-family:var(--font-mono);font-size:10px;fill:var(--ink-faint)}
+.line-svg .axis-title{font-family:var(--font-mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;fill:var(--ink-faint)}
+.line-svg .point-value{font-family:var(--font-mono);font-size:8px;font-weight:600;fill:var(--ink-soft);paint-order:stroke;stroke:var(--bg-elev);stroke-width:3px;stroke-linejoin:round}
 .line-svg .area{opacity:.12}
 .line-svg .stroke{fill:none;stroke-width:2;stroke-linejoin:round}
+.line-checkpoint circle{transition:r .15s ease,fill .15s ease}
+.line-checkpoint:hover circle{r:5px;fill:var(--bg-elev)}
 [data-theme="neon"] .line-svg .stroke{filter:drop-shadow(0 0 6px currentColor)}
 .yaku-list{display:flex;flex-direction:column;gap:10px}
 .yaku-row{display:grid;grid-template-columns:110px 1fr 36px;align-items:center;gap:12px;font-size:13px}
@@ -700,6 +709,9 @@ select{font:inherit;color:inherit}
   .profile-stat-group:nth-child(n+2){border-top:1px solid var(--line)}
 }
 @media (max-width:600px){
+  .line-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-left:0}
+  .line-summary>div{display:block}
+  .line-summary span{display:block;margin-bottom:3px}
   .standings-table{min-width:0}
   .standings-table th:nth-child(n+5),.standings-table td:nth-child(n+5){display:none}
   .standings-table th:first-child,.standings-table td:first-child{width:34px!important;padding-left:6px;padding-right:6px}
