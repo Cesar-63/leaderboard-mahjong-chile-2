@@ -358,8 +358,13 @@ select{font:inherit;color:inherit}
 .stats-overview-head{margin-bottom:18px}
 .stats-overview-head>div{min-width:0}
 .stats-overview-head p{margin:7px 0 0;color:var(--ink-faint);font-size:12px;line-height:1.45}
-.profile-stat-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.profile-stat-group{min-width:0;padding:13px;border:1px solid var(--line);border-radius:13px;background:var(--bg-sunk)}
+.stats-overview-layout{display:grid;grid-template-columns:minmax(260px,.72fr) minmax(460px,1.55fr);align-items:center;gap:22px}
+.profile-radar{position:relative;display:grid;place-items:center;min-width:0;isolation:isolate}
+.profile-radar::before{content:"";position:absolute;width:min(88%,285px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,color-mix(in oklab,var(--profile-accent) 9%,var(--bg-sunk)),color-mix(in oklab,var(--profile-accent) 2%,transparent) 58%,transparent 72%);z-index:-1}
+.profile-radar .radar-svg{max-width:300px}
+.profile-radar-caption{margin-top:-14px;padding:5px 11px;border:1px solid color-mix(in oklab,var(--profile-accent) 28%,var(--line));border-radius:999px;background:var(--bg-elev);color:var(--ink-soft);font-family:var(--font-mono);font-size:9px;letter-spacing:.09em;text-transform:uppercase}
+.profile-stat-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.profile-stat-group{min-width:0;padding:11px 13px;border:1px solid color-mix(in oklab,var(--line) 72%,transparent);border-radius:13px;background:color-mix(in oklab,var(--bg-sunk) 68%,transparent)}
 .profile-stat-group-title{margin-bottom:3px;color:var(--accent);font-family:var(--font-mono);font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
 .profile-stat-group-cells{display:flex;flex-direction:column}
 .profile-stat-group :is(.stat-cell,.c){display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 1px;border-top:1px solid var(--line);background:transparent}
@@ -647,11 +652,14 @@ select{font:inherit;color:inherit}
   .radar-wrap{grid-template-columns:1fr}
   .iormc-grid{grid-template-columns:1fr}
   .iormc-podium{grid-template-columns:1fr 1fr}
+  .stats-overview-layout{grid-template-columns:minmax(250px,.8fr) minmax(460px,1.4fr)}
 }
 @media (max-width:900px){
   .comp-wrap{grid-template-columns:1fr}
   .four-results{grid-template-columns:1fr 1fr}
   .topbar .meta{display:none}
+  .stats-overview-layout{grid-template-columns:1fr}
+  .profile-radar{padding-bottom:8px}
 }
 
 /* ─── pantallas angostas / móvil (sitio desktop) ─── */
