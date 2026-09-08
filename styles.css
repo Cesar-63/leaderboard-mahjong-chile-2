@@ -570,7 +570,7 @@ select{font:inherit;color:inherit}
 /* ─── fichas de mahjong (tiles.jsx) ─── */
 /* La ficha es marfil en los dos temas: un mahjong no cambia de color de noche.
    Sólo el marco alrededor sigue al tema. */
-.mj-tile{--tile-w:34px;flex:none;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:var(--tile-w);height:calc(var(--tile-w)*1.333);position:relative;overflow:hidden;border-radius:calc(var(--tile-w)*.15);background:linear-gradient(178deg,#fffefa,#efe8d8);border:1px solid rgba(24,20,14,.22);box-shadow:0 1px 1px rgba(24,20,14,.22),inset 0 -2px 0 rgba(24,20,14,.07);color:#1b232e;line-height:1;user-select:none}
+.mj-tile{flex:none;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:var(--tile-w,34px);aspect-ratio:3/4;position:relative;overflow:hidden;border-radius:calc(var(--tile-w)*.15);background:linear-gradient(178deg,#fffefa,#efe8d8);border:1px solid rgba(24,20,14,.22);box-shadow:0 1px 1px rgba(24,20,14,.22),inset 0 -2px 0 rgba(24,20,14,.07);color:#1b232e;line-height:1;user-select:none}
 .mj-tile .mj-face{display:block;width:100%;height:100%;object-fit:contain}
 .mj-tile .mj-num{font-family:var(--font-mono);font-weight:700;font-size:calc(var(--tile-w)*.46)}
 .mj-tile .mj-suit{font-family:var(--font-jp);font-size:calc(var(--tile-w)*.32);opacity:.85}
@@ -593,7 +593,7 @@ select{font:inherit;color:inherit}
 .mj-tile.back>*{visibility:hidden}
 /* overflow-x:auto también recorta arriba y abajo: el aire es para que el
    anillo de la ficha ganadora, que además se levanta 2px, no salga cortado. */
-.mj-hand{display:flex;align-items:flex-end;gap:10px;overflow-x:auto;padding:5px 4px 4px;margin:0 -4px;scrollbar-width:thin}
+.mj-hand{--tile-w:34px;display:flex;align-items:flex-end;gap:10px;overflow-x:auto;padding:5px 4px 4px;margin:0 -4px;scrollbar-width:thin}
 .mj-group{display:flex;gap:2px}
 .mj-group.win{padding-left:2px}
 .mj-meld{display:flex;gap:2px;padding-left:8px;border-left:1px dashed var(--line-strong)}
@@ -613,20 +613,32 @@ select{font:inherit;color:inherit}
 .yaku-hand-head .pts{margin-left:auto;font-size:14px;font-weight:700;color:var(--ink)}
 .yaku-hand-foot{margin-top:10px;flex-wrap:wrap;row-gap:6px}
 .yaku-hand-foot .others{color:var(--ink-faint)}
-.yaku-hand-foot .meta{display:flex;align-items:center;gap:5px;margin-left:auto;color:var(--ink-faint)}
+/* Cada dato del pie es atómico: si la línea corta, no deja el separador
+   colgando ni parte "Dora" de su ficha. */
+.yaku-hand-foot .meta{display:flex;align-items:center;flex-wrap:wrap;gap:4px 7px;margin-left:auto;color:var(--ink-faint)}
+.yaku-hand-foot .meta .nw{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.yaku-hand-foot .meta .nw + .nw::before{content:'·';opacity:.55}
 .yaku-hand-foot .badge-riichi{font-style:normal;padding:2px 6px;border-radius:99px;background:color-mix(in oklab,var(--accent) 15%,transparent);color:var(--accent)}
+/* Apenas la mano no cabe entera, se parte en filas en vez de esconderse detrás
+   de un scroll horizontal: 760px es el ancho máximo del popup, así que de ahí
+   para abajo siempre conviene envolver. La ficha ganadora fluye con el resto
+   (display:contents): ya se distingue por su anillo, no necesita su propia
+   fila. */
+@media (max-width:760px){
+  .mj-hand{--tile-w:26px;gap:5px 2px;flex-wrap:wrap;overflow-x:visible;margin:0;padding:4px 0}
+  .mj-group{display:contents}
+  .mj-meld{margin-left:6px;padding-left:5px}
+}
 @media (max-width:600px){
-  .mj-tile{--tile-w:23px}
-  /* En el teléfono la mano se parte en dos filas antes que esconderse detrás
-     de un scroll: se mira entera de una. */
-  .mj-hand{gap:7px 8px;flex-wrap:wrap;overflow-x:visible;margin:0}
-  .mj-group{flex-wrap:wrap;row-gap:4px}
-  .mj-meld{padding-left:5px}
+  .mj-hand{--tile-w:23px}
   .yaku-row{grid-template-columns:104px 1fr 30px;gap:9px;font-size:12.5px}
   .yaku-row .name{white-space:normal;line-height:1.25}
   .yaku-hand-head{flex-wrap:wrap;row-gap:5px}
   .yaku-hand-head .pts{font-size:12.5px}
-  .yaku-hand-foot .meta{margin-left:0}
+  .yaku-hand-foot .meta{margin-left:0;gap:4px 11px}
+  /* Sin separadores en el pie: al cortar la línea el punto quedaba
+     abriendo la fila siguiente. El espacio ya separa. */
+  .yaku-hand-foot .meta .nw + .nw::before{content:none}
 }
 @keyframes barfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 

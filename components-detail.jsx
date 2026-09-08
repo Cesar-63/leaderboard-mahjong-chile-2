@@ -404,8 +404,14 @@ function YakuHandRow({ hand, yaku, player, data }) {
         {otros.length > 0 && <span className="others">{otros.join(' · ')}</span>}
         <span className="meta">
           {hand.riichi && <em className="badge-riichi">{tr('badge_riichi')}</em>}
-          {tr('hand_fu', { n: hand.fu })} · {tr('hand_turn', { n: hand.turn })}
-          {hand.dora ? <React.Fragment> · <span className="dora">{tr('hand_dora')}</span>{(hand.dora.match(/.{2}/g) || []).map((c, i) => <Tile key={i} code={c} size={18} />)}</React.Fragment> : null}
+          <span className="nw">{tr('hand_fu', { n: hand.fu })}</span>
+          <span className="nw">{tr('hand_turn', { n: hand.turn })}</span>
+          {hand.dora && (
+            <span className="nw dora-group">
+              {tr('hand_dora')}
+              {(hand.dora.match(/.{2}/g) || []).map((c, i) => <Tile key={i} code={c} size={18} />)}
+            </span>
+          )}
         </span>
       </div>
     </div>

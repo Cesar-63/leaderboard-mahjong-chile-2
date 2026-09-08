@@ -52,11 +52,13 @@ function TileFace({ code }) {
   );
 }
 
-function Tile({ code, size = 34, state = '', title }) {
+// `size` es opcional a propósito: sin él manda el CSS, que es quien sabe si
+// estamos en un teléfono. Fijarlo inline acá pisaría la media query.
+function Tile({ code, size, state = '', title }) {
   const t = parseTile(code);
   const clases = ['mj-tile', `suit-${t.suit}`, `tile-${t.code}`, t.red ? 'red' : '', state].filter(Boolean).join(' ');
   return (
-    <span className={clases} style={{ '--tile-w': `${size}px` }}
+    <span className={clases} style={size ? { '--tile-w': `${size}px` } : undefined}
       title={title || tileLabel(code)} role="img" aria-label={tileLabel(code)}>
       <TileFace code={code} />
     </span>
@@ -98,7 +100,7 @@ function Meld({ meld, size }) {
 }
 
 // Mano completa: parte oculta, ficha ganadora separada, y los melds al final.
-function HandTiles({ hand, win, melds = [], size = 34 }) {
+function HandTiles({ hand, win, melds = [], size }) {
   const ocultas = String(hand || '').match(/.{2}/g) || [];
   return (
     <div className="mj-hand">
