@@ -208,8 +208,8 @@ function MobStandings({ data, div, onPick }) {
 
       <div className="mob-zonekey">
         {div === 'A'
-          ? <React.Fragment><span className="title">1-4 Playoff</span><span className="iormc">★ Top 4 CL → IORMC</span><span className="releg">21-24 Descenso</span></React.Fragment>
-          : <React.Fragment><span className="promo">1-4 Promoción</span><span>21-24 Zona baja</span></React.Fragment>}
+          ? <React.Fragment><span className="title">1-8 Eliminatorias</span><span className="iormc">★ Top 4 CL → IORMC</span><span className="releg">21-24 Descenso</span></React.Fragment>
+          : <React.Fragment><span className="promo">1-8 Eliminatorias</span><span>21-24 Zona baja</span></React.Fragment>}
       </div>
     </div>
   );
@@ -221,7 +221,7 @@ function MobDetail({ data, playerId, onPick }) {
   const size = data.divisions[p.div].players.length;
   const radar = metricsToRadar(p);
   const maxY = Math.max(...p.topYaku.map(y => y.count), 1);
-  const ZONE = { title: 'Zona de Playoff', relegation: 'Zona de Descenso', promotion: 'Zona de Promoción', bottom: 'Zona baja' };
+  const ZONE = { playoff: '1-8 Eliminatorias', title: '1-8 Eliminatorias', relegation: 'Zona de Descenso', promotion: '1-8 Eliminatorias', bottom: 'Zona baja' };
 
   return (
     <div className="mob-screen">

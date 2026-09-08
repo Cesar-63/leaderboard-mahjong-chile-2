@@ -246,7 +246,13 @@ select{font:inherit;color:inherit}
 .standings-row.top2 td:first-child::before{opacity:.6}
 .standings-row.top3 td:first-child::before{opacity:.35}
 
-/* promotion / relegation zones */
+/* playoff / promotion / relegation zones */
+.standings-row.zone-playoff{background:color-mix(in oklab,var(--accent) 6%,transparent)}
+.standings-row.zone-playoff:hover{background:color-mix(in oklab,var(--accent) 12%,transparent)}
+.standings-row.zone-playoff td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+[data-div="B"] .standings-row.zone-playoff{background:color-mix(in oklab,var(--accent-2) 6%,transparent)}
+[data-div="B"] .standings-row.zone-playoff:hover{background:color-mix(in oklab,var(--accent-2) 12%,transparent)}
+[data-div="B"] .standings-row.zone-playoff td:first-child{box-shadow:inset 3px 0 0 var(--accent-2)}
 .standings-row.zone-promotion{background:color-mix(in oklab,var(--accent-2) 6%,transparent)}
 .standings-row.zone-promotion:hover{background:color-mix(in oklab,var(--accent-2) 12%,transparent)}
 .standings-row.zone-relegation{background:color-mix(in oklab,var(--bad) 6%,transparent)}
@@ -257,6 +263,8 @@ select{font:inherit;color:inherit}
 .zone-key .zk{display:inline-flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}
 .zone-key .zk::before{content:'';width:9px;height:9px;border-radius:2px;background:var(--line-strong)}
 .zone-key .zk.title::before{background:var(--accent)}
+.zone-key .zk.playoff::before{background:var(--accent)}
+[data-div="B"] .zone-key .zk.playoff::before{background:var(--accent-2)}
 .zone-key .zk.promo::before{background:var(--accent-2)}
 .zone-key .zk.releg::before{background:var(--bad)}
 
@@ -337,6 +345,7 @@ select{font:inherit;color:inherit}
 .rank-big .of{color:var(--ink-faint);font-family:var(--font-mono);font-size:12px}
 
 .zone-banner{padding:9px 12px;border-radius:9px;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
+.zone-banner.playoff{background:color-mix(in oklab,var(--accent) 12%,transparent);color:var(--accent);box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--accent) 30%,transparent)}
 .zone-banner.title{background:color-mix(in oklab,var(--accent) 12%,transparent);color:var(--accent);box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--accent) 30%,transparent)}
 .zone-banner.promotion{background:color-mix(in oklab,var(--accent-2) 12%,transparent);color:var(--accent-2);box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--accent-2) 30%,transparent)}
 .zone-banner.relegation{background:color-mix(in oklab,var(--bad) 12%,transparent);color:var(--bad);box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--bad) 30%,transparent)}

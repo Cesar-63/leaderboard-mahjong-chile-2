@@ -138,8 +138,8 @@ function StandingsView({ data, div, layout, onSelectPlayer }) {
           </table>
           <div className="zone-key">
             {div === 'A'
-              ? <React.Fragment><span className="zk title">{tr('zone_title_playoff')}</span><span className="zk iormc">{tr('zone_iormc')}</span><span className="zk releg">{tr('zone_relegation')}</span></React.Fragment>
-              : <React.Fragment><span className="zk promo">{tr('zone_promotion')}</span><span className="zk">{tr('zone_bottom')}</span></React.Fragment>}
+              ? <React.Fragment><span className="zk playoff">{tr('zone_playoff')}</span><span className="zk iormc">{tr('zone_iormc')}</span><span className="zk releg">{tr('zone_relegation')}</span></React.Fragment>
+              : <React.Fragment><span className="zk playoff">{tr('zone_playoff')}</span><span className="zk">{tr('zone_bottom')}</span></React.Fragment>}
           </div>
         </div>
       </div>
@@ -281,7 +281,7 @@ function SideRail({ data, div }) {
           <h3>{tr('other_division')} <span style={{ fontFamily: 'var(--font-jp)', opacity: 0.5 }}>他部門</span></h3>
         </div>
         <div className="recent-list">
-          {data.divisions[div === 'A' ? 'B' : 'A'].players.slice(0, 4).map(p => (
+          {data.divisions[div === 'A' ? 'B' : 'A'].players.slice(0, 8).map(p => (
             <div key={p.id} style={{ display: 'grid', gridTemplateColumns: '22px 20px 1fr auto', alignItems: 'center', gap: 9, padding: '7px 10px', borderRadius: 8, background: 'var(--bg-sunk)' }}>
               <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-faint)' }}>{p.rank}</span>
               <Flag nat={p.nat} size={17} />

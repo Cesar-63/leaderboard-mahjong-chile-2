@@ -137,8 +137,8 @@
     players.forEach((p, i) => {
       p.rank = i + 1;
       p.zone = key === 'A'
-        ? (i >= 20 ? 'relegation' : i < 4 ? 'title' : null)
-        : (i < 4 ? 'promotion' : i >= 20 ? 'bottom' : null);
+        ? (i >= 20 ? 'relegation' : i < 8 ? 'playoff' : null)
+        : (i < 8 ? 'playoff' : i >= 20 ? 'bottom' : null);
     });
 
     return { key, players, matches, sessions };
@@ -186,7 +186,7 @@
   const calendar = [
     { date: nextSession.date, day: nextSession.day, round: 'Sesión 7 · Final', mesa: 'División A — Mesas 1-6', time: '15:00', div: 'A', status: 'highlight' },
     { date: nextSession.date, day: nextSession.day, round: 'Sesión 7 · Final', mesa: 'División B — Mesas 1-6', time: '15:00', div: 'B', status: 'highlight' },
-    { date: '14 jun', day: 'dom', round: 'Playoff Título', mesa: 'División A — Top 4', time: '16:00', div: 'A', status: 'scheduled' },
+    { date: '14 jun', day: 'dom', round: 'Eliminatorias', mesa: 'División A — Top 8', time: '16:00', div: 'A', status: 'scheduled' },
     { date: '14 jun', day: 'dom', round: 'Promoción', mesa: 'A 21-24 vs B 1-4', time: '19:00', div: 'AB', status: 'scheduled' },
     { date: '21 jun', day: 'sáb', round: 'Selección IORMC', mesa: 'Anuncio oficial · Top 4 Chile', time: '20:00', div: 'CL', status: 'iormc' },
     { date: '28 jun', day: 'dom', round: 'Ceremonia de Cierre', mesa: 'Club Mahjong Chile', time: '18:00', div: 'AB', status: 'scheduled' },

@@ -100,6 +100,7 @@ function PlayerDetail({ playerId, data, onPick }) {
 
           {p.zone && (
             <div className={`zone-banner ${p.zone}`}>
+              {p.zone === 'playoff' && tr('zone_playoff')}
               {p.zone === 'title' && tr('zone_playoff')}
               {p.zone === 'relegation' && tr('zone_releg')}
               {p.zone === 'promotion' && tr('zone_promo')}
