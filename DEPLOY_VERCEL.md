@@ -93,16 +93,12 @@ HTML autocontenido para compartir una rama sin desplegarla.)
 
 Hay dos entradas, `index.html` y `Mobile.html`, y las dos se publican.
 
-- Un teléfono que abre `/` cae automáticamente en `/Mobile.html`. La condición
-  es `(max-width: 820px) and (pointer: coarse)`, o sea pantalla chica **y**
-  dedo: una ventana angosta en un notebook no redirige.
-- `/index.html?desktop=1` fuerza la vista de escritorio y la deja fijada para
-  esa pestaña (`sessionStorage`).
-- `Mobile.html` nunca redirige de vuelta.
+- `/` siempre sirve la aplicación web responsive, también en teléfonos y
+  dispositivos plegables. No hay detección de dispositivo ni redirección
+  automática a un marco de teléfono.
+- `Mobile.html` se conserva sólo como una maqueta alternativa accesible de
+  forma explícita.
 - `/mobile` y `/movil` son atajos a `/Mobile.html`.
-
-Para apagar la redirección, construir con `MJC_MOBILE_REDIRECT=0` (en Vercel:
-*Settings → Environment Variables*).
 
 ## 5. Detalles que conviene saber
 
