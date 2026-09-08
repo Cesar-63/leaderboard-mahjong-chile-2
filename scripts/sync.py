@@ -464,9 +464,21 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
         all_players.extend(players)
 
     sessions_played = min(sum(1 for s in divisions[d]["sessions"] if s["status"] == "played") for d in ("A", "B"))
-    next_session_number = min(sessions_played + 1, int(config["sessionsTotal"]))
-    next_fixture = next((f for f in fixtures if f["session"] == next_session_number and f["dateISO"]), None)
-    next_session = {"code": f"S{next_session_number}", "date": next_fixture["date"] if next_fixture else "Por definir", "day": next_fixture["weekday"] if next_fixture else "—"}
+    # Una sesión ya está en curso cuando tiene al menos una partida registrada
+    # o una mesa fechada; no hace falta esperar a que ambas divisiones terminen.
+    evidenced_sessions = {
+        match["session"]
+        for division in ("A", "B")
+        for match in divisions[division]["matches"]
+    } | {fixture["session"] for fixture in fixtures if fixture["dateISO"]}
+    current_session = max(evidenced_sessions, default=min(sessions_played + 1, int(config["sessionsTotal"])))
+    current_session = min(current_session, int(config["sessionsTotal"]))
+    next_fixture = min(
+        (f for f in fixtures if f["session"] == current_session and f["dateISO"]),
+        key=lambda f: (f["dateISO"], f["time"] or "99:99", f["division"], f["table"]),
+        default=None,
+    )
+    next_session = {"code": f"S{current_session}", "date": next_fixture["date"] if next_fixture else "Por definir", "day": next_fixture["weekday"] if next_fixture else "—"}
     chile_a = [p for p in divisions["A"]["players"] if p["nat"] == "CL"]
     for index, player in enumerate(chile_a, start=1):
         player["natRank"] = index
@@ -482,7 +494,7 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
     player_nat = {p["name"].lower(): p["nat"] for p in all_players}
     calendar = []
     for fixture in fixtures:
-        if fixture["session"] < next_session_number:
+        if fixture["session"] < current_session:
             continue
         calendar.append({
             "date": fixture["date"], "day": fixture["weekday"],
@@ -492,12 +504,12 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
             "time": fixture["time"] or "Por definir",
             "div": fixture["division"],
             "players": [{"name": n, "nat": player_nat.get(n.lower(), "OT")} for n in fixture["players"]],
-            "status": "highlight" if fixture["session"] == next_session_number else "scheduled",
+            "status": "highlight" if fixture["session"] == current_session else "scheduled",
         })
     data = {
         "divisions": divisions, "allPlayers": all_players, "nationalities": nationalities,
         "iormc": iormc, "calendar": calendar,
-        "league": {"season": config["seasonLabel"], "sessionsPlayed": sessions_played, "sessionsTotal": int(config["sessionsTotal"]), "hanchanPerSession": 2, "playersPerDiv": 24, "hanchanPerDiv": max(len(divisions["A"]["matches"]), len(divisions["B"]["matches"])), "hanchanTotal": len(divisions["A"]["matches"]) + len(divisions["B"]["matches"]), "nextSession": next_session, "rules": {key: {"initialPoints": value["initialPoints"], "uma": value["uma"]} for key, value in config["divisions"].items()}},
+        "league": {"season": config["seasonLabel"], "currentSession": current_session, "sessionsPlayed": sessions_played, "sessionsTotal": int(config["sessionsTotal"]), "hanchanPerSession": 2, "playersPerDiv": 24, "hanchanPerDiv": max(len(divisions["A"]["matches"]), len(divisions["B"]["matches"])), "hanchanTotal": len(divisions["A"]["matches"]) + len(divisions["B"]["matches"]), "nextSession": next_session, "rules": {key: {"initialPoints": value["initialPoints"], "uma": value["uma"]} for key, value in config["divisions"].items()}},
     }
     add_hall_of_fame(data)
     # Última parada antes de que los datos salgan de la función: lo que se

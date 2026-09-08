@@ -430,6 +430,7 @@ function MobLog({ data, div }) {
 
 function MobMore({ data, onPick }) {
   const L = data.league;
+  const currentSession = currentSessionNumber(data);
   const io = data.iormc;
   const maxAbs = Math.max(...io.all.map(p => Math.abs(p.points)), 1);
   return (
@@ -492,7 +493,7 @@ function MobMore({ data, onPick }) {
 
       <div className="mob-sechead">
         <span className="block-label">Sesiones</span><span className="ln"></span>
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--ink-faint)' }}>{L.sessionsPlayed}/{L.sessionsTotal}</span>
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--ink-faint)' }}>{currentSession}/{L.sessionsTotal}</span>
       </div>
       <div className="mob-sessions">
         {data.divisions.A.sessions.map(s => (
@@ -574,9 +575,10 @@ function MobileApp() {
   const currentPid = pid || data.divisions[div].players[0].id;
   const scoped = MOB_DIV_SCOPED.includes(tab);
   const lang = window.LANG;
+  const currentSession = currentSessionNumber(data);
 
   const HEAD = {
-    standings: { title: tr('division', { d: div }), jp: '順位表', aside: `Sesión ${L.sessionsPlayed}/${L.sessionsTotal}
+    standings: { title: tr('division', { d: div }), jp: '順位表', aside: `Sesión ${currentSession}/${L.sessionsTotal}
 uma ${L.rules[div].uma.map(v => v >= 0 ? '+' + v : '−' + Math.abs(v)).join('/')}` },
     detail: { title: tr('perfil'), jp: '選手詳細', aside: null },
     compare: { title: tr('cara_a_cara'), jp: '対戦比較', aside: null },

@@ -407,6 +407,36 @@ def _history(key, session, table, game, names, scores=(45000, 38500, 32000, 4500
                   "sourceCell": "X!B2"}}
 
 
+class SesionActualTests(unittest.TestCase):
+    def test_una_fecha_agendada_inicia_la_sesion(self):
+        fixtures = [
+            _fixture("B", 6, 4, ["X", "Y", "Z", "W"], date="09 sep"),
+        ]
+        fixtures[0]["dateISO"] = "2026-09-09"
+        fixtures[0]["time"] = "21:00"
+
+        data, _ = build_public_data(_division_config(), _rosters(), fixtures, [], {}, {})
+
+        self.assertEqual(data["league"]["currentSession"], 6)
+        self.assertEqual(data["league"]["nextSession"], {"code": "S6", "date": "09 sep", "day": "sáb"})
+        self.assertEqual(data["calendar"][0]["status"], "highlight")
+
+    def test_una_partida_jugada_inicia_la_sesion_aunque_no_tenga_fecha(self):
+        fixtures = [
+            _fixture("A", 6, 1, ["Bodoque", "Mon_96", "Meme000", "Twining1999"], date="Por definir"),
+        ]
+        fixtures[0]["dateISO"] = None
+        histories = _history(
+            "A-S6-M1-G1", 6, 1, 1,
+            ["Bodoque", "Mon_96", "Meme000", "Twining1999"],
+        )
+
+        data, _ = build_public_data(_division_config(), _rosters(), fixtures, [], histories, {})
+
+        self.assertEqual(data["league"]["currentSession"], 6)
+        self.assertEqual(data["league"]["nextSession"]["code"], "S6")
+
+
 class MesasRenumeradasTests(unittest.TestCase):
     """El Game History numera las mesas distinto que el Calendario."""
 
