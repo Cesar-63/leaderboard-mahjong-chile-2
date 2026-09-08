@@ -67,7 +67,7 @@ window.I18N = {
     next_match: 'Próxima Partida',
     next_unscheduled: 'Próxima sesión no programada',
     next_waiting: 'Esperando inicio de próxima sesión',
-    last_hanchan: 'Últimas Hanchan',
+    last_hanchan: 'Últimos Hanchan',
     season: 'Temporada',
     sessions_lbl: 'Sesiones',
     hanchan_div: 'Hanchan Div {div}',

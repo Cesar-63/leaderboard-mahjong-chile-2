@@ -230,6 +230,7 @@ function SideRail({ data, div }) {
                   <div key={pl.id} className={`pp ${i === 0 ? 'first' : ''}`}>
                     <Flag nat={pl.nat} size={14} />
                     <div style={{ fontWeight: 700 }}>{fmtPts(pl.delta)}</div>
+                    <div className="pn" title={pl.name}>{pl.shortName || pl.name}</div>
                   </div>
                 ))}
               </div>
