@@ -454,7 +454,7 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
         players.sort(key=lambda item: (-item["points"], item["avgRank"] if item["games"] else 99, item["name"].lower()))
         for index, player in enumerate(players, start=1):
             player["rank"] = index
-            player["zone"] = ("title" if index <= 4 else "relegation" if index >= 21 else None) if division == "A" else ("promotion" if index <= 4 else "bottom" if index >= 21 else None)
+            player["zone"] = ("playoff" if index <= 8 else "relegation" if index >= 21 else None) if division == "A" else ("playoff" if index <= 8 else "bottom" if index >= 21 else None)
         session_items = []
         for session in range(1, int(config["sessionsTotal"]) + 1):
             session_matches = [match for match in matches if match["session"] == session]
