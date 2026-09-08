@@ -71,11 +71,18 @@ function yakuGlyph(name) {
 function yakuStory(top) {
   const names = top.map(yaku => yaku.name);
   const has = name => names.some(candidate => candidate.toLowerCase().includes(name));
+  const args = { first: names[0], second: names[1], third: names[2] };
+  const yakuhaiCount = names.filter(name => /^yakuhai\b/i.test(name)).length;
   if (names.length < 3) return { title: tr('yaku_story_varied_title'), text: tr('yaku_story_limited_text', { first: names[0] }) };
-  if (has('riichi') && has('ippatsu')) return { title: tr('yaku_story_pressure_title'), text: tr('yaku_story_pressure_text', { first: names[0], second: names[1], third: names[2] }) };
-  if (has('tanyao') || has('pinfu')) return { title: tr('yaku_story_simple_title'), text: tr('yaku_story_simple_text', { first: names[0], second: names[1], third: names[2] }) };
-  if (names.filter(name => /^yakuhai\b/i.test(name)).length >= 2) return { title: tr('yaku_story_honors_title'), text: tr('yaku_story_honors_text', { first: names[0], second: names[1], third: names[2] }) };
-  return { title: tr('yaku_story_varied_title'), text: tr('yaku_story_varied_text', { first: names[0], second: names[1], third: names[2] }) };
+  if (yakuhaiCount >= 2) return { title: tr('yaku_story_honors_title'), text: tr('yaku_story_honors_text', args) };
+  if (has('riichi') && has('ippatsu')) return { title: tr('yaku_story_pressure_title'), text: tr('yaku_story_pressure_text', args) };
+  if (has('riichi') && has('menzen tsumo') && has('pinfu')) return { title: tr('yaku_story_structure_title'), text: tr('yaku_story_structure_text', args) };
+  if (has('riichi') && has('menzen tsumo') && has('tanyao')) return { title: tr('yaku_story_light_title'), text: tr('yaku_story_light_text', args) };
+  if (has('riichi') && has('pinfu') && has('tanyao')) return { title: tr('yaku_story_efficiency_title'), text: tr('yaku_story_efficiency_text', args) };
+  if (has('riichi') && yakuhaiCount >= 1) return { title: tr('yaku_story_hybrid_title'), text: tr('yaku_story_hybrid_text', args) };
+  if (has('honitsu') || has('chinitsu') || has('toitoi') || has('chiitoitsu')) return { title: tr('yaku_story_identity_title'), text: tr('yaku_story_identity_text', args) };
+  if (has('tanyao') && has('pinfu')) return { title: tr('yaku_story_simple_title'), text: tr('yaku_story_simple_text', args) };
+  return { title: tr('yaku_story_varied_title'), text: tr('yaku_story_varied_text', args) };
 }
 
 function YakuProfile({ yakus, color }) {
