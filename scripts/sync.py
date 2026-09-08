@@ -457,6 +457,10 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
             player["avgWinPoints"] = round(player["winPoints"] / wins) if wins else 0
             player["avgDealInPoints"] = round(player["dealInPoints"] / deal_ins) if deal_ins else 0
             player["avgWinTurn"] = round(player["winTurns"] / wins, 2) if wins else 0
+            # Publicamos el catálogo completo observado en los paipus del
+            # jugador. La interfaz decide cómo resumirlo visualmente, pero el
+            # pipeline no debe quedarse sólo con los cinco más frecuentes:
+            # hacerlo aquí perdería información histórica.
             player["yakus"] = [{"name": name, "count": count} for name, count in player["yakuCounts"].most_common()]
             player["statsSample"] = hands
             player["statsReliable"] = hands >= int(config["minimumAdvancedStatsHands"])

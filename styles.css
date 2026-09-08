@@ -451,11 +451,15 @@ select{font:inherit;color:inherit}
 .line-checkpoint circle{transition:r .15s ease,fill .15s ease}
 .line-checkpoint:hover circle{r:5px;fill:var(--bg-elev)}
 [data-theme="neon"] .line-svg .stroke{filter:drop-shadow(0 0 6px currentColor)}
-.yaku-list{display:flex;flex-direction:column;gap:10px}
-.yaku-row{display:grid;grid-template-columns:110px 1fr 36px;align-items:center;gap:12px;font-size:13px}
+.yaku-head p{margin:6px 0 0;color:var(--ink-faint);font-size:12px}
+.yaku-list{display:flex;flex-direction:column;gap:8px;max-width:980px;margin:0 auto}
+.yaku-row{display:grid;grid-template-columns:180px 1fr 62px;align-items:center;gap:14px;font-size:13px;padding:7px 0;border-bottom:1px solid var(--line)}
+.yaku-row:last-child{border-bottom:0}
+.yaku-name{min-width:0}.yaku-name .name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.yaku-name span{display:block;margin-top:2px;color:var(--ink-faint);font-family:var(--font-mono);font-size:8px;letter-spacing:.05em;text-transform:uppercase}
 .yaku-row .bar{height:8px;background:var(--bg-sunk);border-radius:4px;overflow:hidden}
 .yaku-row .bar>div{height:100%;border-radius:4px;transform-origin:left;animation:barfill .8s cubic-bezier(.4,0,.2,1) both}
-.yaku-row .count{font-family:var(--font-mono);text-align:right;color:var(--ink-soft);font-size:12px}
+.yaku-row .count{display:flex;align-items:baseline;justify-content:flex-end;gap:6px;font-family:var(--font-mono);text-align:right;color:var(--ink-soft);font-size:12px}.yaku-row .count strong{font-size:15px}.yaku-row .count small{color:var(--ink-faint);font-size:9px}
+.yaku-toggle{display:block;margin:14px auto 0;padding:7px 13px;border:1px solid var(--line-strong);border-radius:999px;background:transparent;color:var(--ink-soft);font-family:var(--font-mono);font-size:10px;cursor:pointer}.yaku-toggle:hover{color:var(--accent);border-color:var(--accent)}
 @keyframes barfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
 /* ─── comparator ─── */

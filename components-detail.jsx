@@ -79,8 +79,15 @@ function PlayerDetail({ playerId, data, onPick }) {
   const color = accentFor(p.div);
 
   const radar = metricsToRadar(p);
-  const yakus = p.yakus || p.topYaku || [];
+  // La lista completa se genera a partir de los paipus de Mahjong Soul en
+  // scripts/sync.py. No debe recortarse ni completarse en el cliente: si un
+  // jugador muestra pocos yakus significa que faltan datos de partidas
+  // procesadas, no que la interfaz deba inventarlos.
+  const yakus = Array.isArray(p.yakus) ? p.yakus : [];
+  const [showAllYakus, setShowAllYakus] = React.useState(false);
+  const totalYaku = yakus.reduce((sum, y) => sum + y.count, 0);
   const maxYaku = Math.max(...yakus.map(y => y.count), 1);
+  const visibleYakus = showAllYakus ? yakus : yakus.slice(0, 6);
 
   return (
     <div className="tab-panel">
@@ -170,17 +177,18 @@ function PlayerDetail({ playerId, data, onPick }) {
             <LineChart key={p.id} values={p.cum} color={color} />
           </div>
 
-          <div className="chart-card detail-full">
-            <div className="ch-head"><h3>{tr('yaku_title')}</h3><span className="jp">役一覧</span></div>
+          <div className="chart-card detail-full yaku-card">
+            <div className="ch-head yaku-head"><div><h3>{tr('yaku_title')}</h3><p>{tr('yaku_summary', { types: yakus.length, total: totalYaku })}</p></div><span className="jp">役一覧</span></div>
             <div className="yaku-list">
-              {yakus.map((y, i) => (
+              {visibleYakus.map((y, i) => (
                 <div className="yaku-row" key={y.name}>
-                  <div className="name">{y.name}</div>
+                  <div className="yaku-name"><div className="name">{y.name}</div><span>{y.count >= maxYaku * .7 ? tr('yaku_high') : tr('yaku_frequency')}</span></div>
                   <div className="bar"><div style={{ width: `${(y.count / maxYaku) * 100}%`, background: color, animationDelay: `${i * 80}ms` }} /></div>
-                  <div className="count">{y.count}</div>
+                  <div className="count"><strong>{y.count}</strong><small>{totalYaku ? `${Math.round(y.count / totalYaku * 100)}%` : '—'}</small></div>
                 </div>
               ))}
             </div>
+            {yakus.length > 6 && <button type="button" className="yaku-toggle" onClick={() => setShowAllYakus(v => !v)}>{showAllYakus ? tr('yaku_show_less') : tr('yaku_show_all', { n: yakus.length })}</button>}
         </div>
       </div>
     </div>
