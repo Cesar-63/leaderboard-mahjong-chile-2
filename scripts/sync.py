@@ -88,6 +88,16 @@ def format_date(value: Any) -> tuple[str, str, str | None]:
     return "Por definir", "—", None
 
 
+def date_from_paipu_uuid(uuid: str | None) -> tuple[str, str, str | None]:
+    match = re.match(r"^(\d{2})(\d{2})(\d{2})-", str(uuid or ""))
+    if not match:
+        return "Por definir", "—", None
+    try:
+        return format_date(date(2000 + int(match[1]), int(match[2]), int(match[3])))
+    except ValueError:
+        return "Por definir", "—", None
+
+
 def normalize_nat(value: Any) -> str:
     raw = str(value or "").lower().replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace("ú", "u")
     for label, code in NAT_CODES.items():
@@ -409,11 +419,14 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
                     for field in ("hands", "wins", "dealIns", "riichis", "openHands", "damaten", "winPoints", "dealInPoints", "winTurns"):
                         player[field] += int(seat_stats[field])
                     player["yakuCounts"].update(seat_stats["yaku"])
-            date_display = fixture["date"] if fixture else "—"
+            paipu_date, paipu_weekday, paipu_date_iso = date_from_paipu_uuid(submission.get("uuid") if submission else None)
+            date_display = fixture["date"] if fixture and fixture["dateISO"] else paipu_date
+            date_weekday = fixture["weekday"] if fixture and fixture["dateISO"] else paipu_weekday
+            date_iso = fixture["dateISO"] if fixture and fixture["dateISO"] else paipu_date_iso
             matches.append({
                 "id": key, "code": key, "div": division, "session": session,
                 "sessionCode": f"S{session}", "hanchan": game,
-                "date": date_display, "weekday": fixture["weekday"] if fixture else "—",
+                "date": date_display, "dateISO": date_iso, "weekday": date_weekday,
                 "table": table, "players": match_players,
                 "paipuUrl": submission["url"] if submission else None,
                 "verified": source == "paipu", "source": source,
@@ -458,8 +471,13 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
         session_items = []
         for session in range(1, int(config["sessionsTotal"]) + 1):
             session_matches = [match for match in matches if match["session"] == session]
-            fixture = next((item for item in fixtures if item["division"] == division and item["session"] == session and item["dateISO"]), None)
-            session_items.append({"n": session, "code": f"S{session}", "date": fixture["date"] if fixture else "Por definir", "weekday": fixture["weekday"] if fixture else "—", "div": division, "matches": len(session_matches), "status": "played" if len(session_matches) == 12 else "partial" if session_matches else "pending"})
+            dated_items = [
+                {"date": item["date"], "weekday": item["weekday"], "dateISO": item["dateISO"]}
+                for item in fixtures
+                if item["division"] == division and item["session"] == session and item["dateISO"]
+            ] + [match for match in session_matches if match.get("dateISO")]
+            earliest = min(dated_items, key=lambda item: item["dateISO"], default=None)
+            session_items.append({"n": session, "code": f"S{session}", "date": earliest["date"] if earliest else "Por definir", "weekday": earliest["weekday"] if earliest else "—", "div": division, "matches": len(session_matches), "status": "played" if len(session_matches) == 12 else "partial" if session_matches else "pending"})
         divisions[division] = {"key": division, "players": players, "matches": matches, "sessions": session_items}
         all_players.extend(players)
 

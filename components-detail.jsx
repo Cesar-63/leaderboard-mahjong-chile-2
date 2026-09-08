@@ -373,6 +373,24 @@ function HanchanLog({ data, div }) {
     const arr = [...divData.matches].reverse();
     return filter === 'all' ? arr : arr.filter(m => m.sessionCode === filter);
   }, [divData.matches, filter]);
+  const sessionDate = (session) => {
+    const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+    const dated = [];
+    const addDisplayDate = (value) => {
+      const match = String(value || '').match(/^(\d{1,2})\s+([a-záéíóú]{3})$/i);
+      const month = match && months.indexOf(match[2].toLowerCase());
+      if (match && month >= 0) dated.push(new Date(new Date().getFullYear(), month, Number(match[1])));
+    };
+    data.calendar.filter(c => c.div === div && (c.session || 0) === session.n).forEach(c => addDisplayDate(c.date));
+    divData.matches.filter(m => m.session === session.n).forEach(m => {
+      addDisplayDate(m.date);
+      const uuidDate = String(m.paipuUrl || '').match(/[?&]paipu=(\d{2})(\d{2})(\d{2})-/);
+      if (uuidDate) dated.push(new Date(2000 + Number(uuidDate[1]), Number(uuidDate[2]) - 1, Number(uuidDate[3])));
+    });
+    if (!dated.length) return 'Por definir';
+    const earliest = new Date(Math.min(...dated));
+    return `${String(earliest.getDate()).padStart(2, '0')} ${months[earliest.getMonth()]}`;
+  };
 
   return (
     <div className="tab-panel">
@@ -392,7 +410,7 @@ function HanchanLog({ data, div }) {
         <button className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>{tr('all')}</button>
         {sessions.map(s => (
           <button key={s.code} className={filter === s.code ? 'active' : ''} onClick={() => setFilter(s.code)}>
-            {s.code} <span className="sf-date">{s.date}</span>
+            {s.code} <span className="sf-date">{sessionDate(s)}</span>
           </button>
         ))}
       </div>
