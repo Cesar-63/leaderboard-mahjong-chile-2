@@ -152,17 +152,49 @@ function QuickProfileSummary({ player }) {
 }
 
 function PlayerSelect({ value, onChange, data, style }) {
-  return (
-    <select value={value} onChange={e => onChange(e.target.value)} style={style}>
-      {['A', 'B'].map(d => (
-        <optgroup key={d} label={`División ${d}`}>
-          {data.divisions[d].players.map(pp => (
-            <option key={pp.id} value={pp.id}>#{pp.rank} · {pp.shortName} · {COUNTRIES[pp.nat].name}</option>
-          ))}
-        </optgroup>
-      ))}
-    </select>
-  );
+  return <select value={value} onChange={event => onChange(event.target.value)} style={style}>
+    {['A', 'B'].map(division => <optgroup key={division} label={`División ${division}`}>
+      {data.divisions[division].players.map(player => <option key={player.id} value={player.id}>#{player.rank} · {player.shortName} · {COUNTRIES[player.nat].name}</option>)}
+    </optgroup>)}
+  </select>;
+}
+
+function DivisionPlayerSelect({ value, onChange, data, division }) {
+  const players = data.divisions[division].players;
+  const currentIndex = Math.max(0, players.findIndex(player => player.id === value));
+  const current = players[currentIndex];
+  const [open, setOpen] = React.useState(false);
+  const [query, setQuery] = React.useState('');
+  const rootRef = React.useRef(null);
+  const inputRef = React.useRef(null);
+  const normalized = query.trim().toLocaleLowerCase();
+  const visiblePlayers = players.filter(player => !normalized || `${player.shortName} ${player.handle} ${COUNTRIES[player.nat].name}`.toLocaleLowerCase().includes(normalized));
+  React.useEffect(() => {
+    const close = event => rootRef.current && !rootRef.current.contains(event.target) && setOpen(false);
+    document.addEventListener('pointerdown', close);
+    return () => document.removeEventListener('pointerdown', close);
+  }, []);
+  React.useEffect(() => {
+    if (open) requestAnimationFrame(() => inputRef.current?.focus());
+    else setQuery('');
+  }, [open]);
+  const pick = id => { onChange(id); setOpen(false); };
+  const move = step => pick(players[(currentIndex + step + players.length) % players.length].id);
+  return <div className="player-navigator" ref={rootRef}>
+    <button className="player-nav-arrow" onClick={() => move(-1)} aria-label={tr('player_previous')}>‹</button>
+    <div className="player-picker-position"><b>{String(currentIndex + 1).padStart(2, '0')} / {players.length}</b><small>{tr('player_ranking')}</small></div>
+    <button className={`player-picker-trigger ${open ? 'open' : ''}`} onClick={() => setOpen(value => !value)} aria-expanded={open}><span>{tr('player_view_all')}</span><i>▦</i></button>
+    <button className="player-nav-arrow" onClick={() => move(1)} aria-label={tr('player_next')}>›</button>
+    {open && <div className="player-picker-menu">
+      <div className="player-picker-search"><span>⌕</span><input ref={inputRef} value={query} onChange={event => setQuery(event.target.value)} onKeyDown={event => event.key === 'Escape' && setOpen(false)} placeholder={tr('player_search', { d: division })} /></div>
+      <div className="player-picker-list" aria-label={tr('division', { d: division })}>
+        {visiblePlayers.map(player => <button key={player.id} className={player.id === current.id ? 'active' : ''} onClick={() => pick(player.id)}>
+          <span className={`avatar div-${division}`}>{initials(player.handle)}</span><span><strong>{player.shortName}</strong><small><Flag nat={player.nat} size={13} /> {COUNTRIES[player.nat].name}</small></span><span className="player-picker-rank"><b>#{player.rank}</b><small>{fmtPts(player.points)}</small></span>
+        </button>)}
+        {!visiblePlayers.length && <p className="player-picker-empty">{tr('player_no_results')}</p>}
+      </div>
+    </div>}
+  </div>;
 }
 
 function PlayerDetail({ playerId, data, onPick }) {
@@ -222,8 +254,7 @@ function PlayerDetail({ playerId, data, onPick }) {
           <NatTag nat={p.nat} showName size={17} />
           <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>選手詳細</span>
         </div>
-        <PlayerSelect value={p.id} onChange={onPick} data={data}
-          style={{ background: 'var(--bg-elev)', border: '1px solid var(--line)', borderRadius: 8, padding: '8px 12px', font: 'inherit', color: 'inherit' }} />
+        <DivisionPlayerSelect value={p.id} onChange={onPick} data={data} division={p.div} />
       </div>
 
       <div className="detail-grid">
