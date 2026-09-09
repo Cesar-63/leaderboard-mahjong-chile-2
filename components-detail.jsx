@@ -151,7 +151,15 @@ function QuickProfileSummary({ player }) {
   );
 }
 
-function PlayerSelect({ value, onChange, data, division }) {
+function PlayerSelect({ value, onChange, data, style }) {
+  return <select value={value} onChange={event => onChange(event.target.value)} style={style}>
+    {['A', 'B'].map(division => <optgroup key={division} label={`División ${division}`}>
+      {data.divisions[division].players.map(player => <option key={player.id} value={player.id}>#{player.rank} · {player.shortName} · {COUNTRIES[player.nat].name}</option>)}
+    </optgroup>)}
+  </select>;
+}
+
+function DivisionPlayerSelect({ value, onChange, data, division }) {
   const players = data.divisions[division].players;
   const currentIndex = Math.max(0, players.findIndex(player => player.id === value));
   const current = players[currentIndex];
@@ -246,7 +254,7 @@ function PlayerDetail({ playerId, data, onPick }) {
           <NatTag nat={p.nat} showName size={17} />
           <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>選手詳細</span>
         </div>
-        <PlayerSelect value={p.id} onChange={onPick} data={data} division={p.div} />
+        <DivisionPlayerSelect value={p.id} onChange={onPick} data={data} division={p.div} />
       </div>
 
       <div className="detail-grid">
