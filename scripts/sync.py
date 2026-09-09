@@ -366,7 +366,7 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
     absence_penalty = float(config.get("absencePenaltyPerHanchan", -30))
     for division in ("A", "B"):
         rule = config["divisions"][division]
-        players = [{**player, "games": 0, "points": 0.0, "history": [], "cum": [], "counts": [0, 0, 0, 0], "absences": 0, "hands": 0, "wins": 0, "dealIns": 0, "riichis": 0, "openHands": 0, "damaten": 0, "winPoints": 0, "dealInPoints": 0, "winTurns": 0, "yakuCounts": Counter()} for player in rosters[division]]
+        players = [{**player, "games": 0, "points": 0.0, "history": [], "cum": [], "counts": [0, 0, 0, 0], "absences": 0, "hands": 0, "wins": 0, "dealIns": 0, "riichis": 0, "openHands": 0, "damaten": 0, "kans": 0, "doras": 0, "uraDoras": 0, "maxHonba": 0, "winPoints": 0, "dealInPoints": 0, "winTurns": 0, "yakuCounts": Counter()} for player in rosters[division]]
         by_id = {player["id"]: player for player in players}
         matches = []
         keys = {key for key in histories if key.startswith(f"{division}-")} | {key for key in parsed_games if key.startswith(f"{division}-")}
@@ -416,8 +416,9 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
             if parsed and seat_map:
                 for seat, player in seat_map.items():
                     seat_stats = parsed["seatStats"][seat]
-                    for field in ("hands", "wins", "dealIns", "riichis", "openHands", "damaten", "winPoints", "dealInPoints", "winTurns"):
+                    for field in ("hands", "wins", "dealIns", "riichis", "openHands", "damaten", "kans", "doras", "uraDoras", "winPoints", "dealInPoints", "winTurns"):
                         player[field] += int(seat_stats[field])
+                    player["maxHonba"] = max(player["maxHonba"], int(seat_stats["maxHonba"]))
                     player["yakuCounts"].update(seat_stats["yaku"])
             paipu_date, paipu_weekday, paipu_date_iso = date_from_paipu_uuid(submission.get("uuid") if submission else None)
             date_display = fixture["date"] if fixture and fixture["dateISO"] else paipu_date
@@ -465,7 +466,7 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
             player["statsSample"] = hands
             player["statsReliable"] = hands >= int(config["minimumAdvancedStatsHands"])
             player["arch"] = "con datos" if player["statsReliable"] else "stats pendientes"
-            stats_output["players"][player["id"]] = {key: player[key] for key in ("hands", "wins", "dealIns", "winRate", "dealInRate", "riichiRate", "openRate",
+            stats_output["players"][player["id"]] = {key: player[key] for key in ("hands", "wins", "dealIns", "kans", "doras", "uraDoras", "maxHonba", "winRate", "dealInRate", "riichiRate", "openRate",
                 "damatenRate", "avgWinPoints", "avgDealInPoints", "avgWinTurn", "yakus", "statsReliable")}
             del player["yakuCounts"]
         players.sort(key=lambda item: (-item["points"], item["avgRank"] if item["games"] else 99, item["name"].lower()))
@@ -554,6 +555,18 @@ def add_hall_of_fame(data: dict[str, Any]) -> None:
             {"key": "consistency", "value": f"{best('avgRank', True)['avgRank']:.2f}", "player": best("avgRank", True), "jp": "平均順位"},
             {"key": "recent", "value": f"{best('streak')['streak']:+.1f}", "player": best("streak"), "jp": "連勝"},
         ]
+        # Distinciones derivadas directamente de los paipus descargados.
+        # No se entrega un premio de ura-dora si la liga todavía no tiene ese
+        # dato (por ejemplo, cuando todas las partidas son respaldo de Excel).
+        def count_record(key: str, field: str, label: str, jp: str) -> None:
+            candidates = [p for p in players if p["games"] > 0 and p.get(field, 0) > 0]
+            if candidates:
+                winner = max(candidates, key=lambda p: (p[field], p["points"], p["name"].lower()))
+                records.append({"key": key, "value": str(winner[field]), "player": winner, "jp": jp})
+        count_record("kans", "kans", "kanes", "槓")
+        count_record("doras", "doras", "doras", "ドラ")
+        count_record("ura_doras", "uraDoras", "ura-doras", "裏ドラ")
+        count_record("renchan", "maxHonba", "honba", "連荘")
         data["divisions"][division]["hallOfFame"] = records
 
 

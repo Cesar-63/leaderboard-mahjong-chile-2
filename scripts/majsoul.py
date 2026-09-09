@@ -525,6 +525,7 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
 
     stats = [
         {"hands": 0, "wins": 0, "tsumo": 0, "ron": 0, "dealIns": 0,
+         "kans": 0, "doras": 0, "uraDoras": 0, "maxHonba": 0,
          "riichis": 0, "openHands": 0, "damaten": 0,
          "winPoints": 0, "dealInPoints": 0, "winTurns": 0, "yaku": Counter()}
         for _ in range(4)
@@ -574,6 +575,8 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                 stats[seat]["hands"] += 1
             if message.scores:
                 final_scores = list(message.scores)
+            for seat in range(4):
+                stats[seat]["maxHonba"] = max(stats[seat]["maxHonba"], int(message.ben))
         elif name == "RecordDealTile":
             seat = int(message.seat)
             if seat < 4:
@@ -585,6 +588,8 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                 stats[seat]["riichis"] += 1
         elif name in {"RecordChiPengGang", "RecordAnGangAddGang", "RecordBaBei"}:
             seat = int(message.seat)
+            if seat < 4 and (name in {"RecordAnGangAddGang", "RecordBaBei"} or (name == "RecordChiPengGang" and int(message.type) == 2)):
+                stats[seat]["kans"] += 1
             if name == "RecordAnGangAddGang" and int(message.type) == ANKAN_TYPE:
                 # Kan cerrado: no rompe el menzen, así que no es mano abierta.
                 continue
@@ -602,6 +607,8 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                 if seat >= 4:
                     continue
                 stats[seat]["wins"] += 1
+                stats[seat]["doras"] += len(hule.doras)
+                stats[seat]["uraDoras"] += len(hule.li_doras)
                 stats[seat]["tsumo" if hule.zimo else "ron"] += 1
                 # `ming` lista las combinaciones declaradas; el kan cerrado
                 # aparece como "angang(...)" y no rompe el menzen.
