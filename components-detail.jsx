@@ -689,6 +689,7 @@ function Comparator({ data }) {
   const winsB = results.filter(metric => metric.winner === 'b').length;
   const topYakus = player => [...(Array.isArray(player.yakus) ? player.yakus : Array.isArray(player.topYaku) ? player.topYaku : [])].sort((x, y) => y.count - x.count).slice(0, 4);
   const yakumanNames = new Set(['Tenhou','Chiihou','Daisangen','Suuankou','Tsuuiisou','Ryuuiisou','Chinroutou','Kokushi Musou','Shousuushii','Suukantsu','Chuuren Poutou','Suuankou Tanki','Kokushi 13-men','Daisuushii','Junsei Chuuren']);
+  const yakumanIcon = name => ({ 'Kokushi Musou': '十三', 'Kokushi 13-men': '十三', Daisangen: '大三', Suuankou: '四暗', 'Suuankou Tanki': '四暗', Daisuushii: '大四', Shousuushii: '小四', Suukantsu: '四槓', 'Chuuren Poutou': '九蓮', 'Junsei Chuuren': '純九', Tsuuiisou: '字一', Ryuuiisou: '緑一', Chinroutou: '清老', Tenhou: '天和', Chiihou: '地和' }[name] || '役満');
   const yakumans = player => (Array.isArray(player.yakumans) ? player.yakumans : (player.yakus || []).filter(yaku => yakumanNames.has(yaku.name)));
   const achievements = player => (data.divisions[player.div].hallOfFame || []).filter(record => record.player?.id === player.id).slice(0, 3);
   const recentDelta = player => {
@@ -971,49 +972,51 @@ function CalendarView({ data }) {
   );
 }
 
-function HallOfFame({ data }) {
+function HallOfFame({ data, div = 'A' }) {
+  const division = data.divisions[div];
+  const recordKeys = new Set(['leader', 'wins', 'defense', 'riichi', 'consistency', 'recent']);
+  const distinctionKeys = new Set(['kans', 'doras', 'ura_doras', 'renchan']);
+  const yakumanNames = new Set(['Tenhou','Chiihou','Daisangen','Suuankou','Tsuuiisou','Ryuuiisou','Chinroutou','Kokushi Musou','Shousuushii','Suukantsu','Chuuren Poutou','Suuankou Tanki','Kokushi 13-men','Daisuushii','Junsei Chuuren']);
+  const yakumanIcon = name => ({ 'Kokushi Musou': '十三', 'Kokushi 13-men': '十三', Daisangen: '大三', Suuankou: '四暗', 'Suuankou Tanki': '四暗', Daisuushii: '大四', Shousuushii: '小四', Suukantsu: '四槓', 'Chuuren Poutou': '九蓮', 'Junsei Chuuren': '純九', Tsuuiisou: '字一', Ryuuiisou: '緑一', Chinroutou: '清老', Tenhou: '天和', Chiihou: '地和' }[name] || '役満');
+  const icons = { leader: '王', wins: '和', defense: '守', riichi: '立', consistency: '均', recent: '昇', kans: '槓', doras: '輝', ura_doras: '運', renchan: '連', saki: '咲' };
+  const records = division.hallOfFame.filter(item => recordKeys.has(item.key));
+  const sakiPlayer = [...division.players].sort((a, b) => Math.abs(a.points) - Math.abs(b.points))[0];
+  const distinctions = [
+    { key: 'saki', value: fmtPts(sakiPlayer.points), player: sakiPlayer, jp: '咲' },
+    ...division.hallOfFame.filter(item => distinctionKeys.has(item.key)),
+  ];
+  const yakumans = division.players.flatMap(player => (player.yakus || []).filter(yaku => yakumanNames.has(yaku.name)).map(yaku => ({ ...yaku, player })));
+  const yakumanEvents = division.players.flatMap(player => (data.yakuHands?.[player.id] || []).filter(hand => hand.yakuman).map(hand => ({ ...hand, player }))).sort((a, b) => b.session - a.session || b.hanchan - a.hanchan);
+  const latestSession = Math.max(0, ...(division.sessions || []).map(session => session.n || Number(String(session.code || '').replace(/\D/g, '')) || 0));
+  const feature = records[0];
+  const distinctionCopy = item => ({
+    saki: [tr('achievement_saki'), tr('achievement_saki_hint')],
+    kans: [tr('achievement_kans'), tr('achievement_kans_hint')],
+    doras: [tr('achievement_doras'), tr('achievement_doras_hint')],
+    ura_doras: [tr('achievement_ura_doras'), tr('achievement_ura_doras_hint')],
+    renchan: [tr('achievement_renchan'), tr('achievement_renchan_hint')],
+  }[item.key] || [item.key, '']);
+  const HonorPlayer = ({ player }) => <span className="museum-player"><span className={`avatar div-${div}`}>{initials(player.handle)}</span><span><strong>{player.shortName}</strong><small><Flag nat={player.nat} size={13} /> {COUNTRIES[player.nat].name} · #{player.rank}</small></span></span>;
   return (
     <div className="tab-panel">
       <div className="section-head">
         <div className="h-left">
           <span className="num">06 / Records</span>
-          <h1>{tr('records_title')}</h1>
+          <h1>{tr('museum_title')}</h1>
           <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>名誉殿堂</span>
         </div>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)' }}>{tr('app_tagline')} · ambos</div>
+        <div className="museum-meta">{tr('division', { d: div })} · {tr('app_tagline')}</div>
       </div>
-
-      {['A', 'B'].map(d => (
-        <div key={d} style={{ marginBottom: 32 }}>
-          <div className="hof-div-head">
-            <span className={`div-chip ${d}`}>DIVISIÓN {d}</span>
-            <span className="hof-div-line"></span>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-faint)', letterSpacing: '0.1em' }}>
-              {data.divisions[d].players.length} JUGADORES
-            </span>
-          </div>
-          <div className="hof-grid">
-            {data.divisions[d].hallOfFame.map((h, i) => {
-              const copy = hallOfFameCopy(h, i);
-              return <div className={`hof-card div-${d}`} key={h.key || i} style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 45}ms` }}>
-                <div className="jp-mark">{h.jp}</div>
-                <div className="tag">{copy.tag}</div>
-                <div className="value" style={{ color: accentFor(d) }}>{h.value}</div>
-                <div className="sub">{copy.sub}</div>
-                <div className="player-line">
-                  <div className={`avatar div-${d}`}>{initials(h.player.handle)}</div>
-                  <div>
-                    <div style={{ fontWeight: 600, fontSize: 14 }}>{h.player.shortName}</div>
-                    <div className="nat-line" style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)' }}>
-                      <Flag nat={h.player.nat} size={14} /><span>{COUNTRIES[h.player.nat].name}</span><span className="dot-sep">·</span><span>#{h.player.rank}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>;
-            })}
-          </div>
-        </div>
-      ))}
+      <div className={`museum-summary div-${div}`}><div><span className="block-label">{tr('museum_kicker')}</span><h2>{tr('museum_division_title', { d: div })}</h2><p>{tr('museum_intro')}</p></div><div className="museum-counts"><span><b>{records.length}</b>{tr('records_title')}</span><span><b>{distinctions.length}</b>{tr('achievement_distinctions')}</span><span><b>{yakumans.reduce((sum, item) => sum + item.count, 0)}</b>{tr('yakuman_title')}</span></div></div>
+      <div className="museum-layout">
+        <main className="museum-gallery">
+          {feature && <article className={`museum-feature div-${div}`}><div><span className="museum-eyebrow">{tr('museum_feature')}</span><h2>{feature.player.shortName}</h2><p>{hallOfFameCopy(feature, 0).tag}</p><strong>{feature.value}</strong><small>{hallOfFameCopy(feature, 0).sub}</small><HonorPlayer player={feature.player} /></div><i>{icons[feature.key]}</i></article>}
+          <section className="museum-family"><div className="museum-family-head"><div><span>{tr('records_title')}</span><small>{tr('museum_records_hint')}</small></div><b>{records.length}</b></div><div className="museum-items">{records.slice(1).map((item, index) => { const copy = hallOfFameCopy(item, index + 1); return <article className="museum-item" key={item.key}><i className="record">{icons[item.key]}</i><div><h3>{copy.tag}</h3><p>{copy.sub}</p><HonorPlayer player={item.player} /></div><strong>{item.value}</strong></article>; })}</div></section>
+          <section className="museum-family"><div className="museum-family-head"><div><span>{tr('achievement_distinctions')}</span><small>{tr('museum_distinctions_hint')}</small></div><b>{distinctions.length}</b></div><div className="museum-items">{distinctions.map(item => { const copy = distinctionCopy(item); return <article className="museum-item" key={item.key}><i className="distinction">{icons[item.key]}</i><div><h3>{copy[0]}</h3><p>{copy[1]}</p><HonorPlayer player={item.player} /></div><strong>{item.value}</strong></article>; })}</div></section>
+          <section className="museum-family"><div className="museum-family-head"><div><span>{tr('yakuman_title')}</span><small>{tr('museum_yakuman_hint')}</small></div><b>{yakumans.reduce((sum, item) => sum + item.count, 0)}</b></div>{yakumans.length ? <div className="museum-items">{yakumans.map(item => <article className="museum-item" key={`${item.player.id}-${item.name}`}><i className="yakuman">{yakumanIcon(item.name)}</i><div><h3>{item.name}</h3><p>{tr('achievement_yakuman_detail', { n: item.count })}</p><HonorPlayer player={item.player} /></div><strong>×{item.count}</strong></article>)}</div> : <div className="museum-empty">◇ <span>{tr('yakuman_empty')}</span></div>}</section>
+        </main>
+        <aside className="museum-chronicle"><div className="museum-chronicle-head"><span className="block-label">{tr('museum_chronicle')}</span><h2>{tr('museum_latest')}</h2></div>{yakumanEvents.slice(0, 3).map(event => { const name = event.yaku.find(yaku => yakumanNames.has(yaku)) || event.yaku[0]; return <article className="museum-event" key={`${event.player.id}-${event.session}-${event.hanchan}-${event.yaku.join('-')}`}><i>{yakumanIcon(name)}</i><div><span>{tr('museum_new_yakuman')}</span><h3>{event.player.shortName}</h3><p>{event.yaku.filter(yaku => yakumanNames.has(yaku)).join(' · ')}</p><small>S{event.session} · H{event.hanchan}</small></div></article>; })}{feature && <article className="museum-event current"><i>{icons.leader}</i><div><span>{tr('museum_current_record')}</span><h3>{feature.player.shortName}</h3><p>{hallOfFameCopy(feature, 0).tag} · {feature.value}</p><small>{tr('museum_after_session', { n: latestSession })}</small></div></article>}<article className="museum-event current"><i>{icons.saki}</i><div><span>{tr('museum_current_distinction')}</span><h3>{sakiPlayer.shortName}</h3><p>{tr('achievement_saki')} · {fmtPts(sakiPlayer.points)}</p><small>{tr('museum_after_session', { n: latestSession })}</small></div></article></aside>
+      </div>
     </div>
   );
 }
