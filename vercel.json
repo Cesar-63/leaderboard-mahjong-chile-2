@@ -10,10 +10,6 @@
   "github": {
     "silent": true
   },
-  "redirects": [
-    { "source": "/mobile", "destination": "/Mobile.html", "permanent": false },
-    { "source": "/movil", "destination": "/Mobile.html", "permanent": false }
-  ],
   "headers": [
     {
       "source": "/static/(.*)",

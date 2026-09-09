@@ -64,6 +64,16 @@ la hora reales los tiene el Calendario.**
 distintas: el Excel manda para clasificación, y una corrida a medias del parser de
 logs no debe poder ensuciar la tabla.
 
+**El repo es público y `data/generated.js` se sirve tal cual.** La planilla trae
+por jugador su `ID Mahjong Soul` y su Discord; el pipeline los usa en memoria
+(mapear asientos del paipu, emparejar mesas) y los borra antes de escribir.
+`strip_private_fields` en `sync.py` es la última parada: filtra
+`PRIVATE_PLAYER_FIELDS` de forma recursiva porque el mismo dict de jugador se
+repite en `players`, `allPlayers`, `hallOfFame[].player`, `nationalities[].best`
+e `iormc.*`. **Nunca agregar un campo de identidad al payload público**: con el
+account_id cualquiera puede buscar y seguir al jugador dentro del juego. Lo que
+sí es público a propósito: nombre/handle de liga, nacionalidad y resultados.
+
 ## Estadísticas avanzadas (paipu)
 
 `scripts/majsoul.py` cuenta por asiento y mano; `scripts/sync.py` agrega por
@@ -175,10 +185,10 @@ contra un fixture escrito a mano. Los componentes solo pintan.
 Para ver una rama sin desplegar ni tocar `main`:
 
 - **Servidor estático:** `python3 -m http.server 8000` en la raíz y abrir
-  `http://localhost:8000/index.html` (o `/Mobile.html`). Es el sitio tal cual,
+  `http://localhost:8000/index.html`. Es el sitio tal cual,
   con React y Babel desde CDN.
 - **Bundle de un solo archivo:** `node scripts/build_preview.mjs` emite
-  `dist/preview.html` (y `--entry Mobile.html` emite `dist/mobile.html`):
+  `dist/preview.html`:
   CSS, datos, logo, React y el JSX ya transpilado, todo inlineado. Se abre con
   doble clic o se comparte tal cual; no pide red ni servidor. El gemelo
   `dist/*.artifact.html` es el mismo contenido sin `<html>/<head>/<body>`, para
@@ -204,9 +214,8 @@ Vercel sirve `dist-site/`, que emite `node scripts/build_site.mjs`. Ver
   `data/generated.js` a `main` y Vercel redespliega con ese push. Los secretos
   de Mahjong Soul viven en GitHub Actions; Vercel no necesita ninguna variable
   de entorno.
-- **Un teléfono que entra a `/` cae en `/Mobile.html`** (`max-width: 820px` y
-  `pointer: coarse`). `?desktop=1` fuerza la vista de escritorio;
-  `MJC_MOBILE_REDIRECT=0` apaga la redirección en el build.
+- **La raíz es responsive** y sirve la misma aplicación en escritorio,
+  teléfonos y dispositivos plegables.
 - Agregar un `.jsx` o `.css` nuevo = agregarlo al `<script>`/`<link>` de la
   entrada. El build recorre el HTML, no una lista aparte.
 - **El `package.json` de la raíz no es un toolchain.** No declara dependencias

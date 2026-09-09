@@ -60,12 +60,42 @@ def json_default(value: Any) -> Any:
     raise TypeError(type(value).__name__)
 
 
+# Identidad que el pipeline necesita en memoria pero que NO se publica: el
+# account_id de Mahjong Soul permite buscar y seguir a un jugador dentro del
+# juego, y el Discord es contacto directo. Se leen de la planilla, se usan para
+# mapear asientos de los paipus y se borran antes de escribir cualquier archivo.
+PRIVATE_PLAYER_FIELDS = ("accountId", "discord")
+
+
+def strip_private_fields(node: Any) -> Any:
+    """Copia la estructura sin los campos de PRIVATE_PLAYER_FIELDS.
+
+    Recursiva a propósito: el mismo dict de jugador aparece en `players`,
+    `allPlayers`, `hallOfFame[].player`, `nationalities[].best` e `iormc.*`, y
+    filtrar sólo una de esas listas dejaría el dato publicado en las otras."""
+    if isinstance(node, dict):
+        return {key: strip_private_fields(value) for key, value in node.items() if key not in PRIVATE_PLAYER_FIELDS}
+    if isinstance(node, list):
+        return [strip_private_fields(item) for item in node]
+    return node
+
+
 def format_date(value: Any) -> tuple[str, str, str | None]:
     if isinstance(value, datetime):
         value = value.date()
     if isinstance(value, date):
         return f"{value.day:02d} {MONTHS_ES[value.month - 1]}", WEEKDAYS_ES[value.weekday()], value.isoformat()
     return "Por definir", "—", None
+
+
+def date_from_paipu_uuid(uuid: str | None) -> tuple[str, str, str | None]:
+    match = re.match(r"^(\d{2})(\d{2})(\d{2})-", str(uuid or ""))
+    if not match:
+        return "Por definir", "—", None
+    try:
+        return format_date(date(2000 + int(match[1]), int(match[2]), int(match[3])))
+    except ValueError:
+        return "Por definir", "—", None
 
 
 def normalize_nat(value: Any) -> str:
@@ -336,7 +366,7 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
     absence_penalty = float(config.get("absencePenaltyPerHanchan", -30))
     for division in ("A", "B"):
         rule = config["divisions"][division]
-        players = [{**player, "games": 0, "points": 0.0, "history": [], "cum": [], "counts": [0, 0, 0, 0], "absences": 0, "hands": 0, "wins": 0, "dealIns": 0, "riichis": 0, "openHands": 0, "damaten": 0, "winPoints": 0, "dealInPoints": 0, "winTurns": 0, "yakuCounts": Counter()} for player in rosters[division]]
+        players = [{**player, "games": 0, "points": 0.0, "history": [], "cum": [], "counts": [0, 0, 0, 0], "absences": 0, "hands": 0, "wins": 0, "dealIns": 0, "riichis": 0, "openHands": 0, "damaten": 0, "kans": 0, "doras": 0, "uraDoras": 0, "maxHonba": 0, "winPoints": 0, "dealInPoints": 0, "winTurns": 0, "yakuCounts": Counter()} for player in rosters[division]]
         by_id = {player["id"]: player for player in players}
         matches = []
         keys = {key for key in histories if key.startswith(f"{division}-")} | {key for key in parsed_games if key.startswith(f"{division}-")}
@@ -386,14 +416,18 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
             if parsed and seat_map:
                 for seat, player in seat_map.items():
                     seat_stats = parsed["seatStats"][seat]
-                    for field in ("hands", "wins", "dealIns", "riichis", "openHands", "damaten", "winPoints", "dealInPoints", "winTurns"):
+                    for field in ("hands", "wins", "dealIns", "riichis", "openHands", "damaten", "kans", "doras", "uraDoras", "winPoints", "dealInPoints", "winTurns"):
                         player[field] += int(seat_stats[field])
+                    player["maxHonba"] = max(player["maxHonba"], int(seat_stats["maxHonba"]))
                     player["yakuCounts"].update(seat_stats["yaku"])
-            date_display = fixture["date"] if fixture else "—"
+            paipu_date, paipu_weekday, paipu_date_iso = date_from_paipu_uuid(submission.get("uuid") if submission else None)
+            date_display = fixture["date"] if fixture and fixture["dateISO"] else paipu_date
+            date_weekday = fixture["weekday"] if fixture and fixture["dateISO"] else paipu_weekday
+            date_iso = fixture["dateISO"] if fixture and fixture["dateISO"] else paipu_date_iso
             matches.append({
                 "id": key, "code": key, "div": division, "session": session,
                 "sessionCode": f"S{session}", "hanchan": game,
-                "date": date_display, "weekday": fixture["weekday"] if fixture else "—",
+                "date": date_display, "dateISO": date_iso, "weekday": date_weekday,
                 "table": table, "players": match_players,
                 "paipuUrl": submission["url"] if submission else None,
                 "verified": source == "paipu", "source": source,
@@ -424,29 +458,50 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
             player["avgWinPoints"] = round(player["winPoints"] / wins) if wins else 0
             player["avgDealInPoints"] = round(player["dealInPoints"] / deal_ins) if deal_ins else 0
             player["avgWinTurn"] = round(player["winTurns"] / wins, 2) if wins else 0
-            player["topYaku"] = [{"name": name, "count": count} for name, count in player["yakuCounts"].most_common(5)]
+            # Publicamos el catálogo completo observado en los paipus del
+            # jugador. La interfaz decide cómo resumirlo visualmente, pero el
+            # pipeline no debe quedarse sólo con los cinco más frecuentes:
+            # hacerlo aquí perdería información histórica.
+            player["yakus"] = [{"name": name, "count": count} for name, count in player["yakuCounts"].most_common()]
             player["statsSample"] = hands
             player["statsReliable"] = hands >= int(config["minimumAdvancedStatsHands"])
             player["arch"] = "con datos" if player["statsReliable"] else "stats pendientes"
-            stats_output["players"][player["id"]] = {key: player[key] for key in ("hands", "wins", "dealIns", "winRate", "dealInRate", "riichiRate", "openRate",
-                "damatenRate", "avgWinPoints", "avgDealInPoints", "avgWinTurn", "topYaku", "statsReliable")}
+            stats_output["players"][player["id"]] = {key: player[key] for key in ("hands", "wins", "dealIns", "kans", "doras", "uraDoras", "maxHonba", "winRate", "dealInRate", "riichiRate", "openRate",
+                "damatenRate", "avgWinPoints", "avgDealInPoints", "avgWinTurn", "yakus", "statsReliable")}
             del player["yakuCounts"]
         players.sort(key=lambda item: (-item["points"], item["avgRank"] if item["games"] else 99, item["name"].lower()))
         for index, player in enumerate(players, start=1):
             player["rank"] = index
-            player["zone"] = ("title" if index <= 4 else "relegation" if index >= 21 else None) if division == "A" else ("promotion" if index <= 4 else "bottom" if index >= 21 else None)
+            player["zone"] = ("playoff" if index <= 8 else "relegation" if index >= 21 else None) if division == "A" else ("playoff" if index <= 8 else "bottom" if index >= 21 else None)
         session_items = []
         for session in range(1, int(config["sessionsTotal"]) + 1):
             session_matches = [match for match in matches if match["session"] == session]
-            fixture = next((item for item in fixtures if item["division"] == division and item["session"] == session and item["dateISO"]), None)
-            session_items.append({"n": session, "code": f"S{session}", "date": fixture["date"] if fixture else "Por definir", "weekday": fixture["weekday"] if fixture else "—", "div": division, "matches": len(session_matches), "status": "played" if len(session_matches) == 12 else "partial" if session_matches else "pending"})
+            dated_items = [
+                {"date": item["date"], "weekday": item["weekday"], "dateISO": item["dateISO"]}
+                for item in fixtures
+                if item["division"] == division and item["session"] == session and item["dateISO"]
+            ] + [match for match in session_matches if match.get("dateISO")]
+            earliest = min(dated_items, key=lambda item: item["dateISO"], default=None)
+            session_items.append({"n": session, "code": f"S{session}", "date": earliest["date"] if earliest else "Por definir", "weekday": earliest["weekday"] if earliest else "—", "div": division, "matches": len(session_matches), "status": "played" if len(session_matches) == 12 else "partial" if session_matches else "pending"})
         divisions[division] = {"key": division, "players": players, "matches": matches, "sessions": session_items}
         all_players.extend(players)
 
     sessions_played = min(sum(1 for s in divisions[d]["sessions"] if s["status"] == "played") for d in ("A", "B"))
-    next_session_number = min(sessions_played + 1, int(config["sessionsTotal"]))
-    next_fixture = next((f for f in fixtures if f["session"] == next_session_number and f["dateISO"]), None)
-    next_session = {"code": f"S{next_session_number}", "date": next_fixture["date"] if next_fixture else "Por definir", "day": next_fixture["weekday"] if next_fixture else "—"}
+    # Una sesión ya está en curso cuando tiene al menos una partida registrada
+    # o una mesa fechada; no hace falta esperar a que ambas divisiones terminen.
+    evidenced_sessions = {
+        match["session"]
+        for division in ("A", "B")
+        for match in divisions[division]["matches"]
+    } | {fixture["session"] for fixture in fixtures if fixture["dateISO"]}
+    current_session = max(evidenced_sessions, default=min(sessions_played + 1, int(config["sessionsTotal"])))
+    current_session = min(current_session, int(config["sessionsTotal"]))
+    next_fixture = min(
+        (f for f in fixtures if f["session"] == current_session and f["dateISO"]),
+        key=lambda f: (f["dateISO"], f["time"] or "99:99", f["division"], f["table"]),
+        default=None,
+    )
+    next_session = {"code": f"S{current_session}", "date": next_fixture["date"] if next_fixture else "Por definir", "day": next_fixture["weekday"] if next_fixture else "—"}
     chile_a = [p for p in divisions["A"]["players"] if p["nat"] == "CL"]
     for index, player in enumerate(chile_a, start=1):
         player["natRank"] = index
@@ -462,7 +517,7 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
     player_nat = {p["name"].lower(): p["nat"] for p in all_players}
     calendar = []
     for fixture in fixtures:
-        if fixture["session"] < next_session_number:
+        if fixture["session"] < current_session:
             continue
         calendar.append({
             "date": fixture["date"], "day": fixture["weekday"],
@@ -472,15 +527,17 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
             "time": fixture["time"] or "Por definir",
             "div": fixture["division"],
             "players": [{"name": n, "nat": player_nat.get(n.lower(), "OT")} for n in fixture["players"]],
-            "status": "highlight" if fixture["session"] == next_session_number else "scheduled",
+            "status": "highlight" if fixture["session"] == current_session else "scheduled",
         })
     data = {
         "divisions": divisions, "allPlayers": all_players, "nationalities": nationalities,
         "iormc": iormc, "calendar": calendar,
-        "league": {"season": config["seasonLabel"], "sessionsPlayed": sessions_played, "sessionsTotal": int(config["sessionsTotal"]), "hanchanPerSession": 2, "playersPerDiv": 24, "hanchanPerDiv": max(len(divisions["A"]["matches"]), len(divisions["B"]["matches"])), "hanchanTotal": len(divisions["A"]["matches"]) + len(divisions["B"]["matches"]), "nextSession": next_session, "rules": {key: {"initialPoints": value["initialPoints"], "uma": value["uma"]} for key, value in config["divisions"].items()}},
+        "league": {"season": config["seasonLabel"], "currentSession": current_session, "sessionsPlayed": sessions_played, "sessionsTotal": int(config["sessionsTotal"]), "hanchanPerSession": 2, "playersPerDiv": 24, "hanchanPerDiv": max(len(divisions["A"]["matches"]), len(divisions["B"]["matches"])), "hanchanTotal": len(divisions["A"]["matches"]) + len(divisions["B"]["matches"]), "nextSession": next_session, "rules": {key: {"initialPoints": value["initialPoints"], "uma": value["uma"]} for key, value in config["divisions"].items()}},
     }
     add_hall_of_fame(data)
-    return data, stats_output
+    # Última parada antes de que los datos salgan de la función: lo que se
+    # devuelve acá termina en el repo público y en el sitio desplegado.
+    return strip_private_fields(data), strip_private_fields(stats_output)
 
 
 def add_hall_of_fame(data: dict[str, Any]) -> None:
@@ -491,13 +548,25 @@ def add_hall_of_fame(data: dict[str, Any]) -> None:
             candidates = [p for p in players if p["games"] > 0]
             return (min if lower else max)(candidates or players, key=lambda p: p[field])
         records = [
-            {"tag": "Líder División", "value": f"{top['points']:+.1f}", "sub": "puntos uma", "player": top, "jp": "王座"},
-            {"tag": "Mejor Win Rate", "value": f"{best('winRate')['winRate']:.1f}%", "sub": "manos ganadas", "player": best("winRate"), "jp": "和了率"},
-            {"tag": "Muro de Hierro", "value": f"{best('dealInRate', True)['dealInRate']:.1f}%", "sub": "deal-in más bajo", "player": best("dealInRate", True), "jp": "放銃"},
-            {"tag": "Velocidad", "value": f"{best('riichiRate')['riichiRate']:.1f}%", "sub": "riichi rate", "player": best("riichiRate"), "jp": "立直"},
-            {"tag": "Consistencia", "value": f"{best('avgRank', True)['avgRank']:.2f}", "sub": "puesto promedio", "player": best("avgRank", True), "jp": "平均順位"},
-            {"tag": "Racha Caliente", "value": f"{best('streak')['streak']:+.1f}", "sub": "últimas 4 hanchan", "player": best("streak"), "jp": "連勝"},
+            {"key": "leader", "value": f"{top['points']:+.1f}", "player": top, "jp": "王座"},
+            {"key": "wins", "value": f"{best('winRate')['winRate']:.1f}%", "player": best("winRate"), "jp": "和了率"},
+            {"key": "defense", "value": f"{best('dealInRate', True)['dealInRate']:.1f}%", "player": best("dealInRate", True), "jp": "放銃"},
+            {"key": "riichi", "value": f"{best('riichiRate')['riichiRate']:.1f}%", "player": best("riichiRate"), "jp": "立直"},
+            {"key": "consistency", "value": f"{best('avgRank', True)['avgRank']:.2f}", "player": best("avgRank", True), "jp": "平均順位"},
+            {"key": "recent", "value": f"{best('streak')['streak']:+.1f}", "player": best("streak"), "jp": "連勝"},
         ]
+        # Distinciones derivadas directamente de los paipus descargados.
+        # No se entrega un premio de ura-dora si la liga todavía no tiene ese
+        # dato (por ejemplo, cuando todas las partidas son respaldo de Excel).
+        def count_record(key: str, field: str, label: str, jp: str) -> None:
+            candidates = [p for p in players if p["games"] > 0 and p.get(field, 0) > 0]
+            if candidates:
+                winner = max(candidates, key=lambda p: (p[field], p["points"], p["name"].lower()))
+                records.append({"key": key, "value": str(winner[field]), "player": winner, "jp": jp})
+        count_record("kans", "kans", "kanes", "槓")
+        count_record("doras", "doras", "doras", "ドラ")
+        count_record("ura_doras", "uraDoras", "ura-doras", "裏ドラ")
+        count_record("renchan", "maxHonba", "honba", "連荘")
         data["divisions"][division]["hallOfFame"] = records
 
 

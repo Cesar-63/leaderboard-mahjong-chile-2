@@ -35,19 +35,13 @@ const OUTDIR = path.resolve(ROOT, arg('--outdir', 'dist-site'));
 
 // Entradas del sitio. El nombre de salida se mantiene igual al de la fuente
 // para no romper enlaces ya compartidos.
-const ENTRIES = ['index.html', 'Mobile.html'];
-const MOBILE_ENTRY = 'Mobile.html';
-const DESKTOP_ENTRY = 'index.html';
+const ENTRIES = ['index.html'];
 
 // Directorios que se copian tal cual, en la raíz de la salida.
 const COPY_DIRS = ['assets'];
 
 // Subdirectorio de los artefactos con hash.
 const STATIC = 'static';
-
-// Un teléfono que entra a la raíz cae en la vista móvil. Se apaga con
-// MJC_MOBILE_REDIRECT=0 al correr el build.
-const MOBILE_REDIRECT = process.env.MJC_MOBILE_REDIRECT !== '0';
 
 const Babel = loadBabel();
 
@@ -107,23 +101,6 @@ const vendorFileName = emit(
 
 // ------------------------------------------------------------------- entradas
 
-// Se redirige antes de que el navegador pida el CSS de escritorio, así el
-// teléfono no gasta datos en una vista que no va a mostrar.
-const mobileRedirect = `<script>
-      // Los teléfonos ven la versión móvil. ?desktop=1 fija la de escritorio
-      // para la pestaña actual; ${MOBILE_ENTRY} nunca redirige de vuelta.
-      (function () {
-        try {
-          var qs = window.location.search;
-          if (/[?&]desktop=1/.test(qs)) sessionStorage.setItem('mjc-force-desktop', '1');
-          if (sessionStorage.getItem('mjc-force-desktop') === '1') return;
-        } catch (e) { /* sin sessionStorage: no hay override, se sigue evaluando */ }
-        if (window.matchMedia && window.matchMedia('(max-width: 820px) and (pointer: coarse)').matches) {
-          window.location.replace('${MOBILE_ENTRY}' + window.location.search + window.location.hash);
-        }
-      })();
-    </script>`;
-
 const commit = (process.env.VERCEL_GIT_COMMIT_SHA || (() => {
   try { return execFileSync('git', ['rev-parse', 'HEAD'], { cwd: ROOT }).toString().trim(); } catch { return 'sin commit'; }
 })()).slice(0, 7);
@@ -162,9 +139,7 @@ function buildEntry(entry) {
     const rel = stripQuery(src);
     const file = emitLocalFile(rel);
     if (!file) {
-      // data/generated.js sólo existe después de correr scripts/sync.py; sin
-      // él la app se queda con el mock de data.js, que es el comportamiento
-      // declarado del sitio.
+      // Los datos publicados deben venir del pipeline de sincronización.
       console.warn(`  ! ${rel} no existe, se omite`);
       return '';
     }
@@ -173,14 +148,7 @@ function buildEntry(entry) {
     return `  <script src="${file}"${attrs ? ` ${attrs}` : ''}></script>\n`;
   });
 
-  // 4. Redirección a móvil, lo más arriba posible del <head>.
-  if (MOBILE_REDIRECT && entry === DESKTOP_ENTRY) {
-    const anchor = html.match(/<meta\s+name=["']viewport["'][^>]*>/i);
-    if (!anchor) throw new Error(`${entry}: no se encontró el <meta viewport> donde anclar la redirección`);
-    html = html.replace(anchor[0], `${anchor[0]}\n\n  ${mobileRedirect}`);
-  }
-
-  // Rutas a los directorios copiados: absolutas, para que no dependan de en
+  // 4. Rutas a los directorios copiados: absolutas, para que no dependan de en
   // qué ruta esté servida la entrada.
   html = html.replace(new RegExp(`(src|href)=(["'])(${COPY_DIRS.join('|')})/`, 'gi'), '$1=$2/$3/');
 

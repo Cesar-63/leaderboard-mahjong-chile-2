@@ -4,7 +4,6 @@
 // (no queda ninguna dependencia de CDN ni de rutas relativas).
 //
 //   node scripts/build_preview.mjs                  -> dist/preview.html (escritorio)
-//   node scripts/build_preview.mjs --entry Mobile.html --name mobile
 //
 // Emite dos archivos por corrida:
 //   dist/<name>.html           documento completo, para abrir con file:// o http.server
@@ -70,6 +69,7 @@ const runtime = RUNTIME_FILES.map((rel) => fs.readFileSync(vendorFile(rel), 'utf
 // El sitio lee localStorage sin guardas; en un visor sandboxed el acceso puede
 // lanzar y dejar la página en blanco. Este shim degrada a memoria.
 const shim = `(function () {
+  window.__LOCAL_PREVIEW__ = true;
   try { window.localStorage.getItem('probe'); } catch (e) {
     var mem = {};
     Object.defineProperty(window, 'localStorage', { value: {

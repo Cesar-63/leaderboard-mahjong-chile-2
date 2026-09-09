@@ -4,22 +4,151 @@ function accentFor(div) { return div === 'B' ? 'var(--accent-2)' : 'var(--accent
 // Dos primeras letras para el círculo del avatar (el handle completo se desborda)
 function initials(h) { return (h || '').slice(0, 2); }
 
-function metricsToRadar(p) {
+const HOF_KEYS = ['leader', 'wins', 'defense', 'riichi', 'consistency', 'recent'];
+function hallOfFameCopy(record, index) {
+  const key = record.key || HOF_KEYS[index];
+  return {
+    tag: tr(`hof_${key}_title`),
+    sub: tr(`hof_${key}_subtitle`),
+  };
+}
+
+function metricsToRadar(p, leaguePlayers = []) {
   const hasStats = p.statsSample > 0;
+  const peers = leaguePlayers.length ? leaguePlayers : [p];
+  const percentile = (value, getter, higherIsBetter = true) => {
+    const values = peers.map(getter).filter(Number.isFinite);
+    if (!Number.isFinite(value) || !values.length) return 0;
+    const noWorse = values.filter(peerValue => higherIsBetter ? peerValue <= value : peerValue >= value).length;
+    return clamp01(noWorse / values.length);
+  };
   return [
-    { label: 'WIN', display: hasStats ? p.winRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.winRate / 30) : 0 },
-    { label: 'DEF', display: hasStats ? (100 - p.dealInRate).toFixed(0) + '%' : '—', value: hasStats ? clamp01((20 - p.dealInRate) / 14) : 0 },
-    { label: 'RIICHI', display: hasStats ? p.riichiRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.riichiRate / 32) : 0 },
-    { label: 'OPEN', display: hasStats ? p.openRate.toFixed(0) + '%' : '—', value: hasStats ? clamp01(p.openRate / 50) : 0 },
-    { label: 'AVG#', display: p.avgRank.toFixed(2), value: clamp01((4 - p.avgRank) / 1.5) },
-    { label: 'PTS', display: fmtPts(p.avgPoints), value: clamp01((p.avgPoints + 12) / 30) },
+    { label: tr('radar_wins'), display: hasStats ? p.winRate.toFixed(0) + '%' : '—', value: hasStats ? percentile(p.winRate, player => player.statsSample > 0 ? player.winRate : NaN) : 0 },
+    { label: tr('radar_defense'), display: hasStats ? (100 - p.dealInRate).toFixed(0) + '%' : '—', value: hasStats ? percentile(p.dealInRate, player => player.statsSample > 0 ? player.dealInRate : NaN, false) : 0 },
+    { label: tr('radar_placement'), display: p.avgRank.toFixed(2), value: percentile(p.avgRank, player => player.avgRank, false) },
+    { label: tr('radar_points'), display: fmtPts(p.avgPoints), value: percentile(p.avgPoints, player => player.avgPoints) },
   ];
+}
+
+function ProfileStyleTendencies({ player, leaguePlayers }) {
+  const median = (key) => {
+    const values = leaguePlayers.filter(peer => peer.statsSample > 0).map(peer => peer[key]).filter(Number.isFinite).sort((a, b) => a - b);
+    if (!values.length) return 0;
+    const middle = Math.floor(values.length / 2);
+    return values.length % 2 ? values[middle] : (values[middle - 1] + values[middle]) / 2;
+  };
+  const metrics = [
+    { label: tr('radar_riichi'), value: player.riichiRate, median: median('riichiRate') },
+    { label: tr('radar_open'), value: player.openRate, median: median('openRate') },
+  ];
+  return <div className="profile-tendencies">
+    <div className="profile-tendencies-title">{tr('play_tendency')}</div>
+    {metrics.map(metric => <div className="profile-tendency" key={metric.label}>
+      <span>{metric.label}</span>
+      <div className="profile-tendency-track" style={{ '--value': `${clamp01(metric.value / 100) * 100}%`, '--median': `${clamp01(metric.median / 100) * 100}%` }}>
+        <i className="median" title={`${tr('league_median')}: ${metric.median.toFixed(0)}%`} />
+        <i className="value" />
+      </div>
+      <strong>{player.statsSample > 0 ? `${metric.value.toFixed(0)}%` : '—'}</strong>
+    </div>)}
+    <div className="profile-tendencies-legend"><i />{tr('league_median')}</div>
+  </div>;
+}
+
+const PREVIEW_YAKUS = [
+  { name: 'Riichi', count: 11 }, { name: 'Tanyao', count: 5 }, { name: 'Ippatsu', count: 4 },
+  { name: 'Yakuhai Bakaze', count: 4 }, { name: 'Yakuhai Jikaze', count: 4 }, { name: 'Menzen Tsumo', count: 3 },
+  { name: 'Yakuhai Haku', count: 3 }, { name: 'Pinfu', count: 3 }, { name: 'Yakuhai Hatsu', count: 3 },
+  { name: 'Honitsu', count: 2 }, { name: 'Toitoi', count: 2 }, { name: 'Sanshoku Doujun', count: 2 },
+  { name: 'Chanta', count: 2 }, { name: 'Yakuhai Chun', count: 1 }, { name: 'Iipeikou', count: 1 }, { name: 'Haitei', count: 1 },
+];
+
+function yakuGlyph(name) {
+  const glyphs = { Riichi: '立', Tanyao: '断', Ippatsu: '一', Pinfu: '平', 'Menzen Tsumo': '門' };
+  return glyphs[name] || '役';
+}
+
+function yakuStory(top) {
+  const names = top.map(yaku => yaku.name);
+  const has = name => names.some(candidate => candidate.toLowerCase().includes(name));
+  const args = { first: names[0], second: names[1], third: names[2] };
+  const yakuhaiCount = names.filter(name => /^yakuhai\b/i.test(name)).length;
+  if (names.length < 3) return { title: tr('yaku_story_varied_title'), text: tr('yaku_story_limited_text', { first: names[0] }) };
+  if (yakuhaiCount >= 2) return { title: tr('yaku_story_honors_title'), text: tr('yaku_story_honors_text', args) };
+  if (has('riichi') && has('ippatsu')) return { title: tr('yaku_story_pressure_title'), text: tr('yaku_story_pressure_text', args) };
+  if (has('riichi') && has('menzen tsumo') && has('pinfu')) return { title: tr('yaku_story_structure_title'), text: tr('yaku_story_structure_text', args) };
+  if (has('riichi') && has('menzen tsumo') && has('tanyao')) return { title: tr('yaku_story_light_title'), text: tr('yaku_story_light_text', args) };
+  if (has('riichi') && has('pinfu') && has('tanyao')) return { title: tr('yaku_story_efficiency_title'), text: tr('yaku_story_efficiency_text', args) };
+  if (has('riichi') && yakuhaiCount >= 1) return { title: tr('yaku_story_hybrid_title'), text: tr('yaku_story_hybrid_text', args) };
+  if (has('honitsu') || has('chinitsu') || has('toitoi') || has('chiitoitsu')) return { title: tr('yaku_story_identity_title'), text: tr('yaku_story_identity_text', args) };
+  if (has('tanyao') && has('pinfu')) return { title: tr('yaku_story_simple_title'), text: tr('yaku_story_simple_text', args) };
+  return { title: tr('yaku_story_varied_title'), text: tr('yaku_story_varied_text', args) };
+}
+
+function YakuProfile({ yakus, color }) {
+  if (!yakus.length) return <div className="yaku-empty">{tr('yaku_empty')}</div>;
+  const sorted = [...yakus].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+  const total = sorted.reduce((sum, yaku) => sum + yaku.count, 0);
+  const top = sorted.slice(0, 3);
+  const remaining = sorted.slice(3);
+  const yakuhai = remaining.filter(yaku => /^yakuhai\b/i.test(yaku.name));
+  const other = remaining.filter(yaku => !/^yakuhai\b/i.test(yaku.name));
+  const yakuhaiTotal = yakuhai.reduce((sum, yaku) => sum + yaku.count, 0);
+  const story = yakuStory(top);
+  const pct = count => total ? Math.round(count / total * 100) : 0;
+  return <div className="yaku-profile" style={{ '--yaku-accent': color }}>
+    <div className="yaku-signature">
+      <div className="yaku-story"><div className="block-label">{tr('yaku_story_label')}</div><h4>{story.title}</h4><p>{story.text}</p></div>
+      <div className="yaku-top-three">{top.map((yaku, index) => <div className="yaku-top" key={yaku.name}>
+        <span className="yaku-top-rank">{index === 0 ? tr('yaku_high') : tr('yaku_rank_n', { n: index + 1 })}</span>
+        <i>{yakuGlyph(yaku.name)}</i><strong>{yaku.name}</strong><b>{yaku.count} · {pct(yaku.count)}%</b>
+      </div>)}</div>
+    </div>
+    <div className="yaku-rest-label">{tr('yaku_other_title')}</div>
+    <div className="yaku-ledger">
+      {!!yakuhai.length && <div className="yaku-yakuhai-group">
+        <div><strong>{tr('yaku_yakuhai_group')}</strong><span>{tr('yaku_yakuhai_hint')}</span></div>
+        <div className="yaku-yakuhai-items">{yakuhai.map(yaku => <span key={yaku.name}>{yaku.name.replace(/^Yakuhai\s*/i, '')} <b>{yaku.count} · {pct(yaku.count)}%</b></span>)}</div>
+        <div className="yaku-yakuhai-total"><strong>{yakuhaiTotal}</strong><span>{pct(yakuhaiTotal)}% {tr('yaku_total_suffix')}</span></div>
+      </div>}
+      {other.map(yaku => <div className="yaku-ledger-row" key={yaku.name}>
+        <span>{yaku.name}</span><div><i style={{ width: `${Math.max(4, pct(yaku.count))}%` }} /></div><b>{yaku.count}</b><small>{pct(yaku.count)}%</small>
+      </div>)}
+    </div>
+  </div>;
 }
 
 function placementSegments(p) {
   return [p.placements.p1, p.placements.p2, p.placements.p3, p.placements.p4]
     .map((v, i) => ({ place: i + 1, v }))
     .filter(s => s.v > 0);
+}
+
+function QuickProfileSummary({ player }) {
+  const history = player.history || [];
+  const recent = history.slice(-5);
+  const best = Math.max(...history, 0);
+  const worst = Math.min(...history, 0);
+  const mostCommon = [player.placements.p1, player.placements.p2, player.placements.p3, player.placements.p4]
+    .reduce((bestIndex, value, index, all) => value > all[bestIndex] ? index : bestIndex, 0) + 1;
+  return (
+    <div className="quick-profile-summary">
+      <div className="block-label">{tr('quick_summary')}</div>
+      <div className="quick-profile-grid">
+        <div><span>{tr('quick_played')}</span><strong>{player.games}</strong></div>
+        <div><span>{tr('quick_common_place')}</span><strong>{mostCommon}°</strong></div>
+        <div><span>{tr('quick_best_game')}</span><strong className="positive">{best >= 0 ? '+' : ''}{best.toFixed(1)}</strong></div>
+        <div><span>{tr('quick_worst_game')}</span><strong className="negative">{worst.toFixed(1)}</strong></div>
+      </div>
+      <div className="quick-form">
+        <span>{tr('quick_recent')}</span>
+        <div className="quick-form-dots">
+          {recent.map((value, index) => <span key={index} className={value >= 0 ? 'positive' : 'negative'} title={`${value >= 0 ? '+' : ''}${value.toFixed(1)}`}>{value >= 0 ? '+' : '−'}</span>)}
+        </div>
+        <strong className={history.at(-1) >= 0 ? 'positive' : 'negative'}>{history.length ? `${history.at(-1) >= 0 ? '+' : ''}${history.at(-1).toFixed(1)}` : '—'}</strong>
+      </div>
+    </div>
+  );
 }
 
 function PlayerSelect({ value, onChange, data, style }) {
@@ -42,16 +171,46 @@ function PlayerDetail({ playerId, data, onPick }) {
   const divSize = data.divisions[p.div].players.length;
   const color = accentFor(p.div);
 
-  const hasStats = p.statsSample > 0;
-  const radar = [
-    { label: 'WIN',     display: hasStats ? p.winRate.toFixed(1) + '%' : '—', value: hasStats ? clamp01(p.winRate / 30) : 0 },
-    { label: 'DEFENSE', display: hasStats ? (100 - p.dealInRate).toFixed(1) + '%' : '—', value: hasStats ? clamp01((20 - p.dealInRate) / 14) : 0 },
-    { label: 'RIICHI',  display: hasStats ? p.riichiRate.toFixed(1) + '%' : '—', value: hasStats ? clamp01(p.riichiRate / 32) : 0 },
-    { label: 'OPEN',    display: hasStats ? p.openRate.toFixed(1) + '%' : '—', value: hasStats ? clamp01(p.openRate / 50) : 0 },
-    { label: 'AVG #',   display: p.avgRank.toFixed(2), value: clamp01((4 - p.avgRank) / 1.5) },
-    { label: 'POINTS',  display: fmtPts(p.avgPoints), value: clamp01((p.avgPoints + 12) / 30) },
-  ];
-  const maxYaku = Math.max(...p.topYaku.map(y => y.count), 1);
+  const radar = metricsToRadar(p, data.divisions[p.div].players);
+  // La lista completa se genera a partir de los paipus de Mahjong Soul en
+  // scripts/sync.py. No debe recortarse ni completarse en el cliente: si un
+  // jugador muestra pocos yakus significa que faltan datos de partidas
+  // procesadas, no que la interfaz deba inventarlos.
+  // `yakus` es el formato nuevo del pipeline. Los datos versionados de ramas
+  // anteriores todavía usan `topYaku`; ambos contienen registros reales.
+  const sourceYakus = Array.isArray(p.yakus)
+    ? p.yakus
+    : Array.isArray(p.topYaku) ? p.topYaku : [];
+  const yakus = sourceYakus.length || !window.__LOCAL_PREVIEW__ ? sourceYakus : PREVIEW_YAKUS;
+  const usingPreviewYakus = !sourceYakus.length && yakus.length > 0;
+  const yakumanNames = new Set([
+    'Tenhou', 'Chiihou', 'Daisangen', 'Suuankou', 'Tsuuiisou', 'Ryuuiisou',
+    'Chinroutou', 'Kokushi Musou', 'Shousuushii', 'Suukantsu', 'Chuuren Poutou',
+    'Suuankou Tanki', 'Kokushi 13-men', 'Daisuushii', 'Junsei Chuuren',
+  ]);
+  const derivedYakumans = yakus.filter(y => yakumanNames.has(y.name));
+  const yakumans = Array.isArray(p.yakumans) ? p.yakumans : derivedYakumans;
+  const recordAchievements = (data.divisions[p.div].hallOfFame || [])
+    .map((record, index) => ({ record, index }))
+    .filter(({ record }) => record.player && record.player.id === p.id)
+    .map(({ record, index }) => { const key = record.key || ['leader', 'wins', 'defense', 'riichi', 'consistency', 'recent'][index] || 'record'; return { name: tr(`hof_${key}_title`), detail: tr(`hof_${key}_subtitle`), key, value: record.value }; });
+  const closestToZero = data.divisions[p.div].players
+    .filter(player => Number.isFinite(player.points))
+    .sort((a, b) => Math.abs(a.points) - Math.abs(b.points))[0];
+  if (closestToZero && closestToZero.id === p.id) {
+    recordAchievements.push({ name: tr('achievement_saki'), detail: tr('achievement_saki_hint'), key: 'saki', value: fmtPts(p.points) });
+  }
+  const yakumanBadge = name => {
+    if (name === 'Kokushi Musou') return { key: 'kokushi', glyph: '十三' };
+    if (name === 'Daisangen') return { key: 'daisangen', glyph: '中發白' };
+    if (name === 'Suuankou') return { key: 'suuankou', glyph: '四暗' };
+    return { key: 'generic', glyph: '✦' };
+  };
+  const recordIcons = { leader: '王', wins: '和', defense: '守', riichi: '立', consistency: '均', recent: '昇', kans: '槓', doras: '輝', ura_doras: '運', renchan: '連', saki: '咲' };
+  const distinctionKeys = new Set(['saki', 'kans', 'doras', 'ura_doras', 'renchan']);
+  const leagueRecords = recordAchievements.filter(record => !distinctionKeys.has(record.key));
+  const distinctions = recordAchievements.filter(record => distinctionKeys.has(record.key));
+  const totalYaku = yakus.reduce((sum, y) => sum + y.count, 0);
 
   return (
     <div className="tab-panel">
@@ -100,18 +259,13 @@ function PlayerDetail({ playerId, data, onPick }) {
 
           {p.zone && (
             <div className={`zone-banner ${p.zone}`}>
+              {p.zone === 'playoff' && tr('zone_playoff')}
               {p.zone === 'title' && tr('zone_playoff')}
               {p.zone === 'relegation' && tr('zone_releg')}
               {p.zone === 'promotion' && tr('zone_promo')}
               {p.zone === 'bottom' && tr('zone_bottom')}
             </div>
           )}
-
-          <div className="stat-block">
-            {PROFILE_STATS.map(metric => (
-              <StatCell key={metric} metric={metric} player={p} data={data} />
-            ))}
-          </div>
 
           <div>
             <div className="block-label">{tr('placement_title')} · 順位率</div>
@@ -126,38 +280,39 @@ function PlayerDetail({ playerId, data, onPick }) {
               ))}
             </div>
           </div>
+          <QuickProfileSummary player={p} />
         </div>
 
-        <div className="detail-right">
-          <div className="chart-card">
-            <div className="ch-head"><h3>{tr('profile_title')}</h3><span className="jp">プレイスタイル</span></div>
-            <div className="radar-wrap">
-              <RadarChart key={p.id} stats={radar} color={color} size={300} />
-              <div className="radar-legend">
-                {radar.map(s => (
-                  <div className="rl" key={s.label}><span>{s.label}</span><span className="v" style={{ color }}>{s.display}</span></div>
-                ))}
+        <div className="chart-card detail-full achievements-card">
+          <div className="ch-head yaku-head"><div><h3>{tr('achievements_title')}</h3><p>{tr('achievements_hint')}</p></div><span className="jp">勲章</span></div>
+          <div className="achievement-map">
+            <div className="achievement-family family-yakuman"><div className="achievement-family-head"><strong>{tr('yakuman_title')}</strong><small>{yakumans.length}</small></div><div className="achievement-emblems">{yakumans.map(y => { const badge = yakumanBadge(y.name); return <div className="achievement-emblem-wrap" key={y.name}><div className={`achievement-emblem ${badge.key}`} tabIndex="0">{badge.glyph}</div><div className="achievement-tooltip"><em>YAKUMAN</em><strong>{y.name}</strong><span>{tr('achievement_yakuman_detail', { n: y.count })}</span><b>×{y.count}</b></div></div>; })}{Array.from({ length: Math.max(0, 3 - yakumans.length) }, (_, i) => <div className="achievement-emblem-wrap locked" key={`yakuman-locked-${i}`}><div className="achievement-emblem">◇</div><div className="achievement-tooltip"><strong>{tr('achievement_locked')}</strong><span>{tr('achievement_locked_yakuman')}</span></div></div>)}</div></div>
+            <div className="achievement-family family-record"><div className="achievement-family-head"><strong>{tr('records_title')}</strong><small>{leagueRecords.length}</small></div><div className="achievement-emblems">{leagueRecords.map(record => <div className="achievement-emblem-wrap" key={`${record.key}-${record.name}`}><div className={`achievement-emblem record-${record.key}`} tabIndex="0">{recordIcons[record.key] || '賞'}</div><div className="achievement-tooltip"><em>{tr('records_title')}</em><strong>{record.name}</strong><span>{record.detail}</span><b>{record.value}</b></div></div>)}{Array.from({ length: Math.max(0, 3 - leagueRecords.length) }, (_, i) => <div className="achievement-emblem-wrap locked" key={`record-locked-${i}`}><div className="achievement-emblem">◇</div><div className="achievement-tooltip"><strong>{tr('achievement_locked')}</strong><span>{tr('achievement_locked_record')}</span></div></div>)}</div></div>
+            <div className="achievement-family family-distinction"><div className="achievement-family-head"><strong>{tr('achievement_distinctions')}</strong><small>{distinctions.length}</small></div><div className="achievement-emblems">{distinctions.map(record => <div className="achievement-emblem-wrap" key={record.key}><div className={`achievement-emblem distinction-${record.key}`} tabIndex="0">{recordIcons[record.key] || '賞'}</div><div className="achievement-tooltip"><em>{tr('achievement_distinctions')}</em><strong>{record.name}</strong><span>{record.detail}</span><b>{record.value}</b></div></div>)}{Array.from({ length: Math.max(0, 3 - distinctions.length) }, (_, i) => <div className="achievement-emblem-wrap locked" key={`distinction-locked-${i}`}><div className="achievement-emblem">◇</div><div className="achievement-tooltip"><strong>{tr('achievement_locked')}</strong><span>{tr('achievement_locked_distinction')}</span></div></div>)}</div></div>
+          </div>
+        </div>
+
+          <div className="chart-card detail-summary">
+            <div className="ch-head stats-overview-head"><div><h3>{tr('stats_overview')}</h3><p>{tr('stats_overview_hint')}</p></div></div>
+            <div className="stats-overview-layout">
+              <div className="profile-radar" style={{ '--profile-accent': color }}>
+                <div className="profile-radar-label">{tr('radar_competitive')}</div>
+                <RadarChart key={p.id} stats={radar} color={color} size={340} />
+                <div className="profile-radar-caption">{tr('radar_relative_caption')}</div>
+                <ProfileStyleTendencies player={p} leaguePlayers={data.divisions[p.div].players} />
               </div>
+              <ProfileStatGroups player={p} data={data} />
             </div>
           </div>
 
-          <div className="chart-card line-card">
-            <div className="ch-head"><h3>{tr('evolution_title')} · {p.games} {tr('hanchan')}</h3><span className="jp">スコア推移</span></div>
-            <LineChart key={p.id} values={p.cum} color={color} />
+          <div className="chart-card line-card detail-full">
+            <div className="ch-head"><h3>{tr('evolution_title')} · {tr('evolution_accumulated')} · {p.games} {tr('hanchan')}</h3><span className="jp">スコア推移</span></div>
+            <LineChart key={p.id} values={p.cum} color={color} playerId={p.id} matches={data.divisions[p.div].matches.filter(match => match.players.some(player => player.id === p.id))} />
           </div>
 
-          <div className="chart-card">
-            <div className="ch-head"><h3>{tr('yaku_title')}</h3><span className="jp">役の頻度</span></div>
-            <div className="yaku-list">
-              {p.topYaku.map((y, i) => (
-                <div className="yaku-row" key={y.name}>
-                  <div className="name">{y.name}</div>
-                  <div className="bar"><div style={{ width: `${(y.count / maxYaku) * 100}%`, background: color, animationDelay: `${i * 80}ms` }} /></div>
-                  <div className="count">{y.count}</div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <div className="chart-card detail-full yaku-card">
+            <div className="ch-head yaku-head"><div><h3>{tr('yaku_title')}</h3><p>{tr('yaku_summary', { types: yakus.length, total: totalYaku })}{usingPreviewYakus ? ` · ${tr('preview_data')}` : ''}</p></div><span className="jp">役一覧</span></div>
+            <YakuProfile yakus={yakus} color={color} />
         </div>
       </div>
     </div>
@@ -285,10 +440,10 @@ function Comparator({ data }) {
   const metrics = [
     { key: 'points', label: tr('points'), jp: '総合', lower: false, fmt: fmtPts },
     { key: 'avgRank', label: tr('lbl_avgrank'), jp: '平均順位', lower: true, fmt: v => v.toFixed(2) },
-    { key: 'winRate', label: tr('win_rate'), jp: '和了率', lower: false, fmt: v => v.toFixed(1) + '%' },
-    { key: 'dealInRate', label: tr('deal_in'), jp: '放銃率', lower: true, fmt: v => v.toFixed(1) + '%' },
-    { key: 'riichiRate', label: tr('riichi'), jp: '立直率', lower: false, fmt: v => v.toFixed(1) + '%' },
-    { key: 'openRate', label: tr('open'), jp: '副露率', lower: false, fmt: v => v.toFixed(1) + '%' },
+    { key: 'winRate', label: tr('lbl_winrate'), jp: '和了率', lower: false, fmt: v => v.toFixed(1) + '%' },
+    { key: 'dealInRate', label: tr('lbl_dealin'), jp: '放銃率', lower: true, fmt: v => v.toFixed(1) + '%' },
+    { key: 'riichiRate', label: tr('lbl_riichi'), jp: '立直率', lower: false, fmt: v => v.toFixed(1) + '%' },
+    { key: 'openRate', label: tr('lbl_open'), jp: '副露率', lower: false, fmt: v => v.toFixed(1) + '%' },
     { key: 'avgPoints', label: tr('lbl_avgpts'), jp: '平均得点', lower: false, fmt: fmtPts },
     { key: 'firstRate', label: tr('top_rate'), jp: 'トップ率', lower: false, fmt: v => (v * 100).toFixed(0) + '%' },
   ];
@@ -330,15 +485,15 @@ function Comparator({ data }) {
               <NatTag nat={p.nat} showName size={16} />
               <span>#{p.rank} · {p.games} han</span>
             </div>
-            <RadarChart key={side + animKey} stats={metricsToRadar(p)} color={side === 'a' ? 'var(--accent)' : 'var(--accent-2)'} size={260} />
+            <RadarChart key={side + animKey} stats={metricsToRadar(p, data.divisions[p.div].players)} color={side === 'a' ? 'var(--accent)' : 'var(--accent-2)'} size={260} />
           </div>
         ))}
       </div>
 
       <div className="metrics-card">
         <div className="metrics-head">
-          <span className="block-label">Métricas · 成績比較</span>
-          <span className="metrics-note">Barra más larga = mejor, escalada al rango de la liga</span>
+          <span className="block-label">{tr('metrics_title')} · 成績比較</span>
+          <span className="metrics-note">{tr('metrics_note')}</span>
         </div>
         {metrics.map(m => {
           const av = readVal(a, m.key), bv = readVal(b, m.key);
@@ -372,6 +527,24 @@ function HanchanLog({ data, div }) {
     const arr = [...divData.matches].reverse();
     return filter === 'all' ? arr : arr.filter(m => m.sessionCode === filter);
   }, [divData.matches, filter]);
+  const sessionDate = (session) => {
+    const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+    const dated = [];
+    const addDisplayDate = (value) => {
+      const match = String(value || '').match(/^(\d{1,2})\s+([a-záéíóú]{3})$/i);
+      const month = match && months.indexOf(match[2].toLowerCase());
+      if (match && month >= 0) dated.push(new Date(new Date().getFullYear(), month, Number(match[1])));
+    };
+    data.calendar.filter(c => c.div === div && (c.session || 0) === session.n).forEach(c => addDisplayDate(c.date));
+    divData.matches.filter(m => m.session === session.n).forEach(m => {
+      addDisplayDate(m.date);
+      const uuidDate = String(m.paipuUrl || '').match(/[?&]paipu=(\d{2})(\d{2})(\d{2})-/);
+      if (uuidDate) dated.push(new Date(2000 + Number(uuidDate[1]), Number(uuidDate[2]) - 1, Number(uuidDate[3])));
+    });
+    if (!dated.length) return 'Por definir';
+    const earliest = new Date(Math.min(...dated));
+    return `${String(earliest.getDate()).padStart(2, '0')} ${months[earliest.getMonth()]}`;
+  };
 
   return (
     <div className="tab-panel">
@@ -391,7 +564,7 @@ function HanchanLog({ data, div }) {
         <button className={filter === 'all' ? 'active' : ''} onClick={() => setFilter('all')}>{tr('all')}</button>
         {sessions.map(s => (
           <button key={s.code} className={filter === s.code ? 'active' : ''} onClick={() => setFilter(s.code)}>
-            {s.code} <span className="sf-date">{s.date}</span>
+            {s.code} <span className="sf-date">{sessionDate(s)}</span>
           </button>
         ))}
       </div>
@@ -486,11 +659,14 @@ function CalendarView({ data }) {
   };
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const sessNum = (c) => c.session || parseInt((c.round || '').replace(/\D/g, ''), 10) || 0;
+  const currentSession = currentSessionNumber(data);
   const byDate = (a, b) => (toDate(a.date) - toDate(b.date)) || (a.div === 'B' ? 1 : 0) - (b.div === 'B' ? 1 : 0);
   // Próximas: con fecha válida y no pasada (>= hoy). Pasadas quedan ocultas.
   const upcoming = data.calendar.filter(c => { const d = toDate(c.date); return d && d >= today; }).sort(byDate);
   // Por definir: sin fecha.
-  const porDef = data.calendar.filter(c => !toDate(c.date)).sort((a, b) => sessNum(a) - sessNum(b) || (a.table || 0) - (b.table || 0));
+  const porDef = data.calendar
+    .filter(c => !toDate(c.date) && sessNum(c) === currentSession)
+    .sort((a, b) => (a.table || 0) - (b.table || 0));
   const renderCard = (c, i) => (
     <button className={`cal-card ${c.status === 'highlight' ? 'highlight' : ''} div-${c.div}`} key={c.round + c.mesa + c.div}
          onClick={() => setModal(c)}
@@ -580,12 +756,13 @@ function HallOfFame({ data }) {
             </span>
           </div>
           <div className="hof-grid">
-            {data.divisions[d].hallOfFame.map((h, i) => (
-              <div className={`hof-card div-${d}`} key={i} style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 45}ms` }}>
+            {data.divisions[d].hallOfFame.map((h, i) => {
+              const copy = hallOfFameCopy(h, i);
+              return <div className={`hof-card div-${d}`} key={h.key || i} style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 45}ms` }}>
                 <div className="jp-mark">{h.jp}</div>
-                <div className="tag">{h.tag}</div>
+                <div className="tag">{copy.tag}</div>
                 <div className="value" style={{ color: accentFor(d) }}>{h.value}</div>
-                <div className="sub">{h.sub}</div>
+                <div className="sub">{copy.sub}</div>
                 <div className="player-line">
                   <div className={`avatar div-${d}`}>{initials(h.player.handle)}</div>
                   <div>
@@ -595,8 +772,8 @@ function HallOfFame({ data }) {
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              </div>;
+            })}
           </div>
         </div>
       ))}

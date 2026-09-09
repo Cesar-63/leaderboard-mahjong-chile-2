@@ -69,7 +69,7 @@ function RadarChart({ stats, color = 'var(--accent)', size = 280 }) {
 
   const padV = 28;
   return (
-    <svg ref={ref} className="radar-svg" viewBox={`-12 ${-padV} ${size + 24} ${size + padV * 2}`}>
+    <svg ref={ref} className="radar-svg" viewBox={`-44 ${-padV} ${size + 88} ${size + padV * 2}`}>
       {/* rings */}
       {[0.25, 0.5, 0.75, 1].map((r, i) => (
         <polygon key={i} points={ring(r)} fill="none" stroke="var(--line)" strokeWidth="1" />
@@ -107,16 +107,18 @@ function RadarChart({ stats, color = 'var(--accent)', size = 280 }) {
       {/* labels */}
       {stats.map((s, i) => {
         const [x, y] = labelPoints[i];
+        const horizontal = Math.cos(angleAt(i));
+        const anchor = horizontal > .3 ? 'start' : horizontal < -.3 ? 'end' : 'middle';
         return (
           <g key={i}>
-            <text x={x} y={y} textAnchor="middle" dominantBaseline="middle"
+            <text x={x} y={y} textAnchor={anchor} dominantBaseline="middle"
               fontFamily="var(--font-mono)" fontSize="10"
               letterSpacing="0.06em" fill="var(--ink-soft)"
               style={{ textTransform: 'uppercase' }}
             >
               {s.label}
             </text>
-            <text x={x} y={y + 12} textAnchor="middle" dominantBaseline="middle"
+            <text x={x} y={y + 12} textAnchor={anchor} dominantBaseline="middle"
               fontFamily="var(--font-mono)" fontSize="11" fontWeight="700"
               fill="var(--ink)"
             >
@@ -129,9 +131,9 @@ function RadarChart({ stats, color = 'var(--accent)', size = 280 }) {
   );
 }
 
-function LineChart({ values, height = 220, color = 'var(--accent)' }) {
+function LineChart({ values, height = 220, color = 'var(--accent)', compact = false, matches = [], playerId }) {
   const width = 600;
-  const padL = 36, padR = 16, padT = 16, padB = 26;
+  const padL = 40, padR = 18, padT = compact ? 18 : 28, padB = 34;
   if (!values || values.length === 0) return null;
   const min = Math.min(...values, 0), max = Math.max(...values, 0);
   const range = (max - min) || 1;
@@ -141,8 +143,15 @@ function LineChart({ values, height = 220, color = 'var(--accent)' }) {
     return [x, y];
   });
   const d = pts.map((p, i) => (i === 0 ? `M${p[0]},${p[1]}` : `L${p[0]},${p[1]}`)).join(' ');
-  const area = `${d} L${pts[pts.length - 1][0]},${height - padB} L${pts[0][0]},${height - padB} Z`;
   const zeroY = padT + (1 - (0 - min) / range) * (height - padT - padB);
+  const area = `${d} L${pts[pts.length - 1][0]},${zeroY} L${pts[0][0]},${zeroY} Z`;
+  const deltas = values.map((v, i) => i === 0 ? v : v - values[i - 1]);
+  const current = values[values.length - 1];
+  const peak = Math.max(...values);
+  const bestGame = Math.max(...deltas);
+  const signed = (v) => `${v > 0 ? '+' : ''}${Number(v.toFixed(1))}`;
+  const [hovered, setHovered] = React.useState(null);
+  const pointDetails = i => { const match = matches[i]; const names = match?.players?.map(player => player.shortName || player.name).join(' · '); return { match, names }; };
 
   const strokeRef = React.useRef(null);
   React.useEffect(() => {
@@ -155,17 +164,24 @@ function LineChart({ values, height = 220, color = 'var(--accent)' }) {
     strokeRef.current.style.strokeDashoffset = 0;
   }, [values]);
 
-  const yTicks = [min, (min + max) / 2, max].map(t => Math.round(t));
+  const yTicks = [...new Set([min, 0, max].map(t => Math.round(t)))];
 
   return (
-    <svg className="line-svg" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none">
+    <div className={`line-chart-wrap${compact ? ' compact' : ''}`}>
+      {hovered !== null && <div className="line-hover-card">{(() => { const { match, names } = pointDetails(hovered); const delta = match?.players?.find(player => player.id === playerId)?.delta; return <><em>{tr('chart_hover_category')}</em><div className="line-hover-head"><strong>{match ? `${match.sessionCode} · H${match.hanchan}` : `H${hovered + 1}`}</strong><b>{signed(values[hovered])}</b></div><div className="line-hover-label"><span>{tr('chart_hover_accumulated')}</span><strong>{signed(values[hovered])}</strong><span>{tr('chart_hover_match')}</span><strong className={delta >= 0 ? 'positive' : 'negative'}>{delta !== undefined ? signed(delta) : '—'}</strong></div>{match && <div className="line-hover-meta">{tr('chart_hover_table', { n: match.table })}{match.date ? ` · ${match.date}` : ''}</div>}{names && <small><span>{tr('chart_hover_players')}</span>{names}</small>}</>; })()}</div>}
+      {!compact && <div className="line-summary">
+        <div><span>{tr('chart_current')}</span><strong style={{ color: current >= 0 ? 'var(--good)' : 'var(--bad)' }}>{signed(current)}</strong></div>
+        <div><span>{tr('chart_peak')}</span><strong>{signed(peak)}</strong></div>
+        <div><span>{tr('chart_best_game')}</span><strong style={{ color }}>{signed(bestGame)}</strong></div>
+      </div>}
+      <svg className="line-svg" viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="xMidYMid meet" role="img" aria-label={tr('chart_aria', { n: values.length, points: signed(current) })}>
       {/* grid */}
       {yTicks.map((t, i) => {
         const y = padT + (1 - (t - min) / range) * (height - padT - padB);
         return (
           <g key={i}>
             <line className="grid" x1={padL} y1={y} x2={width - padR} y2={y} />
-            <text className="axis-label" x={padL - 8} y={y + 4} textAnchor="end">{t}</text>
+            <text className="axis-label" x={padL - 8} y={y + 4} textAnchor="end">{signed(t)}</text>
           </g>
         );
       })}
@@ -174,14 +190,16 @@ function LineChart({ values, height = 220, color = 'var(--accent)' }) {
       <path className="area" d={area} fill={color} />
       <path ref={strokeRef} className="stroke" d={d} stroke={color} />
       {/* points */}
-      {pts.map((p, i) => (
-        <circle key={i} cx={p[0]} cy={p[1]} r="2.5" fill={color} opacity={i === pts.length - 1 ? 1 : 0.45} />
-      ))}
+      {pts.map((p, i) => <g key={i} className="line-checkpoint">
+        <circle onMouseEnter={() => setHovered(i)} onMouseLeave={() => setHovered(null)} cx={p[0]} cy={p[1]} r={i === pts.length - 1 ? 4 : 3} fill="var(--bg-elev)" stroke={color} strokeWidth="2" />
+        {!compact && <text className="point-value" x={p[0]} y={p[1] < padT + 18 ? p[1] + 16 : p[1] - 9} textAnchor="middle">{signed(values[i])}</text>}
+      </g>)}
       <circle className="point" cx={pts[pts.length - 1][0]} cy={pts[pts.length - 1][1]} r="4" fill={color} />
-      {/* x label */}
-      <text className="axis-label" x={padL} y={height - 6}>H1</text>
-      <text className="axis-label" x={width - padR} y={height - 6} textAnchor="end">H{values.length}</text>
-    </svg>
+      {/* eje de partidas */}
+      {pts.map((p, i) => <text className="axis-label x-tick" key={i} x={p[0]} y={height - 15} textAnchor="middle">{i + 1}</text>)}
+      <text className="axis-title" x={(padL + width - padR) / 2} y={height - 2} textAnchor="middle">{tr('chart_game_axis')}</text>
+      </svg>
+    </div>
   );
 }
 
