@@ -110,6 +110,7 @@ function HandTiles({ hand, win, melds = [], size }) {
       {win && (
         <span className="mj-group win">
           <Tile code={win} size={size} state="win" title={`${tileLabel(win)} · ${tr('hand_winning_tile')}`} />
+          <small className="mj-win-label">{tr('hand_winning_tile')}</small>
         </span>
       )}
       {melds.map((meld, i) => <Meld key={i} meld={meld} size={size} />)}

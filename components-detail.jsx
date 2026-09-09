@@ -425,6 +425,9 @@ function PlayerDetail({ playerId, data, onPick }) {
 // Popup con cada mano ganada que incluyó un yaku. Se cierra con Escape, con el
 // fondo o con la X; mientras está abierto el fondo no scrollea.
 function YakuHandsModal({ yaku, hands, player, data, color, onClose }) {
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [activeMilestone, setActiveMilestone] = React.useState('all');
+  const handListRef = React.useRef(null);
   React.useEffect(() => {
     // El perfil navega entre jugadores con las flechas (DivisionPlayerSelect
     // escucha en window). Con el popup abierto esas teclas no pueden llegar
@@ -434,16 +437,56 @@ function YakuHandsModal({ yaku, hands, player, data, color, onClose }) {
     // teclado.
     const onKey = (e) => {
       if (e.key === 'Escape') { onClose(); return; }
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') e.stopPropagation();
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.stopPropagation();
+        e.preventDefault();
+        if (!hands.length) return;
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+          setSelectedIndex(index => e.key === 'ArrowUp'
+            ? (index - 1 + hands.length) % hands.length
+            : (index + 1) % hands.length);
+          setActiveMilestone('all');
+          return;
+        }
+        const choices = ['all', ...milestones.map(item => item.key)];
+        const current = Math.max(0, choices.indexOf(activeMilestone));
+        const next = e.key === 'ArrowLeft'
+          ? (current - 1 + choices.length) % choices.length
+          : (current + 1) % choices.length;
+        const nextKey = choices[next];
+        setActiveMilestone(nextKey);
+        if (nextKey !== 'all') setSelectedIndex(milestones.find(item => item.key === nextKey).index);
+      }
     };
     window.addEventListener('keydown', onKey, true);
     const previo = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => { window.removeEventListener('keydown', onKey, true); document.body.style.overflow = previo; };
-  }, [onClose]);
+  }, [onClose, hands.length, activeMilestone]);
+
+  React.useEffect(() => { setSelectedIndex(0); setActiveMilestone('all'); }, [yaku]);
+  React.useEffect(() => {
+    const list = handListRef.current;
+    const active = list?.querySelector(`[data-hand-index="${selectedIndex}"]`);
+    if (!list || !active) return;
+    const top = active.offsetTop;
+    const bottom = top + active.offsetHeight;
+    if (top < list.scrollTop) list.scrollTo({ top, behavior: 'smooth' });
+    else if (bottom > list.scrollTop + list.clientHeight) list.scrollTo({ top: bottom - list.clientHeight, behavior: 'smooth' });
+  }, [selectedIndex]);
 
   const total = hands.reduce((sum, h) => sum + (h.points || 0), 0);
   const promedio = hands.length ? Math.round(total / hands.length) : 0;
+  const indexOf = compare => hands.reduce((best, hand, index) => best < 0 || compare(hand, hands[best]) ? index : best, -1);
+  const milestones = hands.length ? [
+    { key: 'valuable', icon: '◆', label: tr('hand_most_valuable'), index: indexOf((a, b) => (a.points || 0) > (b.points || 0)) },
+    { key: 'fast', icon: '⚡', label: tr('hand_fastest'), index: indexOf((a, b) => (a.turn || Infinity) < (b.turn || Infinity)) },
+    { key: 'recent', icon: '◷', label: tr('hand_most_recent'), index: indexOf((a, b) => (a.session || 0) > (b.session || 0) || ((a.session || 0) === (b.session || 0) && (a.hanchan || 0) > (b.hanchan || 0))) },
+    { key: 'cheap', icon: '◇', label: tr('hand_cheapest'), index: indexOf((a, b) => (a.points || Infinity) < (b.points || Infinity)) },
+  ] : [];
+  const selected = hands[selectedIndex] || hands[0];
+  const selectedMilestones = milestones.filter(item => item.index === selectedIndex);
+  const chooseMilestone = milestone => { setActiveMilestone(milestone.key); setSelectedIndex(milestone.index); };
   return ReactDOM.createPortal(
     <div className="cal-modal-backdrop" onClick={onClose}>
       <div className="cal-modal yaku-modal" role="dialog" aria-modal="true" aria-label={yaku}
@@ -456,8 +499,22 @@ function YakuHandsModal({ yaku, hands, player, data, color, onClose }) {
           </div>
           <button className="cm-close" onClick={onClose} aria-label={tr('cerrar')}>✕</button>
         </div>
-        <div className="yaku-hand-list">
-          {hands.map((h, i) => <YakuHandRow key={i} hand={h} yaku={yaku} player={player} data={data} />)}
+        <div className="hand-milestone-tabs" role="tablist" aria-label={tr('hand_highlights')}>
+          <button className={activeMilestone === 'all' ? 'active' : ''} onClick={() => setActiveMilestone('all')}>{tr('hand_all')} · {hands.length}</button>
+          {milestones.map(item => <button key={item.key} className={activeMilestone === item.key ? 'active' : ''} onClick={() => chooseMilestone(item)}><i>{item.icon}</i>{item.label}</button>)}
+        </div>
+        <div className="hand-keyboard-hint"><span>↑ ↓</span> {tr('hand_keys_hands')} <i>·</i> <span>← →</span> {tr('hand_keys_highlights')}</div>
+        {activeMilestone !== 'all' && selected && <div className="hand-milestone-reason"><strong>{milestones.find(item => item.key === activeMilestone)?.label}</strong><span>{tr(`hand_${activeMilestone}_reason`, { points: (selected.points || 0).toLocaleString('es-CL'), turn: selected.turn, session: selected.session, hanchan: selected.hanchan })}</span></div>}
+        <div className="yaku-gallery">
+          <div className="yaku-gallery-list" ref={handListRef} role="tablist" aria-label={tr('hand_all')}>
+            {hands.map((hand, index) => <button key={index} data-hand-index={index} role="tab" aria-selected={selectedIndex === index} className={selectedIndex === index ? 'active' : ''} onClick={() => { setSelectedIndex(index); setActiveMilestone('all'); }}><span>{tr('sesion_n', { n: hand.session })} · H{hand.hanchan}</span><strong>{(hand.points || 0).toLocaleString('es-CL')}</strong><small>{hand.tsumo ? tr('by_tsumo') : tr('by_ron')} · {tr('hand_turn', { n: hand.turn })}</small>{milestones.filter(item => item.index === index).length > 0 && <em>{milestones.filter(item => item.index === index).map(item => item.icon).join(' ')}</em>}</button>)}
+          </div>
+          <div className="yaku-mobile-nav">
+            <button onClick={() => { setSelectedIndex((selectedIndex - 1 + hands.length) % hands.length); setActiveMilestone('all'); }} aria-label={tr('hand_previous')}>‹</button>
+            <div><span>{selectedIndex + 1} / {hands.length}</span><strong>{tr('sesion_n', { n: selected?.session })} · {tr('hanchan_n', { n: selected?.hanchan })}</strong><small>{(selected?.points || 0).toLocaleString('es-CL')} · {selected?.tsumo ? tr('by_tsumo') : tr('by_ron')}</small></div>
+            <button onClick={() => { setSelectedIndex((selectedIndex + 1) % hands.length); setActiveMilestone('all'); }} aria-label={tr('hand_next')}>›</button>
+          </div>
+          {selected && <YakuHandRow hand={selected} yaku={yaku} player={player} data={data} milestones={selectedMilestones} average={promedio} featured />}
         </div>
       </div>
     </div>,
@@ -465,7 +522,7 @@ function YakuHandsModal({ yaku, hands, player, data, color, onClose }) {
   );
 }
 
-function YakuHandRow({ hand, yaku, player, data }) {
+function YakuHandRow({ hand, yaku, player, data, milestones = [], average = 0, featured = false }) {
   const otros = (hand.yaku || []).filter(y => y !== yaku);
   // La mano no guarda el enlace: se llega a la partida por su código, que es lo
   // mismo que ya guarda (sesión, mesa, hanchan). Así no se duplica la URL 1.285
@@ -473,7 +530,8 @@ function YakuHandRow({ hand, yaku, player, data }) {
   const code = `${player.div}-S${hand.session}-M${hand.table}-G${hand.hanchan}`;
   const match = (data.divisions[player.div].matches || []).find(m => m.id === code);
   return (
-    <div className="yaku-hand">
+    <div className={`yaku-hand ${featured ? 'featured' : ''}`}>
+      {milestones.length > 0 && <div className="yaku-hand-milestones">{milestones.map(item => <span key={item.key}><i>{item.icon}</i>{item.label}</span>)}</div>}
       <div className="yaku-hand-head">
         <span className="where">{tr('sesion_n', { n: hand.session })} · {tr('mesa', { n: hand.table })} · {tr('hanchan_n', { n: hand.hanchan })}</span>
         <span className={`how ${hand.tsumo ? 'tsumo' : 'ron'}`}>
@@ -503,6 +561,7 @@ function YakuHandRow({ hand, yaku, player, data }) {
           )}
         </span>
       </div>
+      {featured && average > 0 && <div className="yaku-hand-comparison">{tr('hand_vs_average', { delta: Math.round(((hand.points || 0) / average - 1) * 100), average: average.toLocaleString('es-CL') })}</div>}
     </div>
   );
 }
