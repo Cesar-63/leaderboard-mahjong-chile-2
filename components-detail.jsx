@@ -180,6 +180,17 @@ function DivisionPlayerSelect({ value, onChange, data, division }) {
   }, [open]);
   const pick = id => { onChange(id); setOpen(false); };
   const move = step => pick(players[(currentIndex + step + players.length) % players.length].id);
+  React.useEffect(() => {
+    const navigateWithArrows = event => {
+      const target = event.target;
+      const isEditing = target instanceof HTMLElement && (target.isContentEditable || ['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName));
+      if (open || isEditing || (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight')) return;
+      event.preventDefault();
+      move(event.key === 'ArrowLeft' ? -1 : 1);
+    };
+    window.addEventListener('keydown', navigateWithArrows);
+    return () => window.removeEventListener('keydown', navigateWithArrows);
+  }, [open, currentIndex, players]);
   return <div className="player-navigator" ref={rootRef}>
     <button className="player-nav-arrow" onClick={() => move(-1)} aria-label={tr('player_previous')}>‹</button>
     <div className="player-picker-position"><b>{String(currentIndex + 1).padStart(2, '0')} / {players.length}</b><small>{tr('player_ranking')}</small></div>
