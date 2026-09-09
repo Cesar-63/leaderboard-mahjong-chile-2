@@ -55,6 +55,11 @@ YAKU_NAMES = {
 # entrar en el ranking de "yaku más jugados" (si entran, el dora se lleva el
 # primer puesto de todos los jugadores).
 NON_YAKU_FAN_IDS = frozenset({31, 32, 33, 34})
+# Los yakuman (35 en adelante en YAKU_NAMES) no se cuentan en han: el paipu les
+# pone `count` = 1, que es el múltiplo del yakuman, no trece han. Verificado en
+# las tres de la liga: kokushi, suuankou y shousuushii, todas con count=1 y
+# 32.000/48.000 puntos.
+YAKUMAN_FAN_IDS = frozenset(range(35, 50))
 MS_HOST = "https://mahjongsoul.game.yo-star.com"
 MS_GATEWAY_HOSTS = (
     "https://engs.mahjongsoul.com",
@@ -639,6 +644,7 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                     stats[last_discard]["dealInPoints"] += int(hule.dadian)
                     paga = last_discard
                 yakus = []
+                es_yakuman = any(fan.id in YAKUMAN_FAN_IDS for fan in hule.fans)
                 for fan in hule.fans:
                     if fan.id in NON_YAKU_FAN_IDS:
                         continue
@@ -654,6 +660,9 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                     "yaku": yakus, "hand": "".join(hule.hand), "win": hule.hu_tile,
                     "melds": melds, "dora": "".join(hule.doras),
                     "points": int(hule.dadian), "fu": int(hule.fu),
+                    # `count` es el han de la mano, dora incluido; en un yakuman
+                    # es el múltiplo (1 = simple, 2 = doble).
+                    "han": int(hule.count), "yakuman": es_yakuman,
                     "tsumo": bool(hule.zimo), "riichi": bool(hule.liqi),
                     "turn": draws[seat] if hule.zimo else draws[seat] + 1,
                     "loserSeat": paga,

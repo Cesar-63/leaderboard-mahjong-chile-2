@@ -617,6 +617,7 @@ select{font:inherit;color:inherit}
    colgando ni parte "Dora" de su ficha. */
 .yaku-hand-foot .meta{display:flex;align-items:center;flex-wrap:wrap;gap:4px 7px;margin-left:auto;color:var(--ink-faint)}
 .yaku-hand-foot .meta .nw{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.yaku-hand-foot .meta .han{color:var(--ink-soft);font-weight:600}
 .yaku-hand-foot .meta .nw + .nw::before{content:'·';opacity:.55}
 .yaku-hand-foot .badge-riichi{font-style:normal;padding:2px 6px;border-radius:99px;background:color-mix(in oklab,var(--accent) 15%,transparent);color:var(--accent)}
 /* Apenas la mano no cabe entera, se parte en filas en vez de esconderse detrás

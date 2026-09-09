@@ -82,7 +82,7 @@ def wrap_records(records):
 
 def hand_paipu(*, winner=0, zimo=True, liqi=False, ming=(), dadian=8000, draws=(0, 0, 0, 0),
                discarder=None, ankan_seat=None, pon_seat=None, hand=(), hu_tile="",
-               fans=(), doras=(), fu=0):
+               fans=(), doras=(), fu=0, han=0):
     """Una mano suelta: robos por asiento, llamadas opcionales y un ganador."""
     from ms import protocol_pb2 as pb
     new_round = pb.RecordNewRound()
@@ -119,6 +119,7 @@ def hand_paipu(*, winner=0, zimo=True, liqi=False, ming=(), dadian=8000, draws=(
     hule.hu_tile = hu_tile
     hule.doras.extend(doras)
     hule.fu = fu
+    hule.count = han
     for fan_id, val in fans:
         fan = hule.fans.add()
         fan.id = fan_id
@@ -261,7 +262,7 @@ class SyncTests(unittest.TestCase):
             winner=0, zimo=False, discarder=2, liqi=False, dadian=5800, fu=40,
             draws=(9, 9, 9, 9), hand=["2m", "3m", "4m", "6p", "6p"], hu_tile="4m",
             ming=["shunzi(3s,2s,4s)", "angang(1z,1z,1z,1z)"],
-            fans=[(12, 1), (31, 2)], doras=["9m"],
+            fans=[(12, 1), (31, 2)], doras=["9m"], han=3,
         )
         parsed = parse_record("260101-00000000-0000-0000-0000-000000000000", raw)
         mano = parsed.seat_stats[0]["wonHands"][0]
@@ -273,9 +274,21 @@ class SyncTests(unittest.TestCase):
         self.assertEqual(mano["yaku"], ["Tanyao"])
         self.assertEqual(mano["dora"], "9m")
         self.assertEqual((mano["points"], mano["fu"]), (5800, 40))
+        # El han es el de la mano completa, dora incluido: 1 de tanyao + 2 de dora.
+        self.assertEqual((mano["han"], mano["yakuman"]), (3, False))
         self.assertEqual((mano["tsumo"], mano["riichi"]), (False, False))
         self.assertEqual(mano["turn"], 10)
         self.assertEqual(mano["loserSeat"], 2)
+
+    def test_el_yakuman_no_se_publica_como_un_han(self):
+        # En un yakuman el paipu manda `count` = 1, que es el múltiplo del
+        # yakuman y no un han: se marca como tal para no mostrar "1 han" en una
+        # mano de 32.000.
+        raw = hand_paipu(winner=0, zimo=True, dadian=32000, fu=40, han=1, fans=[(38, 1)])
+        parsed = parse_record("260101-00000000-0000-0000-0000-000000000000", raw)
+        mano = parsed.seat_stats[0]["wonHands"][0]
+        self.assertEqual((mano["han"], mano["yakuman"]), (1, True))
+        self.assertEqual(mano["yaku"], ["Suuankou"])
 
     def test_la_mano_ganada_por_tsumo_no_apunta_a_nadie(self):
         raw = hand_paipu(winner=1, zimo=True, draws=(4, 4, 4, 4), fans=[(2, 1)])
@@ -434,6 +447,7 @@ class SyncTests(unittest.TestCase):
         game["seatStats"][0]["wonHands"] = [{
             "yaku": ["Tanyao"], "hand": "2m3m4m6p6p", "win": "4m",
             "melds": ["s3s2s4s"], "dora": "9m", "points": 5800, "fu": 40,
+            "han": 3, "yakuman": False,
             "tsumo": False, "riichi": True, "turn": 10, "loserSeat": 1,
         }]
 
@@ -444,6 +458,7 @@ class SyncTests(unittest.TestCase):
         self.assertEqual((manos[0]["session"], manos[0]["table"], manos[0]["hanchan"]), (1, 1, 1))
         self.assertEqual(manos[0]["yaku"], ["Tanyao"])
         self.assertEqual(manos[0]["hand"], "2m3m4m6p6p")
+        self.assertEqual((manos[0]["han"], manos[0]["yakuman"]), (3, False))
         # El asiento 1 es Bodoque: se publica su nombre de liga.
         self.assertEqual(manos[0]["loser"], "Bodoque")
         # Los jugadores sin manos ganadas no aparecen en el mapa.
@@ -461,8 +476,8 @@ class SyncTests(unittest.TestCase):
         game["players"][1] = {"seat": 1, "account_id": 999, "nickname": "Suplente", "point": 38500}
         game["seatStats"][0]["wonHands"] = [{
             "yaku": ["Riichi"], "hand": "2m3m4m6p6p", "win": "4m", "melds": [],
-            "dora": "", "points": 5800, "fu": 40, "tsumo": False, "riichi": True,
-            "turn": 10, "loserSeat": 1,
+            "dora": "", "points": 5800, "fu": 40, "han": 2, "yakuman": False,
+            "tsumo": False, "riichi": True, "turn": 10, "loserSeat": 1,
         }]
 
         data, _ = build_public_data(config, rosters, fixtures, submissions, {}, {"A-S1-M1-G1": game})

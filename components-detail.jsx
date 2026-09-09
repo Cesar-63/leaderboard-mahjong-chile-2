@@ -404,6 +404,9 @@ function YakuHandRow({ hand, yaku, player, data }) {
         {otros.length > 0 && <span className="others">{otros.join(' · ')}</span>}
         <span className="meta">
           {hand.riichi && <em className="badge-riichi">{tr('badge_riichi')}</em>}
+          <span className="nw han">{hand.yakuman
+            ? (hand.han > 1 ? tr('hand_yakuman_n', { n: hand.han }) : tr('hand_yakuman'))
+            : tr('hand_han', { n: hand.han })}</span>
           <span className="nw">{tr('hand_fu', { n: hand.fu })}</span>
           <span className="nw">{tr('hand_turn', { n: hand.turn })}</span>
           {hand.dora && (

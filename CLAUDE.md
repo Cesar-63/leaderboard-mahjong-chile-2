@@ -97,8 +97,11 @@ jugador y publica las tasas. Definiciones, alineadas con amae-koromo:
   `stat-tips.jsx`), no mostrarlas como dato firme.
 - **Cada mano ganada se guarda entera**, en `yakuHands` del payload público: un
   mapa `id de jugador → manos`, cada una con sus fichas (`hand` oculta, `win`,
-  `melds`, `dora`), puntos, fu, turno, sesión/mesa/hanchan del calendario y a
-  quién le pagaron el ron. Va como mapa aparte y **no colgando de cada jugador**
+  `melds`, `dora`), puntos, han, fu, turno, sesión/mesa/hanchan del calendario y
+  a quién le pagaron el ron. **El `han` incluye el dora** (es el `count` del
+  paipu, que coincide con la suma de los fans en las 1.285 manos de la liga),
+  pero **en un yakuman `count` vale 1**: es el múltiplo, no trece han. Por eso va
+  también `yakuman`, y la vista muestra "Yakuman" en vez de "1 han". Va como mapa aparte y **no colgando de cada jugador**
   porque el mismo dict de jugador se repite en `players`, `allPlayers`,
   `hallOfFame`, `nationalities` e `iormc`: colgarlo ahí multiplicaría el payload.
   Del que pagó sólo se nombra a los del roster; de un suplente no se publica
