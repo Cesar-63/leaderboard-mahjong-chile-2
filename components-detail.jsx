@@ -391,11 +391,20 @@ function PlayerDetail({ playerId, data, onPick }) {
 // fondo o con la X; mientras está abierto el fondo no scrollea.
 function YakuHandsModal({ yaku, hands, player, data, color, onClose }) {
   React.useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
-    document.addEventListener('keydown', onKey);
+    // El perfil navega entre jugadores con las flechas (DivisionPlayerSelect
+    // escucha en window). Con el popup abierto esas teclas no pueden llegar
+    // allá: cambiarían de jugador por detrás y cerrarían esto de rebote. Se
+    // atajan en la fase de captura, que corre antes que cualquier otro
+    // listener, y sin preventDefault para que el popup siga scrolleando con el
+    // teclado.
+    const onKey = (e) => {
+      if (e.key === 'Escape') { onClose(); return; }
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') e.stopPropagation();
+    };
+    window.addEventListener('keydown', onKey, true);
     const previo = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    return () => { document.removeEventListener('keydown', onKey); document.body.style.overflow = previo; };
+    return () => { window.removeEventListener('keydown', onKey, true); document.body.style.overflow = previo; };
   }, [onClose]);
 
   const total = hands.reduce((sum, h) => sum + (h.points || 0), 0);
