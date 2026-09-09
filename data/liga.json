@@ -140,7 +140,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 1,
-          "zone": "playoff"
+          "zone": "playoff",
+          "kans": 4,
+          "doras": 43,
+          "uraDoras": 15,
+          "maxHonba": 6
         },
         {
           "id": "A03",
@@ -289,7 +293,11 @@
           "rank": 2,
           "zone": "playoff",
           "natRank": 1,
-          "iormc": "qualified"
+          "iormc": "qualified",
+          "kans": 11,
+          "doras": 45,
+          "uraDoras": 19,
+          "maxHonba": 4
         },
         {
           "id": "A09",
@@ -446,7 +454,11 @@
           "rank": 3,
           "zone": "playoff",
           "natRank": 2,
-          "iormc": "qualified"
+          "iormc": "qualified",
+          "kans": 15,
+          "doras": 47,
+          "uraDoras": 21,
+          "maxHonba": 6
         },
         {
           "id": "A22",
@@ -577,7 +589,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 4,
-          "zone": "playoff"
+          "zone": "playoff",
+          "kans": 4,
+          "doras": 32,
+          "uraDoras": 19,
+          "maxHonba": 6
         },
         {
           "id": "A07",
@@ -712,7 +728,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 5,
-          "zone": "playoff"
+          "zone": "playoff",
+          "kans": 1,
+          "doras": 34,
+          "uraDoras": 19,
+          "maxHonba": 8
         },
         {
           "id": "A24",
@@ -851,7 +871,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 6,
-          "zone": "playoff"
+          "zone": "playoff",
+          "kans": 5,
+          "doras": 42,
+          "uraDoras": 11,
+          "maxHonba": 5
         },
         {
           "id": "A16",
@@ -980,7 +1004,11 @@
           "rank": 7,
           "zone": "playoff",
           "natRank": 3,
-          "iormc": "qualified"
+          "iormc": "qualified",
+          "kans": 6,
+          "doras": 36,
+          "uraDoras": 24,
+          "maxHonba": 6
         },
         {
           "id": "A04",
@@ -1133,7 +1161,11 @@
           "rank": 8,
           "zone": "playoff",
           "natRank": 4,
-          "iormc": "qualified"
+          "iormc": "qualified",
+          "kans": 5,
+          "doras": 38,
+          "uraDoras": 14,
+          "maxHonba": 4
         },
         {
           "id": "A15",
@@ -1268,7 +1300,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 9,
-          "zone": null
+          "zone": null,
+          "kans": 10,
+          "doras": 40,
+          "uraDoras": 16,
+          "maxHonba": 3
         },
         {
           "id": "A01",
@@ -1401,7 +1437,11 @@
           "rank": 10,
           "zone": null,
           "natRank": 5,
-          "iormc": "contention"
+          "iormc": "contention",
+          "kans": 3,
+          "doras": 28,
+          "uraDoras": 12,
+          "maxHonba": 4
         },
         {
           "id": "A02",
@@ -1538,7 +1578,11 @@
           "rank": 11,
           "zone": null,
           "natRank": 6,
-          "iormc": "contention"
+          "iormc": "contention",
+          "kans": 1,
+          "doras": 39,
+          "uraDoras": 11,
+          "maxHonba": 3
         },
         {
           "id": "A19",
@@ -1653,7 +1697,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 12,
-          "zone": null
+          "zone": null,
+          "kans": 1,
+          "doras": 30,
+          "uraDoras": 17,
+          "maxHonba": 5
         },
         {
           "id": "A14",
@@ -1772,7 +1820,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 13,
-          "zone": null
+          "zone": null,
+          "kans": 5,
+          "doras": 27,
+          "uraDoras": 9,
+          "maxHonba": 3
         },
         {
           "id": "A10",
@@ -1899,7 +1951,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 14,
-          "zone": null
+          "zone": null,
+          "kans": 5,
+          "doras": 27,
+          "uraDoras": 6,
+          "maxHonba": 4
         },
         {
           "id": "A08",
@@ -2036,7 +2092,11 @@
           "rank": 15,
           "zone": null,
           "natRank": 7,
-          "iormc": "contention"
+          "iormc": "contention",
+          "kans": 10,
+          "doras": 30,
+          "uraDoras": 13,
+          "maxHonba": 8
         },
         {
           "id": "A18",
@@ -2161,7 +2221,11 @@
           "rank": 16,
           "zone": null,
           "natRank": 8,
-          "iormc": "out"
+          "iormc": "out",
+          "kans": 3,
+          "doras": 24,
+          "uraDoras": 13,
+          "maxHonba": 8
         },
         {
           "id": "A23",
@@ -2302,7 +2366,11 @@
           "rank": 17,
           "zone": null,
           "natRank": 9,
-          "iormc": "out"
+          "iormc": "out",
+          "kans": 6,
+          "doras": 31,
+          "uraDoras": 11,
+          "maxHonba": 3
         },
         {
           "id": "A12",
@@ -2425,7 +2493,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 18,
-          "zone": null
+          "zone": null,
+          "kans": 1,
+          "doras": 24,
+          "uraDoras": 15,
+          "maxHonba": 5
         },
         {
           "id": "A06",
@@ -2548,7 +2620,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 19,
-          "zone": null
+          "zone": null,
+          "kans": 9,
+          "doras": 28,
+          "uraDoras": 7,
+          "maxHonba": 6
         },
         {
           "id": "A21",
@@ -2675,7 +2751,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 20,
-          "zone": null
+          "zone": null,
+          "kans": 11,
+          "doras": 33,
+          "uraDoras": 18,
+          "maxHonba": 6
         },
         {
           "id": "A20",
@@ -2812,7 +2892,11 @@
           "rank": 21,
           "zone": "relegation",
           "natRank": 10,
-          "iormc": "out"
+          "iormc": "out",
+          "kans": 4,
+          "doras": 24,
+          "uraDoras": 15,
+          "maxHonba": 5
         },
         {
           "id": "A05",
@@ -2959,7 +3043,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 22,
-          "zone": "relegation"
+          "zone": "relegation",
+          "kans": 8,
+          "doras": 36,
+          "uraDoras": 13,
+          "maxHonba": 8
         },
         {
           "id": "A11",
@@ -3080,7 +3168,11 @@
           "rank": 23,
           "zone": "relegation",
           "natRank": 11,
-          "iormc": "out"
+          "iormc": "out",
+          "kans": 11,
+          "doras": 23,
+          "uraDoras": 9,
+          "maxHonba": 5
         },
         {
           "id": "A13",
@@ -3221,7 +3313,11 @@
           "rank": 24,
           "zone": "relegation",
           "natRank": 12,
-          "iormc": "out"
+          "iormc": "out",
+          "kans": 5,
+          "doras": 23,
+          "uraDoras": 6,
+          "maxHonba": 6
         }
       ],
       "matches": [
@@ -8049,6 +8145,620 @@
             "zone": "playoff"
           },
           "jp": "連勝"
+        },
+        {
+          "key": "kans",
+          "value": "15",
+          "player": {
+            "id": "A09",
+            "div": "A",
+            "num": "09",
+            "name": "Xuxe",
+            "shortName": "Xuxe",
+            "handle": "Xuxe",
+            "nat": "CL",
+            "games": 12,
+            "points": 116.6,
+            "history": [
+              25.1,
+              5.3,
+              -39.3,
+              -31.4,
+              46.5,
+              15.7,
+              12.1,
+              14.1,
+              12.8,
+              39.5,
+              -19.5,
+              35.7
+            ],
+            "cum": [
+              25.1,
+              30.4,
+              -8.9,
+              -40.3,
+              6.2,
+              21.9,
+              34.0,
+              48.1,
+              60.9,
+              100.4,
+              80.9,
+              116.6
+            ],
+            "counts": [
+              4,
+              5,
+              1,
+              2
+            ],
+            "absences": 0,
+            "hands": 153,
+            "wins": 36,
+            "dealIns": 24,
+            "riichis": 42,
+            "openHands": 59,
+            "damaten": 0,
+            "winPoints": 194700,
+            "dealInPoints": 82600,
+            "winTurns": 390,
+            "placements": {
+              "p1": 0.33,
+              "p2": 0.42,
+              "p3": 0.08,
+              "p4": 0.17
+            },
+            "avgRank": 2.08,
+            "avgPoints": 9.7,
+            "streak": 68.5,
+            "winRate": 23.5,
+            "dealInRate": 15.7,
+            "riichiRate": 27.5,
+            "openRate": 38.6,
+            "damatenRate": 0.0,
+            "avgWinPoints": 5408,
+            "avgDealInPoints": 3442,
+            "avgWinTurn": 10.83,
+            "yakus": [
+              {
+                "name": "Riichi",
+                "count": 18
+              },
+              {
+                "name": "Tanyao",
+                "count": 6
+              },
+              {
+                "name": "Honitsu",
+                "count": 5
+              },
+              {
+                "name": "Menzen Tsumo",
+                "count": 5
+              },
+              {
+                "name": "Pinfu",
+                "count": 4
+              },
+              {
+                "name": "Yakuhai Hatsu",
+                "count": 3
+              },
+              {
+                "name": "Yakuhai Chun",
+                "count": 3
+              },
+              {
+                "name": "Toitoi",
+                "count": 3
+              },
+              {
+                "name": "Yakuhai Haku",
+                "count": 3
+              },
+              {
+                "name": "Rinshan Kaihou",
+                "count": 2
+              },
+              {
+                "name": "Ittsu",
+                "count": 2
+              },
+              {
+                "name": "Ippatsu",
+                "count": 2
+              },
+              {
+                "name": "Yakuhai Jikaze",
+                "count": 2
+              },
+              {
+                "name": "Iipeiko",
+                "count": 1
+              },
+              {
+                "name": "Sanshoku Doujun",
+                "count": 1
+              },
+              {
+                "name": "Yakuhai Bakaze",
+                "count": 1
+              },
+              {
+                "name": "Haitei Raoyue",
+                "count": 1
+              },
+              {
+                "name": "Chiitoitsu",
+                "count": 1
+              },
+              {
+                "name": "Chinitsu",
+                "count": 1
+              }
+            ],
+            "statsSample": 153,
+            "statsReliable": true,
+            "arch": "con datos",
+            "rank": 3,
+            "zone": "playoff",
+            "natRank": 2,
+            "iormc": "qualified",
+            "kans": 15,
+            "doras": 47,
+            "uraDoras": 21,
+            "maxHonba": 6
+          },
+          "jp": "槓"
+        },
+        {
+          "key": "doras",
+          "value": "47",
+          "player": {
+            "id": "A09",
+            "div": "A",
+            "num": "09",
+            "name": "Xuxe",
+            "shortName": "Xuxe",
+            "handle": "Xuxe",
+            "nat": "CL",
+            "games": 12,
+            "points": 116.6,
+            "history": [
+              25.1,
+              5.3,
+              -39.3,
+              -31.4,
+              46.5,
+              15.7,
+              12.1,
+              14.1,
+              12.8,
+              39.5,
+              -19.5,
+              35.7
+            ],
+            "cum": [
+              25.1,
+              30.4,
+              -8.9,
+              -40.3,
+              6.2,
+              21.9,
+              34.0,
+              48.1,
+              60.9,
+              100.4,
+              80.9,
+              116.6
+            ],
+            "counts": [
+              4,
+              5,
+              1,
+              2
+            ],
+            "absences": 0,
+            "hands": 153,
+            "wins": 36,
+            "dealIns": 24,
+            "riichis": 42,
+            "openHands": 59,
+            "damaten": 0,
+            "winPoints": 194700,
+            "dealInPoints": 82600,
+            "winTurns": 390,
+            "placements": {
+              "p1": 0.33,
+              "p2": 0.42,
+              "p3": 0.08,
+              "p4": 0.17
+            },
+            "avgRank": 2.08,
+            "avgPoints": 9.7,
+            "streak": 68.5,
+            "winRate": 23.5,
+            "dealInRate": 15.7,
+            "riichiRate": 27.5,
+            "openRate": 38.6,
+            "damatenRate": 0.0,
+            "avgWinPoints": 5408,
+            "avgDealInPoints": 3442,
+            "avgWinTurn": 10.83,
+            "yakus": [
+              {
+                "name": "Riichi",
+                "count": 18
+              },
+              {
+                "name": "Tanyao",
+                "count": 6
+              },
+              {
+                "name": "Honitsu",
+                "count": 5
+              },
+              {
+                "name": "Menzen Tsumo",
+                "count": 5
+              },
+              {
+                "name": "Pinfu",
+                "count": 4
+              },
+              {
+                "name": "Yakuhai Hatsu",
+                "count": 3
+              },
+              {
+                "name": "Yakuhai Chun",
+                "count": 3
+              },
+              {
+                "name": "Toitoi",
+                "count": 3
+              },
+              {
+                "name": "Yakuhai Haku",
+                "count": 3
+              },
+              {
+                "name": "Rinshan Kaihou",
+                "count": 2
+              },
+              {
+                "name": "Ittsu",
+                "count": 2
+              },
+              {
+                "name": "Ippatsu",
+                "count": 2
+              },
+              {
+                "name": "Yakuhai Jikaze",
+                "count": 2
+              },
+              {
+                "name": "Iipeiko",
+                "count": 1
+              },
+              {
+                "name": "Sanshoku Doujun",
+                "count": 1
+              },
+              {
+                "name": "Yakuhai Bakaze",
+                "count": 1
+              },
+              {
+                "name": "Haitei Raoyue",
+                "count": 1
+              },
+              {
+                "name": "Chiitoitsu",
+                "count": 1
+              },
+              {
+                "name": "Chinitsu",
+                "count": 1
+              }
+            ],
+            "statsSample": 153,
+            "statsReliable": true,
+            "arch": "con datos",
+            "rank": 3,
+            "zone": "playoff",
+            "natRank": 2,
+            "iormc": "qualified",
+            "kans": 15,
+            "doras": 47,
+            "uraDoras": 21,
+            "maxHonba": 6
+          },
+          "jp": "ドラ"
+        },
+        {
+          "key": "ura_doras",
+          "value": "24",
+          "player": {
+            "id": "A16",
+            "div": "A",
+            "num": "16",
+            "name": "Chubi!",
+            "shortName": "Chubi!",
+            "handle": "Chubi!",
+            "nat": "CL",
+            "games": 10,
+            "points": 73.0,
+            "history": [
+              29.5,
+              46.0,
+              -11.7,
+              22.7,
+              -7.4,
+              7.5,
+              -61.0,
+              -12.3,
+              -7.3,
+              67.0
+            ],
+            "cum": [
+              29.5,
+              75.5,
+              63.8,
+              86.5,
+              79.1,
+              86.6,
+              25.6,
+              13.3,
+              6.0,
+              73.0
+            ],
+            "counts": [
+              4,
+              1,
+              4,
+              1
+            ],
+            "absences": 0,
+            "hands": 126,
+            "wins": 30,
+            "dealIns": 13,
+            "riichis": 39,
+            "openHands": 30,
+            "damaten": 0,
+            "winPoints": 185100,
+            "dealInPoints": 92300,
+            "winTurns": 330,
+            "placements": {
+              "p1": 0.4,
+              "p2": 0.1,
+              "p3": 0.4,
+              "p4": 0.1
+            },
+            "avgRank": 2.2,
+            "avgPoints": 7.3,
+            "streak": -13.6,
+            "winRate": 23.8,
+            "dealInRate": 10.3,
+            "riichiRate": 31.0,
+            "openRate": 23.8,
+            "damatenRate": 0.0,
+            "avgWinPoints": 6170,
+            "avgDealInPoints": 7100,
+            "avgWinTurn": 11.0,
+            "yakus": [
+              {
+                "name": "Riichi",
+                "count": 21
+              },
+              {
+                "name": "Pinfu",
+                "count": 9
+              },
+              {
+                "name": "Menzen Tsumo",
+                "count": 6
+              },
+              {
+                "name": "Ippatsu",
+                "count": 5
+              },
+              {
+                "name": "Tanyao",
+                "count": 4
+              },
+              {
+                "name": "Yakuhai Hatsu",
+                "count": 3
+              },
+              {
+                "name": "Iipeiko",
+                "count": 3
+              },
+              {
+                "name": "Yakuhai Haku",
+                "count": 2
+              },
+              {
+                "name": "Yakuhai Chun",
+                "count": 2
+              },
+              {
+                "name": "Sanshoku Doukou",
+                "count": 1
+              },
+              {
+                "name": "Toitoi",
+                "count": 1
+              },
+              {
+                "name": "Yakuhai Bakaze",
+                "count": 1
+              },
+              {
+                "name": "Yakuhai Jikaze",
+                "count": 1
+              }
+            ],
+            "statsSample": 126,
+            "statsReliable": true,
+            "arch": "con datos",
+            "rank": 7,
+            "zone": "playoff",
+            "natRank": 3,
+            "iormc": "qualified",
+            "kans": 6,
+            "doras": 36,
+            "uraDoras": 24,
+            "maxHonba": 6
+          },
+          "jp": "裏ドラ"
+        },
+        {
+          "key": "renchan",
+          "value": "8",
+          "player": {
+            "id": "A07",
+            "div": "A",
+            "num": "07",
+            "name": "asmirnov",
+            "shortName": "asmirnov",
+            "handle": "asmirnov",
+            "nat": "UY",
+            "games": 10,
+            "points": 80.6,
+            "history": [
+              -21.0,
+              29.4,
+              52.7,
+              40.9,
+              -7.2,
+              -12.1,
+              -12.8,
+              10.8,
+              12.7,
+              -12.8
+            ],
+            "cum": [
+              -21.0,
+              8.4,
+              61.1,
+              102.0,
+              94.8,
+              82.7,
+              69.9,
+              80.7,
+              93.4,
+              80.6
+            ],
+            "counts": [
+              3,
+              2,
+              5,
+              0
+            ],
+            "absences": 0,
+            "hands": 119,
+            "wins": 30,
+            "dealIns": 14,
+            "riichis": 27,
+            "openHands": 43,
+            "damaten": 1,
+            "winPoints": 156300,
+            "dealInPoints": 60600,
+            "winTurns": 288,
+            "placements": {
+              "p1": 0.3,
+              "p2": 0.2,
+              "p3": 0.5,
+              "p4": 0.0
+            },
+            "avgRank": 2.2,
+            "avgPoints": 8.1,
+            "streak": -2.1,
+            "winRate": 25.2,
+            "dealInRate": 11.8,
+            "riichiRate": 22.7,
+            "openRate": 36.1,
+            "damatenRate": 3.3,
+            "avgWinPoints": 5210,
+            "avgDealInPoints": 4329,
+            "avgWinTurn": 9.6,
+            "yakus": [
+              {
+                "name": "Riichi",
+                "count": 17
+              },
+              {
+                "name": "Pinfu",
+                "count": 9
+              },
+              {
+                "name": "Tanyao",
+                "count": 9
+              },
+              {
+                "name": "Menzen Tsumo",
+                "count": 8
+              },
+              {
+                "name": "Yakuhai Hatsu",
+                "count": 3
+              },
+              {
+                "name": "Yakuhai Jikaze",
+                "count": 2
+              },
+              {
+                "name": "Yakuhai Haku",
+                "count": 2
+              },
+              {
+                "name": "Honitsu",
+                "count": 2
+              },
+              {
+                "name": "Chanta",
+                "count": 1
+              },
+              {
+                "name": "Yakuhai Bakaze",
+                "count": 1
+              },
+              {
+                "name": "Chiitoitsu",
+                "count": 1
+              },
+              {
+                "name": "Toitoi",
+                "count": 1
+              },
+              {
+                "name": "Yakuhai Chun",
+                "count": 1
+              },
+              {
+                "name": "Sanshoku Doujun",
+                "count": 1
+              },
+              {
+                "name": "Ippatsu",
+                "count": 1
+              }
+            ],
+            "statsSample": 119,
+            "statsReliable": true,
+            "arch": "con datos",
+            "rank": 5,
+            "zone": "playoff",
+            "kans": 1,
+            "doras": 34,
+            "uraDoras": 19,
+            "maxHonba": 8
+          },
+          "jp": "連荘"
         }
       ]
     },
@@ -8192,7 +8902,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 1,
-          "zone": "playoff"
+          "zone": "playoff",
+          "kans": 3,
+          "doras": 36,
+          "uraDoras": 16,
+          "maxHonba": 4
         },
         {
           "id": "B15",
@@ -8315,7 +9029,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 2,
-          "zone": "playoff"
+          "zone": "playoff",
+          "kans": 2,
+          "doras": 31,
+          "uraDoras": 15,
+          "maxHonba": 4
         },
         {
           "id": "B20",
@@ -8450,7 +9168,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 3,
-          "zone": "playoff"
+          "zone": "playoff",
+          "kans": 5,
+          "doras": 31,
+          "uraDoras": 11,
+          "maxHonba": 4
         },
         {
           "id": "B05",
@@ -8577,7 +9299,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 4,
-          "zone": "playoff"
+          "zone": "playoff",
+          "kans": 2,
+          "doras": 26,
+          "uraDoras": 16,
+          "maxHonba": 4
         },
         {
           "id": "B22",
@@ -8712,7 +9438,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 5,
-          "zone": "playoff"
+          "zone": "playoff",
+          "kans": 2,
+          "doras": 27,
+          "uraDoras": 8,
+          "maxHonba": 6
         },
         {
           "id": "B08",
@@ -8835,7 +9565,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 6,
-          "zone": "playoff"
+          "zone": "playoff",
+          "kans": 4,
+          "doras": 39,
+          "uraDoras": 18,
+          "maxHonba": 4
         },
         {
           "id": "B13",
@@ -8966,7 +9700,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 7,
-          "zone": "playoff"
+          "zone": "playoff",
+          "kans": 9,
+          "doras": 46,
+          "uraDoras": 16,
+          "maxHonba": 4
         },
         {
           "id": "B14",
@@ -9097,7 +9835,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 8,
-          "zone": "playoff"
+          "zone": "playoff",
+          "kans": 6,
+          "doras": 36,
+          "uraDoras": 14,
+          "maxHonba": 4
         },
         {
           "id": "B17",
@@ -9220,7 +9962,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 9,
-          "zone": null
+          "zone": null,
+          "kans": 7,
+          "doras": 32,
+          "uraDoras": 16,
+          "maxHonba": 4
         },
         {
           "id": "B01",
@@ -9355,7 +10101,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 10,
-          "zone": null
+          "zone": null,
+          "kans": 2,
+          "doras": 31,
+          "uraDoras": 18,
+          "maxHonba": 6
         },
         {
           "id": "B03",
@@ -9482,7 +10232,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 11,
-          "zone": null
+          "zone": null,
+          "kans": 8,
+          "doras": 24,
+          "uraDoras": 14,
+          "maxHonba": 6
         },
         {
           "id": "B11",
@@ -9617,7 +10371,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 12,
-          "zone": null
+          "zone": null,
+          "kans": 3,
+          "doras": 36,
+          "uraDoras": 20,
+          "maxHonba": 4
         },
         {
           "id": "B07",
@@ -9732,7 +10490,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 13,
-          "zone": null
+          "zone": null,
+          "kans": 8,
+          "doras": 28,
+          "uraDoras": 9,
+          "maxHonba": 4
         },
         {
           "id": "B02",
@@ -9863,7 +10625,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 14,
-          "zone": null
+          "zone": null,
+          "kans": 4,
+          "doras": 34,
+          "uraDoras": 18,
+          "maxHonba": 4
         },
         {
           "id": "B16",
@@ -9990,7 +10756,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 15,
-          "zone": null
+          "zone": null,
+          "kans": 2,
+          "doras": 34,
+          "uraDoras": 11,
+          "maxHonba": 3
         },
         {
           "id": "B18",
@@ -10121,7 +10891,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 16,
-          "zone": null
+          "zone": null,
+          "kans": 9,
+          "doras": 24,
+          "uraDoras": 13,
+          "maxHonba": 4
         },
         {
           "id": "B24",
@@ -10264,7 +11038,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 17,
-          "zone": null
+          "zone": null,
+          "kans": 1,
+          "doras": 43,
+          "uraDoras": 19,
+          "maxHonba": 3
         },
         {
           "id": "B06",
@@ -10375,7 +11153,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 18,
-          "zone": null
+          "zone": null,
+          "kans": 2,
+          "doras": 20,
+          "uraDoras": 0,
+          "maxHonba": 3
         },
         {
           "id": "B12",
@@ -10510,7 +11292,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 19,
-          "zone": null
+          "zone": null,
+          "kans": 9,
+          "doras": 33,
+          "uraDoras": 9,
+          "maxHonba": 6
         },
         {
           "id": "B21",
@@ -10629,7 +11415,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 20,
-          "zone": null
+          "zone": null,
+          "kans": 18,
+          "doras": 36,
+          "uraDoras": 11,
+          "maxHonba": 4
         },
         {
           "id": "B19",
@@ -10756,7 +11546,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 21,
-          "zone": "bottom"
+          "zone": "bottom",
+          "kans": 4,
+          "doras": 30,
+          "uraDoras": 15,
+          "maxHonba": 3
         },
         {
           "id": "B09",
@@ -10891,7 +11685,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 22,
-          "zone": "bottom"
+          "zone": "bottom",
+          "kans": 9,
+          "doras": 23,
+          "uraDoras": 9,
+          "maxHonba": 4
         },
         {
           "id": "B10",
@@ -11014,7 +11812,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 23,
-          "zone": "bottom"
+          "zone": "bottom",
+          "kans": 9,
+          "doras": 27,
+          "uraDoras": 11,
+          "maxHonba": 4
         },
         {
           "id": "B23",
@@ -11125,7 +11927,11 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 24,
-          "zone": "bottom"
+          "zone": "bottom",
+          "kans": 11,
+          "doras": 9,
+          "uraDoras": 3,
+          "maxHonba": 4
         }
       ],
       "matches": [
@@ -15663,6 +16469,562 @@
             "zone": "playoff"
           },
           "jp": "連勝"
+        },
+        {
+          "key": "kans",
+          "value": "18",
+          "player": {
+            "id": "B21",
+            "div": "B",
+            "num": "21",
+            "name": "JDavid",
+            "shortName": "JDavid",
+            "handle": "JDavid",
+            "nat": "CL",
+            "games": 10,
+            "points": -170.8,
+            "history": [
+              -44.1,
+              3.8,
+              1.7,
+              48.2,
+              3.6,
+              -43.0,
+              -39.3,
+              -42.7,
+              -40.6,
+              -18.4
+            ],
+            "cum": [
+              -44.1,
+              -40.3,
+              -38.6,
+              9.6,
+              13.2,
+              -29.8,
+              -69.1,
+              -111.8,
+              -152.4,
+              -170.8
+            ],
+            "counts": [
+              1,
+              3,
+              1,
+              5
+            ],
+            "absences": 0,
+            "hands": 126,
+            "wins": 29,
+            "dealIns": 31,
+            "riichis": 23,
+            "openHands": 79,
+            "damaten": 0,
+            "winPoints": 164400,
+            "dealInPoints": 180600,
+            "winTurns": 327,
+            "placements": {
+              "p1": 0.1,
+              "p2": 0.3,
+              "p3": 0.1,
+              "p4": 0.5
+            },
+            "avgRank": 3.0,
+            "avgPoints": -17.1,
+            "streak": -141.0,
+            "winRate": 23.0,
+            "dealInRate": 24.6,
+            "riichiRate": 18.3,
+            "openRate": 62.7,
+            "damatenRate": 0.0,
+            "avgWinPoints": 5669,
+            "avgDealInPoints": 5826,
+            "avgWinTurn": 11.28,
+            "yakus": [
+              {
+                "name": "Riichi",
+                "count": 10
+              },
+              {
+                "name": "Tanyao",
+                "count": 8
+              },
+              {
+                "name": "Yakuhai Bakaze",
+                "count": 4
+              },
+              {
+                "name": "Yakuhai Haku",
+                "count": 3
+              },
+              {
+                "name": "Yakuhai Hatsu",
+                "count": 3
+              },
+              {
+                "name": "Yakuhai Chun",
+                "count": 2
+              },
+              {
+                "name": "Menzen Tsumo",
+                "count": 2
+              },
+              {
+                "name": "Pinfu",
+                "count": 2
+              },
+              {
+                "name": "Yakuhai Jikaze",
+                "count": 2
+              },
+              {
+                "name": "Ippatsu",
+                "count": 1
+              },
+              {
+                "name": "Chiitoitsu",
+                "count": 1
+              }
+            ],
+            "statsSample": 126,
+            "statsReliable": true,
+            "arch": "con datos",
+            "rank": 20,
+            "zone": null,
+            "kans": 18,
+            "doras": 36,
+            "uraDoras": 11,
+            "maxHonba": 4
+          },
+          "jp": "槓"
+        },
+        {
+          "key": "doras",
+          "value": "46",
+          "player": {
+            "id": "B13",
+            "div": "B",
+            "num": "13",
+            "name": "Mano_gu",
+            "shortName": "Mano_gu",
+            "handle": "Mano_gu",
+            "nat": "BR",
+            "games": 10,
+            "points": 115.6,
+            "history": [
+              3.9,
+              66.2,
+              41.2,
+              22.8,
+              43.8,
+              -19.0,
+              30.5,
+              -15.4,
+              -43.4,
+              -15.0
+            ],
+            "cum": [
+              3.9,
+              70.1,
+              111.3,
+              134.1,
+              177.9,
+              158.9,
+              189.4,
+              174.0,
+              130.6,
+              115.6
+            ],
+            "counts": [
+              3,
+              3,
+              3,
+              1
+            ],
+            "absences": 0,
+            "hands": 112,
+            "wins": 33,
+            "dealIns": 18,
+            "riichis": 24,
+            "openHands": 40,
+            "damaten": 4,
+            "winPoints": 204700,
+            "dealInPoints": 98100,
+            "winTurns": 373,
+            "placements": {
+              "p1": 0.3,
+              "p2": 0.3,
+              "p3": 0.3,
+              "p4": 0.1
+            },
+            "avgRank": 2.2,
+            "avgPoints": 11.6,
+            "streak": -43.3,
+            "winRate": 29.5,
+            "dealInRate": 16.1,
+            "riichiRate": 21.4,
+            "openRate": 35.7,
+            "damatenRate": 12.1,
+            "avgWinPoints": 6203,
+            "avgDealInPoints": 5450,
+            "avgWinTurn": 11.3,
+            "yakus": [
+              {
+                "name": "Riichi",
+                "count": 12
+              },
+              {
+                "name": "Tanyao",
+                "count": 8
+              },
+              {
+                "name": "Menzen Tsumo",
+                "count": 8
+              },
+              {
+                "name": "Yakuhai Chun",
+                "count": 6
+              },
+              {
+                "name": "Pinfu",
+                "count": 5
+              },
+              {
+                "name": "Yakuhai Haku",
+                "count": 4
+              },
+              {
+                "name": "Yakuhai Bakaze",
+                "count": 3
+              },
+              {
+                "name": "Ippatsu",
+                "count": 3
+              },
+              {
+                "name": "Yakuhai Hatsu",
+                "count": 2
+              },
+              {
+                "name": "Chiitoitsu",
+                "count": 2
+              },
+              {
+                "name": "Yakuhai Jikaze",
+                "count": 2
+              },
+              {
+                "name": "Toitoi",
+                "count": 1
+              },
+              {
+                "name": "Honitsu",
+                "count": 1
+              },
+              {
+                "name": "Sanshoku Doujun",
+                "count": 1
+              }
+            ],
+            "statsSample": 112,
+            "statsReliable": true,
+            "arch": "con datos",
+            "rank": 7,
+            "zone": "playoff",
+            "kans": 9,
+            "doras": 46,
+            "uraDoras": 16,
+            "maxHonba": 4
+          },
+          "jp": "ドラ"
+        },
+        {
+          "key": "ura_doras",
+          "value": "20",
+          "player": {
+            "id": "B11",
+            "div": "B",
+            "num": "11",
+            "name": "False_tux",
+            "shortName": "False_tux",
+            "handle": "False_tux",
+            "nat": "UY",
+            "games": 10,
+            "points": 18.3,
+            "history": [
+              -21.1,
+              42.2,
+              29.2,
+              53.2,
+              -40.6,
+              -20.0,
+              -38.3,
+              -12.7,
+              6.9,
+              19.5
+            ],
+            "cum": [
+              -21.1,
+              21.1,
+              50.3,
+              103.5,
+              62.9,
+              42.9,
+              4.6,
+              -8.1,
+              -1.2,
+              18.3
+            ],
+            "counts": [
+              2,
+              3,
+              3,
+              2
+            ],
+            "absences": 0,
+            "hands": 118,
+            "wins": 28,
+            "dealIns": 12,
+            "riichis": 26,
+            "openHands": 30,
+            "damaten": 2,
+            "winPoints": 150300,
+            "dealInPoints": 64100,
+            "winTurns": 312,
+            "placements": {
+              "p1": 0.2,
+              "p2": 0.3,
+              "p3": 0.3,
+              "p4": 0.2
+            },
+            "avgRank": 2.5,
+            "avgPoints": 1.8,
+            "streak": -24.6,
+            "winRate": 23.7,
+            "dealInRate": 10.2,
+            "riichiRate": 22.0,
+            "openRate": 25.4,
+            "damatenRate": 7.1,
+            "avgWinPoints": 5368,
+            "avgDealInPoints": 5342,
+            "avgWinTurn": 11.14,
+            "yakus": [
+              {
+                "name": "Riichi",
+                "count": 15
+              },
+              {
+                "name": "Menzen Tsumo",
+                "count": 7
+              },
+              {
+                "name": "Pinfu",
+                "count": 6
+              },
+              {
+                "name": "Yakuhai Haku",
+                "count": 4
+              },
+              {
+                "name": "Tanyao",
+                "count": 2
+              },
+              {
+                "name": "Chiitoitsu",
+                "count": 2
+              },
+              {
+                "name": "Yakuhai Chun",
+                "count": 2
+              },
+              {
+                "name": "Ippatsu",
+                "count": 1
+              },
+              {
+                "name": "Ittsu",
+                "count": 1
+              },
+              {
+                "name": "Yakuhai Jikaze",
+                "count": 1
+              },
+              {
+                "name": "Honitsu",
+                "count": 1
+              },
+              {
+                "name": "Yakuhai Hatsu",
+                "count": 1
+              },
+              {
+                "name": "Yakuhai Bakaze",
+                "count": 1
+              },
+              {
+                "name": "Iipeiko",
+                "count": 1
+              },
+              {
+                "name": "Toitoi",
+                "count": 1
+              }
+            ],
+            "statsSample": 118,
+            "statsReliable": true,
+            "arch": "con datos",
+            "rank": 12,
+            "zone": null,
+            "kans": 3,
+            "doras": 36,
+            "uraDoras": 20,
+            "maxHonba": 4
+          },
+          "jp": "裏ドラ"
+        },
+        {
+          "key": "renchan",
+          "value": "6",
+          "player": {
+            "id": "B22",
+            "div": "B",
+            "num": "22",
+            "name": "24Kakoo",
+            "shortName": "24Kakoo",
+            "handle": "24Kakoo",
+            "nat": "CL",
+            "games": 10,
+            "points": 147.8,
+            "history": [
+              38.7,
+              6.9,
+              -66.9,
+              44.6,
+              59.5,
+              13.9,
+              -36.6,
+              75.6,
+              51.0,
+              -38.9
+            ],
+            "cum": [
+              38.7,
+              45.6,
+              -21.3,
+              23.3,
+              82.8,
+              96.7,
+              60.1,
+              135.7,
+              186.7,
+              147.8
+            ],
+            "counts": [
+              5,
+              2,
+              1,
+              2
+            ],
+            "absences": 0,
+            "hands": 115,
+            "wins": 25,
+            "dealIns": 12,
+            "riichis": 20,
+            "openHands": 41,
+            "damaten": 2,
+            "winPoints": 157800,
+            "dealInPoints": 57200,
+            "winTurns": 254,
+            "placements": {
+              "p1": 0.5,
+              "p2": 0.2,
+              "p3": 0.1,
+              "p4": 0.2
+            },
+            "avgRank": 2.0,
+            "avgPoints": 14.8,
+            "streak": 51.1,
+            "winRate": 21.7,
+            "dealInRate": 10.4,
+            "riichiRate": 17.4,
+            "openRate": 35.7,
+            "damatenRate": 8.0,
+            "avgWinPoints": 6312,
+            "avgDealInPoints": 4767,
+            "avgWinTurn": 10.16,
+            "yakus": [
+              {
+                "name": "Yakuhai Chun",
+                "count": 8
+              },
+              {
+                "name": "Riichi",
+                "count": 8
+              },
+              {
+                "name": "Yakuhai Bakaze",
+                "count": 5
+              },
+              {
+                "name": "Tanyao",
+                "count": 4
+              },
+              {
+                "name": "Yakuhai Jikaze",
+                "count": 4
+              },
+              {
+                "name": "Menzen Tsumo",
+                "count": 3
+              },
+              {
+                "name": "Sanshoku Doujun",
+                "count": 2
+              },
+              {
+                "name": "Yakuhai Hatsu",
+                "count": 2
+              },
+              {
+                "name": "Chiitoitsu",
+                "count": 1
+              },
+              {
+                "name": "Sanankou",
+                "count": 1
+              },
+              {
+                "name": "Toitoi",
+                "count": 1
+              },
+              {
+                "name": "Ittsu",
+                "count": 1
+              },
+              {
+                "name": "Honitsu",
+                "count": 1
+              },
+              {
+                "name": "Chinitsu",
+                "count": 1
+              },
+              {
+                "name": "Yakuhai Haku",
+                "count": 1
+              }
+            ],
+            "statsSample": 115,
+            "statsReliable": true,
+            "arch": "con datos",
+            "rank": 5,
+            "zone": "playoff",
+            "kans": 2,
+            "doras": 27,
+            "uraDoras": 8,
+            "maxHonba": 6
+          },
+          "jp": "連荘"
         }
       ]
     }
