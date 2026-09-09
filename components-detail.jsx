@@ -942,9 +942,36 @@ function CalModal({ entry, onClose }) {
   );
 }
 
-function CalendarView({ data }) {
-  const played = data.divisions.A.sessions;
+function CalendarFilterDropdown({ label, icon, value, options, onChange, searchable = false }) {
+  const [open, setOpen] = React.useState(false);
+  const [query, setQuery] = React.useState('');
+  const rootRef = React.useRef(null);
+  React.useEffect(() => {
+    const close = event => { if (!rootRef.current?.contains(event.target)) setOpen(false); };
+    document.addEventListener('pointerdown', close);
+    return () => document.removeEventListener('pointerdown', close);
+  }, []);
+  const selected = options.find(option => option.value === value) || options[0];
+  const visible = options.filter((option, index) => index === 0 || !query || option.label.toLowerCase().includes(query.toLowerCase()));
+  const pick = option => { onChange(option.value); setOpen(false); setQuery(''); };
+  return <div className={`calendar-filter-dropdown ${open ? 'open' : ''}`} ref={rootRef}>
+    <span className="calendar-filter-label"><i>{icon}</i>{label}</span>
+    <button className="calendar-filter-trigger" onClick={() => setOpen(current => !current)} aria-expanded={open} aria-haspopup="listbox">
+      <span>{selected.nat && <Flag nat={selected.nat} size={15} />}{selected.mark && <i className={`calendar-filter-mark ${selected.mark}`}></i>}<strong>{selected.label}</strong></span><b>⌄</b>
+    </button>
+    {open && <div className="calendar-filter-menu" role="listbox">
+      {searchable && <label className="calendar-filter-search"><span>⌕</span><input autoFocus value={query} onChange={event => setQuery(event.target.value)} onKeyDown={event => event.key === 'Escape' && setOpen(false)} placeholder={tr('calendar_filter_search')} /></label>}
+      <div className="calendar-filter-options">{visible.map(option => <button className={option.value === value ? 'active' : ''} key={option.value || 'all'} onClick={() => pick(option)} role="option" aria-selected={option.value === value}><span>{option.nat ? <Flag nat={option.nat} size={16} /> : option.mark ? <i className={`calendar-filter-mark ${option.mark}`}></i> : <i className="calendar-filter-all">◇</i>}<strong>{option.label}</strong></span>{option.value === value && <b>✓</b>}</button>)}</div>
+    </div>}
+  </div>;
+}
+
+function CalendarView({ data, div = 'A' }) {
   const [modal, setModal] = React.useState(null);
+  const [view, setView] = React.useState('week');
+  const [playerFilter, setPlayerFilter] = React.useState('');
+  const [countryFilter, setCountryFilter] = React.useState('');
+  const [timeFilter, setTimeFilter] = React.useState('all');
   const MONTHS = { ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5, jul: 6, ago: 7, sep: 8, oct: 9, nov: 10, dic: 11 };
   const toDate = (s) => {
     const parts = String(s || '').split(' ');
@@ -958,35 +985,50 @@ function CalendarView({ data }) {
   const sessNum = (c) => c.session || parseInt((c.round || '').replace(/\D/g, ''), 10) || 0;
   const currentSession = currentSessionNumber(data);
   const byDate = (a, b) => (toDate(a.date) - toDate(b.date)) || (a.div === 'B' ? 1 : 0) - (b.div === 'B' ? 1 : 0);
-  // Próximas: con fecha válida y no pasada (>= hoy). Pasadas quedan ocultas.
-  const upcoming = data.calendar.filter(c => { const d = toDate(c.date); return d && d >= today; }).sort(byDate);
-  // Por definir: sin fecha.
-  const porDef = data.calendar
-    .filter(c => !toDate(c.date) && sessNum(c) === currentSession)
-    .sort((a, b) => (a.table || 0) - (b.table || 0));
-  const renderCard = (c, i) => (
-    <button className={`cal-card ${c.status === 'highlight' ? 'highlight' : ''} div-${c.div}`} key={c.round + c.mesa + c.div}
-         onClick={() => setModal(c)}
-         style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 30}ms`, textAlign: 'left', cursor: 'pointer', font: 'inherit', color: 'inherit', width: '100%' }}>
-      <div className="badge"><span className={`div-chip ${c.div}`}>{c.div === 'AB' ? 'A+B' : c.div === 'CL' ? 'CHILE' : 'DIV ' + c.div}</span>{c.div === 'CL' && <Flag nat="CL" size={16} />}</div>
-      <div className="date-row">
-        <span className="d">{c.date.split(' ')[0]}</span>
-        <span className="dy">{c.date.split(' ')[1]} · {c.day}</span>
-      </div>
-      <div className="round-l">{c.round}</div>
-      <div className="meta-l">{c.mesa}</div>
-      <div className="meta-l">{c.date === 'Por definir' ? tr('por_definir') : <React.Fragment><TzTime date={c.date} time={c.time} tz={window.TZ} /> · {window.TZ}</React.Fragment>}</div>
-      {c.players && c.players.length > 0 && (
-        <div className="cal-players">
-          {c.players.map(pl => (
-            <span className="cal-p" key={pl.name}><Flag nat={pl.nat} size={10} />{pl.name}</span>
-          ))}
-        </div>
-      )}
+  const divisionEntries = data.calendar.filter(c => c.div === div && sessNum(c) === currentSession);
+  const namedPlayers = [...new Set(divisionEntries.flatMap(c => c.players || []).map(p => p.name).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+  const countries = [...new Set(divisionEntries.flatMap(c => c.players || []).map(p => p.nat).filter(nat => nat && nat !== 'OT'))].sort();
+  const playerOptions = [{ value: '', label: tr('calendar_all_players') }, ...namedPlayers.map(name => ({ value: name, label: name, nat: divisionEntries.flatMap(c => c.players || []).find(player => player.name === name)?.nat }))];
+  const countryOptions = [{ value: '', label: tr('calendar_all_countries') }, ...countries.map(nat => ({ value: nat, label: COUNTRIES[nat]?.name || nat, nat }))];
+  const timeOptions = [{ value: 'all', label: tr('calendar_all_times'), mark: 'all' }, { value: 'defined', label: tr('calendar_defined'), mark: 'defined' }, { value: 'pending', label: tr('calendar_undefined'), mark: 'pending' }];
+  const matchesFilters = entry => {
+    const players = entry.players || [];
+    const hasTime = Boolean(toDate(entry.date)) && entry.time !== 'Por definir';
+    return (!playerFilter || players.some(p => p.name === playerFilter))
+      && (!countryFilter || players.some(p => p.nat === countryFilter))
+      && (timeFilter === 'all' || (timeFilter === 'defined' ? hasTime : !hasTime));
+  };
+  const filtered = divisionEntries.filter(matchesFilters);
+  const scheduled = filtered.filter(c => toDate(c.date)).sort(byDate);
+  const pending = filtered.filter(c => !toDate(c.date)).sort((a, b) => sessNum(a) - sessNum(b) || (a.table || 0) - (b.table || 0));
+  const nextEntry = scheduled.find(c => toDate(c.date) >= today);
+  const focusDate = toDate(nextEntry?.date) || toDate(data.league.nextSession.date) || today;
+  const monthStart = new Date(focusDate.getFullYear(), focusDate.getMonth(), 1);
+  const firstOffset = (monthStart.getDay() + 6) % 7;
+  const daysInMonth = new Date(focusDate.getFullYear(), focusDate.getMonth() + 1, 0).getDate();
+  const monthCells = Array.from({ length: Math.ceil((firstOffset + daysInMonth) / 7) * 7 }, (_, index) => {
+    const day = index - firstOffset + 1;
+    return day > 0 && day <= daysInMonth ? day : null;
+  });
+  const monthNames = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const datedForDay = day => scheduled.filter(entry => { const d = toDate(entry.date); return d && d.getMonth() === focusDate.getMonth() && d.getDate() === day; });
+  const weekStart = new Date(focusDate); weekStart.setDate(focusDate.getDate() - ((focusDate.getDay() + 6) % 7));
+  const weekDays = Array.from({ length: 7 }, (_, index) => { const d = new Date(weekStart); d.setDate(weekStart.getDate() + index); return d; });
+  const hours = [...new Set(scheduled.map(entry => entry.time).filter(time => time && time !== 'Por definir'))].sort();
+  const visibleHours = hours.length ? hours : ['—:—'];
+  const sameDate = (entry, date) => { const d = toDate(entry.date); return d && d.getFullYear() === date.getFullYear() && d.getMonth() === date.getMonth() && d.getDate() === date.getDate(); };
+  const resetFilters = () => { setPlayerFilter(''); setCountryFilter(''); setTimeFilter('all'); };
+  const renderCalendarPlayers = entry => <span className="calendar-event-players">{(entry.players || []).filter(player => player.name).map(player => <span key={player.name}><Flag nat={player.nat} size={11} /><em>{player.name}</em><small>{player.nat && player.nat !== 'OT' ? (COUNTRIES[player.nat]?.name || player.nat) : ''}</small></span>)}</span>;
+  const renderPendingCard = entry => (
+    <button className={`calendar-pending-card div-${div}`} key={`${entry.round}-${entry.table}`} onClick={() => setModal(entry)}>
+      <div className="cpc-head"><span>{entry.round} · {tr('mesa', { n: entry.table })}</span><b>{tr('calendar_needs_coordination')}</b></div>
+      <div className="cpc-time">—:—</div><small>{tr('calendar_time_undefined')}</small>
+      {renderCalendarPlayers(entry)}
+      <div className="cpc-format">2 hanchan · {tr('division', { d: div })}</div>
     </button>
   );
   return (
-    <div className="tab-panel">
+    <div className="tab-panel" style={{ '--calendar-accent': accentFor(div) }}>
       <div className="section-head">
         <div className="h-left">
           <span className="num">05 / Agenda</span>
@@ -994,39 +1036,32 @@ function CalendarView({ data }) {
           <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>予定</span>
         </div>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)' }}>
-          {tr('cal_subtitle', { total: data.league.sessionsTotal, per: data.league.hanchanPerSession })}
+          {tr('cal_subtitle', { total: data.league.sessionsTotal, per: data.league.hanchanPerSession })} · {tr('division', { d: div })}
         </div>
       </div>
 
-      {upcoming.length > 0 && (
-        <React.Fragment>
-          <div className="block-label" style={{ marginBottom: 12 }}>{tr('next_cal')} · 次回</div>
-          <div className="cal-grid">{upcoming.map(renderCard)}</div>
-        </React.Fragment>
-      )}
-      {porDef.length > 0 && (
-        <React.Fragment>
-          <div className="block-label" style={{ margin: '28px 0 12px' }}>{tr('por_definir')} · 未定</div>
-          <div className="cal-grid">{porDef.map(renderCard)}</div>
-        </React.Fragment>
-      )}
+      <div className="calendar-season-line">{Array.from({ length: data.league.sessionsTotal }, (_, index) => { const n = index + 1; return <div className={`calendar-season-step ${n < currentSession ? 'done' : n === currentSession ? 'current' : ''}`} key={n}><i>{n < currentSession ? '✓' : n}</i><span>{n === currentSession ? tr('calendar_current') : `S${n}`}</span></div>; })}</div>
+
+      <div className="calendar-toolbar">
+        <div className="calendar-view-switch"><button className={view === 'month' ? 'active' : ''} onClick={() => setView('month')}>▦ {tr('calendar_month_view')}</button><button className={view === 'week' ? 'active' : ''} onClick={() => setView('week')}>◫ {tr('calendar_week_view')}</button></div>
+        <div className="calendar-filters">
+          <CalendarFilterDropdown label={tr('calendar_filter_player')} icon="選" value={playerFilter} options={playerOptions} onChange={setPlayerFilter} searchable />
+          <CalendarFilterDropdown label={tr('calendar_filter_country')} icon="国" value={countryFilter} options={countryOptions} onChange={setCountryFilter} />
+          <CalendarFilterDropdown label={tr('calendar_filter_time')} icon="時" value={timeFilter} options={timeOptions} onChange={setTimeFilter} />
+          {(playerFilter || countryFilter || timeFilter !== 'all') && <button onClick={resetFilters}>{tr('calendar_clear_filters')}</button>}
+        </div>
+      </div>
+
+      {nextEntry ? <button className={`calendar-next-feature div-${div}`} onClick={() => setModal(nextEntry)}><div className="cnf-date"><strong>{nextEntry.date.split(' ')[0]}</strong><span>{nextEntry.date.split(' ')[1]} · {nextEntry.day}</span></div><div className="cnf-copy"><span>{tr('calendar_next_session')}</span><h2>{nextEntry.round} · {tr('mesa', { n: nextEntry.table })}</h2><p>{(nextEntry.players || []).filter(player => player.name).map(player => player.name).join(' · ')}</p></div><div className="cnf-time"><strong><TzTime date={nextEntry.date} time={nextEntry.time} tz={window.TZ} /></strong><span>{window.TZ}</span></div></button>
+      : <div className={`calendar-next-feature undefined div-${div}`}><div className="cnf-date"><strong>—</strong><span>{tr('por_definir')}</span></div><div className="cnf-copy"><span>{tr('calendar_next_session')}</span><h2>{tr('calendar_still_undefined')}</h2><p>{tr('calendar_no_scheduled_session')}</p></div><div className="cnf-time pending"><strong>—:—</strong><span>{tr('calendar_needs_coordination')}</span></div></div>}
+
+      {view === 'month' ? <section className="calendar-month-panel"><div className="calendar-panel-head"><div><span className="block-label">{tr('calendar_month_view')}</span><h2>{monthNames[focusDate.getMonth()]} {focusDate.getFullYear()}</h2></div><span>{scheduled.length} {tr('calendar_scheduled_count')}</span></div><div className="calendar-month-grid">{['L','M','X','J','V','S','D'].map(day => <div className="calendar-weekday" key={day}>{day}</div>)}{monthCells.map((day, index) => <div className={`calendar-day ${day === focusDate.getDate() ? 'focus' : ''}`} key={index}>{day && <span>{day}</span>}{day && datedForDay(day).map(entry => <button className={`calendar-day-event div-${div}`} key={`${entry.session}-${entry.table}`} onClick={() => setModal(entry)}><span>{entry.round} · M{entry.table}</span><strong><TzTime date={entry.date} time={entry.time} tz={window.TZ} /></strong>{renderCalendarPlayers(entry)}</button>)}</div>)}</div></section>
+      : <section className="calendar-week-panel"><div className="calendar-panel-head"><div><span className="block-label">{tr('calendar_week_view')}</span><h2>{tr('calendar_week_of', { date: `${weekDays[0].getDate()} ${monthNames[weekDays[0].getMonth()]}` })}</h2></div><span>{window.TZ}</span></div><div className="calendar-week-grid"><div className="calendar-week-corner"></div>{weekDays.map(day => <div className="calendar-week-day" key={day.toISOString()}><strong>{['L','M','X','J','V','S','D'][(day.getDay() + 6) % 7]}</strong><span>{day.getDate()}</span></div>)}{visibleHours.map(hour => <React.Fragment key={hour}><div className="calendar-hour">{hour}</div>{weekDays.map(day => { const entries = scheduled.filter(entry => entry.time === hour && sameDate(entry, day)); return <div className="calendar-week-slot" key={day.toISOString() + hour}>{entries.map(entry => <button className={`calendar-week-event div-${div}`} key={entry.table} onClick={() => setModal(entry)}><span>{entry.round} · {tr('mesa', { n: entry.table })}</span><strong><TzTime date={entry.date} time={entry.time} tz={window.TZ} /></strong>{renderCalendarPlayers(entry)}</button>)}</div>; })}</React.Fragment>)}</div></section>}
+
+      {pending.length > 0 && <section className="calendar-pending-section"><div className="calendar-panel-head"><div><span className="block-label">{tr('calendar_coordination')}</span><h2>{tr('calendar_undefined')}</h2></div><span>{pending.length} {tr('calendar_tables')}</span></div><div className="calendar-pending-grid">{pending.map(renderPendingCard)}</div></section>}
+      {!filtered.length && <div className="calendar-empty"><strong>{tr('calendar_no_results')}</strong><button onClick={resetFilters}>{tr('calendar_clear_filters')}</button></div>}
       {modal && ReactDOM.createPortal(<CalModal entry={modal} onClose={() => setModal(null)} />, document.body)}
 
-      <div className="block-label" style={{ margin: '28px 0 12px' }}>{tr('played_sessions')} · 実施済み</div>
-      <div className="session-strip">
-        {played.map((s, i) => (
-          <div className="session-pill done" key={s.code} style={{ animation: 'rowin .35s ease both', animationDelay: `${i * 30}ms` }}>
-            <div className="sp-code">{s.code}</div>
-            <div className="sp-date">{s.date}</div>
-            <div className="sp-meta">{s.matches} hanchan × 2 div</div>
-          </div>
-        ))}
-        <div className="session-pill pending">
-          <div className="sp-code">{data.league.nextSession.code}</div>
-          <div className="sp-date">{data.league.nextSession.date}</div>
-          <div className="sp-meta">pendiente</div>
-        </div>
-      </div>
     </div>
   );
 }
