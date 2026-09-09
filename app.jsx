@@ -19,7 +19,7 @@ const TABS = [
 ];
 
 // tabs that are scoped to a single division
-const DIV_SCOPED = ['standings', 'detail', 'log', 'hof'];
+const DIV_SCOPED = ['standings', 'detail', 'log', 'calendar', 'hof'];
 
 // ── Rutas por hash: #/<tab>/<div|jugador> ──
 // Cada pestaña x división tiene su propia URL (funciona en estático, sin server).
@@ -362,7 +362,7 @@ function App() {
         {tab === 'compare' && <Comparator data={data} />}
         {tab === 'log' && <HanchanLog data={data} div={div} />}
         {tab === 'iormc' && <IORMCView data={data} onPick={selectPlayer} />}
-        {tab === 'calendar' && <CalendarView data={data} />}
+        {tab === 'calendar' && <CalendarView data={data} div={div} />}
         {tab === 'hof' && <HallOfFame data={data} div={div} />}
       </main>
       {rulesOpen && <RulesModal division={div} rules={L.rules} onClose={() => setRulesOpen(false)} />}
