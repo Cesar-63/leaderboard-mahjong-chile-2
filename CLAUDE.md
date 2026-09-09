@@ -95,6 +95,25 @@ jugador y publica las tasas. Definiciones, alineadas con amae-koromo:
 - Las cuatro últimas se miden sobre manos ganadas o deal-ins, no sobre el total:
   su denominador es chico y hay que degradarlas (`STAT_MIN_SAMPLE` en
   `stat-tips.jsx`), no mostrarlas como dato firme.
+- **Cada mano ganada se guarda entera**, en `yakuHands` del payload público: un
+  mapa `id de jugador → manos`, cada una con sus fichas (`hand` oculta, `win`,
+  `melds`, `dora`), puntos, han, fu, turno, sesión/mesa/hanchan del calendario y
+  a quién le pagaron el ron. **El `han` incluye el dora** (es el `count` del
+  paipu, que coincide con la suma de los fans en las 1.285 manos de la liga),
+  pero **en un yakuman `count` vale 1**: es el múltiplo, no trece han. Por eso va
+  también `yakuman`, y la vista muestra "Yakuman" en vez de "1 han". Va como mapa aparte y **no colgando de cada jugador**
+  porque el mismo dict de jugador se repite en `players`, `allPlayers`,
+  `hallOfFame`, `nationalities` e `iormc`: colgarlo ahí multiplicaría el payload.
+  Del que pagó sólo se nombra a los del roster; de un suplente no se publica
+  identidad. Los melds se codifican con una letra por delante (`k` pon, `s` chi,
+  `g` kan abierto, `a` kan cerrado) para que la mano quepa en un string.
+  `tiles.jsx` las dibuja y `tile-art.js` guarda las 37 caras en SVG, sacadas del
+  set de FluffyStuff (dominio público, CC0). En `tile-art.js` va **sólo la cara**,
+  sobre fondo transparente y en un lienzo de 300x400: el cuerpo de la ficha
+  —marfil, borde, sombra, reverso del kan cerrado— lo pone el CSS de `.mj-tile`,
+  que es lo que sigue al tema. Cambiar de set = regenerar ese archivo. El blanco
+  (haku) viene en blanco a propósito en el set original y el marco se lo pone el
+  CSS.
 - `stat-tips.jsx` es la fuente única de qué mide cada casilla: rótulo, fórmula,
   denominador y tooltip salen del mismo registro, y lo usan tanto la vista de
   escritorio como la del teléfono. Agregar una métrica = una entrada ahí, sus

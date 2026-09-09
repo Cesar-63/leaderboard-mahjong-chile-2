@@ -549,7 +549,7 @@ select{font:inherit;color:inherit}
 .yaku-yakuhai-group{grid-column:1/-1;display:grid;grid-template-columns:150px minmax(0,1fr) 72px;align-items:center;gap:14px;margin:5px 0;padding:11px 13px;border-radius:10px;background:color-mix(in oklab,var(--yaku-accent) 5%,var(--bg-sunk))}
 .yaku-yakuhai-group>div:first-child strong,.yaku-yakuhai-group>div:first-child span{display:block}.yaku-yakuhai-group>div:first-child strong{font-size:13px}.yaku-yakuhai-group>div:first-child span{margin-top:3px;color:var(--ink-faint);font-size:10.5px}
 .yaku-yakuhai-items{display:flex;flex-wrap:wrap;gap:6px}
-.yaku-yakuhai-items>span{padding:6px 9px;border-radius:7px;background:var(--bg-elev);color:var(--ink-soft);font-size:11.5px}
+.yaku-yakuhai-items>span,.yaku-yakuhai-items>button{padding:6px 9px;border-radius:7px;background:var(--bg-elev);color:var(--ink-soft);font-size:11.5px}
 .yaku-yakuhai-items b{margin-left:4px;color:var(--yaku-accent);font-family:var(--font-mono);font-size:10.5px}
 .yaku-yakuhai-total{text-align:right}.yaku-yakuhai-total strong,.yaku-yakuhai-total span{display:block}.yaku-yakuhai-total strong{font-family:var(--font-mono);font-size:16px}.yaku-yakuhai-total span{margin-top:2px;color:var(--ink-faint);font-family:var(--font-mono);font-size:9.5px}
 .yaku-ledger-row{display:grid;grid-template-columns:minmax(120px,180px) minmax(80px,1fr) 30px 42px;align-items:center;gap:9px;padding:9px 0;border-bottom:1px solid var(--line)}
@@ -568,6 +568,90 @@ select{font:inherit;color:inherit}
 .yakuman-empty{margin-top:8px;color:var(--ink-faint);font-size:11px}
 .achievements-card{padding-bottom:20px}.achievement-groups{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;max-width:1050px;margin:0 auto}.achievement-label{margin-bottom:8px;color:var(--accent);font-family:var(--font-mono);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}.record-medals{display:flex;flex-wrap:wrap;gap:10px}.record-medal{display:flex;align-items:center;gap:10px;min-width:190px;padding:10px 12px;border:1px solid color-mix(in oklab,#d6a849 58%,var(--line));border-radius:10px;background:linear-gradient(145deg,color-mix(in oklab,#f3d88b 22%,var(--bg-elev)),color-mix(in oklab,#b98224 8%,var(--bg-sunk)));box-shadow:inset 0 1px 0 color-mix(in oklab,#fff 50%,transparent)}.record-medal>span{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#c18a2b;color:#fff1b1;font-size:18px}.record-medal strong,.record-medal small{display:block}.record-medal strong{font-family:var(--font-mono);font-size:10px}.record-medal small{margin-top:3px;color:var(--ink-faint);font-size:10px}
 .achievement-medals-all{display:flex;align-items:flex-start;justify-content:center;flex-wrap:wrap;gap:12px;min-height:102px}.record-medal-compact{min-width:92px}.yakuman-medal-icon.record{font-size:15px;background:radial-gradient(circle at 35% 28%,#ffe8a1,#b97718 68%,#75480c)}.yakuman-medal-icon.saki{font-size:19px;background:radial-gradient(circle at 35% 28%,#fff0bc,#c28b2b 68%,#805517)}.achievements-empty{display:flex;justify-content:center;align-items:center;gap:12px;min-height:92px;color:var(--ink-faint);text-align:left}.achievements-empty>span{font-size:26px;opacity:.55}.achievements-empty strong,.achievements-empty small{display:block}.achievements-empty strong{font-family:var(--font-mono);font-size:11px;color:var(--ink-soft)}.achievements-empty small{margin-top:4px;font-size:11px}
+/* Un yaku con manos guardadas se vuelve botón, en las tres formas en que
+   aparece en la tarjeta. El botón tiene que verse igual que el elemento que
+   reemplaza: sólo se neutraliza lo que el navegador le pone de fábrica. */
+.yaku-profile .clickable{appearance:none;margin:0;font:inherit;color:inherit;text-align:left;cursor:pointer}
+.yaku-top.clickable{width:100%}
+.yaku-ledger-row.clickable{width:100%;border:0;border-bottom:1px solid var(--line);background:none}
+.yaku-yakuhai-item.clickable{border:0}
+.yaku-profile .clickable:focus-visible{outline:none;box-shadow:0 0 0 2px color-mix(in oklab,var(--yaku-accent) 60%,transparent)}
+.yaku-top.clickable:hover{border-color:color-mix(in oklab,var(--yaku-accent) 45%,var(--line))}
+.yaku-ledger-row.clickable:hover,.yaku-yakuhai-item.clickable:hover{background:color-mix(in oklab,var(--yaku-accent) 8%,var(--bg-sunk))}
+.yaku-profile .clickable strong,.yaku-profile .clickable>span:not(.yaku-top-rank){text-decoration:underline;text-decoration-color:color-mix(in oklab,var(--yaku-accent) 45%,transparent);text-underline-offset:3px}
+
+/* ─── fichas de mahjong (tiles.jsx) ─── */
+/* La ficha es marfil en los dos temas: un mahjong no cambia de color de noche.
+   Sólo el marco alrededor sigue al tema. */
+.mj-tile{flex:none;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:var(--tile-w,34px);aspect-ratio:3/4;position:relative;overflow:hidden;border-radius:calc(var(--tile-w)*.15);background:linear-gradient(178deg,#fffefa,#efe8d8);border:1px solid rgba(24,20,14,.22);box-shadow:0 1px 1px rgba(24,20,14,.22),inset 0 -2px 0 rgba(24,20,14,.07);color:#1b232e;line-height:1;user-select:none}
+.mj-tile .mj-face{display:block;width:100%;height:100%;object-fit:contain}
+.mj-tile .mj-num{font-family:var(--font-mono);font-weight:700;font-size:calc(var(--tile-w)*.46)}
+.mj-tile .mj-suit{font-family:var(--font-jp);font-size:calc(var(--tile-w)*.32);opacity:.85}
+.mj-tile .mj-honor{font-family:var(--font-jp);font-weight:700;font-size:calc(var(--tile-w)*.56)}
+.mj-tile.suit-m{color:#1d2a3a}
+.mj-tile.suit-m .mj-suit{color:#9a2a2a}
+.mj-tile.suit-p{color:#174a86}
+.mj-tile.suit-s{color:#186340}
+.mj-tile .h-1z,.mj-tile .h-2z,.mj-tile .h-3z,.mj-tile .h-4z{color:#1d2a3a}
+.mj-tile .h-5z{color:#5d6470}
+.mj-tile .h-6z{color:#186340}
+.mj-tile .h-7z{color:#9a2a2a}
+.mj-tile.red .mj-num{color:#c62828}
+/* El blanco (haku) viene sin dibujo en el set: es una ficha en blanco. Se le
+   pone el marco con que se dibuja siempre, si no parece imagen rota. */
+.mj-tile.tile-5z::after{content:'';position:absolute;inset:12% 16%;border:2px solid #2c4a7c;border-radius:2px}
+.mj-tile.win{box-shadow:0 0 0 2px var(--accent),0 2px 4px rgba(24,20,14,.28);transform:translateY(-2px)}
+/* Kan cerrado: las dos de los extremos van boca abajo. */
+.mj-tile.back{background:linear-gradient(178deg,#2f6f5e,#22523f);border-color:rgba(0,0,0,.35);color:transparent}
+.mj-tile.back>*{visibility:hidden}
+/* overflow-x:auto también recorta arriba y abajo: el aire es para que el
+   anillo de la ficha ganadora, que además se levanta 2px, no salga cortado. */
+.mj-hand{--tile-w:34px;display:flex;align-items:flex-end;gap:10px;overflow-x:auto;padding:5px 4px 4px;margin:0 -4px;scrollbar-width:thin}
+.mj-group{display:flex;gap:2px}
+.mj-group.win{padding-left:2px}
+.mj-meld{display:flex;gap:2px;padding-left:8px;border-left:1px dashed var(--line-strong)}
+
+/* ─── popup de manos por yaku ─── */
+.yaku-modal{width:min(760px,94vw)}
+.yaku-modal .cm-kicker{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:3px}
+.yaku-modal .cm-title{font-size:20px;color:var(--modal-accent,var(--accent))}
+.yaku-hand-list{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+.yaku-hand{padding:12px 13px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg-sunk)}
+.yaku-hand-head,.yaku-hand-foot{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:10.5px;color:var(--ink-soft)}
+.yaku-hand-head{margin-bottom:10px}
+.yaku-hand-head .where{letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}
+.yaku-hand-head .how{padding:2px 7px;border-radius:99px;background:color-mix(in oklab,var(--good) 15%,transparent);color:var(--good)}
+.yaku-hand-head .how.ron{background:color-mix(in oklab,var(--bad) 13%,transparent);color:var(--bad)}
+.yaku-hand-head .paipu-link{margin-top:0;font-size:10.5px}
+.yaku-hand-head .pts{margin-left:auto;font-size:14px;font-weight:700;color:var(--ink)}
+.yaku-hand-foot{margin-top:10px;flex-wrap:wrap;row-gap:6px}
+.yaku-hand-foot .others{color:var(--ink-faint)}
+/* Cada dato del pie es atómico: si la línea corta, no deja el separador
+   colgando ni parte "Dora" de su ficha. */
+.yaku-hand-foot .meta{display:flex;align-items:center;flex-wrap:wrap;gap:4px 7px;margin-left:auto;color:var(--ink-faint)}
+.yaku-hand-foot .meta .nw{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.yaku-hand-foot .meta .han{color:var(--ink-soft);font-weight:600}
+.yaku-hand-foot .meta .nw + .nw::before{content:'·';opacity:.55}
+.yaku-hand-foot .badge-riichi{font-style:normal;padding:2px 6px;border-radius:99px;background:color-mix(in oklab,var(--accent) 15%,transparent);color:var(--accent)}
+/* Apenas la mano no cabe entera, se parte en filas en vez de esconderse detrás
+   de un scroll horizontal: 760px es el ancho máximo del popup, así que de ahí
+   para abajo siempre conviene envolver. La ficha ganadora fluye con el resto
+   (display:contents): ya se distingue por su anillo, no necesita su propia
+   fila. */
+@media (max-width:760px){
+  .mj-hand{--tile-w:26px;gap:5px 2px;flex-wrap:wrap;overflow-x:visible;margin:0;padding:4px 0}
+  .mj-group{display:contents}
+  .mj-meld{margin-left:6px;padding-left:5px}
+}
+@media (max-width:600px){
+  .mj-hand{--tile-w:23px}
+  .yaku-hand-head{flex-wrap:wrap;row-gap:5px}
+  .yaku-hand-head .pts{font-size:12.5px}
+  .yaku-hand-foot .meta{margin-left:0;gap:4px 11px}
+  /* Sin separadores en el pie: al cortar la línea el punto quedaba
+     abriendo la fila siguiente. El espacio ya separa. */
+  .yaku-hand-foot .meta .nw + .nw::before{content:none}
+}
 @keyframes barfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
 /* Vitrina de logros: emblemas compactos, agrupados por familia. */
