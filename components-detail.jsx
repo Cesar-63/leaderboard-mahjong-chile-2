@@ -816,8 +816,29 @@ function Comparator({ data }) {
   );
 }
 
+function HanchanReplay({ match }) {
+  const winds = ['東', '南', '西', '北'];
+  const rounds = match.rounds || [];
+  return <div className="hanchan-replay">
+    <div className="hanchan-replay-head"><div><span>{tr('history_replay_kicker')}</span><h3>{tr('history_replay_title')}</h3></div><small>{rounds.length} {tr('history_hands')}</small></div>
+    {!rounds.length && <div className="hanchan-replay-empty">{tr('history_replay_unavailable')}</div>}
+    <div className="hanchan-rounds">{rounds.map(round => {
+      const outcomes = round.outcomes || [];
+      const outcome = outcomes[0];
+      const label = `${winds[round.chang] || '局'}${(round.ju || 0) + 1}`;
+      return <article className={`hanchan-round ${round.result}`} key={round.index}>
+        <header><div className="round-marker"><b>{label}</b><span>{round.honba ? `${round.honba} ${tr('history_honba')}` : tr('history_no_honba')}</span></div><div className="round-result"><strong>{round.result === 'tsumo' ? tr('by_tsumo') : round.result === 'ron' ? tr('by_ron') : round.result === 'draw' ? tr('history_draw') : tr('history_abortive')}</strong>{outcome && <span>{outcomes.map(item => `${item.winner}${item.loser ? ` ← ${item.loser}` : ''}`).join(' · ')}</span>}</div>{outcome && <b className="round-points">{outcomes.length > 1 ? `${outcomes.length}×` : (outcome.points || 0).toLocaleString('es-CL')}</b>}</header>
+        {outcome ? <div className="round-outcomes">{outcomes.map((item, outcomeIndex) => <div className="round-body" key={`${item.winnerSeat}-${outcomeIndex}`}><div className="round-outcome-title"><strong>{item.winner}</strong><b>{(item.points || 0).toLocaleString('es-CL')}</b></div><HandTiles hand={item.hand} win={item.win} melds={item.melds} /><div className="round-meta"><span>{(item.yaku || []).join(' · ')}</span><div>{item.riichi && <em className="badge-riichi">{tr('badge_riichi')}</em>}<b>{item.yakuman ? tr('hand_yakuman') : tr('hand_han', { n: item.han })}</b><b>{tr('hand_fu', { n: item.fu })}</b><b>{tr('hand_turn', { n: item.turn })}</b></div></div></div>)}</div>
+        : <div className="round-draw"><span>流</span><p>{round.result === 'draw' ? tr('history_draw_detail') : tr('history_abortive_detail')}</p></div>}
+        {round.startScores?.length === 4 && <footer>{round.startScores.map((score, seat) => <span key={seat}><i>{winds[seat]}</i>{Number(score).toLocaleString('es-CL')}</span>)}</footer>}
+      </article>;
+    })}</div>
+  </div>;
+}
+
 function HanchanLog({ data, div }) {
   const [filter, setFilter] = React.useState('all');
+  const [expanded, setExpanded] = React.useState(null);
   const divData = data.divisions[div];
   const sessions = divData.sessions;
   const matches = React.useMemo(() => {
@@ -868,7 +889,7 @@ function HanchanLog({ data, div }) {
 
       <div className="hanchan-list">
         {matches.map((m, idx) => (
-          <div className="hanchan-card" key={m.id} style={{ animation: 'rowin .35s ease both', animationDelay: `${Math.min(idx, 30) * 14}ms` }}>
+          <div className={`hanchan-card ${expanded === m.id ? 'expanded' : ''}`} key={m.id} style={{ animation: 'rowin .35s ease both', animationDelay: `${Math.min(idx, 30) * 14}ms` }}>
             <div className="code-block">
               <div className="code">{m.code}</div>
               <div className="date">{m.sessionCode} · H{m.hanchan}</div>
@@ -885,6 +906,8 @@ function HanchanLog({ data, div }) {
                 </div>
               ))}
             </div>
+            <button className="hanchan-replay-toggle" onClick={() => setExpanded(expanded === m.id ? null : m.id)} aria-expanded={expanded === m.id}><span>{expanded === m.id ? tr('history_hide_replay') : tr('history_open_replay')}</span><i>{expanded === m.id ? '−' : '+'}</i></button>
+            {expanded === m.id && <HanchanReplay match={m} />}
           </div>
         ))}
       </div>

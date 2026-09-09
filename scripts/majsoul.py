@@ -485,6 +485,7 @@ class ParsedPaipu:
     hands: int
     seat_stats: list[dict[str, Any]]
     players: list[dict[str, Any]]
+    rounds: list[dict[str, Any]]
     record_game_seen: bool
     sha256: str
 
@@ -559,6 +560,8 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
     seat_identity: dict[int, dict[str, Any]] = {}
     record_game_points: dict[int, int] = {}
     record_game_seen = head_record is not None
+    rounds: list[dict[str, Any]] = []
+    current_round: dict[str, Any] | None = None
     if head_record is not None:
         for account in head_record.accounts:
             if account.seat < 4:
@@ -596,6 +599,13 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                 final_scores = list(message.scores)
             for seat in range(4):
                 stats[seat]["maxHonba"] = max(stats[seat]["maxHonba"], int(message.ben))
+            current_round = {
+                "index": round_index,
+                "chang": int(message.chang), "ju": int(message.ju),
+                "honba": int(message.ben), "riichiSticks": int(message.liqibang),
+                "startScores": list(message.scores), "result": "playing", "outcomes": [],
+            }
+            rounds.append(current_round)
         elif name == "RecordDealTile":
             seat = int(message.seat)
             if seat < 4:
@@ -657,6 +667,7 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                 # parte oculta y la ganadora van por separado de los melds
                 # porque se dibujan distinto (los melds, volteados).
                 stats[seat]["wonHands"].append({
+                    "roundIndex": round_index,
                     "yaku": yakus, "hand": "".join(hule.hand), "win": hule.hu_tile,
                     "melds": melds, "dora": "".join(hule.doras),
                     "points": int(hule.dadian), "fu": int(hule.fu),
@@ -667,10 +678,26 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                     "turn": draws[seat] if hule.zimo else draws[seat] + 1,
                     "loserSeat": paga,
                 })
+                if current_round is not None:
+                    current_round["result"] = "tsumo" if hule.zimo else "ron"
+                    current_round["outcomes"].append({
+                        "winnerSeat": seat, "loserSeat": paga,
+                        "yaku": yakus, "hand": "".join(hule.hand), "win": hule.hu_tile,
+                        "melds": melds, "dora": "".join(hule.doras),
+                        "points": int(hule.dadian), "fu": int(hule.fu),
+                        "han": int(hule.count), "yakuman": es_yakuman,
+                        "tsumo": bool(hule.zimo), "riichi": bool(hule.liqi),
+                        "turn": draws[seat] if hule.zimo else draws[seat] + 1,
+                    })
         elif name == "RecordNoTile" and message.scores:
+            if current_round is not None:
+                current_round["result"] = "draw"
             score_info = message.scores[0]
             if score_info.old_scores and score_info.delta_scores:
                 final_scores = [a + b for a, b in zip(score_info.old_scores, score_info.delta_scores)]
+        elif name == "RecordLiuJu":
+            if current_round is not None:
+                current_round["result"] = "abortive"
 
     if len(final_scores) != 4:
         raise PaipuError(f"Se esperaban 4 scores finales y se obtuvieron {len(final_scores)}")
@@ -695,6 +722,7 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
         hands=max((seat["hands"] for seat in stats), default=0),
         seat_stats=normalized,
         players=players,
+        rounds=rounds,
         record_game_seen=record_game_seen,
         sha256=hashlib.sha256(raw).hexdigest(),
     )
