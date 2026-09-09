@@ -15,7 +15,7 @@ import { parseWhen, WhenError, DEFAULT_TIMEZONE } from "./_lib/time.mjs";
 import { mergeTargets, parseTarget, validateTarget } from "./_lib/target.mjs";
 import { loadConfig, readLeague, readTable, SheetsError, writeSchedule } from "./_lib/sheets.mjs";
 import {
-  callerHandles, fetchChannel, InteractionResponseType, InteractionType,
+  callerIdentity, fetchChannel, InteractionResponseType, InteractionType,
   message, optionMap, resolveRoleId,
 } from "./_lib/discord.mjs";
 
@@ -75,6 +75,10 @@ export async function POST(request) {
     return json(message(`Comando desconocido: \`${interaction.data?.name}\`.`, { ephemeral: true }));
   }
 
+  if (!env.SHEET_ID) {
+    return json(message("⚠️ Falta configurar `SHEET_ID` en el entorno del sitio.", { ephemeral: true }));
+  }
+
   try {
     return json(await agendar(interaction, env));
   } catch (error) {
@@ -109,7 +113,7 @@ async function agendar(interaction, env) {
     readLeague(env, CONFIG),
     channelNames(botToken, interaction, channel),
     env.DISCORD_STAFF_ROLE_ID
-      ? Promise.resolve(env.DISCORD_STAFF_ROLE_ID)
+      ? Promise.resolve(env.DISCORD_STAFF_ROLE_ID.trim())
       : resolveRoleId(botToken, interaction.guild_id, env.DISCORD_STAFF_ROLE_NAME || DEFAULT_STAFF_ROLE_NAME),
   ]);
 
@@ -133,8 +137,8 @@ async function agendar(interaction, env) {
 
   const memberRoles = interaction.member?.roles || [];
   const isStaff = Boolean(staffRoleId) && memberRoles.includes(staffRoleId);
-  const handles = callerHandles(interaction);
-  const seats = playersFor(handles, league.roster);
+  const identity = callerIdentity(interaction);
+  const seats = playersFor(identity, league.roster);
 
   if (!isStaff) {
     if (!staffRoleId) {
@@ -146,7 +150,7 @@ async function agendar(interaction, env) {
     if (!seated.length) {
       return message(
         `⚠️ Sólo pueden agendar ${label} sus cuatro jugadores (${table.players.filter(Boolean).join(", ")}) o el rol @${env.DISCORD_STAFF_ROLE_NAME || DEFAULT_STAFF_ROLE_NAME}.\n` +
-        `Tu usuario (\`${handles[0] || "desconocido"}\`) ${seats.length ? `figura en el roster como **${seats.map((p) => p.name).join(", ")}**, que no juega en esa mesa` : "no figura en la columna Discord de la planilla"}.`,
+        `Tu usuario (\`${identity.username || "desconocido"}\`) ${seats.length ? `figura en el roster como **${seats.map((p) => p.name).join(", ")}**, que no juega en esa mesa` : "no figura en la columna Discord de la planilla — ojo que se compara contra el **nombre de usuario**, no contra el nombre para mostrar ni el apodo del servidor"}.`,
         { ephemeral: true },
       );
     }
@@ -174,10 +178,14 @@ async function agendar(interaction, env) {
   ];
   if (previous) lines.push(`↩️ Antes decía: ${previous}`);
   if (isStaff && table.paipuG1) lines.push(`⚠️ Ojo: la mesa ya tenía un paipu cargado en ${table.paipuG1Cell}.`);
-  if (!result.storedAsDate || !result.storedAsTime) {
+  const asText = [
+    result.storedAsDate ? null : table.dateCell,
+    result.storedAsTime ? null : table.timeCell,
+  ].filter(Boolean);
+  if (asText.length) {
     lines.push(
-      "⚠️ Google guardó " + (!result.storedAsDate ? `${table.dateCell}` : `${table.timeCell}`) +
-      " como texto y no como fecha/hora. El sitio lo va a mostrar como «Por definir» hasta que se corrija el formato de la celda.",
+      `⚠️ Google guardó ${asText.join(" y ")} como texto y no como fecha/hora. ` +
+      "El sitio lo va a mostrar como «Por definir» hasta que se corrija el formato de la celda.",
     );
   }
   lines.push(`_${table.dateCell} · ${table.timeCell} — el sitio se actualiza en menos de 15 minutos._`);
@@ -215,9 +223,21 @@ function normalizeHandle(value) {
   return String(value ?? "").trim().toLowerCase().replace(/^@/, "").split("#")[0];
 }
 
-/** Jugadores del roster cuyo handle de Discord coincide con quien invocó. */
-export function playersFor(handles, roster) {
-  const wanted = new Set(handles.map(normalizeHandle).filter(Boolean));
-  if (!wanted.size) return [];
-  return roster.filter((player) => player.discord && wanted.has(normalizeHandle(player.discord)));
+/**
+ * Jugadores del roster que son quien invocó el comando.
+ *
+ * La celda Discord del roster puede traer el nombre de usuario o el id
+ * numérico. El id es preferible —no se puede falsificar ni cambia cuando
+ * alguien se renombra—, así que si la celda son puros dígitos se compara
+ * contra el id y nada más.
+ */
+export function playersFor(identity, roster) {
+  const username = normalizeHandle(identity?.username);
+  const id = String(identity?.id || "").trim();
+  return roster.filter((player) => {
+    const cell = String(player.discord || "").trim();
+    if (!cell) return false;
+    if (/^\d{17,20}$/.test(cell)) return Boolean(id) && cell === id;
+    return Boolean(username) && normalizeHandle(cell) === username;
+  });
 }

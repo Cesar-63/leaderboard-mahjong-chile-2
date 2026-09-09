@@ -24,8 +24,10 @@ El tag es el camino recomendado: lo genera cualquiera de los sitios de
 timestamps de Discord, no depende del huso de quien escribe y la confirmación
 del bot vuelve como tag, así que cada jugador la lee en su propia hora.
 
-Sin año, se asume el año en curso. La hora se interpreta y se guarda en hora
-local chilena (`America/Santiago`, con horario de verano incluido), que es lo
+Sin año, se elige el que deja la fecha por delante: en diciembre, `05/01` es el
+enero que viene. Hay 30 días de gracia hacia atrás para poder registrar una mesa
+recién jugada; más atrás que eso, hay que escribir el año. La hora se interpreta
+y se guarda en hora local chilena (`America/Santiago`, con horario de verano incluido), que es lo
 que dice la columna "Hora (CLT)" de la planilla. Se puede fijar otro huso con
 `LEAGUE_TIMEZONE`.
 
@@ -57,10 +59,16 @@ Si falta algo, el bot lo dice y no escribe nada:
 
 ## Quién puede usarlo
 
-- **Los cuatro jugadores de esa mesa.** El bot compara el usuario de Discord de
-  quien invoca contra la columna **Discord** de `Jugadores Liga A` / `Jugadores
-  Liga B`, y exige que el jugador esté sentado en esa mesa del Calendario.
+- **Los cuatro jugadores de esa mesa.** El bot compara el **nombre de usuario**
+  de Discord de quien invoca contra la columna **Discord** de `Jugadores Liga A`
+  / `Jugadores Liga B`, y exige que ese jugador esté sentado en esa mesa del
+  Calendario.
 - **El rol @Staff**, que puede agendar cualquier mesa.
+
+Sólo cuentan el nombre de usuario y el id numérico. El **nombre para mostrar** y
+el **apodo del servidor** no: los elige cada uno y no son únicos, así que si
+contaran, cualquiera del servidor podría ponerse de apodo el handle de otro
+jugador y reescribir la fecha de una mesa ajena.
 
 Dos guardas más:
 
@@ -68,11 +76,16 @@ Dos guardas más:
   y con un aviso en la respuesta.
 - Una mesa sin jugadores publicados en el Calendario se rechaza.
 
-> **Ojo con la columna Discord.** Se compara contra el nombre de usuario, el
-> nombre para mostrar y el apodo del servidor. En el roster de la temporada 3
-> hay handles cargados como nombre de pantalla (`Pablov`, `Kychiel`) en vez de
-> nombre de usuario: esos jugadores van a ser rechazados si su nombre para
-> mostrar cambió. Corregir la celda en la planilla lo arregla sin tocar código.
+> **Ojo con la columna Discord.** Tiene que traer el nombre de usuario actual
+> (el de `@handle`, siempre en minúsculas y único), no el nombre para mostrar.
+> En el roster de la temporada 3 hay al menos dos celdas cargadas como nombre de
+> pantalla (`Pablov`, `Kychiel`): esos jugadores van a ser rechazados hasta que
+> se corrija la celda.
+>
+> **Lo más robusto es pegar el id numérico** en vez del nombre: si la celda son
+> puros dígitos, el bot compara contra el id de Discord, que no se puede
+> falsificar y sobrevive a cualquier cambio de nombre. Se copia con clic derecho
+> sobre la persona → *Copiar ID de usuario* (con Modo desarrollador activado).
 
 ## Puesta en marcha
 

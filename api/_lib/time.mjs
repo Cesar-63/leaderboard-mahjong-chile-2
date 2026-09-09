@@ -9,6 +9,10 @@ export const DEFAULT_TIMEZONE = "America/Santiago";
 
 export class WhenError extends Error {}
 
+// Cuánto hacia atrás puede quedar una fecha sin año antes de entenderla como
+// del año siguiente. 30 días alcanzan para registrar una mesa recién jugada.
+const BACKDATE_GRACE_SECONDS = 30 * 24 * 60 * 60;
+
 const MONTHS_ES = {
   enero: 1, ene: 1, febrero: 2, feb: 2, marzo: 3, mar: 3, abril: 4, abr: 4,
   mayo: 5, may: 5, junio: 6, jun: 6, julio: 7, jul: 7, agosto: 8, ago: 8,
@@ -71,12 +75,16 @@ function parseClock(text) {
 
 function parseCalendarDate(text, referenceYear) {
   let match = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(text);
-  if (match) return { year: Number(match[1]), month: Number(match[2]), day: Number(match[3]) };
+  if (match) return { year: Number(match[1]), month: Number(match[2]), day: Number(match[3]), yearInferred: false };
 
   match = /^(\d{1,2})[-/.](\d{1,2})(?:[-/.](\d{2,4}))?$/.exec(text);
   if (match) {
     const year = match[3] === undefined ? referenceYear : Number(match[3]);
-    return { year: year < 100 ? 2000 + year : year, month: Number(match[2]), day: Number(match[1]) };
+    return {
+      year: year < 100 ? 2000 + year : year,
+      month: Number(match[2]), day: Number(match[1]),
+      yearInferred: match[3] === undefined,
+    };
   }
 
   match = /^(\d{1,2})\s+(?:de\s+)?([a-z]+)(?:\s+(?:de\s+)?(\d{4}))?$/.exec(text);
@@ -85,6 +93,7 @@ function parseCalendarDate(text, referenceYear) {
       year: match[3] === undefined ? referenceYear : Number(match[3]),
       month: MONTHS_ES[match[2]],
       day: Number(match[1]),
+      yearInferred: match[3] === undefined,
     };
   }
   return null;
@@ -134,7 +143,14 @@ export function parseWhen(input, { timeZone = DEFAULT_TIMEZONE, now = Date.now()
     const reference = zonedParts(Math.floor(now / 1000), timeZone);
     const date = parseCalendarDate(pieces.slice(0, split).join(" "), reference.year);
     if (!date || !isRealDate(date)) continue;
-    const epoch = zonedToEpoch({ ...date, ...clock }, timeZone);
+    let epoch = zonedToEpoch({ ...date, ...clock }, timeZone);
+    // Sin año escrito, "05/01" en diciembre es el enero que viene, no el que
+    // pasó hace once meses. Se deja un margen hacia atrás para poder registrar
+    // una mesa que ya se jugó hace poco.
+    if (date.yearInferred && epoch < Math.floor(now / 1000) - BACKDATE_GRACE_SECONDS) {
+      const rolled = { ...date, ...clock, year: date.year + 1 };
+      if (isRealDate(rolled)) epoch = zonedToEpoch(rolled, timeZone);
+    }
     return describe(epoch, timeZone, "texto");
   }
 

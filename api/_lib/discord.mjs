@@ -10,8 +10,25 @@ export const InteractionType = { PING: 1, APPLICATION_COMMAND: 2 };
 export const InteractionResponseType = { PONG: 1, CHANNEL_MESSAGE_WITH_SOURCE: 4 };
 export const EPHEMERAL = 64;
 
+// Las respuestas se cachean poco tiempo y **nunca los fallos**: un 429 pasajero
+// no puede dejar ciega la deducción de mesa por el resto de la vida de la
+// lambda, y un canal renombrado (`liga-a-sesion-3` → `-4`) tiene que verse
+// antes de que el bot escriba en las celdas de la sesión anterior.
+const CACHE_TTL_MS = 60_000;
 const channelCache = new Map();
 const rolesCache = new Map();
+
+function cacheGet(store, key) {
+  const hit = store.get(key);
+  if (hit && hit.expiresAt > Date.now()) return hit;
+  store.delete(key);
+  return null;
+}
+
+function cacheSet(store, key, value) {
+  store.set(key, { value, expiresAt: Date.now() + CACHE_TTL_MS });
+  return value;
+}
 
 async function discordFetch(token, path) {
   const response = await fetch(`${API}${path}`, {
@@ -23,13 +40,11 @@ async function discordFetch(token, path) {
 
 export async function fetchChannel(token, channelId) {
   if (!token || !channelId) return null;
-  if (channelCache.has(channelId)) return channelCache.get(channelId);
+  const hit = cacheGet(channelCache, channelId);
+  if (hit) return hit.value;
   try {
-    const channel = await discordFetch(token, `/channels/${channelId}`);
-    channelCache.set(channelId, channel);
-    return channel;
+    return cacheSet(channelCache, channelId, await discordFetch(token, `/channels/${channelId}`));
   } catch {
-    channelCache.set(channelId, null);
     return null;
   }
 }
@@ -37,13 +52,15 @@ export async function fetchChannel(token, channelId) {
 export async function resolveRoleId(token, guildId, roleName) {
   if (!token || !guildId || !roleName) return null;
   const key = `${guildId}:${roleName.toLowerCase()}`;
-  if (rolesCache.has(key)) return rolesCache.get(key);
+  const hit = cacheGet(rolesCache, key);
+  if (hit) return hit.value;
   try {
     const roles = await discordFetch(token, `/guilds/${guildId}/roles`);
     const match = roles.find((role) => String(role.name).toLowerCase() === roleName.toLowerCase());
-    const id = match ? match.id : null;
-    rolesCache.set(key, id);
-    return id;
+    // Un rol que todavía no existe no se cachea: si lo crean o lo renombran
+    // después del primer intento, @Staff quedaría sin privilegios hasta el
+    // próximo despliegue.
+    return match ? cacheSet(rolesCache, key, match.id) : null;
   } catch {
     return null;
   }
@@ -54,12 +71,20 @@ export function optionMap(interaction) {
   return Object.fromEntries(options.map((option) => [option.name, option.value]));
 }
 
-/** Nombres con los que el usuario puede figurar en la columna Discord. */
-export function callerHandles(interaction) {
+/**
+ * Identidad de quien invoca, para emparejar contra la columna Discord.
+ *
+ * Sólo el nombre de usuario y el id numérico. El nombre para mostrar
+ * (`global_name`) y el apodo del servidor (`nick`) los elige cada uno y no son
+ * únicos: aceptarlos dejaría que cualquiera del servidor se ponga de apodo el
+ * handle de otro jugador y agende una mesa en la que no juega.
+ */
+export function callerIdentity(interaction) {
   const user = interaction?.member?.user || interaction?.user || {};
-  return [user.username, user.global_name, interaction?.member?.nick]
-    .filter(Boolean)
-    .map((value) => String(value).trim());
+  return {
+    username: String(user.username || "").trim(),
+    id: String(user.id || "").trim(),
+  };
 }
 
 export function message(content, { ephemeral = false } = {}) {

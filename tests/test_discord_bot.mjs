@@ -17,7 +17,8 @@ import {
 import { verifyDiscordSignature } from "../api/_lib/verify.mjs";
 import { playersFor } from "../api/discord.mjs";
 
-const NOW = Date.parse("2026-09-07T12:00:00Z");
+// Antes de julio, para que los casos sin año no crucen el salto de año.
+const NOW = Date.parse("2026-07-01T12:00:00Z");
 const TZ = "America/Santiago";
 
 test("acepta el tag de timestamp de Discord", () => {
@@ -47,8 +48,21 @@ test("acepta fecha y hora escritas a mano, en varias formas", () => {
   }
 });
 
-test("sin año, usa el año en curso de la liga", () => {
+test("sin año, elige el año que deja la fecha por delante", () => {
+  // La fecha que viene, en el año en curso.
   assert.equal(parseWhen("18/07 21:30", { timeZone: TZ, now: NOW }).dateISO, "2026-07-18");
+
+  // En diciembre, "05/01" es el enero que viene, no el que pasó hace once
+  // meses. Antes se escribía la fecha vencida en la planilla sin chistar.
+  const diciembre = Date.parse("2026-12-20T12:00:00Z");
+  assert.equal(parseWhen("05/01 21:30", { timeZone: TZ, now: diciembre }).dateISO, "2027-01-05");
+
+  // Pero una mesa recién jugada se puede registrar hacia atrás: hay 30 días de
+  // gracia antes de dar por hecho que se quiso decir el año siguiente.
+  assert.equal(parseWhen("18/12 21:30", { timeZone: TZ, now: diciembre }).dateISO, "2026-12-18");
+
+  // Con el año escrito no se toca nunca, por vieja que sea la fecha.
+  assert.equal(parseWhen("18-07-2026 21:30", { timeZone: TZ, now: diciembre }).dateISO, "2026-07-18");
 });
 
 test("rechaza lo que no entiende", () => {
@@ -114,6 +128,20 @@ test("valida rangos", () => {
   assert.deepEqual(validateTarget({ division: "A", table: 2 }), ["sesión"]);
 });
 
+test("las filas de fecha y hora coinciden con las de scripts/sync.py", () => {
+  // Las constantes por sí solas no alcanzan: lo que decide en qué celda cae la
+  // fecha es el desplazamiento respecto de la fila de G1. Si sync.py lo mueve,
+  // el bot escribiría en la celda equivocada sin que nada más lo note.
+  const source = readFileSync(new URL("../scripts/sync.py", import.meta.url), "utf8");
+  assert.match(source, /raw_date = cell_value\(ws\.cell\(g1_row - 2, value_col\)\)/);
+  assert.match(source, /raw_time = cell_value\(ws\.cell\(g1_row - 1, value_col\)\)/);
+  assert.match(source, /cell = ws\.cell\(g1_row \+ game - 1, value_col\)/);
+
+  const cells = tableCells("A", 1, 1);
+  assert.equal(cells.dateRow, cells.g1Row - 2);
+  assert.equal(cells.timeRow, cells.g1Row - 1);
+});
+
 test("las celdas del Calendario coinciden con las de scripts/sync.py", () => {
   // Es el punto de acople real entre el bot y el pipeline: si la planilla se
   // reordena y sólo se toca uno de los dos, el bot escribe en la celda que no
@@ -165,21 +193,32 @@ test("lee la mesa desde la grilla, tolerando filas cortas", () => {
   assert.deepEqual(readTable(grid, "B", 7, 6).players, ["", "", "", ""]);
 });
 
-test("empareja al jugador por su handle de Discord", () => {
-  const roster = [
-    { id: "A01", division: "A", name: "Bodoque", discord: ".bodoque" },
-    { id: "A02", division: "A", name: "Mon_96", discord: "monique__96" },
-    { id: "A03", division: "A", name: "KaijuHead", discord: "Pablov" },
-    { id: "B01", division: "B", name: "Misiwasy2", discord: "" },
-  ];
-  assert.deepEqual(playersFor([".bodoque"], roster).map((p) => p.name), ["Bodoque"]);
-  // El handle puede venir con arroba, con mayúsculas o con el discriminador
-  // viejo; y el nombre de pantalla sirve para los rosters cargados a mano.
-  assert.deepEqual(playersFor(["@.Bodoque"], roster).map((p) => p.name), ["Bodoque"]);
-  assert.deepEqual(playersFor(["monique__96#1234"], roster).map((p) => p.name), ["Mon_96"]);
-  assert.deepEqual(playersFor(["nadie", "pablov"], roster).map((p) => p.name), ["KaijuHead"]);
+const ROSTER_MATCH = [
+  { id: "A01", division: "A", name: "Bodoque", discord: ".bodoque" },
+  { id: "A02", division: "A", name: "Mon_96", discord: "monique__96" },
+  { id: "A03", division: "A", name: "KaijuHead", discord: "308000000000000001" },
+  { id: "B01", division: "B", name: "Misiwasy2", discord: "" },
+];
+
+test("empareja al jugador por su nombre de usuario de Discord", () => {
+  const named = (username, id = "") => playersFor({ username, id }, ROSTER_MATCH).map((p) => p.name);
+  assert.deepEqual(named(".bodoque"), ["Bodoque"]);
+  // El handle puede venir con arroba, con mayúsculas o con el discriminador viejo.
+  assert.deepEqual(named("@.Bodoque"), ["Bodoque"]);
+  assert.deepEqual(named("monique__96#1234"), ["Mon_96"]);
+  assert.deepEqual(named("nadie"), []);
   // Una celda Discord vacía no puede emparejar con nadie.
-  assert.deepEqual(playersFor([""], roster), []);
+  assert.deepEqual(playersFor({ username: "", id: "" }, ROSTER_MATCH), []);
+});
+
+test("una celda con id numérico se compara contra el id, no contra el nombre", () => {
+  // El id no se puede falsificar y sobrevive a un cambio de nombre de usuario.
+  assert.deepEqual(
+    playersFor({ username: "cualquiera", id: "308000000000000001" }, ROSTER_MATCH).map((p) => p.name),
+    ["KaijuHead"],
+  );
+  // Y con el id cargado, el nombre de usuario ya no alcanza.
+  assert.deepEqual(playersFor({ username: "308000000000000001", id: "" }, ROSTER_MATCH), []);
 });
 
 test("verifica la firma Ed25519 de Discord", () => {
@@ -270,13 +309,16 @@ function signedRequest(interaction) {
   });
 }
 
-function interactionFor({ username = ".bodoque", roles = [], channelName = "a-s3-m2", options = [] } = {}) {
+function interactionFor({
+  username = ".bodoque", roles = [], channelName = "a-s3-m2", options = [],
+  globalName = null, nick = null, userId = "user-1",
+} = {}) {
   return {
     type: 2,
     guild_id: "guild-1",
     channel_id: "channel-1",
     channel: { id: "channel-1", name: channelName, type: 11 },
-    member: { user: { username, global_name: username }, roles, nick: null },
+    member: { user: { id: userId, username, global_name: globalName ?? username }, roles, nick },
     data: {
       name: "agendar",
       options: [{ name: "cuando", type: 3, value: "18-07-2026 21:30" }, ...options],
@@ -370,6 +412,20 @@ test("informa la fecha anterior cuando la reescribe", async () => {
   assert.match(body.data.content, /Antes decía: 10 de julio 20:00/);
 });
 
+test("un apodo prestado no habilita a agendar la mesa de otro", async () => {
+  // El apodo del servidor y el nombre para mostrar los elige cada uno: si
+  // contaran para identificar al jugador, cualquiera del servidor podría
+  // ponerse ".bodoque" y reescribir la fecha de una mesa ajena.
+  let written = null;
+  const { body } = await callHandler(
+    interactionFor({ username: "randomtroll", globalName: ".Bodoque", nick: ".bodoque" }),
+    fakeNetwork({ grid: calendarGrid(), onWrite: (payload) => { written = payload; } }),
+  );
+  assert.equal(written, null, "no debe escribir nada");
+  assert.equal(body.data.flags, 64);
+  assert.match(body.data.content, /nombre de usuario/);
+});
+
 test("un ajeno a la mesa no puede agendarla", async () => {
   let written = null;
   const { body } = await callHandler(
@@ -460,6 +516,9 @@ test("avisa si Google guardó la fecha como texto", async () => {
   };
   const { body } = await callHandler(interactionFor(), network);
   assert.match(body.data.content, /como texto y no como fecha\/hora/);
+  // Las dos celdas quedaron mal: nombrar sólo una deja la otra rota después
+  // de "arreglarlo".
+  assert.match(body.data.content, /Calendario!F25 y Calendario!F26/);
 });
 
 test("una fecha ilegible no llega a tocar la planilla", async () => {

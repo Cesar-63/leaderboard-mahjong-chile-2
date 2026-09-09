@@ -254,6 +254,15 @@ paso a paso completo en `DISCORD_BOT.md`.
 - Sólo agendan los cuatro jugadores de esa mesa —emparejados por la columna
   **Discord** del roster— y el rol @Staff. Una mesa con paipu ya cargado sólo la
   reagenda @Staff.
+- **La identidad se toma del nombre de usuario o del id numérico, nunca del
+  nombre para mostrar ni del apodo del servidor**: esos los elige cada uno, así
+  que aceptarlos dejaría que cualquiera se haga pasar por otro jugador. Si la
+  celda del roster son puros dígitos se compara contra el id, que es lo
+  infalsificable.
+- El handle de Discord es dato privado (`PRIVATE_PLAYER_FIELDS`). El bot lo lee
+  en memoria y **nunca lo publica**: el mensaje visible en el hilo sólo lleva
+  nombres de liga; el único handle que aparece es el de quien invocó, y en un
+  mensaje efímero que sólo ve esa persona.
 - Tests: `node --test tests/test_discord_bot.mjs`, con la red simulada.
 
 ## Vistas
