@@ -4,6 +4,10 @@
       "hands": 117,
       "wins": 24,
       "dealIns": 12,
+      "kans": 3,
+      "doras": 28,
+      "uraDoras": 12,
+      "maxHonba": 4,
       "winRate": 20.5,
       "dealInRate": 10.3,
       "riichiRate": 12.8,
@@ -70,16 +74,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 3,
-      "doras": 28,
-      "uraDoras": 12,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "A02": {
       "hands": 137,
       "wins": 38,
       "dealIns": 22,
+      "kans": 1,
+      "doras": 39,
+      "uraDoras": 11,
+      "maxHonba": 3,
       "winRate": 27.7,
       "dealInRate": 16.1,
       "riichiRate": 16.1,
@@ -146,16 +150,16 @@
           "count": 2
         }
       ],
-      "statsReliable": true,
-      "kans": 1,
-      "doras": 39,
-      "uraDoras": 11,
-      "maxHonba": 3
+      "statsReliable": true
     },
     "A03": {
       "hands": 147,
       "wins": 38,
       "dealIns": 12,
+      "kans": 11,
+      "doras": 45,
+      "uraDoras": 19,
+      "maxHonba": 4,
       "winRate": 25.9,
       "dealInRate": 8.2,
       "riichiRate": 17.7,
@@ -234,16 +238,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 11,
-      "doras": 45,
-      "uraDoras": 19,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "A04": {
       "hands": 144,
       "wins": 34,
       "dealIns": 12,
+      "kans": 5,
+      "doras": 38,
+      "uraDoras": 14,
+      "maxHonba": 4,
       "winRate": 23.6,
       "dealInRate": 8.3,
       "riichiRate": 21.5,
@@ -326,16 +330,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 5,
-      "doras": 38,
-      "uraDoras": 14,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "A05": {
       "hands": 146,
       "wins": 28,
       "dealIns": 29,
+      "kans": 8,
+      "doras": 36,
+      "uraDoras": 13,
+      "maxHonba": 8,
       "winRate": 19.2,
       "dealInRate": 19.9,
       "riichiRate": 20.5,
@@ -414,16 +418,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 8,
-      "doras": 36,
-      "uraDoras": 13,
-      "maxHonba": 8
+      "statsReliable": true
     },
     "A06": {
       "hands": 129,
       "wins": 22,
       "dealIns": 21,
+      "kans": 9,
+      "doras": 28,
+      "uraDoras": 7,
+      "maxHonba": 6,
       "winRate": 17.1,
       "dealInRate": 16.3,
       "riichiRate": 20.9,
@@ -482,16 +486,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 9,
-      "doras": 28,
-      "uraDoras": 7,
-      "maxHonba": 6
+      "statsReliable": true
     },
     "A07": {
       "hands": 119,
       "wins": 30,
       "dealIns": 14,
+      "kans": 1,
+      "doras": 34,
+      "uraDoras": 19,
+      "maxHonba": 8,
       "winRate": 25.2,
       "dealInRate": 11.8,
       "riichiRate": 22.7,
@@ -562,16 +566,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 1,
-      "doras": 34,
-      "uraDoras": 19,
-      "maxHonba": 8
+      "statsReliable": true
     },
     "A08": {
       "hands": 129,
       "wins": 26,
       "dealIns": 22,
+      "kans": 10,
+      "doras": 30,
+      "uraDoras": 13,
+      "maxHonba": 8,
       "winRate": 20.2,
       "dealInRate": 17.1,
       "riichiRate": 22.5,
@@ -642,16 +646,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 10,
-      "doras": 30,
-      "uraDoras": 13,
-      "maxHonba": 8
+      "statsReliable": true
     },
     "A09": {
       "hands": 153,
       "wins": 36,
       "dealIns": 24,
+      "kans": 15,
+      "doras": 47,
+      "uraDoras": 21,
+      "maxHonba": 6,
       "winRate": 23.5,
       "dealInRate": 15.7,
       "riichiRate": 27.5,
@@ -738,16 +742,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 15,
-      "doras": 47,
-      "uraDoras": 21,
-      "maxHonba": 6
+      "statsReliable": true
     },
     "A10": {
       "hands": 108,
       "wins": 22,
       "dealIns": 23,
+      "kans": 5,
+      "doras": 27,
+      "uraDoras": 6,
+      "maxHonba": 4,
       "winRate": 20.4,
       "dealInRate": 21.3,
       "riichiRate": 10.2,
@@ -810,16 +814,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 5,
-      "doras": 27,
-      "uraDoras": 6,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "A11": {
       "hands": 110,
       "wins": 20,
       "dealIns": 23,
+      "kans": 9,
+      "doras": 23,
+      "uraDoras": 9,
+      "maxHonba": 5,
       "winRate": 18.2,
       "dealInRate": 20.9,
       "riichiRate": 20.0,
@@ -874,16 +878,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 11,
-      "doras": 23,
-      "uraDoras": 9,
-      "maxHonba": 5
+      "statsReliable": true
     },
     "A12": {
       "hands": 123,
       "wins": 17,
       "dealIns": 20,
+      "kans": 1,
+      "doras": 24,
+      "uraDoras": 15,
+      "maxHonba": 5,
       "winRate": 13.8,
       "dealInRate": 16.3,
       "riichiRate": 17.1,
@@ -942,16 +946,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 1,
-      "doras": 24,
-      "uraDoras": 15,
-      "maxHonba": 5
+      "statsReliable": true
     },
     "A13": {
       "hands": 127,
       "wins": 20,
       "dealIns": 34,
+      "kans": 5,
+      "doras": 23,
+      "uraDoras": 6,
+      "maxHonba": 6,
       "winRate": 15.7,
       "dealInRate": 26.8,
       "riichiRate": 22.0,
@@ -1026,16 +1030,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 5,
-      "doras": 23,
-      "uraDoras": 6,
-      "maxHonba": 6
+      "statsReliable": true
     },
     "A14": {
       "hands": 115,
       "wins": 24,
       "dealIns": 10,
+      "kans": 5,
+      "doras": 27,
+      "uraDoras": 9,
+      "maxHonba": 3,
       "winRate": 20.9,
       "dealInRate": 8.7,
       "riichiRate": 24.3,
@@ -1090,16 +1094,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 5,
-      "doras": 27,
-      "uraDoras": 9,
-      "maxHonba": 3
+      "statsReliable": true
     },
     "A15": {
       "hands": 128,
       "wins": 32,
       "dealIns": 21,
+      "kans": 10,
+      "doras": 40,
+      "uraDoras": 16,
+      "maxHonba": 3,
       "winRate": 25.0,
       "dealInRate": 16.4,
       "riichiRate": 24.2,
@@ -1166,16 +1170,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 10,
-      "doras": 40,
-      "uraDoras": 16,
-      "maxHonba": 3
+      "statsReliable": true
     },
     "A16": {
       "hands": 126,
       "wins": 30,
       "dealIns": 13,
+      "kans": 6,
+      "doras": 36,
+      "uraDoras": 24,
+      "maxHonba": 6,
       "winRate": 23.8,
       "dealInRate": 10.3,
       "riichiRate": 31.0,
@@ -1238,16 +1242,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 6,
-      "doras": 36,
-      "uraDoras": 24,
-      "maxHonba": 6
+      "statsReliable": true
     },
     "A17": {
       "hands": 123,
       "wins": 37,
       "dealIns": 8,
+      "kans": 4,
+      "doras": 43,
+      "uraDoras": 15,
+      "maxHonba": 6,
       "winRate": 30.1,
       "dealInRate": 6.5,
       "riichiRate": 13.8,
@@ -1322,16 +1326,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 4,
-      "doras": 43,
-      "uraDoras": 15,
-      "maxHonba": 6
+      "statsReliable": true
     },
     "A18": {
       "hands": 121,
       "wins": 23,
       "dealIns": 15,
+      "kans": 3,
+      "doras": 24,
+      "uraDoras": 13,
+      "maxHonba": 8,
       "winRate": 19.0,
       "dealInRate": 12.4,
       "riichiRate": 19.0,
@@ -1390,16 +1394,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 3,
-      "doras": 24,
-      "uraDoras": 13,
-      "maxHonba": 8
+      "statsReliable": true
     },
     "A19": {
       "hands": 123,
       "wins": 28,
       "dealIns": 19,
+      "kans": 1,
+      "doras": 30,
+      "uraDoras": 17,
+      "maxHonba": 5,
       "winRate": 22.8,
       "dealInRate": 15.4,
       "riichiRate": 29.3,
@@ -1450,16 +1454,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 1,
-      "doras": 30,
-      "uraDoras": 17,
-      "maxHonba": 5
+      "statsReliable": true
     },
     "A20": {
       "hands": 118,
       "wins": 22,
       "dealIns": 24,
+      "kans": 4,
+      "doras": 24,
+      "uraDoras": 15,
+      "maxHonba": 5,
       "winRate": 18.6,
       "dealInRate": 20.3,
       "riichiRate": 28.0,
@@ -1530,16 +1534,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 4,
-      "doras": 24,
-      "uraDoras": 15,
-      "maxHonba": 5
+      "statsReliable": true
     },
     "A21": {
       "hands": 124,
       "wins": 28,
       "dealIns": 25,
+      "kans": 11,
+      "doras": 33,
+      "uraDoras": 18,
+      "maxHonba": 6,
       "winRate": 22.6,
       "dealInRate": 20.2,
       "riichiRate": 30.6,
@@ -1602,16 +1606,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 11,
-      "doras": 33,
-      "uraDoras": 18,
-      "maxHonba": 6
+      "statsReliable": true
     },
     "A22": {
       "hands": 150,
       "wins": 29,
       "dealIns": 11,
+      "kans": 4,
+      "doras": 32,
+      "uraDoras": 19,
+      "maxHonba": 6,
       "winRate": 19.3,
       "dealInRate": 7.3,
       "riichiRate": 18.7,
@@ -1674,16 +1678,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 4,
-      "doras": 32,
-      "uraDoras": 19,
-      "maxHonba": 6
+      "statsReliable": true
     },
     "A23": {
       "hands": 124,
       "wins": 28,
       "dealIns": 24,
+      "kans": 6,
+      "doras": 31,
+      "uraDoras": 11,
+      "maxHonba": 3,
       "winRate": 22.6,
       "dealInRate": 19.4,
       "riichiRate": 18.5,
@@ -1758,16 +1762,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 6,
-      "doras": 31,
-      "uraDoras": 11,
-      "maxHonba": 3
+      "statsReliable": true
     },
     "A24": {
       "hands": 143,
       "wins": 31,
       "dealIns": 14,
+      "kans": 5,
+      "doras": 42,
+      "uraDoras": 11,
+      "maxHonba": 5,
       "winRate": 21.7,
       "dealInRate": 9.8,
       "riichiRate": 9.8,
@@ -1838,16 +1842,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 5,
-      "doras": 42,
-      "uraDoras": 11,
-      "maxHonba": 5
+      "statsReliable": true
     },
     "B01": {
       "hands": 110,
       "wins": 31,
       "dealIns": 14,
+      "kans": 2,
+      "doras": 31,
+      "uraDoras": 18,
+      "maxHonba": 6,
       "winRate": 28.2,
       "dealInRate": 12.7,
       "riichiRate": 21.8,
@@ -1918,16 +1922,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 2,
-      "doras": 31,
-      "uraDoras": 18,
-      "maxHonba": 6
+      "statsReliable": true
     },
     "B02": {
       "hands": 117,
       "wins": 30,
       "dealIns": 19,
+      "kans": 4,
+      "doras": 34,
+      "uraDoras": 18,
+      "maxHonba": 4,
       "winRate": 25.6,
       "dealInRate": 16.2,
       "riichiRate": 28.2,
@@ -1994,16 +1998,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 4,
-      "doras": 34,
-      "uraDoras": 18,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "B03": {
       "hands": 127,
       "wins": 21,
       "dealIns": 14,
+      "kans": 8,
+      "doras": 24,
+      "uraDoras": 14,
+      "maxHonba": 6,
       "winRate": 16.5,
       "dealInRate": 11.0,
       "riichiRate": 18.9,
@@ -2066,16 +2070,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 8,
-      "doras": 24,
-      "uraDoras": 14,
-      "maxHonba": 6
+      "statsReliable": true
     },
     "B04": {
       "hands": 114,
       "wins": 31,
       "dealIns": 14,
+      "kans": 3,
+      "doras": 36,
+      "uraDoras": 16,
+      "maxHonba": 4,
       "winRate": 27.2,
       "dealInRate": 12.3,
       "riichiRate": 20.2,
@@ -2150,16 +2154,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 3,
-      "doras": 36,
-      "uraDoras": 16,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "B05": {
       "hands": 104,
       "wins": 22,
       "dealIns": 16,
+      "kans": 2,
+      "doras": 26,
+      "uraDoras": 16,
+      "maxHonba": 4,
       "winRate": 21.2,
       "dealInRate": 15.4,
       "riichiRate": 25.0,
@@ -2222,16 +2226,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 2,
-      "doras": 26,
-      "uraDoras": 16,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "B06": {
       "hands": 99,
       "wins": 17,
       "dealIns": 12,
+      "kans": 2,
+      "doras": 20,
+      "uraDoras": 0,
+      "maxHonba": 3,
       "winRate": 17.2,
       "dealInRate": 12.1,
       "riichiRate": 0.0,
@@ -2282,16 +2286,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 2,
-      "doras": 20,
-      "uraDoras": 0,
-      "maxHonba": 3
+      "statsReliable": true
     },
     "B07": {
       "hands": 94,
       "wins": 22,
       "dealIns": 12,
+      "kans": 8,
+      "doras": 28,
+      "uraDoras": 9,
+      "maxHonba": 4,
       "winRate": 23.4,
       "dealInRate": 12.8,
       "riichiRate": 21.3,
@@ -2342,16 +2346,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 8,
-      "doras": 28,
-      "uraDoras": 9,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "B08": {
       "hands": 116,
       "wins": 32,
       "dealIns": 13,
+      "kans": 4,
+      "doras": 39,
+      "uraDoras": 18,
+      "maxHonba": 4,
       "winRate": 27.6,
       "dealInRate": 11.2,
       "riichiRate": 23.3,
@@ -2410,16 +2414,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 4,
-      "doras": 39,
-      "uraDoras": 18,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "B09": {
       "hands": 113,
       "wins": 18,
       "dealIns": 14,
+      "kans": 9,
+      "doras": 23,
+      "uraDoras": 9,
+      "maxHonba": 4,
       "winRate": 15.9,
       "dealInRate": 12.4,
       "riichiRate": 13.3,
@@ -2490,16 +2494,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 9,
-      "doras": 23,
-      "uraDoras": 9,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "B10": {
       "hands": 122,
       "wins": 23,
       "dealIns": 24,
+      "kans": 9,
+      "doras": 27,
+      "uraDoras": 11,
+      "maxHonba": 4,
       "winRate": 18.9,
       "dealInRate": 19.7,
       "riichiRate": 23.0,
@@ -2558,16 +2562,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 9,
-      "doras": 27,
-      "uraDoras": 11,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "B11": {
       "hands": 118,
       "wins": 28,
       "dealIns": 12,
+      "kans": 3,
+      "doras": 36,
+      "uraDoras": 20,
+      "maxHonba": 4,
       "winRate": 23.7,
       "dealInRate": 10.2,
       "riichiRate": 22.0,
@@ -2638,16 +2642,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 3,
-      "doras": 36,
-      "uraDoras": 20,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "B12": {
       "hands": 141,
       "wins": 30,
       "dealIns": 25,
+      "kans": 9,
+      "doras": 33,
+      "uraDoras": 9,
+      "maxHonba": 6,
       "winRate": 21.3,
       "dealInRate": 17.7,
       "riichiRate": 12.1,
@@ -2714,16 +2718,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 9,
-      "doras": 33,
-      "uraDoras": 9,
-      "maxHonba": 6
+      "statsReliable": true
     },
     "B13": {
       "hands": 112,
       "wins": 33,
       "dealIns": 18,
+      "kans": 9,
+      "doras": 46,
+      "uraDoras": 16,
+      "maxHonba": 4,
       "winRate": 29.5,
       "dealInRate": 16.1,
       "riichiRate": 21.4,
@@ -2790,16 +2794,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 9,
-      "doras": 46,
-      "uraDoras": 16,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "B14": {
       "hands": 113,
       "wins": 31,
       "dealIns": 16,
+      "kans": 6,
+      "doras": 36,
+      "uraDoras": 14,
+      "maxHonba": 4,
       "winRate": 27.4,
       "dealInRate": 14.2,
       "riichiRate": 16.8,
@@ -2866,16 +2870,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 6,
-      "doras": 36,
-      "uraDoras": 14,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "B15": {
       "hands": 111,
       "wins": 29,
       "dealIns": 10,
+      "kans": 2,
+      "doras": 31,
+      "uraDoras": 15,
+      "maxHonba": 4,
       "winRate": 26.1,
       "dealInRate": 9.0,
       "riichiRate": 13.5,
@@ -2934,16 +2938,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 2,
-      "doras": 31,
-      "uraDoras": 15,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "B16": {
       "hands": 124,
       "wins": 27,
       "dealIns": 19,
+      "kans": 2,
+      "doras": 34,
+      "uraDoras": 11,
+      "maxHonba": 3,
       "winRate": 21.8,
       "dealInRate": 15.3,
       "riichiRate": 16.1,
@@ -3006,16 +3010,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 2,
-      "doras": 34,
-      "uraDoras": 11,
-      "maxHonba": 3
+      "statsReliable": true
     },
     "B17": {
       "hands": 111,
       "wins": 28,
       "dealIns": 16,
+      "kans": 7,
+      "doras": 32,
+      "uraDoras": 16,
+      "maxHonba": 4,
       "winRate": 25.2,
       "dealInRate": 14.4,
       "riichiRate": 31.5,
@@ -3074,16 +3078,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 7,
-      "doras": 32,
-      "uraDoras": 16,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "B18": {
       "hands": 107,
       "wins": 19,
       "dealIns": 18,
+      "kans": 9,
+      "doras": 24,
+      "uraDoras": 13,
+      "maxHonba": 4,
       "winRate": 17.8,
       "dealInRate": 16.8,
       "riichiRate": 17.8,
@@ -3150,16 +3154,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 9,
-      "doras": 24,
-      "uraDoras": 13,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "B19": {
       "hands": 107,
       "wins": 25,
       "dealIns": 32,
+      "kans": 4,
+      "doras": 30,
+      "uraDoras": 15,
+      "maxHonba": 3,
       "winRate": 23.4,
       "dealInRate": 29.9,
       "riichiRate": 24.3,
@@ -3222,16 +3226,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 4,
-      "doras": 30,
-      "uraDoras": 15,
-      "maxHonba": 3
+      "statsReliable": true
     },
     "B20": {
       "hands": 110,
       "wins": 28,
       "dealIns": 13,
+      "kans": 5,
+      "doras": 31,
+      "uraDoras": 11,
+      "maxHonba": 4,
       "winRate": 25.5,
       "dealInRate": 11.8,
       "riichiRate": 17.3,
@@ -3302,16 +3306,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 5,
-      "doras": 31,
-      "uraDoras": 11,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "B21": {
       "hands": 126,
       "wins": 29,
       "dealIns": 31,
+      "kans": 18,
+      "doras": 36,
+      "uraDoras": 11,
+      "maxHonba": 4,
       "winRate": 23.0,
       "dealInRate": 24.6,
       "riichiRate": 18.3,
@@ -3366,16 +3370,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 18,
-      "doras": 36,
-      "uraDoras": 11,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "B22": {
       "hands": 115,
       "wins": 25,
       "dealIns": 12,
+      "kans": 2,
+      "doras": 27,
+      "uraDoras": 8,
+      "maxHonba": 6,
       "winRate": 21.7,
       "dealInRate": 10.4,
       "riichiRate": 17.4,
@@ -3446,16 +3450,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 2,
-      "doras": 27,
-      "uraDoras": 8,
-      "maxHonba": 6
+      "statsReliable": true
     },
     "B23": {
       "hands": 112,
       "wins": 7,
       "dealIns": 21,
+      "kans": 11,
+      "doras": 9,
+      "uraDoras": 3,
+      "maxHonba": 4,
       "winRate": 6.2,
       "dealInRate": 18.8,
       "riichiRate": 4.5,
@@ -3502,16 +3506,16 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 11,
-      "doras": 9,
-      "uraDoras": 3,
-      "maxHonba": 4
+      "statsReliable": true
     },
     "B24": {
       "hands": 114,
       "wins": 32,
       "dealIns": 25,
+      "kans": 1,
+      "doras": 43,
+      "uraDoras": 19,
+      "maxHonba": 3,
       "winRate": 28.1,
       "dealInRate": 21.9,
       "riichiRate": 22.8,
@@ -3590,11 +3594,7 @@
           "count": 1
         }
       ],
-      "statsReliable": true,
-      "kans": 1,
-      "doras": 43,
-      "uraDoras": 19,
-      "maxHonba": 3
+      "statsReliable": true
     }
   }
 }
