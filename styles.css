@@ -583,8 +583,8 @@ select{font:inherit;color:inherit}
 /* ─── fichas de mahjong (tiles.jsx) ─── */
 /* La ficha es marfil en los dos temas: un mahjong no cambia de color de noche.
    Sólo el marco alrededor sigue al tema. */
-.mj-tile{flex:none;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:var(--tile-w,34px);aspect-ratio:3/4;position:relative;overflow:hidden;border-radius:calc(var(--tile-w)*.15);background:linear-gradient(178deg,#fffefa,#efe8d8);border:1px solid rgba(24,20,14,.22);box-shadow:0 1px 1px rgba(24,20,14,.22),inset 0 -2px 0 rgba(24,20,14,.07);color:#1b232e;line-height:1;user-select:none}
-.mj-tile .mj-face{display:block;width:100%;height:100%;object-fit:contain}
+.mj-tile{flex:none;display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;width:var(--tile-w,38px);aspect-ratio:3/4;position:relative;overflow:hidden;border-radius:calc(var(--tile-w)*.14);background:linear-gradient(170deg,#fffefa 0%,#f8f3e9 66%,#e3dac9 100%);border:1px solid rgba(42,35,25,.34);box-shadow:0 2px 0 #c7bcaa,0 3px 7px rgba(35,29,20,.18),inset 0 1px 0 rgba(255,255,255,.9),inset 0 -2px 0 rgba(48,39,27,.07);color:#1b232e;line-height:1;user-select:none}
+.mj-tile .mj-face{display:block;width:100%;height:100%;padding:calc(var(--tile-w)*.055) calc(var(--tile-w)*.045) calc(var(--tile-w)*.075);object-fit:contain;filter:contrast(1.07) saturate(1.08)}
 .mj-tile .mj-num{font-family:var(--font-mono);font-weight:700;font-size:calc(var(--tile-w)*.46)}
 .mj-tile .mj-suit{font-family:var(--font-jp);font-size:calc(var(--tile-w)*.32);opacity:.85}
 .mj-tile .mj-honor{font-family:var(--font-jp);font-weight:700;font-size:calc(var(--tile-w)*.56)}
@@ -600,23 +600,31 @@ select{font:inherit;color:inherit}
 /* El blanco (haku) viene sin dibujo en el set: es una ficha en blanco. Se le
    pone el marco con que se dibuja siempre, si no parece imagen rota. */
 .mj-tile.tile-5z::after{content:'';position:absolute;inset:12% 16%;border:2px solid #2c4a7c;border-radius:2px}
-.mj-tile.win{box-shadow:0 0 0 2px var(--accent),0 2px 4px rgba(24,20,14,.28);transform:translateY(-2px)}
+.mj-tile.win{box-shadow:0 0 0 2px var(--modal-accent,var(--accent)),0 2px 0 #c7bcaa,0 4px 9px rgba(24,20,14,.25);transform:translateY(-3px)}
 /* Kan cerrado: las dos de los extremos van boca abajo. */
 .mj-tile.back{background:linear-gradient(178deg,#2f6f5e,#22523f);border-color:rgba(0,0,0,.35);color:transparent}
 .mj-tile.back>*{visibility:hidden}
 /* overflow-x:auto también recorta arriba y abajo: el aire es para que el
    anillo de la ficha ganadora, que además se levanta 2px, no salga cortado. */
-.mj-hand{--tile-w:34px;display:flex;align-items:flex-end;gap:10px;overflow-x:auto;padding:5px 4px 4px;margin:0 -4px;scrollbar-width:thin}
-.mj-group{display:flex;gap:2px}
-.mj-group.win{padding-left:2px}
+.mj-hand{--tile-w:38px;display:flex;align-items:flex-end;gap:13px;overflow-x:auto;padding:8px 5px 20px;margin:0 -5px;scrollbar-width:thin}
+.mj-group{display:flex;gap:4px}
+.mj-group.win{position:relative;padding-left:4px;margin-left:4px}.mj-group.win::before{content:'';position:absolute;left:-5px;top:6px;bottom:4px;border-left:1px dashed var(--modal-accent,var(--accent))}.mj-win-label{position:absolute;left:4px;bottom:-14px;width:max-content;font-family:var(--font-mono);font-size:7px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--modal-accent,var(--accent))}
 .mj-meld{display:flex;gap:2px;padding-left:8px;border-left:1px dashed var(--line-strong)}
 
 /* ─── popup de manos por yaku ─── */
-.yaku-modal{width:min(760px,94vw)}
+.yaku-modal{width:min(1040px,96vw);max-height:90vh;padding:20px 22px;overflow-x:hidden}
 .yaku-modal .cm-kicker{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:3px}
-.yaku-modal .cm-title{font-size:20px;color:var(--modal-accent,var(--accent))}
+.yaku-modal .cm-title{font-size:27px;color:var(--modal-accent,var(--accent))}
+.hand-milestone-tabs{display:flex;gap:7px;overflow-x:auto;margin:14px 0 10px;padding-bottom:3px;scrollbar-width:thin}
+.hand-milestone-tabs button{display:inline-flex;align-items:center;gap:6px;flex:none;padding:8px 11px;border:1px solid var(--line);border-radius:99px;background:transparent;color:var(--ink-soft);font-family:var(--font-mono);font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap}
+.hand-milestone-tabs button i{font-style:normal;color:var(--modal-accent,var(--accent))}.hand-milestone-tabs button.active{border-color:var(--modal-accent,var(--accent));background:var(--modal-accent,var(--accent));color:#fff}.hand-milestone-tabs button.active i{color:inherit}
+.hand-keyboard-hint{margin:-2px 0 11px;font-family:var(--font-mono);font-size:8.5px;letter-spacing:.04em;color:var(--ink-faint)}.hand-keyboard-hint span{display:inline-grid;place-items:center;min-width:31px;padding:3px 5px;border:1px solid var(--line);border-radius:5px;background:var(--bg-sunk);color:var(--ink-soft)}.hand-keyboard-hint i{margin:0 5px;font-style:normal}
+.hand-milestone-reason{display:flex;align-items:baseline;gap:9px;margin-bottom:12px;padding:10px 12px;border-left:3px solid var(--modal-accent,var(--accent));background:color-mix(in oklab,var(--modal-accent,var(--accent)) 8%,var(--bg-sunk));font-size:11px;color:var(--ink-soft)}.hand-milestone-reason strong{font-family:var(--font-display);font-size:15px;color:var(--ink)}
+.yaku-gallery{display:grid;grid-template-columns:210px minmax(0,1fr);gap:14px;align-items:start}.yaku-gallery-list{display:grid;gap:7px;max-height:570px;overflow:auto;padding-right:3px}.yaku-gallery-list button{position:relative;display:grid;grid-template-columns:1fr auto;gap:3px;padding:10px 11px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--ink);text-align:left;cursor:pointer}.yaku-gallery-list button.active{border-color:var(--modal-accent,var(--accent));background:color-mix(in oklab,var(--modal-accent,var(--accent)) 10%,var(--bg-sunk))}.yaku-gallery-list button>span{font-family:var(--font-mono);font-size:9px;color:var(--ink-faint)}.yaku-gallery-list button>strong{font-family:var(--font-mono);font-size:13px;color:var(--modal-accent,var(--accent))}.yaku-gallery-list button>small{grid-column:1/-1;font-size:10px;color:var(--ink-soft)}.yaku-gallery-list button>em{position:absolute;right:9px;bottom:8px;font-size:9px;color:var(--modal-accent,var(--accent));font-style:normal}
+.yaku-mobile-nav{display:none}
 .yaku-hand-list{display:flex;flex-direction:column;gap:12px;margin-top:6px}
 .yaku-hand{padding:12px 13px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg-sunk)}
+.yaku-hand.featured{padding:17px 18px;border-radius:14px;background:color-mix(in oklab,var(--modal-accent,var(--accent)) 4%,var(--bg-sunk))}.yaku-hand-milestones{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:11px}.yaku-hand-milestones span{display:inline-flex;align-items:center;gap:5px;padding:5px 8px;border-radius:99px;background:var(--modal-accent,var(--accent));color:#fff;font-family:var(--font-mono);font-size:9px;font-weight:700;text-transform:uppercase}.yaku-hand-milestones i{font-style:normal}
 .yaku-hand-head,.yaku-hand-foot{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:10.5px;color:var(--ink-soft)}
 .yaku-hand-head{margin-bottom:10px}
 .yaku-hand-head .where{letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}
@@ -633,24 +641,38 @@ select{font:inherit;color:inherit}
 .yaku-hand-foot .meta .han{color:var(--ink-soft);font-weight:600}
 .yaku-hand-foot .meta .nw + .nw::before{content:'·';opacity:.55}
 .yaku-hand-foot .badge-riichi{font-style:normal;padding:2px 6px;border-radius:99px;background:color-mix(in oklab,var(--accent) 15%,transparent);color:var(--accent)}
+.yaku-hand-comparison{margin-top:13px;padding:9px 11px;border-left:3px solid var(--good);background:color-mix(in oklab,var(--good) 8%,transparent);font-size:10.5px;color:var(--ink-soft)}
 /* Apenas la mano no cabe entera, se parte en filas en vez de esconderse detrás
    de un scroll horizontal: 760px es el ancho máximo del popup, así que de ahí
    para abajo siempre conviene envolver. La ficha ganadora fluye con el resto
    (display:contents): ya se distingue por su anillo, no necesita su propia
    fila. */
 @media (max-width:760px){
-  .mj-hand{--tile-w:26px;gap:5px 2px;flex-wrap:wrap;overflow-x:visible;margin:0;padding:4px 0}
-  .mj-group{display:contents}
-  .mj-meld{margin-left:6px;padding-left:5px}
+  .cal-modal-backdrop:has(.yaku-modal){align-items:flex-end;padding:0}
+  .yaku-modal{width:100%;max-width:none;max-height:92dvh;margin:0;border-radius:20px 20px 0 0;padding:16px}
+  .hand-keyboard-hint{display:none}
+  .hand-milestone-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));margin:14px 0 10px;padding:0;overflow:visible}.hand-milestone-tabs button{justify-content:center;min-width:0;overflow:hidden;text-overflow:ellipsis}.hand-milestone-tabs button:first-child{grid-column:1/-1}.hand-milestone-reason{align-items:flex-start;flex-direction:column;gap:3px;line-height:1.4}
+  .yaku-gallery{grid-template-columns:minmax(0,1fr);gap:10px;min-width:0}.yaku-gallery-list{display:none}.yaku-mobile-nav{display:grid;grid-template-columns:42px minmax(0,1fr) 42px;align-items:center;gap:8px;padding:8px;border:1px solid var(--line);border-radius:12px;background:var(--bg-sunk)}.yaku-mobile-nav>button{width:42px;height:42px;border:1px solid var(--line);border-radius:10px;background:var(--bg-elev);color:var(--modal-accent,var(--accent));font-size:25px;cursor:pointer}.yaku-mobile-nav>div{display:grid;justify-items:center;gap:2px;min-width:0;text-align:center}.yaku-mobile-nav span{font-family:var(--font-mono);font-size:8px;letter-spacing:.1em;color:var(--ink-faint)}.yaku-mobile-nav strong{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}.yaku-mobile-nav small{font-family:var(--font-mono);font-size:9px;color:var(--ink-soft)}
+  .yaku-hand.featured{min-width:0;overflow:hidden}
+  .mj-hand{--tile-w:28px;max-width:100%;gap:9px;flex-wrap:wrap;overflow:visible;margin:0;padding:7px 2px 19px}
+  .mj-group{display:flex;gap:3px}.mj-tile{scroll-snap-align:start}
+  .mj-meld{margin-left:0;padding-left:7px}
 }
 @media (max-width:600px){
-  .mj-hand{--tile-w:23px}
+  .yaku-modal{padding:14px 12px}.yaku-modal .cm-head{padding:0 2px}.yaku-modal .cm-title{font-size:23px}.yaku-modal .cm-sub{max-width:30ch;font-size:9.5px;line-height:1.45}.yaku-modal .cm-close{width:42px;height:42px;border-radius:13px;font-size:16px}
+  .hand-milestone-tabs button{padding:8px 7px;font-size:9px}
+  .mj-hand{--tile-w:25px;gap:5px}.mj-group{gap:1px}.mj-group.win{margin-left:2px;padding-left:4px}.mj-meld{padding-left:5px}
+  .yaku-hand.featured{padding:13px 11px}.yaku-hand-head{align-items:flex-start}.yaku-hand-head .where{width:100%;font-size:9.5px}.yaku-hand-head .paipu-link{order:4}.yaku-hand-head .pts{margin-left:auto}
   .yaku-hand-head{flex-wrap:wrap;row-gap:5px}
-  .yaku-hand-head .pts{font-size:12.5px}
-  .yaku-hand-foot .meta{margin-left:0;gap:4px 11px}
+  .yaku-hand-head .pts{font-size:13px}
+  .yaku-hand-foot{align-items:flex-start;flex-direction:column;gap:8px;line-height:1.35}.yaku-hand-foot .others{overflow-wrap:anywhere}.yaku-hand-foot .meta{width:100%;margin-left:0;gap:6px 10px}.yaku-hand-foot .meta .nw{white-space:normal}.yaku-hand-comparison{overflow-wrap:anywhere;line-height:1.45}
   /* Sin separadores en el pie: al cortar la línea el punto quedaba
      abriendo la fila siguiente. El espacio ya separa. */
   .yaku-hand-foot .meta .nw + .nw::before{content:none}
+}
+@media (max-width:420px){
+  .mj-hand{--tile-w:22px;gap:3px}.mj-group{gap:1px}.mj-meld{gap:1px}
+  .yaku-gallery-list button{flex-basis:138px}
 }
 @keyframes barfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 
