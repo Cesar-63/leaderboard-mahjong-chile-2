@@ -19,7 +19,7 @@ const TABS = [
 ];
 
 // tabs that are scoped to a single division
-const DIV_SCOPED = ['standings', 'log'];
+const DIV_SCOPED = ['standings', 'detail', 'log'];
 
 // ── Rutas por hash: #/<tab>/<div|jugador> ──
 // Cada pestaña x división tiene su propia URL (funciona en estático, sin server).
