@@ -159,10 +159,10 @@ def _paipu_game():
         "uuid": "u", "url": "https://x/paipu", "sha256": "x",
         "finalScoresBySeat": [45000, 38500, 32000, 4500],
         "seatStats": [
-            {"hands": 7, "wins": 1, "dealIns": 0, "riichis": 2, "openHands": 1, "damaten": 0, "winPoints": 8000, "dealInPoints": 0, "winTurns": 11, "yaku": {}},
-            {"hands": 7, "wins": 0, "dealIns": 1, "riichis": 0, "openHands": 2, "damaten": 0, "winPoints": 0, "dealInPoints": 5200, "winTurns": 0, "yaku": {}},
-            {"hands": 7, "wins": 1, "dealIns": 0, "riichis": 1, "openHands": 0, "damaten": 1, "winPoints": 5200, "dealInPoints": 0, "winTurns": 9, "yaku": {}},
-            {"hands": 7, "wins": 0, "dealIns": 2, "riichis": 0, "openHands": 1, "damaten": 0, "winPoints": 0, "dealInPoints": 12000, "winTurns": 0, "yaku": {}},
+            {"hands": 7, "wins": 1, "dealIns": 0, "riichis": 2, "openHands": 1, "kans": 0, "doras": 0, "uraDoras": 0, "maxHonba": 0, "damaten": 0, "winPoints": 8000, "dealInPoints": 0, "winTurns": 11, "yaku": {}},
+            {"hands": 7, "wins": 0, "dealIns": 1, "riichis": 0, "openHands": 2, "kans": 0, "doras": 0, "uraDoras": 0, "maxHonba": 0, "damaten": 0, "winPoints": 0, "dealInPoints": 5200, "winTurns": 0, "yaku": {}},
+            {"hands": 7, "wins": 1, "dealIns": 0, "riichis": 1, "openHands": 0, "kans": 0, "doras": 0, "uraDoras": 0, "maxHonba": 0, "damaten": 1, "winPoints": 5200, "dealInPoints": 0, "winTurns": 9, "yaku": {}},
+            {"hands": 7, "wins": 0, "dealIns": 2, "riichis": 0, "openHands": 1, "kans": 0, "doras": 0, "uraDoras": 0, "maxHonba": 0, "damaten": 0, "winPoints": 0, "dealInPoints": 12000, "winTurns": 0, "yaku": {}},
         ],
         "players": [
             {"seat": 0, "account_id": 103, "nickname": "Meme000", "point": 45000},
