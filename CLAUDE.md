@@ -230,9 +230,16 @@ Vercel sirve `dist-site/`, que emite `node scripts/build_site.mjs`. Ver
 `api/discord.mjs` como Vercel Function del mismo proyecto que sirve el sitio;
 paso a paso completo en `DISCORD_BOT.md`.
 
-- **Es el único camino de escritura a la planilla.** El pipeline la lee por el
-  export público sin credenciales; el bot escribe con una cuenta de servicio de
-  Google cuyo JSON vive en las variables de entorno de Vercel, nunca en el repo.
+- **Es el segundo escritor de la planilla**, junto a
+  `fill_calendar_paipus.py --write`. Comparten cuenta de servicio y variable
+  (`GOOGLE_SERVICE_ACCOUNT_JSON`), pero no el almacén: la del workflow vive en
+  GitHub Actions Secrets y la del bot en las variables de entorno de Vercel, que
+  son sistemas separados. **No se pisan:** el workflow escribe las celdas de
+  paipu (filas `G1` y `G1 + 1`) y el bot sólo fecha y hora (`G1 − 2` y `G1 − 1`).
+- La firma del JWT está implementada dos veces, en `scripts/gsheets.py` para el
+  pipeline y en `api/_lib/sheets.mjs` para el bot, porque corren en runtimes
+  distintos. Es duplicación deliberada; lo que no puede divergir es a qué celdas
+  escribe cada uno.
 - **Escribe dos celdas y nada más:** fecha en la fila `G1 − 2` y hora en `G1 − 1`
   de la columna de esa mesa. Las constantes de posición están duplicadas en
   `api/_lib/sheets.mjs` y en `scripts/sync.py`; un test relee el `.py` y falla si

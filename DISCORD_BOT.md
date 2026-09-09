@@ -87,23 +87,22 @@ Dos guardas más:
 
 ### 2. Cuenta de servicio de Google
 
-El pipeline lee la planilla por el export público y no necesita credenciales;
-escribir sí.
+**Probablemente ya está hecha.** `scripts/fill_calendar_paipus.py --write` usa la
+misma cuenta de servicio y la misma variable `GOOGLE_SERVICE_ACCOUNT_JSON` para
+pegar los paipus, así que si ese workflow ya escribe en la planilla, la cuenta
+existe y la planilla ya está compartida con su `client_email` como **Editor**. El
+bot no necesita nada más: reusa esas credenciales tal cual.
 
-1. Google Cloud Console → proyecto nuevo o existente → habilitar **Google
-   Sheets API**.
-2. **IAM → Cuentas de servicio** → crear una → **Claves** → *Agregar clave* →
-   JSON. Se descarga un archivo con `client_email` y `private_key`.
-3. Compartir la planilla de la liga con ese `client_email` como **Editor**.
-4. Codificar el JSON para pegarlo como variable de entorno:
+Lo único que falta es **copiar el JSON a Vercel**. El secret de GitHub Actions no
+llega ahí: son dos almacenes distintos, y la integración de Vercel con GitHub
+sólo lee el código del repo.
 
-   ```bash
-   base64 -w0 credenciales.json
-   ```
+Si hubiera que crearla de cero, el paso a paso está en `INTEGRACION_GSHEET.md`,
+sección `--write`: habilitar Google Sheets API, crear la cuenta, descargar el
+JSON y compartir la planilla con su `client_email` como Editor.
 
-La cuenta de servicio sólo necesita acceso a esta planilla. Los cambios quedan
-en el historial de versiones a su nombre, que es justamente lo que se quiere
-para poder auditar quién movió una fecha.
+Los dos escritores no se pisan: el workflow toca las celdas de paipu (filas `G1`
+y `G1 + 1` de la mesa) y el bot sólo la fecha y la hora (`G1 − 2` y `G1 − 1`).
 
 ### 3. Variables de entorno en Vercel
 
@@ -113,7 +112,7 @@ En *Project Settings → Environment Variables* (Production y Preview):
 | --- | --- | --- |
 | `DISCORD_PUBLIC_KEY` | sí | Verificar la firma Ed25519 de cada interacción |
 | `SHEET_ID` | sí | El id de la planilla (`spreadsheetId` de `sync-config.json`) |
-| `GOOGLE_SERVICE_ACCOUNT_JSON` | sí | El JSON de la cuenta de servicio, crudo o en base64 |
+| `GOOGLE_SERVICE_ACCOUNT_JSON` | sí | El JSON completo de la cuenta de servicio (igual que el secret de GitHub); también acepta el mismo JSON en base64 |
 | `DISCORD_BOT_TOKEN` | recomendada | Leer el nombre del canal padre y resolver @Staff por nombre |
 | `DISCORD_STAFF_ROLE_ID` | opcional | Id del rol de organizadores; evita depender del token de bot |
 | `DISCORD_STAFF_ROLE_NAME` | opcional | Nombre del rol si no es `Staff` |

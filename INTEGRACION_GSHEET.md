@@ -184,11 +184,17 @@ sincronizador porque Mahjong Soul admite una sola sesión por cuenta.
 
 ## Escritura desde Discord
 
-Todo lo de arriba es de sólo lectura. La única escritura automatizada sobre la
-planilla es `/agendar`, el comando de Discord que fija fecha y hora de una mesa
-en la hoja Calendario (`DISCORD_BOT.md`). Usa una cuenta de servicio de Google
-con la planilla compartida como Editor; sus credenciales viven en las variables
-de entorno de Vercel y no se necesitan para nada más del pipeline.
+El otro escritor de la planilla es `/agendar`, el comando de Discord que fija
+fecha y hora de una mesa en la hoja Calendario (`DISCORD_BOT.md`).
+
+Usa **la misma cuenta de servicio** que `--write` y la misma variable
+`GOOGLE_SERVICE_ACCOUNT_JSON`, así que la planilla ya está compartida como
+Editor y no hay nada que crear de nuevo. Lo que sí hay que hacer es copiar el
+JSON a las variables de entorno de **Vercel**: el bot corre ahí, y un secret de
+GitHub Actions no llega a Vercel.
+
+Los dos escritores no se pisan. `--write` toca las celdas de paipu (filas `G1` y
+`G1 + 1` de la mesa) y el bot sólo la fecha y la hora (`G1 − 2` y `G1 − 1`).
 
 ## Automatización
 
