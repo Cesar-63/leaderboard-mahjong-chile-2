@@ -334,7 +334,7 @@ function App() {
       </header>
 
       <div className="control-bar">
-        <DivisionSwitch div={div} onChange={(d) => navigate({ div: d })} data={data} disabled={!scoped} />
+        <DivisionSwitch div={div} onChange={(d) => navigate({ div: d, playerId: tab === 'detail' ? data.divisions[d].players[0].id : playerId })} data={data} disabled={!scoped} />
         <TabBar active={tab} onChange={(id) => navigate({ tab: id })} lang={window.LANG} />
       </div>
 
@@ -358,7 +358,7 @@ function App() {
             <StandingsView data={data} div={div} layout={t.layout} onSelectPlayer={selectPlayer} />
           </React.Fragment>
         )}
-        {tab === 'detail' && <PlayerDetail playerId={currentPlayerId} data={data} onPick={(id) => navigate({ playerId: id })} />}
+        {tab === 'detail' && <PlayerDetail playerId={currentPlayerId} data={data} onPick={(id) => { const player = data.allPlayers.find(candidate => candidate.id === id); navigate({ playerId: id, div: player?.div || div }); }} />}
         {tab === 'compare' && <Comparator data={data} />}
         {tab === 'log' && <HanchanLog data={data} div={div} />}
         {tab === 'iormc' && <IORMCView data={data} onPick={selectPlayer} />}
