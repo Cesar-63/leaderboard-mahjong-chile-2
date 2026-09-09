@@ -173,6 +173,41 @@ function PlayerSelect({ value, onChange, data, style }) {
   </select>;
 }
 
+function ComparePlayerSelect({ value, onChange, data, side }) {
+  const current = data.allPlayers.find(player => player.id === value);
+  const [open, setOpen] = React.useState(false);
+  const [division, setDivision] = React.useState(current.div);
+  const [query, setQuery] = React.useState('');
+  const rootRef = React.useRef(null);
+  const inputRef = React.useRef(null);
+  const normalized = query.trim().toLocaleLowerCase();
+  const players = data.divisions[division].players.filter(player => !normalized || `${player.shortName} ${player.handle} ${COUNTRIES[player.nat].name}`.toLocaleLowerCase().includes(normalized));
+  React.useEffect(() => {
+    const close = event => rootRef.current && !rootRef.current.contains(event.target) && setOpen(false);
+    document.addEventListener('pointerdown', close);
+    return () => document.removeEventListener('pointerdown', close);
+  }, []);
+  React.useEffect(() => {
+    if (open) requestAnimationFrame(() => inputRef.current?.focus());
+    else setQuery('');
+  }, [open]);
+  const pick = player => { onChange(player.id); setDivision(player.div); setOpen(false); };
+  return <div className={`compare-picker ${side} ${open ? 'open' : ''}`} ref={rootRef}>
+    <button className="compare-picker-trigger" onClick={() => setOpen(value => !value)} aria-expanded={open}>
+      <span className={`avatar div-${current.div}`}>{initials(current.handle)}</span>
+      <span className="compare-picker-current"><small>{tr(side === 'a' ? 'compare_player_a' : 'compare_player_b')} · DIV {current.div}</small><strong>{current.shortName}</strong><em><Flag nat={current.nat} size={14} /> {COUNTRIES[current.nat].name} · #{current.rank} · {fmtPts(current.points)}</em></span>
+      <i className="compare-picker-chevron">⌄</i>
+    </button>
+    {open && <div className="compare-picker-menu">
+      <div className="compare-picker-tools">
+        <div className="compare-picker-divisions">{['A','B'].map(div => <button key={div} className={division === div ? 'active' : ''} onClick={() => setDivision(div)}>DIV {div}<small>{data.divisions[div].players.length}</small></button>)}</div>
+        <label><span>⌕</span><input ref={inputRef} value={query} onChange={event => setQuery(event.target.value)} onKeyDown={event => event.key === 'Escape' && setOpen(false)} placeholder={tr('compare_search_player')} /></label>
+      </div>
+      <div className="compare-picker-list">{players.map(player => <button key={player.id} className={player.id === current.id ? 'active' : ''} onClick={() => pick(player)}><span className={`avatar div-${player.div}`}>{initials(player.handle)}</span><span><strong>{player.shortName}</strong><small><Flag nat={player.nat} size={12} /> {COUNTRIES[player.nat].name}</small></span><span><b>#{player.rank}</b><small>{fmtPts(player.points)}</small></span></button>)}{!players.length && <p>{tr('player_no_results')}</p>}</div>
+    </div>}
+  </div>;
+}
+
 function DivisionPlayerSelect({ value, onChange, data, division }) {
   const players = data.divisions[division].players;
   const currentIndex = Math.max(0, players.findIndex(player => player.id === value));
@@ -581,6 +616,43 @@ function metricScale(allPlayers, key, lowerIsBetter) {
   };
 }
 
+function ComparisonRadar({ aStats, bStats }) {
+  const size = 340, center = size / 2, radius = 105, count = aStats.length;
+  const point = (index, value = 1) => { const angle = -Math.PI / 2 + index / count * Math.PI * 2; return [center + Math.cos(angle) * radius * value, center + Math.sin(angle) * radius * value]; };
+  const polygon = (stats, scale = 1) => stats.map((stat, index) => point(index, stat.value * scale).join(',')).join(' ');
+  return <svg className="comparison-radar" viewBox={`0 0 ${size} ${size}`} role="img" aria-label={tr('compare_profiles')}>
+    {[.25,.5,.75,1].map(level => <polygon key={level} points={aStats.map((_, index) => point(index, level).join(',')).join(' ')} fill="none" stroke="var(--line)" />)}
+    {aStats.map((stat, index) => { const [x,y] = point(index); return <line key={stat.label} x1={center} y1={center} x2={x} y2={y} stroke="var(--line)"/>; })}
+    <polygon points={polygon(aStats)} fill="var(--accent)" fillOpacity=".13" stroke="var(--accent)" strokeWidth="2"/>
+    <polygon points={polygon(bStats)} fill="var(--accent-2)" fillOpacity=".13" stroke="var(--accent-2)" strokeWidth="2"/>
+    {aStats.map((stat,index) => { const [x,y] = point(index,1.32); const anchor = x > center + 10 ? 'start' : x < center - 10 ? 'end' : 'middle'; return <g key={stat.label}><text x={x} y={y} textAnchor={anchor} fontFamily="var(--font-mono)" fontSize="11" fill="var(--ink-soft)">{stat.label.toUpperCase()}</text><text x={x} y={y+16} textAnchor={anchor} fontFamily="var(--font-mono)" fontSize="11" fontWeight="700" fill="var(--ink)">{stat.display} / {bStats[index].display}</text></g>; })}
+  </svg>;
+}
+
+function CompareMatchChart({ a, b }) {
+  const width = 900, height = 230, pad = { l: 42, r: 22, t: 24, b: 34 };
+  const series = [a.history || [], b.history || []], length = Math.max(...series.map(values => values.length), 1);
+  const low = Math.min(0, ...series.flat()), high = Math.max(0, ...series.flat()), span = high - low || 1;
+  const x = index => pad.l + index / Math.max(1, length - 1) * (width - pad.l - pad.r);
+  const y = value => pad.t + (high - value) / span * (height - pad.t - pad.b);
+  const path = values => values.map((value,index) => `${index ? 'L' : 'M'}${x(index)},${y(value)}`).join(' ');
+  return <svg className="compare-match-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={tr('compare_match_results')}>
+    <line x1={pad.l} y1={y(0)} x2={width-pad.r} y2={y(0)} stroke="var(--line-strong)"/>
+    {series.map((values,seriesIndex) => <g key={seriesIndex}><path d={path(values)} fill="none" stroke={seriesIndex ? 'var(--accent-2)' : 'var(--accent)'} strokeWidth="2"/>{values.map((value,index) => <circle key={index} cx={x(index)} cy={y(value)} r="3" fill={seriesIndex ? 'var(--accent-2)' : 'var(--accent)'}><title>{`${seriesIndex ? b.shortName : a.shortName} · H${index+1}: ${fmtPts(value)}`}</title></circle>)}</g>)}
+    {Array.from({length},(_,index) => <text key={index} x={x(index)} y={height-10} textAnchor="middle" fontFamily="var(--font-mono)" fontSize="11" fill="var(--ink-faint)">H{index+1}</text>)}
+  </svg>;
+}
+
+function comparisonStory(a, b) {
+  const args = { a: a.shortName, b: b.shortName };
+  if (Math.abs(a.openRate - b.openRate) >= 8 && Math.abs(a.dealInRate - b.dealInRate) >= 4) return { title: tr('compare_story_contrast_title'), text: tr('compare_story_contrast_text', { ...args, open: a.openRate > b.openRate ? a.shortName : b.shortName, safe: a.dealInRate < b.dealInRate ? a.shortName : b.shortName }) };
+  if (Math.abs(a.riichiRate - b.riichiRate) >= 8) return { title: tr('compare_story_riichi_title'), text: tr('compare_story_riichi_text', { ...args, pressure: a.riichiRate > b.riichiRate ? a.shortName : b.shortName, patient: a.riichiRate > b.riichiRate ? b.shortName : a.shortName }) };
+  if (a.openRate >= 38 && b.openRate >= 38) return { title: tr('compare_story_open_title'), text: tr('compare_story_open_text', args) };
+  if (a.riichiRate >= 25 && b.riichiRate >= 25) return { title: tr('compare_story_closed_title'), text: tr('compare_story_closed_text', args) };
+  if (Math.abs(a.avgRank - b.avgRank) >= .3) return { title: tr('compare_story_control_title'), text: tr('compare_story_control_text', { ...args, leader: a.avgRank < b.avgRank ? a.shortName : b.shortName }) };
+  return { title: tr('compare_story_balanced_title'), text: tr('compare_story_balanced_text', args) };
+}
+
 function Comparator({ data }) {
   const all = data.allPlayers;
   const [aId, setAId] = React.useState(data.divisions.A.players[0].id);
@@ -607,8 +679,25 @@ function Comparator({ data }) {
     return m;
   }, [data.allPlayers]);
   const readVal = (p, key) => key === 'firstRate' ? p.placements.p1 : p[key];
-
   const crossDiv = a.div !== b.div;
+  const results = metrics.map(metric => {
+    const av = readVal(a, metric.key), bv = readVal(b, metric.key);
+    const winner = av === bv ? null : (metric.lower ? (av < bv ? 'a' : 'b') : (av > bv ? 'a' : 'b'));
+    return { ...metric, av, bv, winner };
+  });
+  const winsA = results.filter(metric => metric.winner === 'a').length;
+  const winsB = results.filter(metric => metric.winner === 'b').length;
+  const topYakus = player => [...(Array.isArray(player.yakus) ? player.yakus : Array.isArray(player.topYaku) ? player.topYaku : [])].sort((x, y) => y.count - x.count).slice(0, 4);
+  const yakumanNames = new Set(['Tenhou','Chiihou','Daisangen','Suuankou','Tsuuiisou','Ryuuiisou','Chinroutou','Kokushi Musou','Shousuushii','Suukantsu','Chuuren Poutou','Suuankou Tanki','Kokushi 13-men','Daisuushii','Junsei Chuuren']);
+  const yakumans = player => (Array.isArray(player.yakumans) ? player.yakumans : (player.yakus || []).filter(yaku => yakumanNames.has(yaku.name)));
+  const achievements = player => (data.divisions[player.div].hallOfFame || []).filter(record => record.player?.id === player.id).slice(0, 3);
+  const recentDelta = player => {
+    const history = player.history || [];
+    return history.slice(-5).reduce((sum, value) => sum + value, 0);
+  };
+  const placement = (player, place) => Math.round((player.placements?.[`p${place}`] || 0) * 100);
+  const radar = player => metricsToRadar(player, data.divisions[player.div].players);
+  const story = comparisonStory(a, b);
 
   return (
     <div className="tab-panel">
@@ -618,55 +707,50 @@ function Comparator({ data }) {
           <h1>{tr('cara_a_cara')}</h1>
           <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>対戦比較</span>
         </div>
-        <div className="vs-header">
-          <span className={`div-chip ${a.div}`}>{a.handle}</span>
-          <span style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>VS</span>
-          <span className={`div-chip ${b.div}`}>{b.handle}</span>
-          {crossDiv && <span className="cross-tag">{tr('inter_division')}</span>}
-        </div>
+        {crossDiv && <span className="cross-tag">{tr('inter_division')}</span>}
       </div>
-
-      <div className="comp-wrap">
+      <div className="compare-duel-card">
+        <div className="compare-duel-head">
         {[{ p: a, side: 'a', set: setAId }, { p: b, side: 'b', set: setBId }].map(({ p, side, set }) => (
-          <div className={`comp-col ${side} div-${p.div}`} key={side}>
-            <div className="comp-pick">
-              <div className={`avatar div-${p.div}`} style={{ width: 48, height: 48, fontSize: 13, borderRadius: 12 }}>{initials(p.handle)}</div>
-              <PlayerSelect value={p.id} onChange={set} data={data} />
-            </div>
-            <div className="comp-sub">
-              <span className={`div-chip ${p.div}`}>DIV {p.div}</span>
-              <NatTag nat={p.nat} showName size={16} />
-              <span>#{p.rank} · {p.games} han</span>
-            </div>
-            <RadarChart key={side + animKey} stats={metricsToRadar(p, data.divisions[p.div].players)} color={side === 'a' ? 'var(--accent)' : 'var(--accent-2)'} size={260} />
+          <div className={`compare-player ${side}`} key={side}>
+            <ComparePlayerSelect value={p.id} onChange={set} data={data} side={side} />
           </div>
         ))}
-      </div>
-
-      <div className="metrics-card">
+          <div className="compare-score"><b>{winsA} — {winsB}</b><span>{tr('compare_metrics_won')}</span></div>
+        </div>
+        <div className="compare-story"><span>{tr('compare_reading')}</span><b>{story.title}</b><p>{story.text}</p></div>
+        <div className="compare-main-grid">
+          <section className="compare-radars"><h3>{tr('compare_profiles')}</h3><ComparisonRadar key={animKey} aStats={radar(a)} bStats={radar(b)} /><div className="compare-radar-legend"><span className="a">{a.shortName}</span><span className="b">{b.shortName}</span></div></section>
+          <section className="compare-metrics">
         <div className="metrics-head">
           <span className="block-label">{tr('metrics_title')} · 成績比較</span>
           <span className="metrics-note">{tr('metrics_note')}</span>
         </div>
-        {metrics.map(m => {
-          const av = readVal(a, m.key), bv = readVal(b, m.key);
-          const aBetter = m.lower ? av < bv : av > bv;
-          const bBetter = m.lower ? bv < av : bv > av;
+        {results.map(m => {
           const sc = scales[m.key];
           return (
-            <div key={m.key} className={`versus-row ${aBetter ? 'win-a' : ''} ${bBetter ? 'win-b' : ''}`}>
+            <div key={m.key} className={`versus-row ${m.winner === 'a' ? 'win-a' : ''} ${m.winner === 'b' ? 'win-b' : ''}`}>
               <div className="val-a">
-                <span style={{ flex: 1, textAlign: 'right' }}>{m.fmt(av)}</span>
-                <div className="bar-a"><div key={animKey + 'a' + m.key} style={{ transform: `scaleX(${sc(av)})` }} /></div>
+                <span style={{ flex: 1, textAlign: 'right' }}>{m.fmt(m.av)}</span>
+                <div className="bar-a"><div key={animKey + 'a' + m.key} style={{ transform: `scaleX(${sc(m.av)})` }} /></div>
               </div>
               <div className="vs-label">{m.label}<span className="jp">{m.jp}</span></div>
               <div className="val-b">
-                <div className="bar-b"><div key={animKey + 'b' + m.key} style={{ transform: `scaleX(${sc(bv)})` }} /></div>
-                <span style={{ flex: 1, textAlign: 'left' }}>{m.fmt(bv)}</span>
+                <div className="bar-b"><div key={animKey + 'b' + m.key} style={{ transform: `scaleX(${sc(m.bv)})` }} /></div>
+                <span style={{ flex: 1, textAlign: 'left' }}>{m.fmt(m.bv)}</span>
               </div>
             </div>
           );
         })}
+          </section>
+          <section className="compare-outcomes"><h3>{tr('compare_results_form')}</h3>{[a, b].map(player => <div className="compare-outcome" key={player.id}><div className="compare-placement">{[1,2,3,4].map(place => { const pct = placement(player, place); return pct > 0 && <i key={place} className={`p${place} ${pct <= 10 ? 'compact' : ''}`} style={{ width: `${pct}%` }} title={`${place}º · ${pct}%`}>{pct >= 10 ? <><span>{place}º</span> <b>{pct}%</b></> : ''}</i>; })}</div><div className="compare-outcome-meta"><b>{player.shortName}</b><span>{tr('lbl_avgrank')} {player.avgRank.toFixed(2)}</span></div><div className="compare-form">{(player.history || []).slice(-5).map((value, i) => <i key={i} className={value >= 0 ? 'up' : 'down'}>{value >= 0 ? '+' : '−'}</i>)}<b className={recentDelta(player) >= 0 ? 'pos' : 'neg'}>{fmtPts(recentDelta(player))}</b></div></div>)}</section>
+        </div>
+        <div className="compare-detail-grid">
+          <section><h3>{tr('compare_match_results')}</h3><CompareMatchChart key={animKey} a={a} b={b}/><div className="compare-chart-legend"><span className="a">{a.shortName}</span><span className="b">{b.shortName}</span></div></section>
+          <section><h3>{tr('compare_signature_yaku')}</h3>{[a,b].map(player => <div className="compare-yakus" key={player.id}><b>{player.shortName}</b><div>{topYakus(player).map(yaku => <span key={yaku.name}>{yakuGlyph(yaku.name)} {yaku.name} <i>×{yaku.count}</i></span>)}{!topYakus(player).length && <small>{tr('yaku_empty')}</small>}</div></div>)}</section>
+          <section><h3>{tr('compare_achievements')}</h3>{[a,b].map(player => { const playerYakuman = yakumans(player); const playerAchievements = achievements(player); return <div className="compare-honors" key={player.id}><b>{player.shortName}</b><div>{playerYakuman.map(yaku => <span className="yakuman" key={yaku.name}><i>{yakuGlyph(yaku.name)}</i>{yaku.name} ×{yaku.count}</span>)}{playerAchievements.map((record,index) => { const copy = hallOfFameCopy(record,index); return <span key={record.key || index}><i>{['王','和','守','立','均','昇'][index] || '賞'}</i>{copy.tag}</span>; })}{!playerYakuman.length && !playerAchievements.length && <small>{tr('compare_no_achievements')}</small>}</div></div>; })}</section>
+        </div>
+        {crossDiv && <p className="compare-context">{tr('compare_cross_context')}</p>}
       </div>
     </div>
   );
