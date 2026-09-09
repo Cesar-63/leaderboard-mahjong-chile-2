@@ -174,15 +174,12 @@ function PlayerSelect({ value, onChange, data, division }) {
   const move = step => pick(players[(currentIndex + step + players.length) % players.length].id);
   return <div className="player-navigator" ref={rootRef}>
     <button className="player-nav-arrow" onClick={() => move(-1)} aria-label={tr('player_previous')}>‹</button>
-    <button className={`player-picker-trigger ${open ? 'open' : ''}`} onClick={() => setOpen(value => !value)} aria-expanded={open}>
-      <span className={`avatar div-${division}`}>{initials(current.handle)}</span>
-      <span className="player-picker-copy"><small>{tr('division', { d: division })} · {currentIndex + 1} {tr('player_of')} {players.length}</small><strong>{current.shortName}</strong><span><Flag nat={current.nat} size={14} /> {COUNTRIES[current.nat].name} · #{current.rank} · {fmtPts(current.points)}</span></span>
-      <span className="player-picker-chevron">⌄</span>
-    </button>
+    <div className="player-picker-position"><b>{String(currentIndex + 1).padStart(2, '0')} / {players.length}</b><small>{tr('player_ranking')}</small></div>
+    <button className={`player-picker-trigger ${open ? 'open' : ''}`} onClick={() => setOpen(value => !value)} aria-expanded={open}><span>{tr('player_view_all')}</span><i>▦</i></button>
     <button className="player-nav-arrow" onClick={() => move(1)} aria-label={tr('player_next')}>›</button>
     {open && <div className="player-picker-menu">
       <div className="player-picker-search"><span>⌕</span><input ref={inputRef} value={query} onChange={event => setQuery(event.target.value)} onKeyDown={event => event.key === 'Escape' && setOpen(false)} placeholder={tr('player_search', { d: division })} /></div>
-      <div className="player-picker-list">
+      <div className="player-picker-list" aria-label={tr('division', { d: division })}>
         {visiblePlayers.map(player => <button key={player.id} className={player.id === current.id ? 'active' : ''} onClick={() => pick(player.id)}>
           <span className={`avatar div-${division}`}>{initials(player.handle)}</span><span><strong>{player.shortName}</strong><small><Flag nat={player.nat} size={13} /> {COUNTRIES[player.nat].name}</small></span><span className="player-picker-rank"><b>#{player.rank}</b><small>{fmtPts(player.points)}</small></span>
         </button>)}
