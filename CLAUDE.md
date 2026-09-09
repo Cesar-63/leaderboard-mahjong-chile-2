@@ -243,6 +243,47 @@ Vercel sirve `dist-site/`, que emite `node scripts/build_site.mjs`. Ver
   `No python entrypoint found`). Las dependencias de build siguen viviendo en
   `.vendor/`.
 
+## Bot de Discord
+
+`/agendar` escribe la fecha y la hora de una mesa en la hoja Calendario. Vive en
+`api/discord.mjs` como Vercel Function del mismo proyecto que sirve el sitio;
+paso a paso completo en `DISCORD_BOT.md`.
+
+- **Es el segundo escritor de la planilla**, junto a
+  `fill_calendar_paipus.py --write`. Comparten cuenta de servicio y variable
+  (`GOOGLE_SERVICE_ACCOUNT_JSON`), pero no el almacén: la del workflow vive en
+  GitHub Actions Secrets y la del bot en las variables de entorno de Vercel, que
+  son sistemas separados. **No se pisan:** el workflow escribe las celdas de
+  paipu (filas `G1` y `G1 + 1`) y el bot sólo fecha y hora (`G1 − 2` y `G1 − 1`).
+- La firma del JWT está implementada dos veces, en `scripts/gsheets.py` para el
+  pipeline y en `api/_lib/sheets.mjs` para el bot, porque corren en runtimes
+  distintos. Es duplicación deliberada; lo que no puede divergir es a qué celdas
+  escribe cada uno.
+- **Escribe dos celdas y nada más:** fecha en la fila `G1 − 2` y hora en `G1 − 1`
+  de la columna de esa mesa. Las constantes de posición están duplicadas en
+  `api/_lib/sheets.mjs` y en `scripts/sync.py`; un test relee el `.py` y falla si
+  se separan.
+- **Sin dependencias de npm.** Firma Ed25519, JWT RS256 de Google y HTTP salen de
+  `node:crypto` y `fetch`. El `package.json` de la raíz sigue sin ser toolchain.
+- **Discord corta a los 3 segundos.** La función responde síncrona: token de
+  Google cacheado en el módulo, y la lectura de la planilla en paralelo con las
+  consultas a Discord. Agregarle trabajo al camino crítico se paga en timeouts.
+- La mesa sale del nombre del hilo (`A · Sesión 3 · Mesa 2`, `a-s3-m2`) o del
+  canal padre; las opciones `division`/`sesion`/`mesa` son el respaldo manual.
+- Sólo agendan los cuatro jugadores de esa mesa —emparejados por la columna
+  **Discord** del roster— y el rol @Staff. Una mesa con paipu ya cargado sólo la
+  reagenda @Staff.
+- **La identidad se toma del nombre de usuario o del id numérico, nunca del
+  nombre para mostrar ni del apodo del servidor**: esos los elige cada uno, así
+  que aceptarlos dejaría que cualquiera se haga pasar por otro jugador. Si la
+  celda del roster son puros dígitos se compara contra el id, que es lo
+  infalsificable.
+- El handle de Discord es dato privado (`PRIVATE_PLAYER_FIELDS`). El bot lo lee
+  en memoria y **nunca lo publica**: el mensaje visible en el hilo sólo lleva
+  nombres de liga; el único handle que aparece es el de quien invocó, y en un
+  mensaje efímero que sólo ve esa persona.
+- Tests: `node --test tests/test_discord_bot.mjs`, con la red simulada.
+
 ## Vistas
 
 1. **Tabla** — clasificación por división, columnas ordenables, sparkline de forma,
