@@ -70,7 +70,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 3,
+      "doras": 28,
+      "uraDoras": 12,
+      "maxHonba": 4
     },
     "A02": {
       "hands": 137,
@@ -142,7 +146,11 @@
           "count": 2
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 1,
+      "doras": 39,
+      "uraDoras": 11,
+      "maxHonba": 3
     },
     "A03": {
       "hands": 147,
@@ -226,7 +234,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 11,
+      "doras": 45,
+      "uraDoras": 19,
+      "maxHonba": 4
     },
     "A04": {
       "hands": 144,
@@ -314,7 +326,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 5,
+      "doras": 38,
+      "uraDoras": 14,
+      "maxHonba": 4
     },
     "A05": {
       "hands": 146,
@@ -398,7 +414,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 8,
+      "doras": 36,
+      "uraDoras": 13,
+      "maxHonba": 8
     },
     "A06": {
       "hands": 129,
@@ -462,7 +482,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 9,
+      "doras": 28,
+      "uraDoras": 7,
+      "maxHonba": 6
     },
     "A07": {
       "hands": 119,
@@ -538,7 +562,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 1,
+      "doras": 34,
+      "uraDoras": 19,
+      "maxHonba": 8
     },
     "A08": {
       "hands": 129,
@@ -614,7 +642,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 10,
+      "doras": 30,
+      "uraDoras": 13,
+      "maxHonba": 8
     },
     "A09": {
       "hands": 153,
@@ -706,7 +738,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 15,
+      "doras": 47,
+      "uraDoras": 21,
+      "maxHonba": 6
     },
     "A10": {
       "hands": 108,
@@ -774,7 +810,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 5,
+      "doras": 27,
+      "uraDoras": 6,
+      "maxHonba": 4
     },
     "A11": {
       "hands": 110,
@@ -834,7 +874,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 11,
+      "doras": 23,
+      "uraDoras": 9,
+      "maxHonba": 5
     },
     "A12": {
       "hands": 123,
@@ -898,7 +942,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 1,
+      "doras": 24,
+      "uraDoras": 15,
+      "maxHonba": 5
     },
     "A13": {
       "hands": 127,
@@ -978,7 +1026,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 5,
+      "doras": 23,
+      "uraDoras": 6,
+      "maxHonba": 6
     },
     "A14": {
       "hands": 115,
@@ -1038,7 +1090,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 5,
+      "doras": 27,
+      "uraDoras": 9,
+      "maxHonba": 3
     },
     "A15": {
       "hands": 128,
@@ -1110,7 +1166,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 10,
+      "doras": 40,
+      "uraDoras": 16,
+      "maxHonba": 3
     },
     "A16": {
       "hands": 126,
@@ -1178,7 +1238,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 6,
+      "doras": 36,
+      "uraDoras": 24,
+      "maxHonba": 6
     },
     "A17": {
       "hands": 123,
@@ -1258,7 +1322,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 4,
+      "doras": 43,
+      "uraDoras": 15,
+      "maxHonba": 6
     },
     "A18": {
       "hands": 121,
@@ -1322,7 +1390,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 3,
+      "doras": 24,
+      "uraDoras": 13,
+      "maxHonba": 8
     },
     "A19": {
       "hands": 123,
@@ -1378,7 +1450,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 1,
+      "doras": 30,
+      "uraDoras": 17,
+      "maxHonba": 5
     },
     "A20": {
       "hands": 118,
@@ -1454,7 +1530,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 4,
+      "doras": 24,
+      "uraDoras": 15,
+      "maxHonba": 5
     },
     "A21": {
       "hands": 124,
@@ -1522,7 +1602,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 11,
+      "doras": 33,
+      "uraDoras": 18,
+      "maxHonba": 6
     },
     "A22": {
       "hands": 150,
@@ -1590,7 +1674,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 4,
+      "doras": 32,
+      "uraDoras": 19,
+      "maxHonba": 6
     },
     "A23": {
       "hands": 124,
@@ -1670,7 +1758,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 6,
+      "doras": 31,
+      "uraDoras": 11,
+      "maxHonba": 3
     },
     "A24": {
       "hands": 143,
@@ -1746,7 +1838,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 5,
+      "doras": 42,
+      "uraDoras": 11,
+      "maxHonba": 5
     },
     "B01": {
       "hands": 110,
@@ -1822,7 +1918,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 2,
+      "doras": 31,
+      "uraDoras": 18,
+      "maxHonba": 6
     },
     "B02": {
       "hands": 117,
@@ -1894,7 +1994,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 4,
+      "doras": 34,
+      "uraDoras": 18,
+      "maxHonba": 4
     },
     "B03": {
       "hands": 127,
@@ -1962,7 +2066,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 8,
+      "doras": 24,
+      "uraDoras": 14,
+      "maxHonba": 6
     },
     "B04": {
       "hands": 114,
@@ -2042,7 +2150,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 3,
+      "doras": 36,
+      "uraDoras": 16,
+      "maxHonba": 4
     },
     "B05": {
       "hands": 104,
@@ -2110,7 +2222,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 2,
+      "doras": 26,
+      "uraDoras": 16,
+      "maxHonba": 4
     },
     "B06": {
       "hands": 99,
@@ -2166,7 +2282,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 2,
+      "doras": 20,
+      "uraDoras": 0,
+      "maxHonba": 3
     },
     "B07": {
       "hands": 94,
@@ -2222,7 +2342,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 8,
+      "doras": 28,
+      "uraDoras": 9,
+      "maxHonba": 4
     },
     "B08": {
       "hands": 116,
@@ -2286,7 +2410,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 4,
+      "doras": 39,
+      "uraDoras": 18,
+      "maxHonba": 4
     },
     "B09": {
       "hands": 113,
@@ -2362,7 +2490,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 9,
+      "doras": 23,
+      "uraDoras": 9,
+      "maxHonba": 4
     },
     "B10": {
       "hands": 122,
@@ -2426,7 +2558,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 9,
+      "doras": 27,
+      "uraDoras": 11,
+      "maxHonba": 4
     },
     "B11": {
       "hands": 118,
@@ -2502,7 +2638,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 3,
+      "doras": 36,
+      "uraDoras": 20,
+      "maxHonba": 4
     },
     "B12": {
       "hands": 141,
@@ -2574,7 +2714,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 9,
+      "doras": 33,
+      "uraDoras": 9,
+      "maxHonba": 6
     },
     "B13": {
       "hands": 112,
@@ -2646,7 +2790,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 9,
+      "doras": 46,
+      "uraDoras": 16,
+      "maxHonba": 4
     },
     "B14": {
       "hands": 113,
@@ -2718,7 +2866,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 6,
+      "doras": 36,
+      "uraDoras": 14,
+      "maxHonba": 4
     },
     "B15": {
       "hands": 111,
@@ -2782,7 +2934,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 2,
+      "doras": 31,
+      "uraDoras": 15,
+      "maxHonba": 4
     },
     "B16": {
       "hands": 124,
@@ -2850,7 +3006,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 2,
+      "doras": 34,
+      "uraDoras": 11,
+      "maxHonba": 3
     },
     "B17": {
       "hands": 111,
@@ -2914,7 +3074,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 7,
+      "doras": 32,
+      "uraDoras": 16,
+      "maxHonba": 4
     },
     "B18": {
       "hands": 107,
@@ -2986,7 +3150,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 9,
+      "doras": 24,
+      "uraDoras": 13,
+      "maxHonba": 4
     },
     "B19": {
       "hands": 107,
@@ -3054,7 +3222,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 4,
+      "doras": 30,
+      "uraDoras": 15,
+      "maxHonba": 3
     },
     "B20": {
       "hands": 110,
@@ -3130,7 +3302,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 5,
+      "doras": 31,
+      "uraDoras": 11,
+      "maxHonba": 4
     },
     "B21": {
       "hands": 126,
@@ -3190,7 +3366,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 18,
+      "doras": 36,
+      "uraDoras": 11,
+      "maxHonba": 4
     },
     "B22": {
       "hands": 115,
@@ -3266,7 +3446,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 2,
+      "doras": 27,
+      "uraDoras": 8,
+      "maxHonba": 6
     },
     "B23": {
       "hands": 112,
@@ -3318,7 +3502,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 11,
+      "doras": 9,
+      "uraDoras": 3,
+      "maxHonba": 4
     },
     "B24": {
       "hands": 114,
@@ -3402,7 +3590,11 @@
           "count": 1
         }
       ],
-      "statsReliable": true
+      "statsReliable": true,
+      "kans": 1,
+      "doras": 43,
+      "uraDoras": 19,
+      "maxHonba": 3
     }
   }
 }
