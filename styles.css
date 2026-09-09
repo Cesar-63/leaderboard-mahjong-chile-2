@@ -631,8 +631,6 @@ select{font:inherit;color:inherit}
 }
 @media (max-width:600px){
   .mj-hand{--tile-w:23px}
-  .yaku-row{grid-template-columns:104px 1fr 30px;gap:9px;font-size:12.5px}
-  .yaku-row .name{white-space:normal;line-height:1.25}
   .yaku-hand-head{flex-wrap:wrap;row-gap:5px}
   .yaku-hand-head .pts{font-size:12.5px}
   .yaku-hand-foot .meta{margin-left:0;gap:4px 11px}
