@@ -16,8 +16,10 @@ on:
         type: boolean
         default: false
   schedule:
-    # 09:20 en Chile (verano) / 08:20 (invierno): después de las sesiones.
-    - cron: "20 12 * * *"
+    # Cada hora: el tope de paipus por corrida es chico, así que una sola
+    # pasada diaria dejaba la mayor parte de una sesión sin puntaje hasta el
+    # día siguiente. Por hora, una sesión entera converge en la misma tarde.
+    - cron: "0 * * * *"
 
 # Escribir: los paipus descargados se versionan igual que en sync-data.yml.
 permissions:

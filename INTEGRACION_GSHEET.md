@@ -168,7 +168,7 @@ solo login por cuenta, así que leer el torneo y bajar registros van juntos.
 
 Primero se piden los paipus que esta corrida va a pegar (la novedad) y después
 los que el Calendario ya traía. Rige el mismo límite que el sincronizador:
-`MAX_RECORDS_PER_RUN` (3, ajustable con `--max-logs`) por corrida, espaciados
+`MAX_RECORDS_PER_RUN` (4, ajustable con `--max-logs`) por corrida, espaciados
 `PAIPU_REQUEST_DELAY_SECONDS` (20 s) y cortando al primer 540. Un `.pb` que
 quedó guardado como XML (la respuesta de "requiere sesión") cuenta como
 faltante y se vuelve a pedir.
@@ -177,7 +177,7 @@ Con esto, una sola corrida deja la celda pegada y su log disponible, y
 `scripts/sync.py` publica las estadísticas avanzadas en la sincronización
 siguiente sin esperar a que alguien copie el enlace a mano.
 
-`.github/workflows/calendar-paipus.yml` lo corre a diario y a pedido con
+`.github/workflows/calendar-paipus.yml` lo corre cada hora y a pedido con
 `--write --fetch-logs`, con los secrets `MAJSOUL_CONTEST_ID_A`,
 `MAJSOUL_CONTEST_ID_B` y `GOOGLE_SERVICE_ACCOUNT_JSON` además de la sesión
 técnica, y commitea los `.pb` nuevos. Si el secret de Google no está, el job
@@ -293,7 +293,7 @@ exclusivamente en GitHub Actions Secrets:
 
 El sincronizador renueva la sesión mediante `quick-login`, inicia el flujo
 OAuth2 de Mahjong Soul y descarga los registros faltantes en una única conexión,
-respetando el límite de la API: como máximo `MAX_RECORDS_PER_RUN` (3) por corrida,
+respetando el límite de la API: como máximo `MAX_RECORDS_PER_RUN` (4) por corrida,
 espaciados `PAIPU_REQUEST_DELAY_SECONDS` (20 s), y cortando la tanda al primer
 rechazo con código 540. El resto queda para las corridas siguientes, que el cron
 completa solo cada 15 minutos.

@@ -78,7 +78,7 @@ RECORD_THROTTLED_CODE = 540
 # necesita ser inmediata. Vale más tardar varias corridas que arriesgar la
 # cuenta. Al primer 540 se corta y se entra en enfriamiento.
 PAIPU_REQUEST_DELAY_SECONDS = 20.0
-MAX_RECORDS_PER_RUN = 3
+MAX_RECORDS_PER_RUN = 4
 THROTTLE_STREAK_LIMIT = 1
 # La lista de partidas del torneo es una sola llamada por página (no baja
 # paipus), así que no toca el límite de fetchGameRecord. Igual va espaciada.
