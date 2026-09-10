@@ -894,6 +894,13 @@ function HanchanLog({ data, div }) {
               <div className="code">{m.code}</div>
               <div className="date">{m.sessionCode} · H{m.hanchan}</div>
               <div className="table">{tr('mesa', { n: m.table })} · {m.date}</div>
+              <div className="hanchan-round-count"><strong>{m.rounds?.length || 0}</strong><span>{tr('history_hands')}</span></div>
+              <div className="hanchan-outcome-summary">
+                <span className="tsumo">自摸 <b>{(m.rounds || []).filter(round => round.result === 'tsumo').length}</b></span>
+                <span className="ron">栄和 <b>{(m.rounds || []).filter(round => round.result === 'ron').length}</b></span>
+                <span className="draw">流局 <b>{(m.rounds || []).filter(round => round.result === 'draw' || round.result === 'abortive').length}</b></span>
+              </div>
+              <button className="hanchan-replay-toggle" onClick={() => setExpanded(expanded === m.id ? null : m.id)} aria-expanded={expanded === m.id}><span>{expanded === m.id ? tr('history_hide_replay') : tr('history_open_replay')}</span><i>{expanded === m.id ? '−' : '▶'}</i></button>
               {m.paipuUrl && <a href={paipuHref(m.paipuUrl)} target="_blank" rel="noopener noreferrer" className="paipu-link">{tr('view_paipu')}</a>}
             </div>
             <div className="four-results">
@@ -906,7 +913,6 @@ function HanchanLog({ data, div }) {
                 </div>
               ))}
             </div>
-            <button className="hanchan-replay-toggle" onClick={() => setExpanded(expanded === m.id ? null : m.id)} aria-expanded={expanded === m.id}><span>{expanded === m.id ? tr('history_hide_replay') : tr('history_open_replay')}</span><i>{expanded === m.id ? '−' : '+'}</i></button>
             {expanded === m.id && <HanchanReplay match={m} />}
           </div>
         ))}
