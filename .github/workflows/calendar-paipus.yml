@@ -16,9 +16,10 @@ on:
         type: boolean
         default: false
   schedule:
-    # Cada hora: el tope de paipus por corrida es chico, así que una sola
-    # pasada diaria dejaba la mayor parte de una sesión sin puntaje hasta el
-    # día siguiente. Por hora, una sesión entera converge en la misma tarde.
+    # Cada hora: una sesión tiene 2 semanas de plazo y cada mesa elige su
+    # horario, así que las partidas caen de a dos en cualquier momento del día
+    # y de la quincena. Una pasada diaria dejaba cada mesa hasta 24 h sin
+    # puntaje; por hora, se registra dentro de la hora de haberse jugado.
     - cron: "0 * * * *"
 
 # Escribir: los paipus descargados se versionan igual que en sync-data.yml.

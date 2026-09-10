@@ -17,6 +17,16 @@ mahjong, jugada en sala de torneo de MahjongSoul. Estático, sin backend, sin au
 - **No es round robin real.** El emparejamiento es por sorteo; sobre 7 sesiones un
   jugador enfrenta como máximo 21 de sus 23 rivales. No asumir cobertura completa
   en ninguna vista (ej. head-to-head puede estar vacío entre dos jugadores).
+- **Una sesión no es una fecha: es una ventana de 2 semanas.** Cada mesa acuerda
+  su propio horario dentro de ese plazo, así que lo normal es que las 6 mesas de
+  una sesión caigan en días distintos y es raro que dos coincidan (la sesión 6 de
+  A quedó repartida en 06, 07 y 11 de septiembre). **No existe una "fecha de
+  sesión"**: la fecha y la hora son por mesa y las escribe `/agendar` en el
+  Calendario. Los resultados llegan a goteo —2 hanchan cada vez, los de una
+  mesa— y nunca como un lote por jornada: cualquier vista o job que asuma que
+  una sesión aterriza entera está mal. Por eso el workflow de paipus corre cada
+  hora y no una vez al día, y por eso una sesión en curso tiene casi siempre
+  mesas jugadas y mesas pendientes a la vez.
 - **Ascenso/descenso:** hay serie de promoción entre A 21-24 y B 1-4.
 
 ## Reglas de puntaje
