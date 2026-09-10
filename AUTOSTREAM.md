@@ -169,25 +169,31 @@ pantalla todo el tiempo— sin multiplicar por seis el costo ni la fragilidad.
   práctica corriente.
 - **Avisar que se graba.** Un mensaje fijo en el canal y un aviso del bot al
   entrar. Es lo correcto y además evita el reclamo posterior.
-- **Sincronía comentario ↔ imagen:** los comentaristas tienen que comentar *lo
-  que sale al aire*, no lo que ven en el cliente. Se les da la misma página de
-  transmisión ya retrasada (una pestaña local) y **se les pide no tener abierto
-  el observador de Mahjong Soul**. Si comentan la partida en tiempo real y la
-  señal va retrasada, el audio queda adelantado y se spoilea solo.
+- **Sincronía comentario ↔ imagen:** el retardo de 5 min de la vista de
+  espectador juega a favor: los comentaristas ven lo mismo que el streamer, con
+  el mismo atraso, así que pueden comentar desde el observador de Mahjong Soul o
+  desde una pestaña con la página de transmisión, indistintamente. Lo único que
+  desalinea el audio es que alguien mire la partida por un camino **sin** ese
+  retardo.
 - El roster ya trae el Discord de cada jugador (`PRIVATE_PLAYER_FIELDS`): sirve
   para rotular quién habla **con nombre de liga**. El handle no se publica nunca,
   igual que en el bot de `/agendar`.
 
 ## 7. Riesgos y decisiones abiertas
 
-1. **Trampa por la propia transmisión (el riesgo serio).** El feed de observador
-   puede revelar las manos ocultas de los cuatro. Emitirlo en vivo permite que
-   un tercero mire el stream y le sople la mano al rival. Opciones, de más a
-   menos segura: (a) **no dibujar las manos ocultas** hasta que la mano termine
-   —la mesa se ve con descartes, melds, riichi y marcador, que es el 90% de lo
-   entretenido—; (b) **retardo de emisión de 10 min**, más largo que una mano
-   típica; (c) las dos. Recomiendo (a) + retardo de 5 min, y revelar todo recién
-   en el VOD. **Esto lo decide la organización, no el código.**
+1. **Trampa por la propia transmisión: resuelto por el juego.** La vista de
+   espectador de Mahjong Soul llega con **5 minutos de retardo por defecto**
+   (confirmado por César; es el `left_start_seconds` que devuelve
+   `ResGameLiveInfo`). Ese retardo es más largo que una mano típica, así que
+   **se pueden mostrar las manos ocultas en vivo** y la transmisión se ve como
+   una retransmisión de verdad, no como un marcador. Lo único que hay que
+   cuidar es no perder el retardo por elegir mal el camino: `fetchGameLiveInfo`
+   + `fetchGameLiveLeftSegment` traen los segmentos ya retrasados, mientras que
+   `createGameObserveAuth` + `authObserve`/`startObserve` es la observación por
+   websocket, que puede venir en tiempo real. **Si se usa el camino websocket,
+   el retardo lo pone el streamer** (buffer de 5 min en el observador, no en
+   ffmpeg: así el tablero, el overlay y el audio salen ya alineados). La fase 0
+   mide cuál de los dos entrega qué.
 2. **Mahjong Soul admite una sola sesión por cuenta.** Está documentado en
    `CLAUDE.md` y es la razón del `concurrency: sync-mahjong-data` compartido por
    los dos workflows. Un observador conectado 3 h **sería expulsado por
@@ -219,7 +225,7 @@ pantalla todo el tiempo— sin multiplicar por seis el costo ni la fragilidad.
 
 | Fase | Qué entrega | Esfuerzo |
 | --- | --- | --- |
-| 0 | `stream_observer.py`: engancha una partida en vivo y escupe JSON a consola. Confirma `observer_switch`, el retardo real y si llegan las manos ocultas. | 1–2 días |
+| 0 | `stream_observer.py`: engancha una partida en vivo y escupe JSON a consola. Confirma `observer_switch`, cuál de los dos caminos trae el retardo de 5 min y si llegan las manos ocultas. | 1–2 días |
 | 1 | `broadcast.html` con **una** mesa: tablero completo dibujado con `tiles.jsx` + overlay de puntos desde `generated.js`. Se mira en el navegador. | 3–5 días |
 | 2 | **A0 al aire:** OBS en el PC del comentarista, audio de escritorio, primera sesión transmitida. Sin bot, sin nube. | 1 día |
 | 3 | Mosaico 2×3 + realizador automático. | 2–3 días |
