@@ -68541,8 +68541,8 @@
           "shortName": "cidoku",
           "handle": "cidoku",
           "nat": "CL",
-          "games": 10,
-          "points": 224.9,
+          "games": 12,
+          "points": 279.0,
           "history": [
             52.6,
             4.5,
@@ -68553,7 +68553,9 @@
             -15.8,
             18.6,
             0.9,
-            50.9
+            50.9,
+            68.0,
+            -13.9
           ],
           "cum": [
             52.6,
@@ -68565,12 +68567,14 @@
             154.5,
             173.1,
             174.0,
-            224.9
+            224.9,
+            292.9,
+            279.0
           ],
           "counts": [
+            5,
             4,
-            4,
-            2,
+            3,
             0
           ],
           "absences": 0,
@@ -68588,14 +68592,14 @@
           "dealInPoints": 48400,
           "winTurns": 323,
           "placements": {
-            "p1": 0.4,
-            "p2": 0.4,
-            "p3": 0.2,
+            "p1": 0.42,
+            "p2": 0.33,
+            "p3": 0.25,
             "p4": 0.0
           },
-          "avgRank": 1.8,
-          "avgPoints": 22.5,
-          "streak": 54.6,
+          "avgRank": 1.83,
+          "avgPoints": 23.2,
+          "streak": 105.9,
           "winRate": 27.2,
           "dealInRate": 12.3,
           "riichiRate": 20.2,
@@ -68943,137 +68947,6 @@
           "zone": "playoff"
         },
         {
-          "id": "B05",
-          "div": "B",
-          "num": "05",
-          "name": "Ponwino",
-          "shortName": "Ponwino",
-          "handle": "Ponwino",
-          "nat": "CL",
-          "games": 10,
-          "points": 161.4,
-          "history": [
-            59.1,
-            50.4,
-            -12.3,
-            14.3,
-            -44.4,
-            -17.8,
-            56.2,
-            44.6,
-            -40.3,
-            51.6
-          ],
-          "cum": [
-            59.1,
-            109.5,
-            97.2,
-            111.5,
-            67.1,
-            49.3,
-            105.5,
-            150.1,
-            109.8,
-            161.4
-          ],
-          "counts": [
-            5,
-            1,
-            2,
-            2
-          ],
-          "absences": 0,
-          "hands": 104,
-          "wins": 22,
-          "dealIns": 16,
-          "riichis": 26,
-          "openHands": 40,
-          "damaten": 3,
-          "kans": 2,
-          "doras": 26,
-          "uraDoras": 16,
-          "maxHonba": 4,
-          "winPoints": 169500,
-          "dealInPoints": 58100,
-          "winTurns": 264,
-          "placements": {
-            "p1": 0.5,
-            "p2": 0.1,
-            "p3": 0.2,
-            "p4": 0.2
-          },
-          "avgRank": 2.1,
-          "avgPoints": 16.1,
-          "streak": 112.1,
-          "winRate": 21.2,
-          "dealInRate": 15.4,
-          "riichiRate": 25.0,
-          "openRate": 38.5,
-          "damatenRate": 13.6,
-          "avgWinPoints": 7705,
-          "avgDealInPoints": 3631,
-          "avgWinTurn": 12.0,
-          "yakus": [
-            {
-              "name": "Riichi",
-              "count": 14
-            },
-            {
-              "name": "Menzen Tsumo",
-              "count": 10
-            },
-            {
-              "name": "Ippatsu",
-              "count": 5
-            },
-            {
-              "name": "Pinfu",
-              "count": 4
-            },
-            {
-              "name": "Yakuhai Hatsu",
-              "count": 2
-            },
-            {
-              "name": "Yakuhai Haku",
-              "count": 2
-            },
-            {
-              "name": "Tanyao",
-              "count": 2
-            },
-            {
-              "name": "Chinitsu",
-              "count": 1
-            },
-            {
-              "name": "Yakuhai Bakaze",
-              "count": 1
-            },
-            {
-              "name": "Chiitoitsu",
-              "count": 1
-            },
-            {
-              "name": "Honitsu",
-              "count": 1
-            },
-            {
-              "name": "Yakuhai Jikaze",
-              "count": 1
-            },
-            {
-              "name": "Ittsu",
-              "count": 1
-            }
-          ],
-          "statsSample": 104,
-          "statsReliable": true,
-          "arch": "con datos",
-          "rank": 4,
-          "zone": "playoff"
-        },
-        {
           "id": "B22",
           "div": "B",
           "num": "22",
@@ -69081,8 +68954,8 @@
           "shortName": "24Kakoo",
           "handle": "24Kakoo",
           "nat": "CL",
-          "games": 10,
-          "points": 147.8,
+          "games": 12,
+          "points": 138.2,
           "history": [
             38.7,
             6.9,
@@ -69093,7 +68966,9 @@
             -36.6,
             75.6,
             51.0,
-            -38.9
+            -38.9,
+            -56.9,
+            47.3
           ],
           "cum": [
             38.7,
@@ -69105,13 +68980,15 @@
             60.1,
             135.7,
             186.7,
-            147.8
+            147.8,
+            90.9,
+            138.2
           ],
           "counts": [
-            5,
+            6,
             2,
             1,
-            2
+            3
           ],
           "absences": 0,
           "hands": 115,
@@ -69129,13 +69006,13 @@
           "winTurns": 254,
           "placements": {
             "p1": 0.5,
-            "p2": 0.2,
-            "p3": 0.1,
-            "p4": 0.2
+            "p2": 0.17,
+            "p3": 0.08,
+            "p4": 0.25
           },
-          "avgRank": 2.0,
-          "avgPoints": 14.8,
-          "streak": 51.1,
+          "avgRank": 2.08,
+          "avgPoints": 11.5,
+          "streak": 2.5,
           "winRate": 21.7,
           "dealInRate": 10.4,
           "riichiRate": 17.4,
@@ -69209,7 +69086,7 @@
           "statsSample": 115,
           "statsReliable": true,
           "arch": "con datos",
-          "rank": 5,
+          "rank": 4,
           "zone": "playoff"
         },
         {
@@ -69336,7 +69213,7 @@
           "statsSample": 116,
           "statsReliable": true,
           "arch": "con datos",
-          "rank": 6,
+          "rank": 5,
           "zone": "playoff"
         },
         {
@@ -69469,6 +69346,141 @@
             }
           ],
           "statsSample": 112,
+          "statsReliable": true,
+          "arch": "con datos",
+          "rank": 6,
+          "zone": "playoff"
+        },
+        {
+          "id": "B05",
+          "div": "B",
+          "num": "05",
+          "name": "Ponwino",
+          "shortName": "Ponwino",
+          "handle": "Ponwino",
+          "nat": "CL",
+          "games": 12,
+          "points": 102.9,
+          "history": [
+            59.1,
+            50.4,
+            -12.3,
+            14.3,
+            -44.4,
+            -17.8,
+            56.2,
+            44.6,
+            -40.3,
+            51.6,
+            -15.1,
+            -43.4
+          ],
+          "cum": [
+            59.1,
+            109.5,
+            97.2,
+            111.5,
+            67.1,
+            49.3,
+            105.5,
+            150.1,
+            109.8,
+            161.4,
+            146.3,
+            102.9
+          ],
+          "counts": [
+            5,
+            1,
+            3,
+            3
+          ],
+          "absences": 0,
+          "hands": 104,
+          "wins": 22,
+          "dealIns": 16,
+          "riichis": 26,
+          "openHands": 40,
+          "damaten": 3,
+          "kans": 2,
+          "doras": 26,
+          "uraDoras": 16,
+          "maxHonba": 4,
+          "winPoints": 169500,
+          "dealInPoints": 58100,
+          "winTurns": 264,
+          "placements": {
+            "p1": 0.42,
+            "p2": 0.08,
+            "p3": 0.25,
+            "p4": 0.25
+          },
+          "avgRank": 2.33,
+          "avgPoints": 8.6,
+          "streak": -47.2,
+          "winRate": 21.2,
+          "dealInRate": 15.4,
+          "riichiRate": 25.0,
+          "openRate": 38.5,
+          "damatenRate": 13.6,
+          "avgWinPoints": 7705,
+          "avgDealInPoints": 3631,
+          "avgWinTurn": 12.0,
+          "yakus": [
+            {
+              "name": "Riichi",
+              "count": 14
+            },
+            {
+              "name": "Menzen Tsumo",
+              "count": 10
+            },
+            {
+              "name": "Ippatsu",
+              "count": 5
+            },
+            {
+              "name": "Pinfu",
+              "count": 4
+            },
+            {
+              "name": "Yakuhai Hatsu",
+              "count": 2
+            },
+            {
+              "name": "Yakuhai Haku",
+              "count": 2
+            },
+            {
+              "name": "Tanyao",
+              "count": 2
+            },
+            {
+              "name": "Chinitsu",
+              "count": 1
+            },
+            {
+              "name": "Yakuhai Bakaze",
+              "count": 1
+            },
+            {
+              "name": "Chiitoitsu",
+              "count": 1
+            },
+            {
+              "name": "Honitsu",
+              "count": 1
+            },
+            {
+              "name": "Yakuhai Jikaze",
+              "count": 1
+            },
+            {
+              "name": "Ittsu",
+              "count": 1
+            }
+          ],
+          "statsSample": 104,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 7,
@@ -70272,8 +70284,8 @@
           "shortName": "nicompleto",
           "handle": "nicompleto",
           "nat": "CL",
-          "games": 10,
-          "points": -15.3,
+          "games": 12,
+          "points": -1.3,
           "history": [
             66.9,
             -34.2,
@@ -70284,7 +70296,9 @@
             -16.2,
             -11.1,
             -28.0,
-            71.7
+            71.7,
+            4.0,
+            10.0
           ],
           "cum": [
             66.9,
@@ -70296,11 +70310,13 @@
             -47.9,
             -59.0,
             -87.0,
-            -15.3
+            -15.3,
+            -11.3,
+            -1.3
           ],
           "counts": [
             3,
-            0,
+            2,
             3,
             4
           ],
@@ -70319,14 +70335,14 @@
           "dealInPoints": 102900,
           "winTurns": 320,
           "placements": {
-            "p1": 0.3,
-            "p2": 0.0,
-            "p3": 0.3,
-            "p4": 0.4
+            "p1": 0.25,
+            "p2": 0.17,
+            "p3": 0.25,
+            "p4": 0.33
           },
-          "avgRank": 2.8,
-          "avgPoints": -1.5,
-          "streak": 16.4,
+          "avgRank": 2.67,
+          "avgPoints": -0.1,
+          "streak": 57.7,
           "winRate": 25.6,
           "dealInRate": 16.2,
           "riichiRate": 28.2,
@@ -129042,6 +129058,130 @@
               ]
             }
           ]
+        },
+        {
+          "id": "B-S6-M4-G1",
+          "code": "B-S6-M4-G1",
+          "div": "B",
+          "session": 6,
+          "sessionCode": "S6",
+          "hanchan": 1,
+          "date": "09 sep",
+          "dateISO": "2026-09-09",
+          "weekday": "mié",
+          "table": 4,
+          "players": [
+            {
+              "id": "B04",
+              "name": "cidoku",
+              "handle": "cidoku",
+              "nat": "CL",
+              "scoreRaw": 63000,
+              "place": 1,
+              "delta": 68.0,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "B02",
+              "name": "nicompleto",
+              "handle": "nicompleto",
+              "nat": "CL",
+              "scoreRaw": 29000,
+              "place": 2,
+              "delta": 4.0,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "B05",
+              "name": "Ponwino",
+              "handle": "Ponwino",
+              "nat": "CL",
+              "scoreRaw": 24900,
+              "place": 3,
+              "delta": -15.1,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "B22",
+              "name": "24Kakoo",
+              "handle": "24Kakoo",
+              "nat": "CL",
+              "scoreRaw": 3100,
+              "place": 4,
+              "delta": -56.9,
+              "sustitutoDe": null,
+              "esSuplente": false
+            }
+          ],
+          "paipuUrl": null,
+          "verified": false,
+          "source": "excel",
+          "rounds": []
+        },
+        {
+          "id": "B-S6-M4-G2",
+          "code": "B-S6-M4-G2",
+          "div": "B",
+          "session": 6,
+          "sessionCode": "S6",
+          "hanchan": 2,
+          "date": "09 sep",
+          "dateISO": "2026-09-09",
+          "weekday": "mié",
+          "table": 4,
+          "players": [
+            {
+              "id": "B22",
+              "name": "24Kakoo",
+              "handle": "24Kakoo",
+              "nat": "CL",
+              "scoreRaw": 42300,
+              "place": 1,
+              "delta": 47.3,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "B02",
+              "name": "nicompleto",
+              "handle": "nicompleto",
+              "nat": "CL",
+              "scoreRaw": 35000,
+              "place": 2,
+              "delta": 10.0,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "B04",
+              "name": "cidoku",
+              "handle": "cidoku",
+              "nat": "CL",
+              "scoreRaw": 26100,
+              "place": 3,
+              "delta": -13.9,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "B05",
+              "name": "Ponwino",
+              "handle": "Ponwino",
+              "nat": "CL",
+              "scoreRaw": 16600,
+              "place": 4,
+              "delta": -43.4,
+              "sustitutoDe": null,
+              "esSuplente": false
+            }
+          ],
+          "paipuUrl": null,
+          "verified": false,
+          "source": "excel",
+          "rounds": []
         }
       ],
       "sessions": [
@@ -129096,8 +129236,8 @@
           "date": "09 sep",
           "weekday": "mié",
           "div": "B",
-          "matches": 0,
-          "status": "pending"
+          "matches": 2,
+          "status": "partial"
         },
         {
           "n": 7,
@@ -129112,7 +129252,7 @@
       "hallOfFame": [
         {
           "key": "leader",
-          "value": "+224.9",
+          "value": "+279.0",
           "player": {
             "id": "B04",
             "div": "B",
@@ -129121,8 +129261,8 @@
             "shortName": "cidoku",
             "handle": "cidoku",
             "nat": "CL",
-            "games": 10,
-            "points": 224.9,
+            "games": 12,
+            "points": 279.0,
             "history": [
               52.6,
               4.5,
@@ -129133,7 +129273,9 @@
               -15.8,
               18.6,
               0.9,
-              50.9
+              50.9,
+              68.0,
+              -13.9
             ],
             "cum": [
               52.6,
@@ -129145,12 +129287,14 @@
               154.5,
               173.1,
               174.0,
-              224.9
+              224.9,
+              292.9,
+              279.0
             ],
             "counts": [
+              5,
               4,
-              4,
-              2,
+              3,
               0
             ],
             "absences": 0,
@@ -129168,14 +129312,14 @@
             "dealInPoints": 48400,
             "winTurns": 323,
             "placements": {
-              "p1": 0.4,
-              "p2": 0.4,
-              "p3": 0.2,
+              "p1": 0.42,
+              "p2": 0.33,
+              "p3": 0.25,
               "p4": 0.0
             },
-            "avgRank": 1.8,
-            "avgPoints": 22.5,
-            "streak": 54.6,
+            "avgRank": 1.83,
+            "avgPoints": 23.2,
+            "streak": 105.9,
             "winRate": 27.2,
             "dealInRate": 12.3,
             "riichiRate": 20.2,
@@ -129393,7 +129537,7 @@
             "statsSample": 112,
             "statsReliable": true,
             "arch": "con datos",
-            "rank": 7,
+            "rank": 6,
             "zone": "playoff"
           },
           "jp": "和了率"
@@ -129664,7 +129808,7 @@
         },
         {
           "key": "consistency",
-          "value": "1.80",
+          "value": "1.83",
           "player": {
             "id": "B04",
             "div": "B",
@@ -129673,8 +129817,8 @@
             "shortName": "cidoku",
             "handle": "cidoku",
             "nat": "CL",
-            "games": 10,
-            "points": 224.9,
+            "games": 12,
+            "points": 279.0,
             "history": [
               52.6,
               4.5,
@@ -129685,7 +129829,9 @@
               -15.8,
               18.6,
               0.9,
-              50.9
+              50.9,
+              68.0,
+              -13.9
             ],
             "cum": [
               52.6,
@@ -129697,12 +129843,14 @@
               154.5,
               173.1,
               174.0,
-              224.9
+              224.9,
+              292.9,
+              279.0
             ],
             "counts": [
+              5,
               4,
-              4,
-              2,
+              3,
               0
             ],
             "absences": 0,
@@ -129720,14 +129868,14 @@
             "dealInPoints": 48400,
             "winTurns": 323,
             "placements": {
-              "p1": 0.4,
-              "p2": 0.4,
-              "p3": 0.2,
+              "p1": 0.42,
+              "p2": 0.33,
+              "p3": 0.25,
               "p4": 0.0
             },
-            "avgRank": 1.8,
-            "avgPoints": 22.5,
-            "streak": 54.6,
+            "avgRank": 1.83,
+            "avgPoints": 23.2,
+            "streak": 105.9,
             "winRate": 27.2,
             "dealInRate": 12.3,
             "riichiRate": 20.2,
@@ -130205,7 +130353,7 @@
             "statsSample": 112,
             "statsReliable": true,
             "arch": "con datos",
-            "rank": 7,
+            "rank": 6,
             "zone": "playoff"
           },
           "jp": "ドラ"
@@ -130365,8 +130513,8 @@
             "shortName": "24Kakoo",
             "handle": "24Kakoo",
             "nat": "CL",
-            "games": 10,
-            "points": 147.8,
+            "games": 12,
+            "points": 138.2,
             "history": [
               38.7,
               6.9,
@@ -130377,7 +130525,9 @@
               -36.6,
               75.6,
               51.0,
-              -38.9
+              -38.9,
+              -56.9,
+              47.3
             ],
             "cum": [
               38.7,
@@ -130389,13 +130539,15 @@
               60.1,
               135.7,
               186.7,
-              147.8
+              147.8,
+              90.9,
+              138.2
             ],
             "counts": [
-              5,
+              6,
               2,
               1,
-              2
+              3
             ],
             "absences": 0,
             "hands": 115,
@@ -130413,13 +130565,13 @@
             "winTurns": 254,
             "placements": {
               "p1": 0.5,
-              "p2": 0.2,
-              "p3": 0.1,
-              "p4": 0.2
+              "p2": 0.17,
+              "p3": 0.08,
+              "p4": 0.25
             },
-            "avgRank": 2.0,
-            "avgPoints": 14.8,
-            "streak": 51.1,
+            "avgRank": 2.08,
+            "avgPoints": 11.5,
+            "streak": 2.5,
             "winRate": 21.7,
             "dealInRate": 10.4,
             "riichiRate": 17.4,
@@ -130493,7 +130645,7 @@
             "statsSample": 115,
             "statsReliable": true,
             "arch": "con datos",
-            "rank": 5,
+            "rank": 4,
             "zone": "playoff"
           },
           "jp": "連荘"
@@ -133826,8 +133978,8 @@
       "shortName": "cidoku",
       "handle": "cidoku",
       "nat": "CL",
-      "games": 10,
-      "points": 224.9,
+      "games": 12,
+      "points": 279.0,
       "history": [
         52.6,
         4.5,
@@ -133838,7 +133990,9 @@
         -15.8,
         18.6,
         0.9,
-        50.9
+        50.9,
+        68.0,
+        -13.9
       ],
       "cum": [
         52.6,
@@ -133850,12 +134004,14 @@
         154.5,
         173.1,
         174.0,
-        224.9
+        224.9,
+        292.9,
+        279.0
       ],
       "counts": [
+        5,
         4,
-        4,
-        2,
+        3,
         0
       ],
       "absences": 0,
@@ -133873,14 +134029,14 @@
       "dealInPoints": 48400,
       "winTurns": 323,
       "placements": {
-        "p1": 0.4,
-        "p2": 0.4,
-        "p3": 0.2,
+        "p1": 0.42,
+        "p2": 0.33,
+        "p3": 0.25,
         "p4": 0.0
       },
-      "avgRank": 1.8,
-      "avgPoints": 22.5,
-      "streak": 54.6,
+      "avgRank": 1.83,
+      "avgPoints": 23.2,
+      "streak": 105.9,
       "winRate": 27.2,
       "dealInRate": 12.3,
       "riichiRate": 20.2,
@@ -134228,137 +134384,6 @@
       "zone": "playoff"
     },
     {
-      "id": "B05",
-      "div": "B",
-      "num": "05",
-      "name": "Ponwino",
-      "shortName": "Ponwino",
-      "handle": "Ponwino",
-      "nat": "CL",
-      "games": 10,
-      "points": 161.4,
-      "history": [
-        59.1,
-        50.4,
-        -12.3,
-        14.3,
-        -44.4,
-        -17.8,
-        56.2,
-        44.6,
-        -40.3,
-        51.6
-      ],
-      "cum": [
-        59.1,
-        109.5,
-        97.2,
-        111.5,
-        67.1,
-        49.3,
-        105.5,
-        150.1,
-        109.8,
-        161.4
-      ],
-      "counts": [
-        5,
-        1,
-        2,
-        2
-      ],
-      "absences": 0,
-      "hands": 104,
-      "wins": 22,
-      "dealIns": 16,
-      "riichis": 26,
-      "openHands": 40,
-      "damaten": 3,
-      "kans": 2,
-      "doras": 26,
-      "uraDoras": 16,
-      "maxHonba": 4,
-      "winPoints": 169500,
-      "dealInPoints": 58100,
-      "winTurns": 264,
-      "placements": {
-        "p1": 0.5,
-        "p2": 0.1,
-        "p3": 0.2,
-        "p4": 0.2
-      },
-      "avgRank": 2.1,
-      "avgPoints": 16.1,
-      "streak": 112.1,
-      "winRate": 21.2,
-      "dealInRate": 15.4,
-      "riichiRate": 25.0,
-      "openRate": 38.5,
-      "damatenRate": 13.6,
-      "avgWinPoints": 7705,
-      "avgDealInPoints": 3631,
-      "avgWinTurn": 12.0,
-      "yakus": [
-        {
-          "name": "Riichi",
-          "count": 14
-        },
-        {
-          "name": "Menzen Tsumo",
-          "count": 10
-        },
-        {
-          "name": "Ippatsu",
-          "count": 5
-        },
-        {
-          "name": "Pinfu",
-          "count": 4
-        },
-        {
-          "name": "Yakuhai Hatsu",
-          "count": 2
-        },
-        {
-          "name": "Yakuhai Haku",
-          "count": 2
-        },
-        {
-          "name": "Tanyao",
-          "count": 2
-        },
-        {
-          "name": "Chinitsu",
-          "count": 1
-        },
-        {
-          "name": "Yakuhai Bakaze",
-          "count": 1
-        },
-        {
-          "name": "Chiitoitsu",
-          "count": 1
-        },
-        {
-          "name": "Honitsu",
-          "count": 1
-        },
-        {
-          "name": "Yakuhai Jikaze",
-          "count": 1
-        },
-        {
-          "name": "Ittsu",
-          "count": 1
-        }
-      ],
-      "statsSample": 104,
-      "statsReliable": true,
-      "arch": "con datos",
-      "rank": 4,
-      "zone": "playoff"
-    },
-    {
       "id": "B22",
       "div": "B",
       "num": "22",
@@ -134366,8 +134391,8 @@
       "shortName": "24Kakoo",
       "handle": "24Kakoo",
       "nat": "CL",
-      "games": 10,
-      "points": 147.8,
+      "games": 12,
+      "points": 138.2,
       "history": [
         38.7,
         6.9,
@@ -134378,7 +134403,9 @@
         -36.6,
         75.6,
         51.0,
-        -38.9
+        -38.9,
+        -56.9,
+        47.3
       ],
       "cum": [
         38.7,
@@ -134390,13 +134417,15 @@
         60.1,
         135.7,
         186.7,
-        147.8
+        147.8,
+        90.9,
+        138.2
       ],
       "counts": [
-        5,
+        6,
         2,
         1,
-        2
+        3
       ],
       "absences": 0,
       "hands": 115,
@@ -134414,13 +134443,13 @@
       "winTurns": 254,
       "placements": {
         "p1": 0.5,
-        "p2": 0.2,
-        "p3": 0.1,
-        "p4": 0.2
+        "p2": 0.17,
+        "p3": 0.08,
+        "p4": 0.25
       },
-      "avgRank": 2.0,
-      "avgPoints": 14.8,
-      "streak": 51.1,
+      "avgRank": 2.08,
+      "avgPoints": 11.5,
+      "streak": 2.5,
       "winRate": 21.7,
       "dealInRate": 10.4,
       "riichiRate": 17.4,
@@ -134494,7 +134523,7 @@
       "statsSample": 115,
       "statsReliable": true,
       "arch": "con datos",
-      "rank": 5,
+      "rank": 4,
       "zone": "playoff"
     },
     {
@@ -134621,7 +134650,7 @@
       "statsSample": 116,
       "statsReliable": true,
       "arch": "con datos",
-      "rank": 6,
+      "rank": 5,
       "zone": "playoff"
     },
     {
@@ -134754,6 +134783,141 @@
         }
       ],
       "statsSample": 112,
+      "statsReliable": true,
+      "arch": "con datos",
+      "rank": 6,
+      "zone": "playoff"
+    },
+    {
+      "id": "B05",
+      "div": "B",
+      "num": "05",
+      "name": "Ponwino",
+      "shortName": "Ponwino",
+      "handle": "Ponwino",
+      "nat": "CL",
+      "games": 12,
+      "points": 102.9,
+      "history": [
+        59.1,
+        50.4,
+        -12.3,
+        14.3,
+        -44.4,
+        -17.8,
+        56.2,
+        44.6,
+        -40.3,
+        51.6,
+        -15.1,
+        -43.4
+      ],
+      "cum": [
+        59.1,
+        109.5,
+        97.2,
+        111.5,
+        67.1,
+        49.3,
+        105.5,
+        150.1,
+        109.8,
+        161.4,
+        146.3,
+        102.9
+      ],
+      "counts": [
+        5,
+        1,
+        3,
+        3
+      ],
+      "absences": 0,
+      "hands": 104,
+      "wins": 22,
+      "dealIns": 16,
+      "riichis": 26,
+      "openHands": 40,
+      "damaten": 3,
+      "kans": 2,
+      "doras": 26,
+      "uraDoras": 16,
+      "maxHonba": 4,
+      "winPoints": 169500,
+      "dealInPoints": 58100,
+      "winTurns": 264,
+      "placements": {
+        "p1": 0.42,
+        "p2": 0.08,
+        "p3": 0.25,
+        "p4": 0.25
+      },
+      "avgRank": 2.33,
+      "avgPoints": 8.6,
+      "streak": -47.2,
+      "winRate": 21.2,
+      "dealInRate": 15.4,
+      "riichiRate": 25.0,
+      "openRate": 38.5,
+      "damatenRate": 13.6,
+      "avgWinPoints": 7705,
+      "avgDealInPoints": 3631,
+      "avgWinTurn": 12.0,
+      "yakus": [
+        {
+          "name": "Riichi",
+          "count": 14
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 10
+        },
+        {
+          "name": "Ippatsu",
+          "count": 5
+        },
+        {
+          "name": "Pinfu",
+          "count": 4
+        },
+        {
+          "name": "Yakuhai Hatsu",
+          "count": 2
+        },
+        {
+          "name": "Yakuhai Haku",
+          "count": 2
+        },
+        {
+          "name": "Tanyao",
+          "count": 2
+        },
+        {
+          "name": "Chinitsu",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Bakaze",
+          "count": 1
+        },
+        {
+          "name": "Chiitoitsu",
+          "count": 1
+        },
+        {
+          "name": "Honitsu",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Jikaze",
+          "count": 1
+        },
+        {
+          "name": "Ittsu",
+          "count": 1
+        }
+      ],
+      "statsSample": 104,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 7,
@@ -135557,8 +135721,8 @@
       "shortName": "nicompleto",
       "handle": "nicompleto",
       "nat": "CL",
-      "games": 10,
-      "points": -15.3,
+      "games": 12,
+      "points": -1.3,
       "history": [
         66.9,
         -34.2,
@@ -135569,7 +135733,9 @@
         -16.2,
         -11.1,
         -28.0,
-        71.7
+        71.7,
+        4.0,
+        10.0
       ],
       "cum": [
         66.9,
@@ -135581,11 +135747,13 @@
         -47.9,
         -59.0,
         -87.0,
-        -15.3
+        -15.3,
+        -11.3,
+        -1.3
       ],
       "counts": [
         3,
-        0,
+        2,
         3,
         4
       ],
@@ -135604,14 +135772,14 @@
       "dealInPoints": 102900,
       "winTurns": 320,
       "placements": {
-        "p1": 0.3,
-        "p2": 0.0,
-        "p3": 0.3,
-        "p4": 0.4
+        "p1": 0.25,
+        "p2": 0.17,
+        "p3": 0.25,
+        "p4": 0.33
       },
-      "avgRank": 2.8,
-      "avgPoints": -1.5,
-      "streak": 16.4,
+      "avgRank": 2.67,
+      "avgPoints": -0.1,
+      "streak": 57.7,
       "winRate": 25.6,
       "dealInRate": 16.2,
       "riichiRate": 28.2,
@@ -137280,7 +137448,7 @@
       "inA": 12,
       "inB": 12,
       "avgPoints": 9.2,
-      "avgRank": 2.51,
+      "avgRank": 2.52,
       "best": {
         "id": "B04",
         "div": "B",
@@ -137289,8 +137457,8 @@
         "shortName": "cidoku",
         "handle": "cidoku",
         "nat": "CL",
-        "games": 10,
-        "points": 224.9,
+        "games": 12,
+        "points": 279.0,
         "history": [
           52.6,
           4.5,
@@ -137301,7 +137469,9 @@
           -15.8,
           18.6,
           0.9,
-          50.9
+          50.9,
+          68.0,
+          -13.9
         ],
         "cum": [
           52.6,
@@ -137313,12 +137483,14 @@
           154.5,
           173.1,
           174.0,
-          224.9
+          224.9,
+          292.9,
+          279.0
         ],
         "counts": [
+          5,
           4,
-          4,
-          2,
+          3,
           0
         ],
         "absences": 0,
@@ -137336,14 +137508,14 @@
         "dealInPoints": 48400,
         "winTurns": 323,
         "placements": {
-          "p1": 0.4,
-          "p2": 0.4,
-          "p3": 0.2,
+          "p1": 0.42,
+          "p2": 0.33,
+          "p3": 0.25,
           "p4": 0.0
         },
-        "avgRank": 1.8,
-        "avgPoints": 22.5,
-        "streak": 54.6,
+        "avgRank": 1.83,
+        "avgPoints": 23.2,
+        "streak": 105.9,
         "winRate": 27.2,
         "dealInRate": 12.3,
         "riichiRate": 20.2,
@@ -141357,13 +141529,13 @@
       "status": "highlight"
     },
     {
-      "date": "Por definir",
-      "day": "—",
+      "date": "11 sep",
+      "day": "vie",
       "round": "Sesión 6",
       "session": 6,
       "table": 3,
       "mesa": "División A — Mesa 3",
-      "time": "Por definir",
+      "time": "20:30",
       "div": "A",
       "players": [
         {
@@ -170470,7 +170642,7 @@
     "hanchanPerSession": 2,
     "playersPerDiv": 24,
     "hanchanPerDiv": 64,
-    "hanchanTotal": 124,
+    "hanchanTotal": 126,
     "nextSession": {
       "code": "S6",
       "date": "09 sep",
