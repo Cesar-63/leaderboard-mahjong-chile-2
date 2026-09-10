@@ -597,9 +597,11 @@ select{font:inherit;color:inherit}
 .mj-tile .h-6z{color:#186340}
 .mj-tile .h-7z{color:#9a2a2a}
 .mj-tile.red .mj-num{color:#c62828}
-/* El blanco (haku) viene sin dibujo en el set: es una ficha en blanco. Se le
-   pone el marco con que se dibuja siempre, si no parece imagen rota. */
-.mj-tile.tile-5z::after{content:'';position:absolute;inset:12% 16%;border:2px solid #2c4a7c;border-radius:2px}
+/* El blanco (haku) es una ficha completamente vacía: conserva el mismo
+   cuerpo marfil, borde y sombra que cualquier ficha, sin carácter ni marco
+   interior que lo haga parecer otra pieza. */
+.mj-tile.tile-5z{color:transparent}
+.mj-tile.tile-5z::after{content:none}
 .mj-tile.win{box-shadow:0 0 0 2px var(--modal-accent,var(--accent)),0 2px 0 #c7bcaa,0 4px 9px rgba(24,20,14,.25);transform:translateY(-3px)}
 /* Kan cerrado: las dos de los extremos van boca abajo. */
 .mj-tile.back{background:linear-gradient(178deg,#2f6f5e,#22523f);border-color:rgba(0,0,0,.35);color:transparent}
