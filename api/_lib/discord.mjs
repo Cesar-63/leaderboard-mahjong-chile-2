@@ -61,14 +61,29 @@ export async function checkBotToken(token) {
 }
 
 export async function fetchChannel(token, channelId) {
-  if (!token || !channelId) return null;
+  if (!token) {
+    console.warn(`[agendar] no puedo leer el canal ${channelId}: falta DISCORD_BOT_TOKEN`);
+    return null;
+  }
+  if (!channelId) return null;
   const hit = cacheGet(channelCache, channelId);
   if (hit) return hit.value;
   try {
     return cacheSet(channelCache, channelId, await discordFetch(token, `/channels/${channelId}`));
-  } catch {
+  } catch (error) {
+    // Tragarse esto en silencio fue lo que hizo indistinguibles un token roto,
+    // un permiso faltante y un canal inexistente.
+    console.warn(`[agendar] no pude leer el canal ${channelId}: ${describeFailure(error)}`);
     return null;
   }
+}
+
+/** Traduce el fallo a algo accionable; el 403 y el 401 se confunden fácil. */
+function describeFailure(error) {
+  if (error.status === 401) return "401 — el token del bot no sirve";
+  if (error.status === 403) return "403 — el bot no tiene permiso (¿le falta Ver canales?)";
+  if (error.status === 404) return "404 — no existe, o el bot no está en ese servidor";
+  return error.message;
 }
 
 export async function resolveRoleId(token, guildId, roleName) {
@@ -82,8 +97,13 @@ export async function resolveRoleId(token, guildId, roleName) {
     // Un rol que todavía no existe no se cachea: si lo crean o lo renombran
     // después del primer intento, @Staff quedaría sin privilegios hasta el
     // próximo despliegue.
-    return match ? cacheSet(rolesCache, key, match.id) : null;
-  } catch {
+    if (!match) {
+      console.warn(`[agendar] el servidor ${guildId} no tiene ningún rol llamado "${roleName}" (hay ${roles.length}); poné DISCORD_STAFF_ROLE_ID`);
+      return null;
+    }
+    return cacheSet(rolesCache, key, match.id);
+  } catch (error) {
+    console.warn(`[agendar] no pude listar los roles de ${guildId}: ${describeFailure(error)}`);
     return null;
   }
 }
