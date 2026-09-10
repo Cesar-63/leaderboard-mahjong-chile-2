@@ -1925,44 +1925,44 @@
       "statsReliable": true
     },
     "B02": {
-      "hands": 117,
-      "wins": 30,
-      "dealIns": 19,
+      "hands": 140,
+      "wins": 33,
+      "dealIns": 22,
       "kans": 4,
-      "doras": 34,
-      "uraDoras": 18,
+      "doras": 37,
+      "uraDoras": 19,
       "maxHonba": 4,
-      "winRate": 25.6,
-      "dealInRate": 16.2,
-      "riichiRate": 28.2,
-      "openRate": 22.2,
-      "damatenRate": 16.7,
-      "avgWinPoints": 7257,
-      "avgDealInPoints": 5416,
-      "avgWinTurn": 10.67,
+      "winRate": 23.6,
+      "dealInRate": 15.7,
+      "riichiRate": 26.4,
+      "openRate": 24.3,
+      "damatenRate": 18.2,
+      "avgWinPoints": 7264,
+      "avgDealInPoints": 5118,
+      "avgWinTurn": 10.79,
       "yakus": [
         {
           "name": "Riichi",
-          "count": 17
+          "count": 18
         },
         {
           "name": "Menzen Tsumo",
-          "count": 6
+          "count": 7
         },
         {
           "name": "Tanyao",
-          "count": 5
+          "count": 6
         },
         {
           "name": "Pinfu",
-          "count": 5
-        },
-        {
-          "name": "Yakuhai Hatsu",
-          "count": 3
+          "count": 6
         },
         {
           "name": "Ippatsu",
+          "count": 4
+        },
+        {
+          "name": "Yakuhai Hatsu",
           "count": 3
         },
         {
@@ -2073,25 +2073,25 @@
       "statsReliable": true
     },
     "B04": {
-      "hands": 114,
-      "wins": 31,
-      "dealIns": 14,
+      "hands": 137,
+      "wins": 37,
+      "dealIns": 17,
       "kans": 3,
-      "doras": 36,
-      "uraDoras": 16,
+      "doras": 42,
+      "uraDoras": 18,
       "maxHonba": 4,
-      "winRate": 27.2,
-      "dealInRate": 12.3,
-      "riichiRate": 20.2,
-      "openRate": 38.6,
-      "damatenRate": 0.0,
-      "avgWinPoints": 5539,
-      "avgDealInPoints": 3457,
-      "avgWinTurn": 10.42,
+      "winRate": 27.0,
+      "dealInRate": 12.4,
+      "riichiRate": 18.2,
+      "openRate": 38.7,
+      "damatenRate": 2.7,
+      "avgWinPoints": 5965,
+      "avgDealInPoints": 3941,
+      "avgWinTurn": 10.19,
       "yakus": [
         {
           "name": "Riichi",
-          "count": 14
+          "count": 16
         },
         {
           "name": "Tanyao",
@@ -2099,22 +2099,38 @@
         },
         {
           "name": "Pinfu",
-          "count": 6
+          "count": 7
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 5
         },
         {
           "name": "Ippatsu",
           "count": 5
         },
         {
-          "name": "Menzen Tsumo",
-          "count": 4
+          "name": "Yakuhai Bakaze",
+          "count": 3
         },
         {
           "name": "Toitoi",
           "count": 3
         },
         {
-          "name": "Yakuhai Bakaze",
+          "name": "Iipeiko",
+          "count": 2
+        },
+        {
+          "name": "Yakuhai Haku",
+          "count": 2
+        },
+        {
+          "name": "Yakuhai Jikaze",
+          "count": 2
+        },
+        {
+          "name": "Yakuhai Hatsu",
           "count": 2
         },
         {
@@ -2126,23 +2142,7 @@
           "count": 1
         },
         {
-          "name": "Iipeiko",
-          "count": 1
-        },
-        {
           "name": "Sanshoku Doujun",
-          "count": 1
-        },
-        {
-          "name": "Yakuhai Haku",
-          "count": 1
-        },
-        {
-          "name": "Yakuhai Jikaze",
-          "count": 1
-        },
-        {
-          "name": "Yakuhai Hatsu",
           "count": 1
         },
         {
@@ -2152,30 +2152,34 @@
         {
           "name": "Chanta",
           "count": 1
+        },
+        {
+          "name": "Chinitsu",
+          "count": 1
         }
       ],
       "statsReliable": true
     },
     "B05": {
-      "hands": 104,
-      "wins": 22,
-      "dealIns": 16,
+      "hands": 127,
+      "wins": 25,
+      "dealIns": 23,
       "kans": 2,
-      "doras": 26,
-      "uraDoras": 16,
+      "doras": 29,
+      "uraDoras": 18,
       "maxHonba": 4,
-      "winRate": 21.2,
-      "dealInRate": 15.4,
-      "riichiRate": 25.0,
-      "openRate": 38.5,
-      "damatenRate": 13.6,
-      "avgWinPoints": 7705,
-      "avgDealInPoints": 3631,
-      "avgWinTurn": 12.0,
+      "winRate": 19.7,
+      "dealInRate": 18.1,
+      "riichiRate": 25.2,
+      "openRate": 35.4,
+      "damatenRate": 12.0,
+      "avgWinPoints": 7676,
+      "avgDealInPoints": 4078,
+      "avgWinTurn": 12.32,
       "yakus": [
         {
           "name": "Riichi",
-          "count": 14
+          "count": 16
         },
         {
           "name": "Menzen Tsumo",
@@ -2183,7 +2187,7 @@
         },
         {
           "name": "Ippatsu",
-          "count": 5
+          "count": 6
         },
         {
           "name": "Pinfu",
@@ -2194,7 +2198,15 @@
           "count": 2
         },
         {
+          "name": "Chiitoitsu",
+          "count": 2
+        },
+        {
           "name": "Yakuhai Haku",
+          "count": 2
+        },
+        {
+          "name": "Honitsu",
           "count": 2
         },
         {
@@ -2210,19 +2222,15 @@
           "count": 1
         },
         {
-          "name": "Chiitoitsu",
-          "count": 1
-        },
-        {
-          "name": "Honitsu",
-          "count": 1
-        },
-        {
           "name": "Yakuhai Jikaze",
           "count": 1
         },
         {
           "name": "Ittsu",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Chun",
           "count": 1
         }
       ],
@@ -3373,37 +3381,37 @@
       "statsReliable": true
     },
     "B22": {
-      "hands": 115,
-      "wins": 25,
-      "dealIns": 12,
+      "hands": 138,
+      "wins": 30,
+      "dealIns": 14,
       "kans": 2,
-      "doras": 27,
-      "uraDoras": 8,
+      "doras": 32,
+      "uraDoras": 11,
       "maxHonba": 6,
       "winRate": 21.7,
-      "dealInRate": 10.4,
-      "riichiRate": 17.4,
-      "openRate": 35.7,
-      "damatenRate": 8.0,
-      "avgWinPoints": 6312,
-      "avgDealInPoints": 4767,
-      "avgWinTurn": 10.16,
+      "dealInRate": 10.1,
+      "riichiRate": 18.8,
+      "openRate": 30.4,
+      "damatenRate": 13.3,
+      "avgWinPoints": 5780,
+      "avgDealInPoints": 5871,
+      "avgWinTurn": 10.4,
       "yakus": [
+        {
+          "name": "Riichi",
+          "count": 11
+        },
         {
           "name": "Yakuhai Chun",
           "count": 8
         },
         {
-          "name": "Riichi",
-          "count": 8
+          "name": "Tanyao",
+          "count": 5
         },
         {
           "name": "Yakuhai Bakaze",
           "count": 5
-        },
-        {
-          "name": "Tanyao",
-          "count": 4
         },
         {
           "name": "Yakuhai Jikaze",
@@ -3447,6 +3455,14 @@
         },
         {
           "name": "Yakuhai Haku",
+          "count": 1
+        },
+        {
+          "name": "Iipeiko",
+          "count": 1
+        },
+        {
+          "name": "Ippatsu",
           "count": 1
         }
       ],
