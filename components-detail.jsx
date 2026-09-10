@@ -1113,6 +1113,12 @@ function AvailabilityModal({ entry, div, onClose }) {
     return () => window.removeEventListener('keydown', close);
   }, []);
 
+  React.useEffect(() => {
+    if (!notice) return undefined;
+    const timeout = window.setTimeout(() => setNotice(''), 2000);
+    return () => window.clearTimeout(timeout);
+  }, [notice]);
+
   const toggle = slot => setResponses(current => {
     const own = current.find(response => response.playerId === playerId);
     const nextSlots = (own?.slots || []).includes(slot) ? own.slots.filter(value => value !== slot) : [...(own?.slots || []), slot].sort();
