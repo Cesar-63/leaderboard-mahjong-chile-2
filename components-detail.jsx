@@ -1092,6 +1092,7 @@ function AvailabilityModal({ entry, div, onClose }) {
   const [selectedDay, setSelectedDay] = React.useState(0);
   const [saving, setSaving] = React.useState(false);
   const [notice, setNotice] = React.useState('');
+  const [timezone, setTimezone] = React.useState(window.TZ);
   const days = React.useMemo(() => Array.from({ length: 14 }, (_, offset) => { const date = new Date(); date.setHours(12, 0, 0, 0); date.setDate(date.getDate() + offset + 1); return date.toISOString().slice(0, 10); }), []);
   const times = React.useMemo(() => Array.from({ length: 12 }, (_, index) => { const minutes = 18 * 60 + index * 30; return `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`; }), []);
   const slots = React.useMemo(() => days.flatMap(date => times.map(time => leagueEpoch(date, time))), [days, times]);
@@ -1099,7 +1100,10 @@ function AvailabilityModal({ entry, div, onClose }) {
   const counts = React.useMemo(() => Object.fromEntries(slots.map(slot => [slot, responses.filter(response => response.slots.includes(slot)).length])), [responses, slots]);
   const best = [...slots].filter(slot => counts[slot] > 0).sort((a, b) => counts[b] - counts[a] || a - b).slice(0, 3);
   const locale = window.LANG === 'en' ? 'en-US' : window.LANG === 'pt' ? 'pt-BR' : 'es-CL';
-  const format = (epoch, options) => new Intl.DateTimeFormat(locale, { timeZone: window.TZ, ...options }).format(new Date(epoch * 1000));
+  const format = (epoch, options) => new Intl.DateTimeFormat(locale, { timeZone: timezone, ...options }).format(new Date(epoch * 1000));
+  const playerColors = ['#c9232d', '#1d467c', '#318257', '#a86a12'];
+  const selectPlayer = id => { setPlayerId(id); setNotice(''); };
+  const changeTimezone = value => { setTimezone(value); window.setTZ(value); };
 
   React.useEffect(() => {
     const fallback = () => { try { setResponses(JSON.parse(localStorage.getItem(storageKey) || '[]')); } catch { setResponses([]); } };
@@ -1137,13 +1141,16 @@ function AvailabilityModal({ entry, div, onClose }) {
   return <div className="cal-modal-backdrop" onClick={onClose}>
     <section className="availability-modal" role="dialog" aria-modal="true" aria-labelledby="coord-title" onClick={event => event.stopPropagation()} style={{ '--calendar-accent': accentFor(div) }}>
       <header className="availability-head"><div><span>{entry.round} · {tr('mesa', { n: entry.table })}</span><h2 id="coord-title">{tr('coord_title')}</h2><p>{tr('coord_intro')}</p></div><button onClick={onClose} aria-label={tr('cerrar')}>✕</button></header>
-      <div className="availability-progress">{players.map(player => <span className={responses.some(response => response.playerId === player.id && response.slots.length) ? 'done' : ''} key={player.id}><Flag nat={player.nat} size={15} /><b>{player.name}</b><small>{responses.some(response => response.playerId === player.id && response.slots.length) ? tr('coord_answered') : tr('coord_pending')}</small></span>)}</div>
+      <div className="availability-progress">{players.map((player, index) => <button type="button" className={`${responses.some(response => response.playerId === player.id && response.slots.length) ? 'done' : ''} ${playerId === player.id ? 'active' : ''}`} style={{ '--player-color': playerColors[index % playerColors.length] }} onClick={() => selectPlayer(player.id)} key={player.id} aria-pressed={playerId === player.id}><span className="availability-mini-avatar">{player.name.slice(0, 2)}</span><Flag nat={player.nat} size={15} /><b>{player.name}</b><small>{playerId === player.id ? tr('coord_who') : responses.some(response => response.playerId === player.id && response.slots.length) ? tr('coord_answered') : tr('coord_pending')}</small></button>)}</div>
       <div className="availability-layout">
         <div className="availability-editor">
-          <label><span>{tr('coord_who')}</span><select value={playerId} onChange={event => setPlayerId(event.target.value)}>{players.map(player => <option key={player.id} value={player.id}>{player.name}</option>)}</select></label>
+          <div className="availability-controls">
+            <div className="availability-player-picker"><span>{tr('coord_who')}</span><div>{players.map((player, index) => <button type="button" className={playerId === player.id ? 'active' : ''} style={{ '--player-color': playerColors[index % playerColors.length] }} onClick={() => selectPlayer(player.id)} key={player.id}><i>{player.name.slice(0, 2)}</i><span><b>{player.name}</b><small><Flag nat={player.nat} size={13} /> {COUNTRIES[player.nat]?.name || player.nat}</small></span>{playerId === player.id && <em>✓</em>}</button>)}</div></div>
+            <div className="availability-timezone"><span>{tr('timezone')}</span><TzSwitch value={timezone} onChange={changeTimezone} /></div>
+          </div>
           <div className="availability-days">{days.map((date, index) => <button className={selectedDay === index ? 'active' : ''} key={date} onClick={() => setSelectedDay(index)}><b>{format(leagueEpoch(date, '12:00'), { weekday: 'short' })}</b><span>{format(leagueEpoch(date, '12:00'), { day: '2-digit', month: 'short' })}</span></button>)}</div>
           <div className="availability-slots">{visibleSlots.map(slot => <button className={mine.includes(slot) ? 'selected' : ''} key={slot} onClick={() => toggle(slot)}><strong>{format(slot, { hour: '2-digit', minute: '2-digit' })}</strong><span>{counts[slot]}/{players.length} {tr('coord_available')}</span></button>)}</div>
-          <div className="availability-actions"><span>{tr('timezone')}: <b>{window.TZ}</b></span><button className="coord-save" disabled={saving || !playerId} onClick={save}>{saving ? tr('coord_saving') : tr('coord_save')}</button></div>
+          <div className="availability-actions"><span>{tr('timezone')}: <b>{timezone}</b></span><button className="coord-save" disabled={saving || !playerId} onClick={save}>{saving ? tr('coord_saving') : tr('coord_save')}</button></div>
         </div>
         <aside className="availability-best"><span>{tr('coord_best_title')}</span><h3>{best.length ? tr('coord_best_found') : tr('coord_best_empty')}</h3>{best.map(slot => <div className="best-slot" key={slot}><div><strong>{format(slot, { weekday: 'long', day: 'numeric', month: 'short' })}</strong><b>{format(slot, { hour: '2-digit', minute: '2-digit' })}</b><small>{counts[slot]}/{players.length} {tr('coord_players')}</small></div><button onClick={() => copy(slot)}>{tr('coord_copy_discord')}</button></div>)}<p>{tr('coord_staff_note')}</p></aside>
       </div>
