@@ -36,6 +36,15 @@ NAT_CODES = {
 CALENDAR_VALUE_COLS = {"A": [3, 6, 9, 12, 15, 18], "B": [22, 25, 28, 31, 34, 37]}
 CALENDAR_PLAYER_COLS = {"A": [1, 4, 7, 10, 13, 16], "B": [20, 23, 26, 29, 32, 35]}
 SESSION_G1_ROWS = [11, 19, 27, 35, 43, 51, 59]
+# Game History: rótulo `S# M# G#` en la columna A y el resultado en la B, una
+# fila por hanchan (7 sesiones x 6 mesas x 2 hanchan = 84 filas desde la 2).
+HISTORY_LABEL_RE = re.compile(r"^S(\d+)\s+M(\d+)\s+G(\d+)$")
+HISTORY_FIRST_ROW = 2
+HISTORY_LAST_ROW = 85
+HISTORY_LABEL_COL = 1
+HISTORY_VALUE_COL = 2
+# Sin oka: los cuatro scores crudos de un hanchan siempre suman esto.
+TOTAL_RAW_SCORE = 120000
 # Mínimo de jugadores en común para dar por equivalentes dos grupos: 3 de 4,
 # para tolerar exactamente un suplente.
 MIN_ROSTER_OVERLAP = 3
@@ -185,34 +194,56 @@ def read_calendar(workbook: Any) -> tuple[list[dict[str, Any]], list[dict[str, A
     return fixtures, submissions
 
 
+def history_rows(ws: Any) -> dict[tuple[int, int, int], int]:
+    """Fila de cada rótulo `S# M# G#` del Game History, leída de la columna A.
+
+    La numeración de mesas del Game History no es la del Calendario, así que la
+    posición de cada hanchan se lee de la planilla en vez de calcularse."""
+    rows: dict[tuple[int, int, int], int] = {}
+    for row in range(HISTORY_FIRST_ROW, HISTORY_LAST_ROW + 1):
+        match = HISTORY_LABEL_RE.match(str(cell_value(ws.cell(row, HISTORY_LABEL_COL)) or ""))
+        if match:
+            rows[tuple(int(part) for part in match.groups())] = row
+    return rows
+
+
+def parse_history_line(raw: str, rule: dict[str, Any], where: str) -> list[dict[str, Any]]:
+    """`Nombre,score,Nombre,score,…` (4 pares, de 1º a 4º) → resultados de liga.
+
+    Es la definición del formato de la celda del Game History; su gemelo
+    `format_history_line` la escribe. Los dos tienen que moverse juntos."""
+    parts = [part.strip() for part in str(raw).split(",")]
+    if len(parts) != 8:
+        raise SyncError(f"{where}: el resultado debe contener 8 valores")
+    results = []
+    try:
+        for place in range(4):
+            score = int(float(parts[place * 2 + 1]))
+            points = round((score - int(rule["initialPoints"])) / 1000 + float(rule["uma"][place]), 1)
+            results.append({"name": parts[place * 2], "scoreRaw": score, "place": place + 1, "delta": points})
+    except ValueError as exc:
+        raise SyncError(f"{where}: puntaje inválido") from exc
+    if sum(item["scoreRaw"] for item in results) != TOTAL_RAW_SCORE:
+        raise SyncError(f"{where}: los scores no suman {TOTAL_RAW_SCORE // 1000}.000")
+    return results
+
+
+def format_history_line(results: list[dict[str, Any]]) -> str:
+    """Resultados de 1º a 4º → la celda tal cual se ve en el Game History."""
+    return ",".join(f"{item['name']},{int(item['scoreRaw'])}" for item in results)
+
+
 def parse_history(workbook: Any, division: str, sheet_name: str, rule: dict[str, Any]) -> dict[str, dict[str, Any]]:
     ws = workbook[sheet_name]
     output: dict[str, dict[str, Any]] = {}
-    pattern = re.compile(r"^S(\d+)\s+M(\d+)\s+G(\d+)$")
-    for row in range(2, 86):
-        label = str(cell_value(ws.cell(row, 1)) or "")
-        match = pattern.match(label)
-        if not match:
-            continue
-        session, table, game = map(int, match.groups())
-        raw = str(cell_value(ws.cell(row, 2)) or "")
+    for (session, table, game), row in history_rows(ws).items():
+        raw = str(cell_value(ws.cell(row, HISTORY_VALUE_COL)) or "")
         if not raw:
             continue
-        parts = [part.strip() for part in raw.split(",")]
-        if len(parts) != 8:
-            raise SyncError(f"{sheet_name}!B{row}: el resultado debe contener 8 valores")
-        results = []
-        try:
-            for place in range(4):
-                score = int(float(parts[place * 2 + 1]))
-                points = round((score - int(rule["initialPoints"])) / 1000 + float(rule["uma"][place]), 1)
-                results.append({"name": parts[place * 2], "scoreRaw": score, "place": place + 1, "delta": points})
-        except ValueError as exc:
-            raise SyncError(f"{sheet_name}!B{row}: puntaje inválido") from exc
-        if sum(item["scoreRaw"] for item in results) != 120000:
-            raise SyncError(f"{sheet_name}!B{row}: los scores no suman 120.000")
+        source_cell = f"{sheet_name}!B{row}"
+        results = parse_history_line(raw, rule, source_cell)
         key = f"{division}-S{session}-M{table}-G{game}"
-        output[key] = {"key": key, "session": session, "table": table, "game": game, "results": results, "sourceCell": f"{sheet_name}!B{row}"}
+        output[key] = {"key": key, "session": session, "table": table, "game": game, "results": results, "sourceCell": source_cell}
     return output
 
 

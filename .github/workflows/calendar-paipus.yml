@@ -16,8 +16,11 @@ on:
         type: boolean
         default: false
   schedule:
-    # 09:20 en Chile (verano) / 08:20 (invierno): después de las sesiones.
-    - cron: "20 12 * * *"
+    # Cada hora: una sesión tiene 2 semanas de plazo y cada mesa elige su
+    # horario, así que las partidas caen de a dos en cualquier momento del día
+    # y de la quincena. Una pasada diaria dejaba cada mesa hasta 24 h sin
+    # puntaje; por hora, se registra dentro de la hora de haberse jugado.
+    - cron: "0 * * * *"
 
 # Escribir: los paipus descargados se versionan igual que en sync-data.yml.
 permissions:
@@ -67,6 +70,28 @@ jobs:
             ARGS="$ARGS --fail-on-issues"
           fi
           python scripts/fill_calendar_paipus.py $ARGS
+      - name: Completar Game History con los puntajes de los paipus
+        if: always()
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          ESCRIBIR: ${{ inputs.write == null && 'true' || inputs.write }}
+        run: |
+          ARGS=""
+          if [ "$ESCRIBIR" = "true" ]; then
+            if [ -n "$GOOGLE_SERVICE_ACCOUNT_JSON" ]; then
+              ARGS="$ARGS --write"
+            else
+              echo "::warning::Sin GOOGLE_SERVICE_ACCOUNT_JSON: el job solo propone celdas, no las pega."
+            fi
+          fi
+          if [ "${{ inputs.fail_on_issues }}" = "true" ]; then
+            ARGS="$ARGS --fail-on-issues"
+          fi
+          # Sin --fetch-logs a propósito: el paso anterior ya bajó los paipus en
+          # su sesión técnica, y Mahjong Soul admite una sola por cuenta. Acá se
+          # leen los .pb que quedaron en data/raw-paipu; los que no alcanzaron a
+          # bajar se completan en la corrida siguiente.
+          python scripts/fill_game_history.py $ARGS
       - name: Publicar los paipus descargados
         if: always()
         run: |
@@ -86,5 +111,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: calendar-paipus
-          path: reports/calendar-paipus.*
+          path: |
+            reports/calendar-paipus.*
+            reports/game-history.*
           if-no-files-found: warn
