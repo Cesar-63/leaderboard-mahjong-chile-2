@@ -1188,7 +1188,8 @@ function AvailabilityModal({ entry, div, onClose, standalone = false }) {
     ordered.forEach(slot => { const last = ranges[ranges.length - 1]; if (last && slot === last[1] + 1800) last[1] = slot; else ranges.push([slot, slot]); });
     const player = players.find(item => item.id === playerId)?.name || '';
     const lines = ranges.map(([start, end]) => start === end ? `• <t:${start}:F>` : `• <t:${start}:F> – <t:${end}:t>`);
-    copyText(`${tr('coord_discord_heading', { player, round: entry.round, table: entry.table })}\n${lines.join('\n')}\n${window.location.href}`, tr('coord_all_copied'));
+    const recommendations = best.map(slot => `• <t:${slot}:F> · ${counts[slot]}/${players.length} ${tr('coord_players')}`);
+    copyText(`${tr('coord_discord_heading', { player, round: entry.round, table: entry.table })}\n${lines.join('\n')}\n\n**${tr('coord_discord_recommended')}**\n${recommendations.length ? recommendations.join('\n') : tr('coord_best_empty')}\n\n${window.location.href}`, tr('coord_all_copied'));
   };
   const copyLink = () => copyText(window.location.href, tr('coord_link_copied'));
   const visibleSlots = times.map(time => ({ time, slot: zonedEpoch(days[selectedDays[0]], time, 'America/Santiago'), epochs: timeSlots(time) }));
