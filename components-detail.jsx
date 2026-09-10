@@ -257,6 +257,38 @@ function DivisionPlayerSelect({ value, onChange, data, division }) {
   </div>;
 }
 
+function FeaturedHands({ hands, player, data, color }) {
+  const [active, setActive] = React.useState('valuable');
+  React.useEffect(() => { setActive('valuable'); }, [player.id]);
+  const indexOf = compare => hands.reduce((best, hand, index) => best < 0 || compare(hand, hands[best]) ? index : best, -1);
+  const highlights = hands.length ? [
+    { key: 'valuable', icon: '◆', label: tr('hand_most_valuable'), index: indexOf((a, b) => (a.points || 0) > (b.points || 0) || ((a.points || 0) === (b.points || 0) && (a.han || 0) > (b.han || 0))) },
+    { key: 'fast', icon: '⚡', label: tr('hand_fastest'), index: indexOf((a, b) => (a.turn || Infinity) < (b.turn || Infinity) || ((a.turn || Infinity) === (b.turn || Infinity) && (a.points || 0) > (b.points || 0))) },
+    { key: 'recent', icon: '◷', label: tr('hand_most_recent'), index: indexOf((a, b) => (a.session || 0) > (b.session || 0) || ((a.session || 0) === (b.session || 0) && ((a.hanchan || 0) > (b.hanchan || 0) || ((a.hanchan || 0) === (b.hanchan || 0) && (a.roundIndex || 0) > (b.roundIndex || 0))))) },
+    { key: 'cheap', icon: '◇', label: tr('hand_cheapest'), index: indexOf((a, b) => (a.points || Infinity) < (b.points || Infinity) || ((a.points || Infinity) === (b.points || Infinity) && (a.turn || Infinity) < (b.turn || Infinity))) },
+  ] : [];
+  const selectedHighlight = highlights.find(item => item.key === active) || highlights[0];
+  const selected = selectedHighlight ? hands[selectedHighlight.index] : null;
+  const tabValue = item => {
+    const hand = hands[item.index];
+    if (item.key === 'fast') return tr('hand_turn', { n: hand.turn });
+    if (item.key === 'recent') return `${tr('sesion_n', { n: hand.session })} · H${hand.hanchan}`;
+    return (hand.points || 0).toLocaleString('es-CL');
+  };
+  return <div className="chart-card detail-full featured-hands-card" style={{ '--featured-accent': color }}>
+    <div className="ch-head yaku-head"><div><h3>{tr('profile_featured_hands')}</h3><p>{tr('profile_featured_hands_hint')}</p></div><span className="jp">名勝負</span></div>
+    {!selected ? <div className="featured-hands-empty">{tr('profile_featured_hands_empty')}</div> : <>
+      <div className="featured-hand-tabs" role="tablist" aria-label={tr('profile_featured_hands')}>
+        {highlights.map(item => <button key={item.key} role="tab" aria-selected={active === item.key} className={active === item.key ? 'active' : ''} onClick={() => setActive(item.key)}><i>{item.icon}</i><span>{item.label}<small>{tabValue(item)}</small></span></button>)}
+      </div>
+      <div className="featured-hand-stage">
+        <div className="featured-hand-story"><span>{selectedHighlight.label}</span><strong>{(selected.points || 0).toLocaleString('es-CL')} {tr('points')}</strong><p>{tr(`hand_${selectedHighlight.key}_reason`, { points: (selected.points || 0).toLocaleString('es-CL'), turn: selected.turn, session: selected.session, hanchan: selected.hanchan })}</p></div>
+        <YakuHandRow hand={selected} yaku={null} player={player} data={data} milestones={[selectedHighlight]} featured />
+      </div>
+    </>}
+  </div>;
+}
+
 function PlayerDetail({ playerId, data, onPick }) {
   const all = data.allPlayers;
   const p = all.find(x => x.id === playerId) || data.divisions.A.players[0];
@@ -388,6 +420,8 @@ function PlayerDetail({ playerId, data, onPick }) {
             <div className="achievement-family family-distinction"><div className="achievement-family-head"><strong>{tr('achievement_distinctions')}</strong><small>{distinctions.length}</small></div><div className="achievement-emblems">{distinctions.map(record => <div className="achievement-emblem-wrap" key={record.key}><div className={`achievement-emblem distinction-${record.key}`} tabIndex="0">{recordIcons[record.key] || '賞'}</div><div className="achievement-tooltip"><em>{tr('achievement_distinctions')}</em><strong>{record.name}</strong><span>{record.detail}</span><b>{record.value}</b></div></div>)}{Array.from({ length: Math.max(0, 3 - distinctions.length) }, (_, i) => <div className="achievement-emblem-wrap locked" key={`distinction-locked-${i}`}><div className="achievement-emblem">◇</div><div className="achievement-tooltip"><strong>{tr('achievement_locked')}</strong><span>{tr('achievement_locked_distinction')}</span></div></div>)}</div></div>
           </div>
         </div>
+
+          <FeaturedHands key={p.id} hands={wonHands} player={p} data={data} color={color} />
 
           <div className="chart-card detail-summary">
             <div className="ch-head stats-overview-head"><div><h3>{tr('stats_overview')}</h3><p>{tr('stats_overview_hint')}</p></div></div>
