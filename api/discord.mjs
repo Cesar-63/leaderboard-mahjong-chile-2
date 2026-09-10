@@ -15,7 +15,7 @@ import { parseWhen, WhenError, DEFAULT_TIMEZONE } from "./_lib/time.mjs";
 import { mergeTargets, parseTarget, validateTarget } from "./_lib/target.mjs";
 import { loadConfig, readLeague, readTable, SheetsError, writeSchedule } from "./_lib/sheets.mjs";
 import {
-  callerIdentity, fetchChannel, InteractionResponseType, InteractionType,
+  callerIdentity, checkBotToken, fetchChannel, InteractionResponseType, InteractionType,
   message, optionMap, resolveRoleId,
 } from "./_lib/discord.mjs";
 
@@ -29,10 +29,14 @@ function json(body, status = 200) {
   });
 }
 
-export function GET() {
+export async function GET() {
   // Sonda de salud: confirma que la función está desplegada y qué le falta
-  // configurar, sin exponer ningún secreto.
+  // configurar, sin exponer ningún secreto. El token de bot se prueba contra
+  // la API: que la variable exista no significa que sirva, y de él dependen
+  // tanto el nombre del canal padre como resolver @Staff por nombre.
   const env = process.env;
+  const botToken = (env.DISCORD_BOT_TOKEN || "").trim();
+  const bot = await checkBotToken(botToken);
   return json({
     service: "liga-mahjong-chile/discord",
     ready: Boolean(env.DISCORD_PUBLIC_KEY && env.SHEET_ID),
@@ -40,11 +44,15 @@ export function GET() {
       discordPublicKey: Boolean(env.DISCORD_PUBLIC_KEY),
       sheetId: Boolean(env.SHEET_ID),
       googleCredentials: Boolean(env.GOOGLE_SERVICE_ACCOUNT_JSON || (env.GOOGLE_SERVICE_ACCOUNT_EMAIL && env.GOOGLE_PRIVATE_KEY)),
-      botToken: Boolean(env.DISCORD_BOT_TOKEN),
-      staffRole: env.DISCORD_STAFF_ROLE_ID ? "por id" : `por nombre (@${env.DISCORD_STAFF_ROLE_NAME || DEFAULT_STAFF_ROLE_NAME})`,
+      botToken: bot.ok ? `válido (${bot.username})` : `NO SIRVE — ${bot.reason}`,
+      staffRole: env.DISCORD_STAFF_ROLE_ID ? "por id" : `por nombre (@${staffRoleName(env)})`,
       timeZone: env.LEAGUE_TIMEZONE || DEFAULT_TIMEZONE,
     },
   });
+}
+
+function staffRoleName(env) {
+  return (env.DISCORD_STAFF_ROLE_NAME || "").trim() || DEFAULT_STAFF_ROLE_NAME;
 }
 
 export async function POST(request) {
@@ -99,7 +107,9 @@ async function agendar(interaction, env) {
     return message(`⚠️ ${error.message}`, { ephemeral: true });
   }
 
-  const botToken = env.DISCORD_BOT_TOKEN;
+  // Recortado: pegar el token en el panel de Vercel suele arrastrar un salto
+  // de línea, y eso rompe el header Authorization en todas las llamadas.
+  const botToken = (env.DISCORD_BOT_TOKEN || "").trim();
   const channel = interaction.channel || {};
   const explicit = {
     division: options.division ? String(options.division).toUpperCase() : undefined,
@@ -109,24 +119,38 @@ async function agendar(interaction, env) {
 
   // La lectura de la planilla no depende de la mesa, así que va en paralelo
   // con las consultas a Discord.
-  const [league, contextNames, staffRoleId] = await Promise.all([
+  const [league, context, staffRoleId] = await Promise.all([
     readLeague(env, CONFIG),
-    channelNames(botToken, interaction, channel),
+    channelContext(botToken, interaction, channel),
     env.DISCORD_STAFF_ROLE_ID
       ? Promise.resolve(env.DISCORD_STAFF_ROLE_ID.trim())
-      : resolveRoleId(botToken, interaction.guild_id, env.DISCORD_STAFF_ROLE_NAME || DEFAULT_STAFF_ROLE_NAME),
+      : resolveRoleId(botToken, interaction.guild_id, staffRoleName(env)),
   ]);
 
-  const target = mergeTargets(explicit, ...contextNames.map(parseTarget));
+  const target = mergeTargets(explicit, ...context.names.map(parseTarget));
   const missing = validateTarget(target);
   if (missing.length) {
-    return message(
+    const lines = [
       `⚠️ No pude deducir ${missing.join(", ")} desde este canal` +
-      (contextNames.length ? ` (\`${contextNames.join("` › `")}\`)` : "") +
-      ".\nPasalos a mano: `/agendar cuando:<t:…:F> division:A sesion:3 mesa:2`, " +
+      (context.names.length ? ` (\`${context.names.join("` › `")}\`)` : "") + ".",
+    ];
+    // Que no se haya podido leer el canal padre es un problema de
+    // configuración, no del nombre del hilo: hay que decirlo, porque si no
+    // parece que el hilo estuviera mal nombrado.
+    if (context.lookupFailed) {
+      lines.push(
+        "🔧 Además, no pude leer el nombre del canal donde vive este hilo: " +
+        (botToken
+          ? "el token del bot no sirve, o el bot no tiene permiso para ver ese canal."
+          : "falta `DISCORD_BOT_TOKEN` en el entorno del sitio.") +
+        " Por eso no saqué la división de ahí.",
+      );
+    }
+    lines.push(
+      "Pasalos a mano: `/agendar cuando:<t:…:F> division:A sesion:3 mesa:2`, " +
       "o nombrá el hilo con el formato `A · Sesión 3 · Mesa 2`.",
-      { ephemeral: true },
     );
+    return message(lines.join("\n"), { ephemeral: true });
   }
 
   const table = readTable(league.grid, target.division, target.session, target.table);
@@ -141,22 +165,28 @@ async function agendar(interaction, env) {
   const seats = playersFor(identity, league.roster);
 
   if (!isStaff) {
-    if (!staffRoleId) {
-      // Sin token de bot no se puede resolver @Staff por nombre; entonces el
-      // rol hay que configurarlo por id o nadie tiene el atajo de organizador.
-      console.warn("No se pudo resolver el rol de organizador: falta DISCORD_STAFF_ROLE_ID o DISCORD_BOT_TOKEN");
-    }
     const seated = seats.filter((player) => sameName(player.name, table.players));
     if (!seated.length) {
-      return message(
-        `⚠️ Sólo pueden agendar ${label} sus cuatro jugadores (${table.players.filter(Boolean).join(", ")}) o el rol @${env.DISCORD_STAFF_ROLE_NAME || DEFAULT_STAFF_ROLE_NAME}.\n` +
+      const lines = [
+        `⚠️ Sólo pueden agendar ${label} sus cuatro jugadores (${table.players.filter(Boolean).join(", ")}) o el rol @${staffRoleName(env)}.`,
         `Tu usuario (\`${identity.username || "desconocido"}\`) ${seats.length ? `figura en el roster como **${seats.map((p) => p.name).join(", ")}**, que no juega en esa mesa` : "no figura en la columna Discord de la planilla — ojo que se compara contra el **nombre de usuario**, no contra el nombre para mostrar ni el apodo del servidor"}.`,
-        { ephemeral: true },
-      );
+      ];
+      // Sin rol resuelto, el rechazo de arriba es engañoso: alguien con @Staff
+      // creería que no lo tiene, cuando el bot ni siquiera pudo buscarlo.
+      if (!staffRoleId) {
+        lines.push(
+          `🔧 Aviso de configuración: no pude resolver el rol @${staffRoleName(env)} ` +
+          (botToken
+            ? "(el token del bot no sirve, o no existe un rol con ese nombre)"
+            : "(falta `DISCORD_BOT_TOKEN`)") +
+          ", así que ahora mismo nadie tiene el atajo de organizador. Se arregla poniendo `DISCORD_STAFF_ROLE_ID` con el id del rol.",
+        );
+      }
+      return message(lines.join("\n"), { ephemeral: true });
     }
     if (table.paipuG1) {
       return message(
-        `⚠️ ${label} ya tiene resultados cargados (${table.paipuG1Cell}). Reagendarla borraría el registro del calendario; pedile a @${env.DISCORD_STAFF_ROLE_NAME || DEFAULT_STAFF_ROLE_NAME} que lo haga.`,
+        `⚠️ ${label} ya tiene resultados cargados (${table.paipuG1Cell}). Reagendarla borraría el registro del calendario; pedile a @${staffRoleName(env)} que lo haga.`,
         { ephemeral: true },
       );
     }
@@ -193,22 +223,34 @@ async function agendar(interaction, env) {
 }
 
 /** Nombre del hilo y, si se puede, el del canal padre. */
-async function channelNames(botToken, interaction, channel) {
+/**
+ * Nombre del hilo y el del canal donde vive.
+ *
+ * Discord manda el `parent_id` del hilo pero no el nombre del padre, así que
+ * ése hay que pedirlo con el token del bot. Es el caso normal de la liga: el
+ * hilo dice `Sesión 6 Mesa 1` y la división sólo está en `#chat-general-liga-a`.
+ * Cuando la consulta falla se informa (`lookupFailed`) en vez de quedar en
+ * silencio, porque si no el rechazo culpa al nombre del hilo.
+ */
+async function channelContext(botToken, interaction, channel) {
   const names = [];
+  let lookupFailed = false;
   if (channel.name) names.push(channel.name);
-  const parentId = channel.parent_id;
+
+  let parentId = channel.parent_id;
+  if (!channel.name && interaction.channel_id) {
+    const fetched = await fetchChannel(botToken, interaction.channel_id);
+    if (fetched?.name) names.push(fetched.name);
+    else lookupFailed = true;
+    parentId = parentId || fetched?.parent_id;
+  }
+
   if (parentId) {
     const parent = await fetchChannel(botToken, parentId);
     if (parent?.name) names.push(parent.name);
-  } else if (!channel.name && interaction.channel_id) {
-    const fetched = await fetchChannel(botToken, interaction.channel_id);
-    if (fetched?.name) names.push(fetched.name);
-    if (fetched?.parent_id) {
-      const parent = await fetchChannel(botToken, fetched.parent_id);
-      if (parent?.name) names.push(parent.name);
-    }
+    else lookupFailed = true;
   }
-  return names;
+  return { names, lookupFailed };
 }
 
 /** El Calendario y el roster salen de la misma planilla, pero se comparan sin

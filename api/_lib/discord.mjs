@@ -34,8 +34,30 @@ async function discordFetch(token, path) {
   const response = await fetch(`${API}${path}`, {
     headers: { authorization: `Bot ${token}` },
   });
-  if (!response.ok) throw new Error(`Discord respondió ${response.status} en ${path}`);
+  if (!response.ok) {
+    const error = new Error(`Discord respondió ${response.status} en ${path}`);
+    error.status = response.status;
+    throw error;
+  }
   return response.json();
+}
+
+/**
+ * Valida el token de bot sin necesitar servidor ni permisos: devuelve la
+ * identidad del bot, o el motivo del rechazo. Existe para que la sonda de
+ * salud diga si el token sirve; un token con un espacio invisible al pegarlo
+ * rompe todas las llamadas autenticadas —canal padre y rol @Staff— y antes
+ * fallaba sin dejar rastro.
+ */
+export async function checkBotToken(token) {
+  if (!token) return { ok: false, reason: "falta DISCORD_BOT_TOKEN" };
+  try {
+    const user = await discordFetch(token, "/users/@me");
+    return { ok: true, username: user.username };
+  } catch (error) {
+    if (error.status === 401) return { ok: false, reason: "token inválido (401)" };
+    return { ok: false, reason: error.message };
+  }
 }
 
 export async function fetchChannel(token, channelId) {

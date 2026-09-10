@@ -253,23 +253,32 @@ const ROSTER_A = [
   [5, "Meme000", 105237091, "memememememememe", "Uruguaya"],
 ];
 
-function calendarGrid({ paipuG1 = "", date = "", time = "" } = {}) {
-  // División A, sesión 3, mesa 2 → jugadores en D25:D28, valores en F25:F28.
+function calendarGrid({ paipuG1 = "", date = "", time = "", at = ["A", 3, 2] } = {}) {
+  // Por defecto División A, sesión 3, mesa 2 → jugadores en D25:D28,
+  // valores en F25:F28. Las posiciones salen de tableCells, igual que el bot.
+  const cells = tableCells(...at);
   const grid = [];
   const put = (row, col, value) => {
     grid[row - 1] = grid[row - 1] || [];
     grid[row - 1][col - 1] = value;
   };
-  ["Bodoque", "Mon_96", "Sh1rome", "Meme000"].forEach((name, index) => put(25 + index, 4, name));
-  if (date) put(25, 6, date);
-  if (time) put(26, 6, time);
-  if (paipuG1) put(27, 6, paipuG1);
+  ["Bodoque", "Mon_96", "Sh1rome", "Meme000"].forEach((name, index) => {
+    put(cells.g1Row - 2 + index, cells.playerCol, name);
+  });
+  if (date) put(cells.dateRow, cells.valueCol, date);
+  if (time) put(cells.timeRow, cells.valueCol, time);
+  if (paipuG1) put(cells.g1Row, cells.valueCol, paipuG1);
   return grid;
 }
 
-function fakeNetwork({ grid, onWrite }) {
+function fakeNetwork({ grid, onWrite, parentName = null, onAuth = null }) {
   return async (url, init = {}) => {
     const href = String(url);
+    if (init.headers?.authorization) onAuth?.(init.headers.authorization);
+    if (href.includes("/channels/")) {
+      if (!parentName) throw new Error("no hay canal padre simulado");
+      return Response.json({ id: href.split("/channels/")[1], name: parentName, type: 0 });
+    }
     if (href.startsWith("https://oauth2.googleapis.com/token")) {
       return Response.json({ access_token: "token-de-prueba", expires_in: 3600 });
     }
@@ -311,13 +320,13 @@ function signedRequest(interaction) {
 
 function interactionFor({
   username = ".bodoque", roles = [], channelName = "a-s3-m2", options = [],
-  globalName = null, nick = null, userId = "user-1",
+  globalName = null, nick = null, userId = "user-1", parentId = null,
 } = {}) {
   return {
     type: 2,
     guild_id: "guild-1",
     channel_id: "channel-1",
-    channel: { id: "channel-1", name: channelName, type: 11 },
+    channel: { id: "channel-1", name: channelName, type: 11, ...(parentId ? { parent_id: parentId } : {}) },
     member: { user: { id: userId, username, global_name: globalName ?? username }, roles, nick },
     data: {
       name: "agendar",
@@ -529,4 +538,104 @@ test("una fecha ilegible no llega a tocar la planilla", async () => {
   });
   assert.equal(body.data.flags, 64);
   assert.match(body.data.content, /No pude interpretar la fecha/);
+});
+
+// --- El caso real de la liga: la división vive en el canal, no en el hilo ----
+
+test("saca la división del canal padre y sesión/mesa del hilo", async () => {
+  // Así están armados los hilos de la liga: `Sesión 6 Mesa 1` colgando de
+  // `#chat-general-liga-a`. La división sólo está en el nombre del canal, y
+  // Discord manda el parent_id sin el nombre, así que hay que ir a buscarlo.
+  let written = null;
+  const { body } = await callHandler(
+    interactionFor({ channelName: "Sesión 6 Mesa 1", parentId: "parent-ok" }),
+    fakeNetwork({
+      grid: calendarGrid({ at: ["A", 6, 1] }),
+      parentName: "chat-general-liga-a",
+      onWrite: (payload) => { written = payload; },
+    }),
+    { DISCORD_BOT_TOKEN: "token-de-bot" },
+  );
+  assert.ok(written, "tendría que haber escrito");
+  // A · Sesión 6 · Mesa 1 → fecha en C49, hora en C50.
+  assert.deepEqual(written.data.map((entry) => entry.range), ["Calendario!C49", "Calendario!C50"]);
+  assert.match(body.data.content, /División A · Sesión 6 · Mesa 1/);
+});
+
+test("si no puede leer el canal padre, lo dice en vez de culpar al hilo", async () => {
+  // Antes el rechazo sólo decía "no pude deducir división", y parecía que el
+  // hilo estuviera mal nombrado cuando en realidad el token no servía.
+  const network = async (url, init) => {
+    if (String(url).includes("/channels/")) return new Response("unauthorized", { status: 401 });
+    return fakeNetwork({ grid: calendarGrid({ at: ["A", 6, 1] }) })(url, init);
+  };
+  const { body } = await callHandler(
+    interactionFor({ channelName: "Sesión 6 Mesa 1", parentId: "parent-401" }),
+    network,
+    { DISCORD_BOT_TOKEN: "token-roto" },
+  );
+  assert.equal(body.data.flags, 64);
+  assert.match(body.data.content, /No pude deducir división/);
+  assert.match(body.data.content, /no pude leer el nombre del canal donde vive este hilo/);
+  assert.match(body.data.content, /el token del bot no sirve/);
+});
+
+test("sin token de bot, el aviso apunta a la variable que falta", async () => {
+  const { body } = await callHandler(
+    interactionFor({ channelName: "Sesión 6 Mesa 1", parentId: "parent-sin-token" }),
+    fakeNetwork({ grid: calendarGrid({ at: ["A", 6, 1] }) }),
+  );
+  assert.match(body.data.content, /falta `DISCORD_BOT_TOKEN`/);
+});
+
+test("el token se recorta antes de usarlo", async () => {
+  // Pegar el token en el panel de Vercel arrastra saltos de línea; sin
+  // recortarlo el header Authorization queda inválido y fallan en silencio
+  // tanto el canal padre como la resolución de @Staff.
+  const vistos = [];
+  await callHandler(
+    interactionFor({ channelName: "Sesión 6 Mesa 1", parentId: "parent-trim" }),
+    fakeNetwork({
+      grid: calendarGrid({ at: ["A", 6, 1] }),
+      parentName: "chat-general-liga-a",
+      onAuth: (value) => vistos.push(value),
+    }),
+    { DISCORD_BOT_TOKEN: "  token-de-bot\n" },
+  );
+  const aDiscord = vistos.filter((value) => value.startsWith("Bot "));
+  assert.ok(aDiscord.length, "tendría que haber llamado a Discord");
+  for (const value of aDiscord) {
+    assert.equal(value, "Bot token-de-bot", "el token viaja recortado");
+  }
+});
+
+test("la sonda de salud prueba el token de verdad", async () => {
+  const previousFetch = globalThis.fetch;
+  const previousEnv = { ...process.env };
+  try {
+    // Token válido: informa el nombre del bot.
+    process.env.DISCORD_BOT_TOKEN = " token-bueno ";
+    globalThis.fetch = async (url) => {
+      assert.match(String(url), /\/users\/@me$/);
+      return Response.json({ username: "LMCBot" });
+    };
+    let { GET } = await import("../api/discord.mjs");
+    let payload = await (await GET()).json();
+    assert.equal(payload.configured.botToken, "válido (LMCBot)");
+
+    // Token rechazado: lo dice, en vez de decir sólo que la variable existe.
+    globalThis.fetch = async () => new Response("unauthorized", { status: 401 });
+    payload = await (await GET()).json();
+    assert.match(payload.configured.botToken, /NO SIRVE — token inválido \(401\)/);
+
+    // Sin variable: ni siquiera sale a la red.
+    delete process.env.DISCORD_BOT_TOKEN;
+    globalThis.fetch = async () => { throw new Error("no debería salir a la red"); };
+    payload = await (await GET()).json();
+    assert.match(payload.configured.botToken, /falta DISCORD_BOT_TOKEN/);
+  } finally {
+    globalThis.fetch = previousFetch;
+    for (const key of Object.keys(process.env)) delete process.env[key];
+    Object.assign(process.env, previousEnv);
+  }
 });

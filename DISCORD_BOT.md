@@ -46,8 +46,14 @@ a-s3-m2          A · Sesión 3 · Mesa 2        liga-b-sesion-4-mesa-1
 divisionA-S2-T5  🀄 Liga A | Sesión 1 | Mesa 4
 ```
 
-Un `Mesa 2` dentro de un canal `División A · Sesión 3` también funciona: los
-dos nombres se combinan. Una letra `A`/`B` suelta sólo cuenta como división si
+Un hilo `Sesión 6 Mesa 1` dentro de `#chat-general-liga-a` también funciona:
+los dos nombres se combinan y la división sale del canal. Ése es el armado
+normal de la liga.
+
+**Para leer el canal padre hace falta `DISCORD_BOT_TOKEN`.** Discord manda el
+`parent_id` del hilo pero no su nombre, así que hay que pedírselo a la API. Si
+el token falta o no sirve, el bot lo dice en el rechazo en vez de culpar al
+nombre del hilo. Una letra `A`/`B` suelta sólo cuenta como división si
 viene pegada a una sesión o una mesa, para que un canal `general` no pase por
 División A.
 
@@ -126,7 +132,7 @@ En *Project Settings → Environment Variables* (Production y Preview):
 | `DISCORD_PUBLIC_KEY` | sí | Verificar la firma Ed25519 de cada interacción |
 | `SHEET_ID` | sí | El id de la planilla (`spreadsheetId` de `sync-config.json`) |
 | `GOOGLE_SERVICE_ACCOUNT_JSON` | sí | El JSON completo de la cuenta de servicio (igual que el secret de GitHub); también acepta el mismo JSON en base64 |
-| `DISCORD_BOT_TOKEN` | recomendada | Leer el nombre del canal padre y resolver @Staff por nombre |
+| `DISCORD_BOT_TOKEN` | sí, en la práctica | Leer el nombre del canal padre (de ahí sale la división) y resolver @Staff por nombre |
 | `DISCORD_STAFF_ROLE_ID` | opcional | Id del rol de organizadores; evita depender del token de bot |
 | `DISCORD_STAFF_ROLE_NAME` | opcional | Nombre del rol si no es `Staff` |
 | `LEAGUE_TIMEZONE` | opcional | Huso de la liga; por defecto `America/Santiago` |
@@ -151,6 +157,11 @@ curl https://<dominio-del-sitio>/api/discord
 ```
 
 Devuelve un JSON con `ready` y qué variables están puestas. No expone secretos.
+
+`botToken` no dice sólo si la variable existe: prueba el token contra la API de
+Discord y devuelve `válido (NombreDelBot)` o el motivo del rechazo. Es la forma
+rápida de descartar el token cuando falla la deducción por canal padre o el rol
+@Staff, que son las dos cosas que dependen de él.
 
 ### 5. Registrar el comando
 
@@ -222,5 +233,6 @@ y sólo se toca uno de los dos, falla.
 | "La planilla no está compartida como Editor…" | Falta compartir la planilla con el `client_email` de la cuenta de servicio |
 | "No pude deducir división, sesión, mesa" | El hilo no sigue la convención de nombres; pasar las opciones a mano |
 | A un jugador lo rechaza siendo de la mesa | Su celda **Discord** en el roster no coincide con su usuario actual |
+| No saca la división del canal, sólo sesión y mesa del hilo | El token del bot no sirve (probalo con el `curl` de salud) o el bot no ve ese canal |
 | @Staff no tiene privilegios | Falta `DISCORD_BOT_TOKEN` (para resolver el rol por nombre) o `DISCORD_STAFF_ROLE_ID` |
 | La fecha aparece en la planilla pero no en el sitio | El sincronizador todavía no corrió; espera hasta 15 minutos |

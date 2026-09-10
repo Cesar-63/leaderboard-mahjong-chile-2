@@ -270,6 +270,12 @@ paso a paso completo en `DISCORD_BOT.md`.
   consultas a Discord. Agregarle trabajo al camino crítico se paga en timeouts.
 - La mesa sale del nombre del hilo (`A · Sesión 3 · Mesa 2`, `a-s3-m2`) o del
   canal padre; las opciones `division`/`sesion`/`mesa` son el respaldo manual.
+- **El canal padre necesita `DISCORD_BOT_TOKEN`**, porque Discord manda el
+  `parent_id` del hilo pero no su nombre. En la liga los hilos son
+  `Sesión 6 Mesa 1` dentro de `#chat-general-liga-a`: sin esa consulta no hay
+  división. El mismo token resuelve @Staff por nombre, así que un token roto
+  rompe las dos cosas — y `GET /api/discord` lo prueba contra la API en vez de
+  sólo mirar si la variable existe.
 - Sólo agendan los cuatro jugadores de esa mesa —emparejados por la columna
   **Discord** del roster— y el rol @Staff. Una mesa con paipu ya cargado sólo la
   reagenda @Staff.
