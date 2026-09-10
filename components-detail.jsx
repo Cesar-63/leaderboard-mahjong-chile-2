@@ -842,13 +842,35 @@ function HanchanReplay({ match }) {
 
 function HanchanLog({ data, div }) {
   const [filter, setFilter] = React.useState('all');
+  const [playerFilter, setPlayerFilter] = React.useState('');
+  const [countryFilter, setCountryFilter] = React.useState('');
+  const [dateFilter, setDateFilter] = React.useState('');
   const [expanded, setExpanded] = React.useState(null);
   const divData = data.divisions[div];
   const sessions = divData.sessions;
+  const allMatches = React.useMemo(() => [...divData.matches].reverse(), [divData.matches]);
+  const playerOptions = (() => {
+    const players = new Map();
+    allMatches.flatMap(match => match.players || []).forEach(player => players.set(player.name, player));
+    return [{ value: '', label: tr('calendar_all_players') }, ...[...players.values()].sort((a, b) => a.name.localeCompare(b.name)).map(player => ({ value: player.name, label: player.name, nat: player.nat }))];
+  })();
+  const countryOptions = (() => {
+    const countries = [...new Set(allMatches.flatMap(match => match.players || []).map(player => player.nat).filter(Boolean))].sort();
+    return [{ value: '', label: tr('calendar_all_countries') }, ...countries.map(nat => ({ value: nat, label: COUNTRIES[nat]?.name || nat, nat }))];
+  })();
+  const dateOptions = (() => {
+    const dates = new Map();
+    allMatches.forEach(match => dates.set(match.dateISO || match.date, match.date));
+    return [{ value: '', label: tr('history_all_dates') }, ...[...dates].map(([value, label]) => ({ value, label }))];
+  })();
   const matches = React.useMemo(() => {
-    const arr = [...divData.matches].reverse();
-    return filter === 'all' ? arr : arr.filter(m => m.sessionCode === filter);
-  }, [divData.matches, filter]);
+    return allMatches.filter(match => (filter === 'all' || match.sessionCode === filter)
+      && (!playerFilter || match.players.some(player => player.name === playerFilter))
+      && (!countryFilter || match.players.some(player => player.nat === countryFilter))
+      && (!dateFilter || (match.dateISO || match.date) === dateFilter));
+  }, [allMatches, filter, playerFilter, countryFilter, dateFilter]);
+  const filtersActive = filter !== 'all' || playerFilter || countryFilter || dateFilter;
+  const resetFilters = () => { setFilter('all'); setPlayerFilter(''); setCountryFilter(''); setDateFilter(''); };
   const sessionDate = (session) => {
     const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
     const dated = [];
@@ -891,6 +913,13 @@ function HanchanLog({ data, div }) {
         ))}
       </div>
 
+      <div className="history-filter-bar">
+        <CalendarFilterDropdown label={tr('calendar_filter_player')} icon="◉" value={playerFilter} options={playerOptions} onChange={setPlayerFilter} searchable />
+        <CalendarFilterDropdown label={tr('calendar_filter_country')} icon="◎" value={countryFilter} options={countryOptions} onChange={setCountryFilter} />
+        <CalendarFilterDropdown label={tr('history_filter_date')} icon="□" value={dateFilter} options={dateOptions} onChange={setDateFilter} />
+        {filtersActive && <button className="history-clear-filters" onClick={resetFilters}>{tr('calendar_clear_filters')}</button>}
+      </div>
+
       <div className="hanchan-list">
         {matches.map((m, idx) => (
           <div className={`hanchan-card ${expanded === m.id ? 'expanded' : ''}`} key={m.id} style={{ animation: 'rowin .35s ease both', animationDelay: `${Math.min(idx, 30) * 14}ms` }}>
@@ -920,6 +949,7 @@ function HanchanLog({ data, div }) {
             {expanded === m.id && <HanchanReplay match={m} />}
           </div>
         ))}
+        {!matches.length && <div className="history-empty"><strong>{tr('history_no_results')}</strong><span>{tr('history_no_results_detail')}</span><button onClick={resetFilters}>{tr('calendar_clear_filters')}</button></div>}
       </div>
     </div>
   );
