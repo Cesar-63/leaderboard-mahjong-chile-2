@@ -1155,7 +1155,6 @@ function AvailabilityModal({ entry, div, onClose }) {
       <div className="availability-layout">
         <div className="availability-editor">
           <div className="availability-controls">
-            <div className="availability-player-picker"><span>{tr('coord_who')}</span><div>{players.map((player, index) => <button type="button" className={playerId === player.id ? 'active' : ''} style={{ '--player-color': playerColors[index % playerColors.length] }} onClick={() => selectPlayer(player.id)} key={player.id}><i>{player.name.slice(0, 2)}</i><span><b>{player.name}</b><small><Flag nat={player.nat} size={13} /> {COUNTRIES[player.nat]?.name || player.nat}</small></span>{playerId === player.id && <em>✓</em>}</button>)}</div></div>
             <div className="availability-timezone"><span>{tr('timezone')}</span><TzSwitch value={timezone} onChange={changeTimezone} /></div>
           </div>
           <div className="availability-days">{days.map((date, index) => <button className={selectedDay === index ? 'active' : ''} key={date} onClick={() => setSelectedDay(index)}><b>{format(zonedEpoch(date, '09:00', 'America/Santiago'), { weekday: 'short' })}</b><span>{format(zonedEpoch(date, '09:00', 'America/Santiago'), { day: '2-digit', month: 'short' })}</span></button>)}</div>
