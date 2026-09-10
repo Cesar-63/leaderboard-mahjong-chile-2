@@ -1,276 +1,261 @@
-# Auto-streamer de la liga (Twitch / YouTube + audio de Discord)
+# Auto-streamer de la liga (Twitch / YouTube + Discord)
 
-Evaluación técnica, no implementación. Objetivo: transmitir **en vivo todas las
-mesas posibles** de cada sesión, con el audio de un canal de voz de Discord como
-comentario, y que todo arranque solo.
+Evaluación técnica, no implementación.
 
-**La imagen es el cliente de Mahjong Soul tal cual**: personajes, avatares,
-personalidades, animaciones. Es la decisión de partida y manda sobre el resto
-del diseño. Un tablero dibujado por nosotros no sirve para la transmisión
-principal (sí para otra cosa, ver §8).
+## 0. Decisiones ya tomadas
 
-Se prioriza el costo: la Opción A corre en un PC de la casa y cuesta $0 de
-infraestructura. La Opción B es lo mismo en AWS.
+Esto no se re-discute en el resto del documento:
 
-## 1. Lo que pide el problema
+- **La imagen es el cliente de Mahjong Soul tal cual**: personajes, avatares,
+  personalidades, animaciones. Se captura pantalla. Un tablero dibujado por
+  nosotros no sirve.
+- **Una partida a la vez.** En la práctica la liga tiende a tener una sola mesa
+  en vivo, así que **una cuenta filmando** alcanza. Nada de realización entre
+  mesas ni mosaicos.
+- **Tener varias cuentas de Mahjong Soul no es problema**, siempre que no las
+  baneen.
+- **Nada por protocolo, por ahora.** Ver §6.
+- **Canal propio de Twitch** (tipo *Liga Mahjong Chile TV*), no el canal personal
+  de nadie.
+- **La transmisión también entra a Discord** para que los comentaristas la vean,
+  y el audio de ese canal sale al aire.
 
-| Restricción | Consecuencia |
-| --- | --- |
-| La imagen es el cliente real | Captura de pantalla de un navegador con el juego corriendo. Hace falta **GPU**. |
-| 6 mesas por sesión, **todas a la vez** | Cada cliente observa **una** mesa, y cada cliente necesita **su propia cuenta**. Ese es el cuello de botella real (§4). |
-| 2 hanchan por mesa, ~2,5–3,5 h por sesión | Ventana corta y predecible: ~50–60 h de emisión por temporada entre las dos divisiones. |
-| Twitch: una señal por canal | O realización automática (cortes entre mesas), o mosaico. |
-| El audio sale de un canal de voz de Discord | Un bot que **recibe** voz, mezclado con el audio del juego. |
-| Debe arrancar solo | El disparador ya existe: fecha y hora por mesa viven en la hoja `Calendario`. |
-
-## 2. La arquitectura: cámara + cerebro
-
-El truco no es elegir entre capturar el cliente y leer el protocolo, es usar
-**los dos, cada uno para lo que sirve**:
-
-- **La cámara** — el cliente de Mahjong Soul corriendo en un Chromium, en modo
-  espectador, capturado por OBS. Es lo que se ve: personajes, avatares, emotes,
-  animación de ron. Sale al aire tal cual.
-- **El cerebro** — un proceso que habla el protocolo del juego y sabe, sin
-  dibujar nada, qué pasa en **las seis mesas a la vez**: quién declaró riichi,
-  quién va tenpai, el marcador de cada mesa, cuándo empieza y termina cada
-  hanchan. **No se emite ni un pixel suyo.** Sirve para tres cosas:
-  1. decidir a qué mesa cortar (dónde está la acción);
-  2. alimentar el overlay: marcador en vivo de las otras cinco mesas, nombres de
-     liga en vez de nicknames de Mahjong Soul, puntos de temporada y cuánto se
-     mueve la tabla con este hanchan (`data/generated.js` ya tiene todo eso);
-  3. saber cuándo hay que hacer clic: qué mesa arrancó, cuál terminó.
-
-Así la señal se ve como el juego, y además todas las mesas están presentes en
-pantalla aunque la cámara esté en una sola.
-
-Ese cerebro es barato de escribir porque el repo ya tiene la mitad: el
-`mahjong_soul_api` de `requirements.txt` expone
-`fetchCustomizedContestGameLiveList` (qué mesas juegan ahora),
-`createGameObserveAuth` + `authObserve`/`startObserve` (engancharse a una, con
-todo lo ya jugado) y el push `NotifyObserveData`; y las acciones que llegan son
-los mismos mensajes `Record*` que `parse_record` en `scripts/majsoul.py:511` ya
-decodifica contra los 72 paipus de `data/raw-paipu`.
-
-## 3. Cómo se automatiza el cliente (la parte nueva y frágil)
-
-El cliente web (`mahjongsoul.game.yo-star.com`) es un canvas WebGL: **no hay
-botones en el DOM**, así que Playwright no puede buscar "el botón de observar"
-por selector. Se hace clic por coordenadas sobre el canvas.
-
-- **Fijar el terreno:** resolución fija (1280×720 o 1920×1080), idioma fijo,
-  perfil de Chromium persistente para no repetir el login. Con eso las
-  posiciones de la lista de observación del torneo son deterministas.
-- **No hardcodear coordenadas a secas.** Un screenshot + *template matching*
-  (OpenCV) para encontrar el botón antes de clickearlo cuesta unas líneas más y
-  sobrevive a que Yostar mueva la interfaz. Sin eso, cada actualización del
-  cliente rompe la transmisión.
-- **Verificar después de clickear:** el cerebro sabe qué mesa debería estar en
-  pantalla; si a los 10 s el cliente no está observando esa partida, se
-  reintenta. Nunca dar por hecho que el clic funcionó.
-- **Sonido:** Chromium hacia un *null sink* de PulseAudio, para poder bajarle el
-  volumen al juego cuando alguien habla en Discord.
-- **Lo que hay que tapar con el overlay:** chat del observador, botones de
-  emote, y el nombre de la cuenta espectadora.
-
-Esto es lo más frágil del proyecto y no tiene vuelta: es el precio de que se
-vean los personajes.
-
-## 4. Cuántas mesas se pueden ver a la vez (el límite real)
-
-Dos límites, y el segundo es el que duele:
-
-1. **GPU.** Cada cliente es un juego 3D corriendo. Cuántas instancias aguanta
-   una máquina hay que **medirlo**, no estimarlo (fase 0). Un PC con GPU dedicada
-   moderna debería con varias a 640×360; una instancia AWS `g4dn.xlarge` (una T4)
-   probablemente con 2–4.
-2. **Cuentas.** **Mahjong Soul admite una sola sesión por cuenta** — está
-   documentado en `calendar-paipus.yml:26` y es la razón del `concurrency`
-   compartido entre los dos workflows. Un cliente observando = una sesión. Por
-   lo tanto **6 mesas capturadas al mismo tiempo = 6 cuentas de Yostar
-   simultáneas**, más una para el cerebro, más la que ya usa el pipeline. Crear
-   seis cuentas desechables para esto es trabajo, es incómodo frente al ToS de
-   Yostar, y es una cuenta más que puede quedar mal logueada justo el día de la
-   sesión.
-
-Por eso la recomendación es **no** hacer mosaico de seis clientes:
-
-| Montaje | Cuentas | GPU | Veredicto |
-| --- | --- | --- | --- |
-| **Realización con 1 cámara** | 2 (cámara + cerebro) | 1 instancia | **Recomendado.** La señal sigue la mesa caliente; las otras cinco viven en el overlay con marcador en vivo. |
-| Realización con 2 cámaras | 3 | 2 instancias | Corte instantáneo entre mesas, sin esperar a que el cliente entre a la otra. Vale la pena si la fase 0 muestra que cambiar de mesa demora >5 s. |
-| Mosaico 2×3 de clientes reales | 7 | 6 instancias | Caro en cuentas, en GPU y en riesgo. Sólo si algún día sobra máquina. |
-
-Con una cámara, "cada partida en vivo" se cumple así: **la mesa destacada se ve
-completa y las otras cinco se ven en un marcador permanente que se actualiza
-jugada a jugada**, con corte automático cuando algo pasa en otra (riichi, tenpai
-final, South-4 apretado, yakuman en camino). Es exactamente cómo se televisa un
-torneo de golf o de póker, y es el montaje más barato.
-
-Además, el cerebro puede observar las 6 mesas **con una sola cuenta** si el
-servidor permite varios `authObserve` en paralelo desde el mismo lobby — **falta
-confirmarlo en la fase 0**. Si no lo permite, el cerebro se limita a la lista de
-mesas y a los marcadores que trae `fetchCustomizedContestGameLiveList`.
-
-## 5. Opción A — PC local (la más barata: $0)
-
-Un PC con GPU dedicada —el de cualquiera que juegue— alcanza. La pieza de
-software es la misma que en AWS.
+## 1. El circuito completo
 
 ```
-Calendario (Google Sheets) ──▶ run.sh: abre la ventana de emisión
-                                  │
-        ┌─────────────────────────┼──────────────────────────┐
-        ▼                         ▼                          ▼
- cerebro.py                  Chromium + Majsoul        discord-audio.mjs
- (protocolo, 6 mesas)        (espectador, 1 mesa)      (bot de voz → PCM)
-        │                         │                          │
-        │ ws://localhost           │ captura de ventana       │
-        ▼                         ▼                          ▼
- overlay.html ─────────────▶  OBS / ffmpeg  ◀────────────────┘
-   (marcadores, nombres        x264 720p30, audio del juego
-    de liga, tabla)            atenuado bajo la voz
-                                  │
-                          rtmp ──▶ Twitch  +  YouTube (muxer tee, un solo encode)
+   Mahjong Soul                    ┌──────────────────────────────┐
+   (cuenta "cámara",               │            OBS               │
+    modo espectador) ──ventana────▶│  escena: juego + overlay     │
+                                   │  audio: juego (atenuado)     │
+   overlay.html ──browser source──▶│         + voces de Discord   │
+   (Calendario + generated.js)     └──────┬───────────┬───────────┘
+                                          │           │
+                                    rtmp  │           │  Go Live (cuenta normal)
+                                          ▼           ▼
+                             Twitch  +  YouTube    Discord #comentarios
+                                                        │  (los comentaristas
+                                                        │   ven la señal acá)
+                                                        │
+                             discord-audio.mjs ◀── voces del canal
+                                    │
+                                    └──PCM──▶ de vuelta a OBS
 ```
 
-**A0 — asistido, para empezar (1 día).** El comentarista abre el cliente y OBS
-en su PC, con el overlay como *browser source* y el audio de escritorio del
-Discord que ya tiene abierto. Sin bot, sin automatización de clics. Con esto se
-transmite la primera sesión **este mes** y se aprende qué hace falta de verdad.
+Dos direcciones distintas y conviene no confundirlas:
 
-**A1 — automático.** `run.sh` levanta las tres piezas, disparado por un
-systemd-timer que lee el `Calendario` con `scripts/gsheets.py`.
+- **Ida (video):** la máquina entra al canal de voz y hace **Go Live** con la
+  señal. Los comentaristas ven exactamente los mismos pixeles que salen al aire,
+  con menos de un segundo de atraso. Esto es lo que mantiene el comentario
+  pegado a la imagen.
+- **Vuelta (audio):** un bot escucha las voces del canal y las devuelve a OBS
+  como pista de audio.
 
-**Costos A:** $0 de servicios. La subida de una señal 720p30 son ~3 Mbps; 1080p30
-~6 Mbps. Cualquier fibra chilena sirve.
+**El eco.** Si la ida llevara el audio del juego, el bot lo volvería a capturar y
+saldría duplicado y desfasado. Solución: **el Go Live va sin audio de juego**
+(sólo video), y el sonido del juego lo agrega OBS localmente. Los comentaristas
+no escuchan los efectos del juego por Discord; si les molesta, que abran su
+propio cliente como espectadores, que ya viene con el mismo retardo de 5 min.
 
-**Riesgo A:** depende de que ese PC esté encendido, con luz y con internet.
+## 2. Ida: por qué una cuenta normal y no un bot
 
-## 6. Opción B — AWS
+**Un bot de Discord no puede hacer Go Live.** La API oficial le permite a un bot
+*enviar y recibir audio* en un canal de voz, pero **no compartir pantalla ni
+enviar video**: eso no está expuesto para cuentas de bot. Las bibliotecas que lo
+logran lo hacen con una cuenta de usuario y por caminos no soportados.
 
-Ahora la máquina necesita GPU, así que el costo sube respecto de lo que costaría
-un tablero dibujado:
+Entonces, como dijiste, **cuenta normal**. Dos maneras:
 
-- **Instancia:** `g4dn.xlarge` (1× T4, 4 vCPU) ≈ **US$0,526/h** on-demand en
-  `us-east-1`; spot suele andar en US$0,16–0,21/h. Para dos cámaras,
-  `g4dn.2xlarge` ≈ US$0,75/h. **Precios de referencia, verificar**: São Paulo es
-  bastante más caro y conviene comparar con la latencia al ingest de Twitch.
-- **Encendido/apagado:** EventBridge Scheduler → Lambda → `StartInstances` /
-  `StopInstances` según el `Calendario`. Apagada no cobra cómputo.
-- **Cuidado:** las instancias G necesitan **aumento de cuota de vCPU** en la
-  cuenta, y AWS se puede demorar días en aprobarlo. Pedirlo antes, no la semana
-  de la primera transmisión.
+- **Manual (recomendado para empezar):** la cuenta de la liga queda logueada en
+  el Discord de escritorio de la máquina, y alguien hace clic en *Go Live* una
+  vez al empezar la sesión. Cero automatización, cero zona gris de ToS, dos
+  segundos de trabajo.
+- **Automático:** `xdotool` sobre la ventana del Discord de escritorio hace ese
+  clic solo cuando arranca la ventana de emisión. Funciona, pero automatizar una
+  cuenta de usuario es zona gris del ToS de Discord y se rompe cuando cambian el
+  layout de la app.
 
-| Escenario (60 h de emisión por temporada) | Cómputo | Egreso | Disco | Total temporada |
-| --- | --- | --- | --- | --- |
-| 1 cámara, `g4dn.xlarge` on-demand | ≈ **$32** | ~95 GB, primeros 100 GB/mes gratis ≈ **$0** | 50 GB gp3 × 4 meses ≈ **$16** | **≈ $48** |
-| 1 cámara, spot | ≈ **$12** | ≈ **$0** | ≈ **$16** | **≈ $28** |
-| 2 cámaras, `g4dn.2xlarge` on-demand | ≈ **$45** | ≈ **$0** | ≈ **$16** | **≈ $61** |
+Sugerencia: manual la primera temporada. Es el único clic humano de todo el
+circuito y no vale la pena arriesgar la cuenta por ahorrárselo.
 
-El disco pesa porque una AMI con driver NVIDIA + Chromium + perfil no baja de
-~50 GB y se paga todo el mes, no sólo las horas de emisión. Se puede recortar
-con snapshot y recrear la instancia cada sesión, a cambio de más piezas móviles.
+Detalle de calidad: sin Nitro, el Go Live llega hasta 720p30, que sobra para
+comentar. Con Nitro sube a 1080p60.
 
-**Descartados:**
-
-- *AWS Elemental MediaLive* — cobra por canal-hora (orden de US$1–3/h): entre 10
-  y 30× hacer lo mismo con ffmpeg en la EC2 que ya está encendida.
-- *Instancia sin GPU* — el cliente sobre software rendering (SwiftShader) va a
-  ir a tirones. Se puede medir en la fase 0, pero no contar con eso.
-- *GitHub Actions* — 6 h de tope, sin red apta para RTMP, y sería abuso del
-  servicio.
-
-Ojo con lo que muestra la tabla: **el requisito de GPU es lo que hace que AWS
-cueste 5–7× lo que costaría el camino sin captura**. Si algún día molesta,
-comparar con un VPS con GPU de otro proveedor, que para esta carga suele ser
-bastante más barato que AWS.
-
-## 7. Audio de Discord
+## 3. Vuelta: el bot de voz
 
 - Bot con `@discordjs/voice` + `prism-media`: entra al canal, se suscribe a cada
-  hablante, decodifica Opus → PCM 48 kHz estéreo, mezcla y lo entrega a ffmpeg
-  por pipe (`-f s16le -ar 48000 -ac 2 -i pipe:3`).
-- **Bot, nunca cuenta de usuario.** Automatizar una cuenta personal (selfbot)
-  viola el ToS de Discord. La recepción de voz por bot no está documentada pero
-  la biblioteca la soporta y es práctica corriente.
-- **Avisar que se graba**, con mensaje fijo en el canal y aviso del bot al entrar.
-- **Ducking:** el audio del juego baja ~12 dB cuando hay voz. En OBS es un filtro
-  de compresor con sidechain; en ffmpeg, `sidechaincompress`.
-- **Sincronía:** la vista de espectador de Mahjong Soul ya llega con **5 minutos
-  de retardo** (por defecto del juego). Los comentaristas ven lo mismo que la
-  cámara, con el mismo atraso, así que el comentario calza solo. Nadie debe
-  mirar la partida por un camino sin ese retardo.
+  hablante, decodifica Opus → PCM 48 kHz estéreo, mezcla y lo entrega a OBS o a
+  ffmpeg por pipe (`-f s16le -ar 48000 -ac 2 -i pipe:3`).
+- Acá **sí corresponde un bot** (recibir audio es lo único que la API le permite
+  y es exactamente lo que necesitamos), con `GuildVoiceStates` en los intents.
+- **Avisar que se graba:** mensaje fijo en el canal y aviso del bot al entrar.
+- **Ducking:** el audio del juego baja ~12 dB cuando alguien habla. En OBS es un
+  compresor con sidechain; en ffmpeg, `sidechaincompress`.
 - El roster ya trae el Discord de cada jugador (`PRIVATE_PLAYER_FIELDS`): sirve
   para rotular quién habla **con nombre de liga**. El handle no se publica nunca,
   igual que en el bot de `/agendar`.
 
-## 8. Guardado para después: modo análisis
+## 4. La cuenta de Twitch (y YouTube de yapa)
 
-El cerebro por protocolo puede, además, dibujar la mesa desde cero: `tile-art.js`
-ya tiene las 37 caras en SVG (FluffyStuff, CC0) y `tiles.jsx` ya las pinta. Eso
-**no** reemplaza la transmisión —no tiene los personajes— pero da una vista
-sobria y limpia que sirve para:
+- **Emitir es sólo empujar RTMP a la *stream key*** del canal. No hace falta API
+  ni OAuth para salir al aire. La key va en un `.env` fuera de git — el repo es
+  público.
+- **Título y categoría automáticos, eso sí, valen la pena:** un `PATCH` a
+  *Modify Channel Information* de la API de Twitch deja el canal como
+  "División A · Sesión 3 · Mesa 2" y la categoría en *Mahjong Soul* antes de
+  arrancar. Los datos salen del `Calendario`, que ya los tiene.
+- **YouTube sale casi gratis:** el muxer `tee` de ffmpeg manda el **mismo
+  encode** a los dos destinos, sin costo extra de CPU. YouTube tiene *stream key*
+  persistente, así que tampoco necesita API.
+- **Resolución:** sin partner, Twitch no garantiza transcodes; quien tenga mala
+  conexión se queda sin opción de calidad. 720p60 a ~4,5 Mbps es más amable que
+  1080p.
+- **El VOD queda solo** si se activan las *Past Broadcasts* del canal. Vale la
+  pena: sirve para las cápsulas de la web.
 
-- **segmentos de análisis**: congelar una mano, mostrar las cuatro manos, los
-  descartes y el cálculo de puntos, sin depender de que el cliente esté en la
-  posición correcta;
-- **una señal secundaria** en YouTube con las seis mesas en modo tablero, para
-  quien quiera seguir una mesa que la cámara no está mostrando;
-- **piezas para redes** después de la sesión.
+## 5. La máquina y la automatización del cliente
 
-Es trabajo aparte y no bloquea nada de lo anterior. Anotado para no perderlo.
+**Opción A — PC local con GPU dedicada: $0.** Es la recomendación. El cliente es
+un juego 3D, así que GPU hay que tener; el PC de cualquiera que juegue alcanza y
+sobra para una sola instancia.
 
-## 9. Riesgos y decisiones abiertas
+**Opción B — AWS,** si molesta depender de un PC encendido: `g4dn.xlarge` (1× T4)
+≈ US$0,526/h on-demand, ~US$0,16–0,21/h en spot, encendida sólo durante la
+ventana de sesión con EventBridge → Lambda → `StartInstances`/`StopInstances`.
+Con ~60 h de emisión por temporada: **≈US$48** on-demand o **≈US$28** en spot,
+incluyendo ~US$16 de disco (una AMI con driver NVIDIA no baja de 50 GB y se paga
+todo el mes). El egreso cae dentro de los 100 GB/mes gratis. **Pedir el aumento
+de cuota de vCPU para instancias G con anticipación**: AWS se demora días.
+Descartado MediaLive: cobra por canal-hora, 10–30× más caro que ffmpeg en la
+misma instancia.
+
+**Automatizar los clics.** El cliente web es un canvas WebGL: **no hay botones en
+el DOM**, así que hay que clickear por coordenadas sobre la ventana.
+
+- Resolución fija, idioma fijo y perfil persistente para no repetir el login.
+- **Template matching (OpenCV) sobre un screenshot** para encontrar el botón de
+  observar antes de clickear, en vez de coordenadas quemadas. Sobrevive a que
+  Yostar mueva la interfaz; sin eso, cada actualización del cliente rompe la
+  transmisión.
+- **Verificar y reintentar:** si a los 10 s no está observando, se repite. Nunca
+  dar por hecho que el clic funcionó.
+- **Qué mesa es:** el `Calendario` ya sabe quién juega a qué hora, y con eso se
+  arma el overlay. Como refinamiento, un OCR (`tesseract`) sobre la lista de
+  observación permite confirmar contra el roster que la mesa en pantalla es la
+  esperada.
+- **Tapar con el overlay:** chat del observador, botones de emote y el nombre de
+  la cuenta espectadora.
+
+Esta es la parte frágil del proyecto y no tiene vuelta: es el precio de que se
+vean los personajes.
+
+**Si dos mesas se solapan** —que pasa poco— hay dos caminos: una segunda cuenta
+cámara con su propia instancia, o una regla simple de prioridad (la que empezó
+antes) y la otra queda sólo en paipu. Con una sola cuenta, prioridad; ya que las
+cuentas no son problema, la segunda cámara es una decisión de máquina, no de
+diseño.
+
+## 6. Cuentas de Mahjong Soul y riesgo de baneo
+
+Tu preocupación es la correcta, aunque el motivo probablemente no sea el ancho de
+banda: **una conexión por protocolo gasta muchísimo menos que el propio cliente**
+(son unos pocos KB por segundo contra un juego 3D descargando assets). Lo que
+efectivamente puede molestar es que es un **cliente no oficial**, y eso ya lo
+sabemos de primera mano: el pipeline se comió un `540` de `fetchGameRecord` por
+pedir 24 paipus seguidos, y por eso hoy corre a `PAIPU_REQUEST_DELAY_SECONDS =
+20` y `MAX_RECORDS_PER_RUN = 3`.
+
+Decisión, coherente con eso: **la transmisión no toca el protocolo**. La cuenta
+cámara hace exactamente lo que hace cualquier espectador —abrir el cliente y
+mirar—, que es el uso más normal que existe. La exposición al protocolo se queda
+donde ya está: el pipeline de datos, con su cuenta, su ritmo lento y su
+`concurrency` compartido.
+
+Lo único a cuidar con la cuenta cámara: que sea una cuenta de la organización con
+su correo, no una creada en serie, y que no se use para nada más.
+
+## 7. Anotado: Mahjong Soul por Steam
+
+No es prioridad, pero para la cuenta cámara **puede ser mejor que el navegador**,
+y conviene medirlo en la fase 0 junto con la opción web:
+
+**A favor**
+
+- Ventana nativa: la captura de OBS es más limpia y estable que capturar una
+  pestaña, y no hay riesgo de que el navegador suspenda la pestaña en segundo
+  plano ni de que una actualización de Chromium cambie el comportamiento.
+- Suele rendir mejor y más parejo que el WebGL, que es justo lo que se nota en
+  una transmisión.
+- Menos piezas: sin perfil de Chromium, sin flags, sin cookies que expiren.
+
+**En contra**
+
+- Es una app de Windows. En Linux hay que pasar por Proton/Wine —factible pero
+  una capa más de cosas que se rompen—, y en AWS obligaría a una instancia
+  Windows, con licencia y una imagen más pesada.
+- Steam se auto-actualiza y a veces abre ventanas encima justo cuando no
+  corresponde. Hay que dejarlo en modo silencioso y sin *overlay*.
+- **Los clics siguen siendo por coordenadas**: cambiar de navegador a app nativa
+  no arregla la parte frágil, sólo la mueve.
+- **Verificar antes de comprometerse:** cómo se relaciona el login de Steam con
+  una cuenta Yostar existente (si se puede vincular la cuenta de la liga o si la
+  versión de Steam crea la suya). Ese detalle decide si la cuenta cámara puede
+  ser la misma en los dos lados o si son dos cuentas distintas.
+
+**Veredicto provisional:** para un PC local dedicado, la versión de Steam es
+probablemente la mejor opción para la cámara. Para AWS, el navegador. Se prueban
+las dos en la fase 0 y gana la que dé más fps y menos sorpresas.
+
+## 8. Guardado para bien a futuro
+
+Nada de esto se toca **ni esta temporada ni la próxima**. Queda anotado para no
+perderlo:
+
+- **Modo sobrio / tablero propio.** `tile-art.js` ya tiene las 37 caras en SVG
+  (FluffyStuff, CC0) y `tiles.jsx` ya las pinta: se podría dibujar la mesa desde
+  cero para segmentos de análisis, para una señal secundaria o para piezas de
+  redes. No reemplaza la transmisión: no tiene los personajes.
+- **Cerebro por protocolo.** Si algún día hay varias mesas simultáneas, el
+  protocolo (`fetchCustomizedContestGameLiveList`, `createGameObserveAuth`,
+  `authObserve`/`startObserve`, y los mismos mensajes `Record*` que
+  `scripts/majsoul.py:511` ya decodifica) permitiría saber dónde está la acción y
+  cortar automáticamente, sin emitir un pixel suyo. Hoy no hace falta y agrega
+  riesgo de cuenta.
+
+## 9. Riesgos
 
 1. **Actualizaciones del cliente rompen los clics.** Mitigado con template
-   matching y verificación posterior, no eliminado. Hay que asumir que alguna
-   sesión va a requerir arreglo manual.
-2. **Cuentas espectadoras.** Una por cámara, más una para el cerebro. Ver §4.
-   Conviene que sean cuentas de staff con consentimiento, no cuentas creadas en
-   serie para esto.
-3. **Choque con el pipeline.** El observador del cerebro conectado 3 h sería
-   expulsado por `sync-data.yml`, que corre cada 15 min con la cuenta del
-   pipeline. Cuenta distinta (ya contemplado) o pausar la sincronización durante
-   la sesión.
-4. **`observer_switch` de las salas A y B**: confirmar que los torneos permiten
-   observadores y con qué nivel (si muestra o no las manos ocultas).
-5. **Ritmo de peticiones.** El repo ya se quemó con el 540 de `fetchGameRecord`
-   (`PAIPU_REQUEST_DELAY_SECONDS = 20`). El *live list* es barato, pero conviene
-   45–60 s entre sondeos y el mismo enfriamiento ante un 540.
-6. **Secretos.** Claves RTMP, token del bot y credenciales de las cuentas
-   espectadoras **no pueden entrar al repo**: es público y `data/generated.js` se
-   sirve tal cual. `.env` local fuera de git, o SSM Parameter Store en AWS.
-7. **Suplentes y bots.** Un asiento puede ser un suplente ajeno al torneo: el
-   overlay debe caer a "Suplente" sin publicar identidad, como el resto del
-   pipeline.
-8. **Emparejar la partida con la mesa del calendario** ya está resuelto:
-   `match_games` en `scripts/fill_calendar_paipus.py` asocia por coincidencia de
-   ≥3 de 4 jugadores. Se reutiliza para rotular "A · Sesión 3 · Mesa 2".
-9. **Aviso** de que es una transmisión de la liga, no oficial de Yostar.
+   matching y verificación, no eliminado. Alguna sesión va a requerir arreglo a
+   mano.
+2. **Secretos.** Stream key de Twitch/YouTube, token del bot y credenciales de la
+   cuenta cámara **no pueden entrar al repo**: es público y `data/generated.js`
+   se sirve tal cual. `.env` fuera de git, o SSM Parameter Store en AWS.
+3. **Sincronía comentario ↔ imagen.** El Go Live la resuelve. Lo que la rompe es
+   que un comentarista mire la partida por un camino sin el retardo de 5 min.
+4. **Suplentes.** Un asiento puede ser un suplente ajeno al torneo: el overlay
+   debe caer a "Suplente" sin publicar identidad, como el resto del pipeline.
+5. **Aviso** de que es una transmisión de la liga, no oficial de Yostar.
 
 ## 10. Plan por fases
 
 | Fase | Qué entrega | Esfuerzo |
 | --- | --- | --- |
-| 0 | **Medición, antes de escribir nada serio.** Cuántos clientes aguanta la máquina; cuánto demora entrar a observar una mesa; si el cerebro puede observar 6 mesas con una cuenta; si el retardo de 5 min aplica al camino de websocket. | 1–2 días |
-| 1 | **A0 al aire:** OBS manual + overlay estático. Primera sesión transmitida, sin automatización. | 1 día |
-| 2 | Cerebro: lista de mesas en vivo + marcadores + nombres de liga → overlay dinámico. | 3–4 días |
-| 3 | Automatización del cliente: entrar a observar por template matching, con verificación y reintento. | 3–5 días |
-| 4 | Realizador: heurística de mesa caliente y corte automático. | 2 días |
-| 5 | Bot de voz de Discord + ducking. | 2–3 días |
-| 6 | Orquestación por `Calendario` y apagado automático. | 2 días |
-| 7 | (Opcional) Mover el conjunto a EC2 con GPU y encendido programado. | 1–2 días |
+| 0 | **Medición.** Web vs Steam en la máquina real: fps, estabilidad, cuánto demora entrar a observar. Confirmar cómo se vincula la cuenta en Steam. | 1–2 días |
+| 1 | **Primera sesión al aire, manual.** Cliente + OBS + Go Live a mano, overlay estático con la mesa del día. Se transmite este mes y se aprende qué falta. | 1 día |
+| 2 | Overlay dinámico desde `Calendario` + `data/generated.js`: mesa, jugadores con nombre de liga, bandera, puntos y posición. | 2–3 días |
+| 3 | Bot de voz de Discord + ducking. | 2–3 días |
+| 4 | Automatizar el cliente: entrar a observar por template matching, con verificación y reintento. | 3–5 días |
+| 5 | Orquestación por `Calendario`: encender, fijar título y categoría en Twitch, emitir, apagar. | 2 días |
+| 6 | (Opcional) Go Live automático con `xdotool`, y/o mover todo a EC2 con GPU. | 1–2 días |
 
 ## 11. Archivos que tocaría
 
 ```
 stream/
-├── cerebro.py          # protocolo: mesas en vivo, marcadores, eventos (reusa majsoul.py)
-├── camara.py           # Playwright + template matching sobre el canvas del cliente
-├── overlay.html        # marcadores, nombres de liga, tabla (browser source de OBS)
-├── overlay.jsx         # usa generated.js; tiles.jsx sólo si se hace el modo análisis
-├── discord-audio.mjs   # bot de voz → PCM por pipe
+├── camara.py           # abre el cliente y entra a observar (template matching)
+├── overlay.html        # browser source de OBS
+├── overlay.jsx         # mesa, jugadores, puntos (usa generated.js)
+├── discord-audio.mjs   # bot de voz → PCM
+├── twitch.mjs          # título y categoría antes de emitir
 ├── schedule.py         # ventana de emisión desde la hoja Calendario (gsheets.py)
 └── run.sh              # levanta todo y arma la línea de ffmpeg
 ```
