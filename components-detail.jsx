@@ -1171,6 +1171,49 @@ function CalendarView({ data, div = 'A' }) {
   );
 }
 
+function PredictionsView({ data, div = 'A' }) {
+  const STORAGE_KEY = 'mjc-virtual-predictions-v1';
+  const stakes = [25, 50, 100, 250];
+  const session = currentSessionNumber(data);
+  const fixtures = data.calendar.filter(entry => entry.div === div && (entry.session || 0) === session && (entry.players || []).filter(player => player.name).length === 4);
+  const [wallet, setWallet] = React.useState(() => { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { balance: 1000, bets: [] }; } catch { return { balance: 1000, bets: [] }; } });
+  const [drafts, setDrafts] = React.useState({});
+  const [activeHanchan, setActiveHanchan] = React.useState({});
+  const [notice, setNotice] = React.useState('');
+  React.useEffect(() => { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(wallet)); } catch { /* sin persistencia */ } }, [wallet]);
+  React.useEffect(() => { if (!notice) return undefined; const timer = setTimeout(() => setNotice(''), 2200); return () => clearTimeout(timer); }, [notice]);
+  const tableKey = entry => `${div}-${entry.session}-${entry.table}`;
+  const fixtureKey = (entry, hanchan) => `${tableKey(entry)}-H${hanchan}`;
+  const fullPlayer = item => data.divisions[div].players.find(player => player.name === item.name) || item;
+  const oddsFor = entry => {
+    const players = entry.players.map(fullPlayer);
+    const weights = players.map(player => 1 / Math.sqrt(Math.max(1, player.rank || 24)));
+    const total = weights.reduce((sum, value) => sum + value, 0);
+    return Object.fromEntries(players.map((player, index) => [player.id || player.name, Math.max(1.25, Math.min(7.5, total / weights[index])).toFixed(2)]));
+  };
+  const existingFor = (entry, hanchan) => wallet.bets.find(bet => bet.fixture === fixtureKey(entry, hanchan));
+  const choose = (entry, hanchan, player) => setDrafts(current => ({ ...current, [fixtureKey(entry, hanchan)]: { playerId: player.id, player: player.name, stake: current[fixtureKey(entry, hanchan)]?.stake || 50 } }));
+  const setStake = (entry, hanchan, stake) => setDrafts(current => ({ ...current, [fixtureKey(entry, hanchan)]: { ...(current[fixtureKey(entry, hanchan)] || {}), stake } }));
+  const place = (entry, hanchan) => {
+    const key = fixtureKey(entry, hanchan), draft = drafts[key];
+    if (!draft?.playerId) return setNotice(tr('predict_choose_first'));
+    const old = existingFor(entry, hanchan), available = wallet.balance + (old?.stake || 0);
+    if (draft.stake > available) return setNotice(tr('predict_insufficient'));
+    const odds = Number(oddsFor(entry)[draft.playerId]);
+    const bet = { fixture: key, div, session: entry.session, table: entry.table, hanchan, playerId: draft.playerId, player: draft.player, stake: draft.stake, odds, potential: Math.round(draft.stake * odds), placedAt: Date.now() };
+    setWallet(current => ({ balance: current.balance + (old?.stake || 0) - draft.stake, bets: [...current.bets.filter(item => item.fixture !== key), bet] }));
+    setNotice(tr(old ? 'predict_updated' : 'predict_placed'));
+  };
+  const cancel = bet => { setWallet(current => ({ balance: current.balance + bet.stake, bets: current.bets.filter(item => item.fixture !== bet.fixture) })); setNotice(tr('predict_cancelled')); };
+  const activeBets = wallet.bets.filter(bet => bet.div === div && bet.session === session);
+  return <div className="tab-panel prediction-view">
+    <div className="section-head"><div className="h-left"><span className="num">07 / GAME</span><h1>{tr('predict_title')}</h1><span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>予想</span></div><div className="prediction-balance"><span>{tr('predict_balance')}</span><b>◈ {wallet.balance.toLocaleString()}</b></div></div>
+    <section className={`prediction-hero div-${div}`}><div><span>{tr('predict_kicker')}</span><h2>{tr('predict_hero')}</h2><p>{tr('predict_intro')}</p></div><div className="prediction-rules"><span><b>1.000</b>{tr('predict_start')}</span><span><b>0</b>{tr('predict_real_value')}</span><span><b>S{session}</b>{tr('predict_open_round')}</span></div></section>
+    <div className="prediction-layout"><main className="prediction-fixtures">{fixtures.map(entry => { const hanchan = activeHanchan[tableKey(entry)] || 1, key = fixtureKey(entry, hanchan), odds = oddsFor(entry), saved = existingFor(entry, hanchan), draft = drafts[key] || (saved && { playerId: saved.playerId, player: saved.player, stake: saved.stake }) || { stake: 50 }; return <article className="prediction-card" key={tableKey(entry)}><header><div><span>{tr('predict_next_table')}</span><h3>{entry.round} · {tr('mesa', { n: entry.table })}</h3><p>{entry.date} · {entry.time}</p></div>{saved && <b>{tr('predict_ticket_active')}</b>}</header><div className="prediction-hanchan-switch"><span>{tr('predict_choose_hanchan')}</span>{[1,2].map(value => { const ticket = existingFor(entry, value); return <button className={hanchan === value ? 'active' : ''} onClick={() => setActiveHanchan(current => ({ ...current, [tableKey(entry)]: value }))} key={value}>H{value}{ticket && <i>✓</i>}</button>; })}</div><div className="prediction-runners">{entry.players.map(item => { const player = fullPlayer(item), selected = draft.playerId === player.id; return <button className={selected ? 'selected' : ''} onClick={() => choose(entry, hanchan, player)} key={player.id}><i>{player.rank ? `#${player.rank}` : '—'}</i><span><Flag nat={player.nat} size={16}/><strong>{player.name}</strong><small>{fmtPts(player.points || 0)} · {tr('predict_form', { n: (player.history || []).slice(-3).filter(value => value > 0).length })}</small></span><b>×{odds[player.id]}</b></button>; })}</div><footer><div className="prediction-stakes"><span>{tr('predict_stake')}</span>{stakes.map(stake => <button className={draft.stake === stake ? 'active' : ''} disabled={stake > wallet.balance + (saved?.stake || 0)} onClick={() => setStake(entry, hanchan, stake)} key={stake}>◈ {stake}</button>)}</div><div className="prediction-return"><span>{tr('predict_potential')}</span><b>◈ {draft.playerId ? Math.round(draft.stake * Number(odds[draft.playerId])) : '—'}</b></div><button className="prediction-place" onClick={() => place(entry, hanchan)}>{saved ? tr('predict_update') : tr('predict_place')}</button></footer></article>; })}{!fixtures.length && <div className="calendar-empty"><strong>{tr('predict_no_fixtures')}</strong></div>}</main><aside className="prediction-slip"><span>{tr('predict_my_ticket')}</span><h2>{activeBets.length ? tr('predict_active_count', { n: activeBets.length }) : tr('predict_empty')}</h2><div>{activeBets.map(bet => <article key={bet.fixture}><header><span>DIV {bet.div} · S{bet.session} · M{bet.table} · H{bet.hanchan || 1}</span><button onClick={() => cancel(bet)}>×</button></header><strong>{bet.player}</strong><p>◈ {bet.stake} <span>×{bet.odds}</span></p><footer><span>{tr('predict_potential')}</span><b>◈ {bet.potential}</b></footer></article>)}</div><section><span>{tr('predict_committed')}</span><b>◈ {activeBets.reduce((sum, bet) => sum + bet.stake, 0)}</b><span>{tr('predict_possible_total')}</span><strong>◈ {activeBets.reduce((sum, bet) => sum + bet.potential, 0)}</strong></section><p>{tr('predict_disclaimer')}</p></aside></div>
+    {notice && <div className="prediction-toast">{notice}</div>}
+  </div>;
+}
+
 function HallOfFame({ data, div = 'A' }) {
   const division = data.divisions[div];
   const recordKeys = new Set(['leader', 'wins', 'defense', 'riichi', 'consistency', 'recent']);
@@ -1220,4 +1263,4 @@ function HallOfFame({ data, div = 'A' }) {
   );
 }
 
-Object.assign(window, { PlayerDetail, Comparator, HanchanLog, CalendarView, HallOfFame, IORMCView, metricsToRadar, PlayerSelect, accentFor, placementSegments, metricScale });
+Object.assign(window, { PlayerDetail, Comparator, HanchanLog, CalendarView, PredictionsView, HallOfFame, IORMCView, metricsToRadar, PlayerSelect, accentFor, placementSegments, metricScale });
