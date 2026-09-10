@@ -1094,12 +1094,12 @@ function AvailabilityModal({ entry, div, onClose }) {
   const [notice, setNotice] = React.useState('');
   const [timezone, setTimezone] = React.useState(window.TZ);
   const days = React.useMemo(() => {
-    const todayParts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', { timeZone: timezone, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date()).map(part => [part.type, part.value]));
+    const todayParts = Object.fromEntries(new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Santiago', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date()).map(part => [part.type, part.value]));
     const base = new Date(Date.UTC(Number(todayParts.year), Number(todayParts.month) - 1, Number(todayParts.day)));
     return Array.from({ length: 14 }, (_, offset) => new Date(base.getTime() + (offset + 1) * 86400000).toISOString().slice(0, 10));
-  }, [timezone]);
+  }, []);
   const times = React.useMemo(() => Array.from({ length: 30 }, (_, index) => { const minutes = 9 * 60 + index * 30; return `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`; }), []);
-  const slots = React.useMemo(() => days.flatMap(date => times.map(time => zonedEpoch(date, time, timezone))), [days, times, timezone]);
+  const slots = React.useMemo(() => days.flatMap(date => times.map(time => zonedEpoch(date, time, 'America/Santiago'))), [days, times]);
   const mine = responses.find(response => response.playerId === playerId)?.slots || [];
   const counts = React.useMemo(() => Object.fromEntries(slots.map(slot => [slot, responses.filter(response => response.slots.includes(slot)).length])), [responses, slots]);
   const best = [...slots].filter(slot => counts[slot] > 0).sort((a, b) => counts[b] - counts[a] || a - b).slice(0, 3);
@@ -1147,7 +1147,7 @@ function AvailabilityModal({ entry, div, onClose }) {
     catch { const area = document.createElement('textarea'); area.value = value; document.body.appendChild(area); area.select(); document.execCommand('copy'); area.remove(); }
     setNotice(tr('coord_copied'));
   };
-  const visibleSlots = times.map(time => zonedEpoch(days[selectedDay], time, timezone));
+  const visibleSlots = times.map(time => zonedEpoch(days[selectedDay], time, 'America/Santiago'));
   return <div className="cal-modal-backdrop" onClick={onClose}>
     <section className="availability-modal" role="dialog" aria-modal="true" aria-labelledby="coord-title" onClick={event => event.stopPropagation()} style={{ '--calendar-accent': accentFor(div) }}>
       <header className="availability-head"><div><span>{entry.round} · {tr('mesa', { n: entry.table })}</span><h2 id="coord-title">{tr('coord_title')}</h2><p>{tr('coord_intro')}</p></div><button onClick={onClose} aria-label={tr('cerrar')}>✕</button></header>
@@ -1158,8 +1158,8 @@ function AvailabilityModal({ entry, div, onClose }) {
             <div className="availability-player-picker"><span>{tr('coord_who')}</span><div>{players.map((player, index) => <button type="button" className={playerId === player.id ? 'active' : ''} style={{ '--player-color': playerColors[index % playerColors.length] }} onClick={() => selectPlayer(player.id)} key={player.id}><i>{player.name.slice(0, 2)}</i><span><b>{player.name}</b><small><Flag nat={player.nat} size={13} /> {COUNTRIES[player.nat]?.name || player.nat}</small></span>{playerId === player.id && <em>✓</em>}</button>)}</div></div>
             <div className="availability-timezone"><span>{tr('timezone')}</span><TzSwitch value={timezone} onChange={changeTimezone} /></div>
           </div>
-          <div className="availability-days">{days.map((date, index) => <button className={selectedDay === index ? 'active' : ''} key={date} onClick={() => setSelectedDay(index)}><b>{format(zonedEpoch(date, '12:00', timezone), { weekday: 'short' })}</b><span>{format(zonedEpoch(date, '12:00', timezone), { day: '2-digit', month: 'short' })}</span></button>)}</div>
-          <div className="availability-slots">{visibleSlots.map(slot => <button className={mine.includes(slot) ? 'selected' : ''} key={slot} onClick={() => toggle(slot)}><strong>{format(slot, { hour: '2-digit', minute: '2-digit' })}</strong><span>{counts[slot]}/{players.length} {tr('coord_available')}</span></button>)}</div>
+          <div className="availability-days">{days.map((date, index) => <button className={selectedDay === index ? 'active' : ''} key={date} onClick={() => setSelectedDay(index)}><b>{format(zonedEpoch(date, '09:00', 'America/Santiago'), { weekday: 'short' })}</b><span>{format(zonedEpoch(date, '09:00', 'America/Santiago'), { day: '2-digit', month: 'short' })}</span></button>)}</div>
+          <div className="availability-slots">{visibleSlots.map(slot => <button className={mine.includes(slot) ? 'selected' : ''} key={slot} onClick={() => toggle(slot)}><em>{format(slot, { weekday: 'short', day: '2-digit' })}</em><strong>{format(slot, { hour: '2-digit', minute: '2-digit' })}</strong><span>{counts[slot]}/{players.length} {tr('coord_available')}</span></button>)}</div>
           <div className="availability-actions"><span>{tr('timezone')}: <b>{timezone}</b></span><button className="coord-save" disabled={saving || !playerId} onClick={save}>{saving ? tr('coord_saving') : tr('coord_save')}</button></div>
         </div>
         <aside className="availability-best"><span>{tr('coord_best_title')}</span><h3>{best.length ? tr('coord_best_found') : tr('coord_best_empty')}</h3>{best.map(slot => <div className="best-slot" key={slot}><div><strong>{format(slot, { weekday: 'long', day: 'numeric', month: 'short' })}</strong><b>{format(slot, { hour: '2-digit', minute: '2-digit' })}</b><small>{counts[slot]}/{players.length} {tr('coord_players')}</small></div><button onClick={() => copy(slot)}>{tr('coord_copy_discord')}</button></div>)}<p>{tr('coord_staff_note')}</p></aside>
