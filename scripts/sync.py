@@ -245,7 +245,8 @@ def merge_paipus(submissions: list[dict[str, Any]], histories: dict[str, dict[st
             parsed_games[submission["key"]] = {
                 "uuid": uuid, "url": submission["url"], "sha256": parsed.sha256,
                 "finalScoresBySeat": parsed.final_scores, "seatStats": parsed.seat_stats,
-                "players": parsed.players, "hands": parsed.hands, "status": state,
+                "players": parsed.players, "rounds": parsed.rounds,
+                "hands": parsed.hands, "status": state,
             }
             status.append({"key": submission["key"], "cell": submission["cell"], "uuid": uuid, "status": state, "message": message})
         except PaipuAuthRequired as exc:
@@ -448,6 +449,30 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
                 "table": table, "players": match_players,
                 "paipuUrl": submission["url"] if submission else None,
                 "verified": source == "paipu", "source": source,
+                "rounds": [
+                    {
+                        **round_item,
+                        "outcomes": [
+                            {
+                                **outcome,
+                                "winner": (seat_map or {}).get(outcome.get("winnerSeat"), {}).get("name"),
+                                "loser": (seat_map or {}).get(outcome.get("loserSeat"), {}).get("name") if outcome.get("loserSeat") is not None else None,
+                            }
+                            for outcome in round_item.get("outcomes", [])
+                        ],
+                        "settlement": [
+                            {
+                                "seat": seat,
+                                "player": (seat_map or {}).get(seat, {}).get("name"),
+                                "score": score,
+                                "delta": (round_item.get("scoreDeltas") or [0, 0, 0, 0])[seat],
+                                "tenpai": seat in round_item.get("tenpaiSeats", []),
+                            }
+                            for seat, score in enumerate(round_item.get("endScores", []))
+                        ],
+                    }
+                    for round_item in (parsed.get("rounds", []) if parsed else [])
+                ],
             })
         for player in players:
             running = 0.0

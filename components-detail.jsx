@@ -816,14 +816,69 @@ function Comparator({ data }) {
   );
 }
 
+function HanchanReplay({ match }) {
+  const roundNames = ['history_round_east', 'history_round_south', 'history_round_west', 'history_round_north'];
+  const windNames = ['history_wind_east', 'history_wind_south', 'history_wind_west', 'history_wind_north'];
+  const rounds = match.rounds || [];
+  return <div className="hanchan-replay">
+    <div className="hanchan-replay-head"><div><span>{tr('history_replay_kicker')}</span><h3>{tr('history_replay_title')}</h3></div><small>{rounds.length} {tr('history_hands')}</small></div>
+    {!rounds.length && <div className="hanchan-replay-empty">{tr('history_replay_unavailable')}</div>}
+    <div className="hanchan-rounds">{rounds.map(round => {
+      const outcomes = round.outcomes || [];
+      const outcome = outcomes[0];
+      const label = tr(roundNames[round.chang] || 'history_round', { n: (round.ju || 0) + 1 });
+      const settlement = round.settlement || [];
+      const tenpai = settlement.filter(player => player.tenpai);
+      const noten = settlement.filter(player => !player.tenpai);
+      return <article className={`hanchan-round ${round.result}`} key={round.index}>
+        <header><div className="round-marker"><b>{label}</b><span>{round.honba ? `${round.honba} ${tr('history_honba')}` : tr('history_no_honba')}</span></div><div className="round-result"><strong>{round.result === 'tsumo' ? tr('by_tsumo') : round.result === 'ron' ? tr('by_ron') : round.result === 'draw' ? tr('history_draw') : tr('history_abortive')}</strong>{outcome && <span>{outcomes.map(item => `${item.winner}${item.loser ? ` ← ${item.loser}` : ''}`).join(' · ')}</span>}</div>{outcome && <b className="round-points">{outcomes.length > 1 ? `${outcomes.length}×` : (outcome.points || 0).toLocaleString('es-CL')}</b>}</header>
+        {outcome ? <div className="round-outcomes">{outcomes.map((item, outcomeIndex) => <div className="round-body" key={`${item.winnerSeat}-${outcomeIndex}`}><div className="round-outcome-title"><strong>{item.winner}</strong><b>{(item.points || 0).toLocaleString('es-CL')}</b></div><HandTiles hand={item.hand} win={item.win} melds={item.melds} /><div className="round-meta"><span>{(item.yaku || []).join(' · ')}</span><div>{item.riichi && <em className="badge-riichi">{tr('badge_riichi')}</em>}<b>{item.yakuman ? tr('hand_yakuman') : tr('hand_han', { n: item.han })}</b><b>{tr('hand_fu', { n: item.fu })}</b><b>{tr('hand_turn', { n: item.turn })}</b></div></div></div>)}</div>
+        : <div className="round-draw"><strong>{round.result === 'draw' ? tr('history_draw') : tr('history_abortive')}</strong><div><p>{round.result === 'draw' ? tr('history_draw_detail') : tr('history_abortive_detail')}</p>{round.result === 'draw' && settlement.length > 0 && <div className="draw-status"><span className="tenpai"><b>{tr('history_tenpai')}</b>{tenpai.length ? tenpai.map(player => `${player.player} ${player.delta > 0 ? '+' : ''}${Number(player.delta).toLocaleString('es-CL')}`).join(' · ') : tr('history_nobody')}</span><span className="noten"><b>{tr('history_noten')}</b>{noten.length ? noten.map(player => `${player.player} ${player.delta > 0 ? '+' : ''}${Number(player.delta).toLocaleString('es-CL')}`).join(' · ') : tr('history_nobody')}</span></div>}</div></div>}
+        {settlement.length === 4 && <footer className="round-settlement"><div className="settlement-title">{tr('history_score_after')}</div>{settlement.map(player => { const wind = (player.seat - (round.ju || 0) + 4) % 4; return <span key={player.seat}><i>{player.player}</i><small>{tr(windNames[wind])}</small><strong>{Number(player.score).toLocaleString('es-CL')}</strong><b className={player.delta > 0 ? 'pos' : player.delta < 0 ? 'neg' : ''}>{player.delta > 0 ? '+' : ''}{Number(player.delta).toLocaleString('es-CL')}</b></span>; })}</footer>}
+      </article>;
+    })}</div>
+  </div>;
+}
+
 function HanchanLog({ data, div }) {
   const [filter, setFilter] = React.useState('all');
+  const [playerFilter, setPlayerFilter] = React.useState('');
+  const [countryFilter, setCountryFilter] = React.useState('');
+  const [dateFilter, setDateFilter] = React.useState('');
+  const [expanded, setExpanded] = React.useState(null);
+  const cardRefs = React.useRef(new Map());
   const divData = data.divisions[div];
   const sessions = divData.sessions;
+  const allMatches = React.useMemo(() => [...divData.matches].reverse(), [divData.matches]);
+  const playerOptions = (() => {
+    const players = new Map();
+    allMatches.flatMap(match => match.players || []).forEach(player => players.set(player.name, player));
+    return [{ value: '', label: tr('calendar_all_players') }, ...[...players.values()].sort((a, b) => a.name.localeCompare(b.name)).map(player => ({ value: player.name, label: player.name, nat: player.nat }))];
+  })();
+  const countryOptions = (() => {
+    const countries = [...new Set(allMatches.flatMap(match => match.players || []).map(player => player.nat).filter(Boolean))].sort();
+    return [{ value: '', label: tr('calendar_all_countries') }, ...countries.map(nat => ({ value: nat, label: COUNTRIES[nat]?.name || nat, nat }))];
+  })();
+  const dateOptions = (() => {
+    const dates = new Map();
+    allMatches.forEach(match => dates.set(match.dateISO || match.date, match.date));
+    return [{ value: '', label: tr('history_all_dates') }, ...[...dates].map(([value, label]) => ({ value, label }))];
+  })();
   const matches = React.useMemo(() => {
-    const arr = [...divData.matches].reverse();
-    return filter === 'all' ? arr : arr.filter(m => m.sessionCode === filter);
-  }, [divData.matches, filter]);
+    return allMatches.filter(match => (filter === 'all' || match.sessionCode === filter)
+      && (!playerFilter || match.players.some(player => player.name === playerFilter))
+      && (!countryFilter || match.players.some(player => player.nat === countryFilter))
+      && (!dateFilter || (match.dateISO || match.date) === dateFilter));
+  }, [allMatches, filter, playerFilter, countryFilter, dateFilter]);
+  const filtersActive = filter !== 'all' || playerFilter || countryFilter || dateFilter;
+  const resetFilters = () => { setFilter('all'); setPlayerFilter(''); setCountryFilter(''); setDateFilter(''); };
+  React.useLayoutEffect(() => {
+    if (!expanded) return undefined;
+    const frame = requestAnimationFrame(() => {
+      cardRefs.current.get(expanded)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [expanded]);
   const sessionDate = (session) => {
     const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
     const dated = [];
@@ -866,13 +921,27 @@ function HanchanLog({ data, div }) {
         ))}
       </div>
 
+      <div className="history-filter-bar">
+        <CalendarFilterDropdown label={tr('calendar_filter_player')} icon="◉" value={playerFilter} options={playerOptions} onChange={setPlayerFilter} searchable />
+        <CalendarFilterDropdown label={tr('calendar_filter_country')} icon="◎" value={countryFilter} options={countryOptions} onChange={setCountryFilter} />
+        <CalendarFilterDropdown label={tr('history_filter_date')} icon="□" value={dateFilter} options={dateOptions} onChange={setDateFilter} />
+        {filtersActive && <button className="history-clear-filters" onClick={resetFilters}>{tr('calendar_clear_filters')}</button>}
+      </div>
+
       <div className="hanchan-list">
         {matches.map((m, idx) => (
-          <div className="hanchan-card" key={m.id} style={{ animation: 'rowin .35s ease both', animationDelay: `${Math.min(idx, 30) * 14}ms` }}>
+          <div ref={element => element ? cardRefs.current.set(m.id, element) : cardRefs.current.delete(m.id)} className={`hanchan-card ${expanded === m.id ? 'expanded' : ''}`} key={m.id} style={{ animation: 'rowin .35s ease both', animationDelay: `${Math.min(idx, 30) * 14}ms` }}>
             <div className="code-block">
               <div className="code">{m.code}</div>
               <div className="date">{m.sessionCode} · H{m.hanchan}</div>
               <div className="table">{tr('mesa', { n: m.table })} · {m.date}</div>
+              <div className="hanchan-round-count"><strong>{m.rounds?.length || 0}</strong><span>{tr('history_hands')}</span></div>
+              <div className="hanchan-outcome-summary">
+                <span className="tsumo">{tr('history_tsumo_count')} <b>{(m.rounds || []).filter(round => round.result === 'tsumo').length}</b></span>
+                <span className="ron">{tr('history_ron_count')} <b>{(m.rounds || []).filter(round => round.result === 'ron').length}</b></span>
+                <span className="draw">{tr('history_draw_count')} <b>{(m.rounds || []).filter(round => round.result === 'draw' || round.result === 'abortive').length}</b></span>
+              </div>
+              <button className="hanchan-replay-toggle" onClick={() => setExpanded(expanded === m.id ? null : m.id)} aria-expanded={expanded === m.id}><span>{expanded === m.id ? tr('history_hide_replay') : tr('history_open_replay')}</span><i>{expanded === m.id ? '−' : '▶'}</i></button>
               {m.paipuUrl && <a href={paipuHref(m.paipuUrl)} target="_blank" rel="noopener noreferrer" className="paipu-link">{tr('view_paipu')}</a>}
             </div>
             <div className="four-results">
@@ -885,8 +954,10 @@ function HanchanLog({ data, div }) {
                 </div>
               ))}
             </div>
+            {expanded === m.id && <HanchanReplay match={m} />}
           </div>
         ))}
+        {!matches.length && <div className="history-empty"><strong>{tr('history_no_results')}</strong><span>{tr('history_no_results_detail')}</span><button onClick={resetFilters}>{tr('calendar_clear_filters')}</button></div>}
       </div>
     </div>
   );
