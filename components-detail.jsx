@@ -1094,7 +1094,7 @@ function AvailabilityModal({ entry, div, onClose }) {
   const [notice, setNotice] = React.useState('');
   const [timezone, setTimezone] = React.useState(window.TZ);
   const days = React.useMemo(() => Array.from({ length: 14 }, (_, offset) => { const date = new Date(); date.setHours(12, 0, 0, 0); date.setDate(date.getDate() + offset + 1); return date.toISOString().slice(0, 10); }), []);
-  const times = React.useMemo(() => Array.from({ length: 12 }, (_, index) => { const minutes = 18 * 60 + index * 30; return `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`; }), []);
+  const times = React.useMemo(() => Array.from({ length: 30 }, (_, index) => { const minutes = 9 * 60 + index * 30; return `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`; }), []);
   const slots = React.useMemo(() => days.flatMap(date => times.map(time => leagueEpoch(date, time))), [days, times]);
   const mine = responses.find(response => response.playerId === playerId)?.slots || [];
   const counts = React.useMemo(() => Object.fromEntries(slots.map(slot => [slot, responses.filter(response => response.slots.includes(slot)).length])), [responses, slots]);

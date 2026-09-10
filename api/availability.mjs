@@ -46,7 +46,7 @@ export async function POST(request) {
     const scope = { division: body.division, session: Number(body.session), table: Number(body.table) };
     if (!validTable(scope)) return json({ error: "Mesa inválida" }, 400);
     const slots = [...new Set((body.slots || []).map(Number))].filter((slot) => Number.isInteger(slot) && slot > 0).sort((a, b) => a - b);
-    if (!body.playerId || slots.length > 200) return json({ error: "Respuesta inválida" }, 400);
+    if (!body.playerId || slots.length > 420) return json({ error: "Respuesta inválida" }, 400);
 
     const config = loadConfig();
     const league = await readLeague(process.env, config);
