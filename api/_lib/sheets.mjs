@@ -152,6 +152,37 @@ async function sheetsFetch(env, path, init = {}) {
   return payload;
 }
 
+export async function ensureSheet(env, title) {
+  const metadata = await sheetsFetch(env, "?fields=sheets.properties.title");
+  if ((metadata.sheets || []).some((sheet) => sheet?.properties?.title === title)) return;
+  await sheetsFetch(env, ":batchUpdate", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ requests: [{ addSheet: { properties: { title } } }] }),
+  });
+}
+
+export async function readValues(env, range) {
+  const query = new URLSearchParams({ majorDimension: "ROWS" });
+  return (await sheetsFetch(env, `/values/${encodeURIComponent(range)}?${query}`)).values || [];
+}
+
+export async function writeValues(env, range, values) {
+  return sheetsFetch(env, `/values/${encodeURIComponent(range)}?valueInputOption=RAW`, {
+    method: "PUT",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ range, majorDimension: "ROWS", values }),
+  });
+}
+
+export async function appendValues(env, range, values) {
+  return sheetsFetch(env, `/values/${encodeURIComponent(range)}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ range, majorDimension: "ROWS", values }),
+  });
+}
+
 export function rosterSheetName(config, division) {
   return config?.divisions?.[division]?.rosterSheet || DEFAULT_ROSTER_SHEETS[division];
 }

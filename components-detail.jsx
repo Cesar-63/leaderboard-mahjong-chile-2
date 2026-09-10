@@ -1071,8 +1071,90 @@ function CalendarFilterDropdown({ label, icon, value, options, onChange, searcha
   </div>;
 }
 
+function leagueEpoch(dateISO, timeHM) {
+  const [year, month, day] = dateISO.split('-').map(Number);
+  const [hour, minute] = timeHM.split(':').map(Number);
+  const target = Date.UTC(year, month - 1, day, hour, minute);
+  let epoch = target;
+  const partsInChile = value => Object.fromEntries(new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Santiago', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(value)).map(part => [part.type, part.value]));
+  for (let pass = 0; pass < 2; pass += 1) {
+    const seen = partsInChile(epoch);
+    epoch += target - Date.UTC(Number(seen.year), Number(seen.month) - 1, Number(seen.day), Number(seen.hour), Number(seen.minute));
+  }
+  return Math.round(epoch / 1000);
+}
+
+function AvailabilityModal({ entry, div, onClose }) {
+  const players = (entry.players || []).filter(player => player.name);
+  const storageKey = `mjc-availability-${div}-${entry.session}-${entry.table}`;
+  const [responses, setResponses] = React.useState([]);
+  const [playerId, setPlayerId] = React.useState(players[0]?.id || '');
+  const [selectedDay, setSelectedDay] = React.useState(0);
+  const [saving, setSaving] = React.useState(false);
+  const [notice, setNotice] = React.useState('');
+  const days = React.useMemo(() => Array.from({ length: 14 }, (_, offset) => { const date = new Date(); date.setHours(12, 0, 0, 0); date.setDate(date.getDate() + offset + 1); return date.toISOString().slice(0, 10); }), []);
+  const times = React.useMemo(() => Array.from({ length: 12 }, (_, index) => { const minutes = 18 * 60 + index * 30; return `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`; }), []);
+  const slots = React.useMemo(() => days.flatMap(date => times.map(time => leagueEpoch(date, time))), [days, times]);
+  const mine = responses.find(response => response.playerId === playerId)?.slots || [];
+  const counts = React.useMemo(() => Object.fromEntries(slots.map(slot => [slot, responses.filter(response => response.slots.includes(slot)).length])), [responses, slots]);
+  const best = [...slots].filter(slot => counts[slot] > 0).sort((a, b) => counts[b] - counts[a] || a - b).slice(0, 3);
+  const locale = window.LANG === 'en' ? 'en-US' : window.LANG === 'pt' ? 'pt-BR' : 'es-CL';
+  const format = (epoch, options) => new Intl.DateTimeFormat(locale, { timeZone: window.TZ, ...options }).format(new Date(epoch * 1000));
+
+  React.useEffect(() => {
+    const fallback = () => { try { setResponses(JSON.parse(localStorage.getItem(storageKey) || '[]')); } catch { setResponses([]); } };
+    fetch(`/api/availability?division=${div}&session=${entry.session}&table=${entry.table}`).then(response => response.ok ? response.json() : Promise.reject()).then(payload => setResponses(payload.responses || [])).catch(fallback);
+    const close = event => event.key === 'Escape' && onClose();
+    window.addEventListener('keydown', close);
+    return () => window.removeEventListener('keydown', close);
+  }, []);
+
+  const toggle = slot => setResponses(current => {
+    const own = current.find(response => response.playerId === playerId);
+    const nextSlots = (own?.slots || []).includes(slot) ? own.slots.filter(value => value !== slot) : [...(own?.slots || []), slot].sort();
+    const next = [...current.filter(response => response.playerId !== playerId), { playerId, player: players.find(player => player.id === playerId)?.name, slots: nextSlots }];
+    return next;
+  });
+  const save = async () => {
+    setSaving(true); setNotice('');
+    const response = responses.find(item => item.playerId === playerId) || { slots: [] };
+    try {
+      const result = await fetch('/api/availability', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ division: div, session: entry.session, table: entry.table, playerId, slots: response.slots }) });
+      if (!result.ok) throw new Error();
+      setNotice(tr('coord_saved_shared'));
+    } catch {
+      try { localStorage.setItem(storageKey, JSON.stringify(responses)); setNotice(tr('coord_saved_local')); }
+      catch { setNotice(tr('coord_saved_local')); }
+    } finally { setSaving(false); }
+  };
+  const copy = async slot => {
+    const value = `<t:${slot}:F> · <t:${slot}:R>`;
+    try { await navigator.clipboard.writeText(value); }
+    catch { const area = document.createElement('textarea'); area.value = value; document.body.appendChild(area); area.select(); document.execCommand('copy'); area.remove(); }
+    setNotice(tr('coord_copied'));
+  };
+  const visibleSlots = times.map(time => leagueEpoch(days[selectedDay], time));
+  return <div className="cal-modal-backdrop" onClick={onClose}>
+    <section className="availability-modal" role="dialog" aria-modal="true" aria-labelledby="coord-title" onClick={event => event.stopPropagation()} style={{ '--calendar-accent': accentFor(div) }}>
+      <header className="availability-head"><div><span>{entry.round} · {tr('mesa', { n: entry.table })}</span><h2 id="coord-title">{tr('coord_title')}</h2><p>{tr('coord_intro')}</p></div><button onClick={onClose} aria-label={tr('cerrar')}>✕</button></header>
+      <div className="availability-progress">{players.map(player => <span className={responses.some(response => response.playerId === player.id && response.slots.length) ? 'done' : ''} key={player.id}><Flag nat={player.nat} size={15} /><b>{player.name}</b><small>{responses.some(response => response.playerId === player.id && response.slots.length) ? tr('coord_answered') : tr('coord_pending')}</small></span>)}</div>
+      <div className="availability-layout">
+        <div className="availability-editor">
+          <label><span>{tr('coord_who')}</span><select value={playerId} onChange={event => setPlayerId(event.target.value)}>{players.map(player => <option key={player.id} value={player.id}>{player.name}</option>)}</select></label>
+          <div className="availability-days">{days.map((date, index) => <button className={selectedDay === index ? 'active' : ''} key={date} onClick={() => setSelectedDay(index)}><b>{format(leagueEpoch(date, '12:00'), { weekday: 'short' })}</b><span>{format(leagueEpoch(date, '12:00'), { day: '2-digit', month: 'short' })}</span></button>)}</div>
+          <div className="availability-slots">{visibleSlots.map(slot => <button className={mine.includes(slot) ? 'selected' : ''} key={slot} onClick={() => toggle(slot)}><strong>{format(slot, { hour: '2-digit', minute: '2-digit' })}</strong><span>{counts[slot]}/{players.length} {tr('coord_available')}</span></button>)}</div>
+          <div className="availability-actions"><span>{tr('timezone')}: <b>{window.TZ}</b></span><button className="coord-save" disabled={saving || !playerId} onClick={save}>{saving ? tr('coord_saving') : tr('coord_save')}</button></div>
+        </div>
+        <aside className="availability-best"><span>{tr('coord_best_title')}</span><h3>{best.length ? tr('coord_best_found') : tr('coord_best_empty')}</h3>{best.map(slot => <div className="best-slot" key={slot}><div><strong>{format(slot, { weekday: 'long', day: 'numeric', month: 'short' })}</strong><b>{format(slot, { hour: '2-digit', minute: '2-digit' })}</b><small>{counts[slot]}/{players.length} {tr('coord_players')}</small></div><button onClick={() => copy(slot)}>{tr('coord_copy_discord')}</button></div>)}<p>{tr('coord_staff_note')}</p></aside>
+      </div>
+      {notice && <div className="availability-notice" aria-live="polite">{notice}</div>}
+    </section>
+  </div>;
+}
+
 function CalendarView({ data, div = 'A' }) {
   const [modal, setModal] = React.useState(null);
+  const [coordination, setCoordination] = React.useState(null);
   const [view, setView] = React.useState('week');
   const [playerFilter, setPlayerFilter] = React.useState('');
   const [countryFilter, setCountryFilter] = React.useState('');
@@ -1125,12 +1207,13 @@ function CalendarView({ data, div = 'A' }) {
   const resetFilters = () => { setPlayerFilter(''); setCountryFilter(''); setTimeFilter('all'); };
   const renderCalendarPlayers = entry => <span className="calendar-event-players">{(entry.players || []).filter(player => player.name).map(player => <span key={player.name}><Flag nat={player.nat} size={11} /><em>{player.name}</em><small>{player.nat && player.nat !== 'OT' ? (COUNTRIES[player.nat]?.name || player.nat) : ''}</small></span>)}</span>;
   const renderPendingCard = entry => (
-    <button className={`calendar-pending-card div-${div}`} key={`${entry.round}-${entry.table}`} onClick={() => setModal(entry)}>
+    <div className={`calendar-pending-card div-${div}`} key={`${entry.round}-${entry.table}`}>
       <div className="cpc-head"><span>{entry.round} · {tr('mesa', { n: entry.table })}</span><b>{tr('calendar_needs_coordination')}</b></div>
       <div className="cpc-time">—:—</div><small>{tr('calendar_time_undefined')}</small>
       {renderCalendarPlayers(entry)}
       <div className="cpc-format">2 hanchan · {tr('division', { d: div })}</div>
-    </button>
+      <button className="cpc-coordinate" onClick={() => setCoordination({ ...entry, players: (entry.players || []).map(player => ({ ...player, id: data.divisions[div].players.find(candidate => candidate.name === player.name)?.id || player.name })) })}>{tr('coord_open')}</button>
+    </div>
   );
   return (
     <div className="tab-panel" style={{ '--calendar-accent': accentFor(div) }}>
@@ -1166,6 +1249,7 @@ function CalendarView({ data, div = 'A' }) {
       {pending.length > 0 && <section className="calendar-pending-section"><div className="calendar-panel-head"><div><span className="block-label">{tr('calendar_coordination')}</span><h2>{tr('calendar_undefined')}</h2></div><span>{pending.length} {tr('calendar_tables')}</span></div><div className="calendar-pending-grid">{pending.map(renderPendingCard)}</div></section>}
       {!filtered.length && <div className="calendar-empty"><strong>{tr('calendar_no_results')}</strong><button onClick={resetFilters}>{tr('calendar_clear_filters')}</button></div>}
       {modal && ReactDOM.createPortal(<CalModal entry={modal} onClose={() => setModal(null)} />, document.body)}
+      {coordination && ReactDOM.createPortal(<AvailabilityModal entry={coordination} div={div} onClose={() => setCoordination(null)} />, document.body)}
 
     </div>
   );
