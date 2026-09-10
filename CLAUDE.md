@@ -51,6 +51,20 @@ grupo del historial con la mesa del calendario con la que comparta al menos 3 de
 4 jugadores (3 y no 4, para tolerar un suplente). **El número de mesa, la fecha y
 la hora reales los tiene el Calendario.**
 
+**El Game History se llena solo desde los paipus.** `scripts/fill_game_history.py`
+arma la celda —`Nombre,score` de 1º a 4º, cuatro pares— con el nombre de liga del
+roster y el puntaje final del registro, y con `--write` la pega. La fila sale del
+rótulo `S# M# G#` de la columna A, y la mesa del historial, del mismo
+emparejamiento por jugadores de arriba: un grupo ya registrado en la mesa 4
+conserva la 4. **Nunca sobrescribe una celda escrita**; si el paipu dice otra
+cosa es CONFLICTO, y eso baja a REVISAR el otro hanchan de la mesa, porque la
+causa típica es tener los dos paipus cruzados en el Calendario. Un paipu que no
+declara la identidad de los asientos deja la celda en REVISAR en vez de confiar
+en el orden del Calendario: emparejar mal un puntaje con un jugador es peor que
+no escribir nada. **El formato de la celda vive en un solo lugar:**
+`parse_history_line` lo lee y `format_history_line` lo escribe, los dos en
+`sync.py`, y un test los cruza en ida y vuelta.
+
 ## Pipeline de datos
 
 1. `scripts/import.py` lee el `.xlsx` (openpyxl) → emite `data/liga.json`.
@@ -249,12 +263,14 @@ Vercel sirve `dist-site/`, que emite `node scripts/build_site.mjs`. Ver
 `api/discord.mjs` como Vercel Function del mismo proyecto que sirve el sitio;
 paso a paso completo en `DISCORD_BOT.md`.
 
-- **Es el segundo escritor de la planilla**, junto a
-  `fill_calendar_paipus.py --write`. Comparten cuenta de servicio y variable
-  (`GOOGLE_SERVICE_ACCOUNT_JSON`), pero no el almacén: la del workflow vive en
-  GitHub Actions Secrets y la del bot en las variables de entorno de Vercel, que
-  son sistemas separados. **No se pisan:** el workflow escribe las celdas de
-  paipu (filas `G1` y `G1 + 1`) y el bot sólo fecha y hora (`G1 − 2` y `G1 − 1`).
+- **Es el tercer escritor de la planilla**, junto a
+  `fill_calendar_paipus.py --write` y `fill_game_history.py --write`. Comparten
+  cuenta de servicio y variable (`GOOGLE_SERVICE_ACCOUNT_JSON`), pero no el
+  almacén: la de los workflows vive en GitHub Actions Secrets y la del bot en las
+  variables de entorno de Vercel, que son sistemas separados. **No se pisan:** el
+  primero escribe las celdas de paipu del Calendario (filas `G1` y `G1 + 1`), el
+  segundo sólo la columna B de `Game History A/B`, y el bot sólo fecha y hora
+  (`G1 − 2` y `G1 − 1`).
 - La firma del JWT está implementada dos veces, en `scripts/gsheets.py` para el
   pipeline y en `api/_lib/sheets.mjs` para el bot, porque corren en runtimes
   distintos. Es duplicación deliberada; lo que no puede divergir es a qué celdas

@@ -4,6 +4,8 @@ La planilla configurada en `sync-config.json` es el panel administrativo. Los
 enlaces de repetición van en la hoja **Calendario**, en la celda vacía ubicada a
 la derecha de `Paipu G1` o `Paipu G2`. Los pega un organizador a mano o los
 completa `scripts/fill_calendar_paipus.py --write` desde las salas de torneo.
+Los puntajes de la hoja **Game History** salen de esos mismos paipus con
+`scripts/fill_game_history.py --write`.
 
 ## Ejecutar localmente
 
@@ -182,9 +184,75 @@ técnica, y commitea los `.pb` nuevos. Si el secret de Google no está, el job
 avisa y se queda en modo propuesta. Comparte el grupo de concurrencia con el
 sincronizador porque Mahjong Soul admite una sola sesión por cuenta.
 
+El mismo job sigue con `scripts/fill_game_history.py --write`, para que una
+corrida deje el enlace pegado, el `.pb` bajado y el puntaje escrito. Ese paso va
+**sin `--fetch-logs`**: la sesión técnica ya se gastó en el paso anterior y lee
+lo que quedó en `data/raw-paipu`, así que un paipu que no alcanzó a bajar se
+completa en la corrida siguiente.
+
+## Completar Game History con los puntajes de los paipus
+
+`scripts/fill_game_history.py` cierra el círculo del anterior: una vez que el
+Calendario tiene el enlace, el registro ya dice quién se sentó dónde y con
+cuánto terminó, así que la celda del Game History se puede armar sola. El
+formato es el mismo que se escribe a mano, cuatro pares `nombre,score` del 1º al
+4º:
+
+```
+MasterFofo,35900,Uznaiker,31100,Mon_96,30900,Tobippi,22100
+```
+
+```bash
+python scripts/fill_game_history.py                      # sólo propone
+python scripts/fill_game_history.py --write              # pega las celdas
+python scripts/fill_game_history.py --write --fetch-logs # y baja los .pb que falten
+python scripts/fill_game_history.py --xlsx planilla.xlsx # sobre una copia local
+```
+
+El reporte queda en `reports/game-history.json` y `reports/game-history.csv`.
+
+### De dónde salen los nombres y el orden
+
+El puesto sale del puntaje, no del asiento: los cuatro se ordenan de mayor a
+menor y entre dos empatados queda arriba el más cercano al este, que es como
+desempata Mahjong Soul. El nombre que va a la celda es el **nombre de liga** del
+roster, aunque en el juego el jugador use otro apodo, porque es el que
+`scripts/sync.py` busca al leer la hoja. Un asiento que no está en el roster es
+un suplente y entra con su apodo del juego.
+
+### Qué pega solo y qué deja para una persona
+
+| Estado | Qué pasó | `--write` |
+| --- | --- | --- |
+| `PROPUESTO` | Celda vacía y el paipu nombra a los cuatro asientos | La pega |
+| `REVISAR` | Celda vacía, pero el orden de los asientos salió del Calendario y no del registro | Sólo con `--write-revisar` |
+| `CONFLICTO` | La celda ya dice algo distinto de lo que dice el paipu | Nunca la toca |
+| `OK` | La celda ya tiene ese mismo resultado | Nada que hacer |
+| `PENDIENTE` | Falta el paipu, o el `.pb` todavía no está descargado | Nada que hacer |
+
+`REVISAR` existe porque emparejar mal un puntaje con un jugador es peor que
+dejar la celda vacía: si el registro no declara la identidad de los asientos,
+el único orden disponible es el del Calendario, y eso es una conjetura. Un
+`CONFLICTO` además baja a `REVISAR` al otro hanchan de esa mesa: la causa
+típica es tener los dos paipus cruzados en el Calendario, y ahí pegar el que
+falta escribiría el resultado equivocado en la fila buena.
+
+Antes de escribir, el script relee cada celda: si alguien la llenó mientras
+tanto, informa y no la toca. Un resultado ya escrito nunca se sobrescribe.
+
+### La mesa del Game History no es la del Calendario
+
+El Game History numera las mesas por su cuenta; sólo la sesión coincide. Para
+saber en qué fila va cada hanchan, el script usa el **mismo emparejamiento por
+jugadores** que `scripts/sync.py` (`align_history_with_fixtures`, 3 de 4
+jugadores en común): si el grupo ya está registrado en la mesa 4 del historial,
+su segundo hanchan también va a la mesa 4. Una mesa que todavía no aparece toma
+el mismo número que en el Calendario si está libre, y si no la primera libre.
+La fila exacta se lee del rótulo `S# M# G#` de la columna A, no se calcula.
+
 ## Escritura desde Discord
 
-El otro escritor de la planilla es `/agendar`, el comando de Discord que fija
+El tercer escritor de la planilla es `/agendar`, el comando de Discord que fija
 fecha y hora de una mesa en la hoja Calendario (`DISCORD_BOT.md`).
 
 Usa **la misma cuenta de servicio** que `--write` y la misma variable
@@ -193,8 +261,11 @@ Editor y no hay nada que crear de nuevo. Lo que sí hay que hacer es copiar el
 JSON a las variables de entorno de **Vercel**: el bot corre ahí, y un secret de
 GitHub Actions no llega a Vercel.
 
-Los dos escritores no se pisan. `--write` toca las celdas de paipu (filas `G1` y
-`G1 + 1` de la mesa) y el bot sólo la fecha y la hora (`G1 − 2` y `G1 − 1`).
+Los tres escritores no se pisan: cada uno tiene sus celdas. El `--write` de
+`fill_calendar_paipus.py` toca las celdas de paipu del Calendario (filas `G1` y
+`G1 + 1` de la mesa), el bot sólo la fecha y la hora (`G1 − 2` y `G1 − 1`), y
+`fill_game_history.py` no toca el Calendario en absoluto: escribe únicamente la
+columna B de `Game History A/B`.
 
 ## Automatización
 
