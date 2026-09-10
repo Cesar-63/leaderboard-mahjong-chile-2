@@ -16,6 +16,11 @@ function validTable({ division, session, table }) {
   return ["A", "B"].includes(division) && Number.isInteger(session) && session >= 1 && session <= 7 && Number.isInteger(table) && table >= 1 && table <= 6;
 }
 
+function storageEnv() {
+  if (!process.env.AVAILABILITY_SHEET_ID) throw new Error("Falta AVAILABILITY_SHEET_ID");
+  return { ...process.env, SHEET_ID: process.env.AVAILABILITY_SHEET_ID };
+}
+
 async function rows(env) {
   await ensureSheet(env, SHEET);
   const values = await readValues(env, `${SHEET}!A:G`);
@@ -30,7 +35,7 @@ export async function GET(request) {
   try {
     const scope = paramsFrom(request.url);
     if (!validTable(scope)) return json({ error: "Mesa inválida" }, 400);
-    const values = await rows(process.env);
+    const values = await rows(storageEnv());
     const responses = values.filter((row) => row[0] === scope.division && Number(row[1]) === scope.session && Number(row[2]) === scope.table).map((row) => ({
       playerId: row[3], player: row[4], slots: JSON.parse(row[5] || "[]"), updatedAt: row[6],
     }));
@@ -54,11 +59,12 @@ export async function POST(request) {
     const table = readTable(league.grid, scope.division, scope.session, scope.table);
     if (!player || !table.players.includes(player.name)) return json({ error: "El jugador no pertenece a esta mesa" }, 403);
 
-    const values = await rows(process.env);
+    const store = storageEnv();
+    const values = await rows(store);
     const existing = values.findIndex((row) => row[0] === scope.division && Number(row[1]) === scope.session && Number(row[2]) === scope.table && row[3] === player.id);
     const record = [scope.division, scope.session, scope.table, player.id, player.name, JSON.stringify(slots), new Date().toISOString()];
-    if (existing >= 0) await writeValues(process.env, `${SHEET}!A${existing + 2}:G${existing + 2}`, [record]);
-    else await appendValues(process.env, `${SHEET}!A:G`, [record]);
+    if (existing >= 0) await writeValues(store, `${SHEET}!A${existing + 2}:G${existing + 2}`, [record]);
+    else await appendValues(store, `${SHEET}!A:G`, [record]);
     return json({ response: { playerId: player.id, player: player.name, slots, updatedAt: record[6] } });
   } catch (error) {
     return json({ error: error.message || "No se pudo guardar la disponibilidad" }, 500);
