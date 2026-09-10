@@ -460,6 +460,16 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
                             }
                             for outcome in round_item.get("outcomes", [])
                         ],
+                        "settlement": [
+                            {
+                                "seat": seat,
+                                "player": (seat_map or {}).get(seat, {}).get("name"),
+                                "score": score,
+                                "delta": (round_item.get("scoreDeltas") or [0, 0, 0, 0])[seat],
+                                "tenpai": seat in round_item.get("tenpaiSeats", []),
+                            }
+                            for seat, score in enumerate(round_item.get("endScores", []))
+                        ],
                     }
                     for round_item in (parsed.get("rounds", []) if parsed else [])
                 ],

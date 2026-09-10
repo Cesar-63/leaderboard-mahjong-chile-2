@@ -631,6 +631,18 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                 final_scores = list(message.scores)
             elif message.old_scores and message.delta_scores:
                 final_scores = [a + b for a, b in zip(message.old_scores, message.delta_scores)]
+            if current_round is not None:
+                start_scores = list(message.old_scores) or list(current_round.get("startScores", []))
+                deltas = list(message.delta_scores)
+                end_scores = list(message.scores)
+                if len(end_scores) != 4 and len(start_scores) == 4 and len(deltas) == 4:
+                    end_scores = [score + delta for score, delta in zip(start_scores, deltas)]
+                if len(deltas) != 4 and len(start_scores) == 4 and len(end_scores) == 4:
+                    deltas = [score - start for score, start in zip(end_scores, start_scores)]
+                if len(end_scores) == 4:
+                    current_round["endScores"] = end_scores
+                if len(deltas) == 4:
+                    current_round["scoreDeltas"] = deltas
             for hule in message.hules:
                 seat = int(hule.seat)
                 if seat >= 4:
@@ -695,6 +707,17 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
             score_info = message.scores[0]
             if score_info.old_scores and score_info.delta_scores:
                 final_scores = [a + b for a, b in zip(score_info.old_scores, score_info.delta_scores)]
+            if current_round is not None:
+                current_round["tenpaiSeats"] = [
+                    seat for seat, player_info in enumerate(message.players[:4])
+                    if player_info.tingpai
+                ]
+                start_scores = list(score_info.old_scores) or list(current_round.get("startScores", []))
+                deltas = list(score_info.delta_scores)
+                end_scores = [score + delta for score, delta in zip(start_scores, deltas)] if len(start_scores) == len(deltas) == 4 else []
+                if len(end_scores) == 4:
+                    current_round["endScores"] = end_scores
+                    current_round["scoreDeltas"] = deltas
         elif name == "RecordLiuJu":
             if current_round is not None:
                 current_round["result"] = "abortive"

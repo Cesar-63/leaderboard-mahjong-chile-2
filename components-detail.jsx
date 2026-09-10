@@ -817,7 +817,7 @@ function Comparator({ data }) {
 }
 
 function HanchanReplay({ match }) {
-  const winds = ['東', '南', '西', '北'];
+  const roundNames = ['history_round_east', 'history_round_south', 'history_round_west', 'history_round_north'];
   const rounds = match.rounds || [];
   return <div className="hanchan-replay">
     <div className="hanchan-replay-head"><div><span>{tr('history_replay_kicker')}</span><h3>{tr('history_replay_title')}</h3></div><small>{rounds.length} {tr('history_hands')}</small></div>
@@ -825,12 +825,15 @@ function HanchanReplay({ match }) {
     <div className="hanchan-rounds">{rounds.map(round => {
       const outcomes = round.outcomes || [];
       const outcome = outcomes[0];
-      const label = `${winds[round.chang] || '局'}${(round.ju || 0) + 1}`;
+      const label = tr(roundNames[round.chang] || 'history_round', { n: (round.ju || 0) + 1 });
+      const settlement = round.settlement || [];
+      const tenpai = settlement.filter(player => player.tenpai);
+      const noten = settlement.filter(player => !player.tenpai);
       return <article className={`hanchan-round ${round.result}`} key={round.index}>
         <header><div className="round-marker"><b>{label}</b><span>{round.honba ? `${round.honba} ${tr('history_honba')}` : tr('history_no_honba')}</span></div><div className="round-result"><strong>{round.result === 'tsumo' ? tr('by_tsumo') : round.result === 'ron' ? tr('by_ron') : round.result === 'draw' ? tr('history_draw') : tr('history_abortive')}</strong>{outcome && <span>{outcomes.map(item => `${item.winner}${item.loser ? ` ← ${item.loser}` : ''}`).join(' · ')}</span>}</div>{outcome && <b className="round-points">{outcomes.length > 1 ? `${outcomes.length}×` : (outcome.points || 0).toLocaleString('es-CL')}</b>}</header>
         {outcome ? <div className="round-outcomes">{outcomes.map((item, outcomeIndex) => <div className="round-body" key={`${item.winnerSeat}-${outcomeIndex}`}><div className="round-outcome-title"><strong>{item.winner}</strong><b>{(item.points || 0).toLocaleString('es-CL')}</b></div><HandTiles hand={item.hand} win={item.win} melds={item.melds} /><div className="round-meta"><span>{(item.yaku || []).join(' · ')}</span><div>{item.riichi && <em className="badge-riichi">{tr('badge_riichi')}</em>}<b>{item.yakuman ? tr('hand_yakuman') : tr('hand_han', { n: item.han })}</b><b>{tr('hand_fu', { n: item.fu })}</b><b>{tr('hand_turn', { n: item.turn })}</b></div></div></div>)}</div>
-        : <div className="round-draw"><span>流</span><p>{round.result === 'draw' ? tr('history_draw_detail') : tr('history_abortive_detail')}</p></div>}
-        {round.startScores?.length === 4 && <footer>{round.startScores.map((score, seat) => <span key={seat}><i>{winds[seat]}</i>{Number(score).toLocaleString('es-CL')}</span>)}</footer>}
+        : <div className="round-draw"><strong>{round.result === 'draw' ? tr('history_draw') : tr('history_abortive')}</strong><div><p>{round.result === 'draw' ? tr('history_draw_detail') : tr('history_abortive_detail')}</p>{round.result === 'draw' && settlement.length > 0 && <div className="draw-status"><span className="tenpai"><b>{tr('history_tenpai')}</b>{tenpai.length ? tenpai.map(player => `${player.player} ${player.delta > 0 ? '+' : ''}${Number(player.delta).toLocaleString('es-CL')}`).join(' · ') : tr('history_nobody')}</span><span className="noten"><b>{tr('history_noten')}</b>{noten.length ? noten.map(player => `${player.player} ${player.delta > 0 ? '+' : ''}${Number(player.delta).toLocaleString('es-CL')}`).join(' · ') : tr('history_nobody')}</span></div>}</div></div>}
+        {settlement.length === 4 && <footer className="round-settlement"><div className="settlement-title">{tr('history_score_after')}</div>{settlement.map(player => <span key={player.seat}><i>{player.player}</i><strong>{Number(player.score).toLocaleString('es-CL')}</strong><b className={player.delta > 0 ? 'pos' : player.delta < 0 ? 'neg' : ''}>{player.delta > 0 ? '+' : ''}{Number(player.delta).toLocaleString('es-CL')}</b></span>)}</footer>}
       </article>;
     })}</div>
   </div>;
@@ -896,9 +899,9 @@ function HanchanLog({ data, div }) {
               <div className="table">{tr('mesa', { n: m.table })} · {m.date}</div>
               <div className="hanchan-round-count"><strong>{m.rounds?.length || 0}</strong><span>{tr('history_hands')}</span></div>
               <div className="hanchan-outcome-summary">
-                <span className="tsumo">自摸 <b>{(m.rounds || []).filter(round => round.result === 'tsumo').length}</b></span>
-                <span className="ron">栄和 <b>{(m.rounds || []).filter(round => round.result === 'ron').length}</b></span>
-                <span className="draw">流局 <b>{(m.rounds || []).filter(round => round.result === 'draw' || round.result === 'abortive').length}</b></span>
+                <span className="tsumo">{tr('history_tsumo_count')} <b>{(m.rounds || []).filter(round => round.result === 'tsumo').length}</b></span>
+                <span className="ron">{tr('history_ron_count')} <b>{(m.rounds || []).filter(round => round.result === 'ron').length}</b></span>
+                <span className="draw">{tr('history_draw_count')} <b>{(m.rounds || []).filter(round => round.result === 'draw' || round.result === 'abortive').length}</b></span>
               </div>
               <button className="hanchan-replay-toggle" onClick={() => setExpanded(expanded === m.id ? null : m.id)} aria-expanded={expanded === m.id}><span>{expanded === m.id ? tr('history_hide_replay') : tr('history_open_replay')}</span><i>{expanded === m.id ? '−' : '▶'}</i></button>
               {m.paipuUrl && <a href={paipuHref(m.paipuUrl)} target="_blank" rel="noopener noreferrer" className="paipu-link">{tr('view_paipu')}</a>}
