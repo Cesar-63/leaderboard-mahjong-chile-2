@@ -39,6 +39,15 @@ class SheetsError(RuntimeError):
     pass
 
 
+def quote_sheet(name: str) -> str:
+    """Nombre de hoja listo para un rango A1.
+
+    Los nombres con espacios ("Game History A") van entre comillas simples o la
+    API no los reconoce. Gemelo de `quoteSheet` en `api/_lib/sheets.mjs`: son
+    runtimes distintos, la regla es la misma."""
+    return "'" + str(name).replace("'", "''") + "'"
+
+
 def has_credentials() -> bool:
     return bool(os.environ.get(CREDENTIALS_ENV) or os.environ.get(CREDENTIALS_PATH_ENV))
 
