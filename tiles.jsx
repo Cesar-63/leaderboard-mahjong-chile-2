@@ -31,6 +31,10 @@ function tileLabel(code) {
 // en cada mano, así que no vale la pena rehacerlo en cada render.
 const TILE_ART_URI = {};
 function tileArt(code) {
+  // Haku is intentionally rendered as the blank white dragon tile. Some
+  // versions of the artwork include a blue inner frame, which is not the
+  // visual language used by the rest of the site.
+  if (code === '5z') return null;
   if (!(code in TILE_ART_URI)) {
     const svg = (window.TILE_ART || {})[code];
     TILE_ART_URI[code] = svg ? `data:image/svg+xml,${encodeURIComponent(svg)}` : null;
@@ -39,6 +43,7 @@ function tileArt(code) {
 }
 
 function TileFace({ code }) {
+  if (code === '5z') return null;
   const art = tileArt(code);
   if (art) return <img className="mj-face" src={art} alt="" draggable="false" />;
   // Sin arte para esta ficha: número y palo, que igual se lee.

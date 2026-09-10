@@ -15,11 +15,12 @@ const TABS = [
   { id: 'log',       jp: '半荘',   es: 'Historial', en: 'Log', pt: 'Histórico' },
   { id: 'iormc',     jp: '代表',   es: 'IORMC', en: 'IORMC', pt: 'IORMC' },
   { id: 'calendar',  jp: '予定',   es: 'Calendario', en: 'Calendar', pt: 'Calendário' },
+  { id: 'predictions', jp: '予想', es: 'Predicciones', en: 'Predictions', pt: 'Palpites' },
   { id: 'hof',       jp: '殿堂',   es: 'Records', en: 'Records', pt: 'Recordes' },
 ];
 
 // tabs that are scoped to a single division
-const DIV_SCOPED = ['standings', 'detail', 'log', 'calendar', 'hof'];
+const DIV_SCOPED = ['standings', 'detail', 'log', 'calendar', 'predictions', 'hof'];
 
 // ── Rutas por hash: #/<tab>/<div|jugador> ──
 // Cada pestaña x división tiene su propia URL (funciona en estático, sin server).
@@ -363,6 +364,7 @@ function App() {
         {tab === 'log' && <HanchanLog data={data} div={div} />}
         {tab === 'iormc' && <IORMCView data={data} onPick={selectPlayer} />}
         {tab === 'calendar' && <CalendarView data={data} div={div} />}
+        {tab === 'predictions' && <PredictionsView data={data} div={div} />}
         {tab === 'hof' && <HallOfFame data={data} div={div} />}
       </main>
       {rulesOpen && <RulesModal division={div} rules={L.rules} onClose={() => setRulesOpen(false)} />}
