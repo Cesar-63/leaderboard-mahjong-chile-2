@@ -245,7 +245,8 @@ def merge_paipus(submissions: list[dict[str, Any]], histories: dict[str, dict[st
             parsed_games[submission["key"]] = {
                 "uuid": uuid, "url": submission["url"], "sha256": parsed.sha256,
                 "finalScoresBySeat": parsed.final_scores, "seatStats": parsed.seat_stats,
-                "players": parsed.players, "hands": parsed.hands, "status": state,
+                "players": parsed.players, "rounds": parsed.rounds,
+                "hands": parsed.hands, "status": state,
             }
             status.append({"key": submission["key"], "cell": submission["cell"], "uuid": uuid, "status": state, "message": message})
         except PaipuAuthRequired as exc:
@@ -362,6 +363,10 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
     divisions: dict[str, Any] = {}
     all_players: list[dict[str, Any]] = []
     stats_output: dict[str, Any] = {"players": {}}
+    # Manos ganadas, por jugador. Va como mapa aparte y no colgando de cada
+    # jugador porque el mismo dict de jugador se repite en players, allPlayers,
+    # hallOfFame, nationalities e iormc: colgarlo ahí multiplicaría el payload.
+    won_hands: dict[str, list[dict[str, Any]]] = {}
     submission_by_key = {item["key"]: item for item in submissions if item.get("url")}
     absence_penalty = float(config.get("absencePenaltyPerHanchan", -30))
     for division in ("A", "B"):
@@ -420,6 +425,19 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
                         player[field] += int(seat_stats[field])
                     player["maxHonba"] = max(player["maxHonba"], int(seat_stats["maxHonba"]))
                     player["yakuCounts"].update(seat_stats["yaku"])
+                    for won in seat_stats.get("wonHands", []):
+                        # Sólo se nombra al que pagó el ron si es del roster:
+                        # de un suplente no se publica identidad.
+                        rival = seat_map.get(won["loserSeat"]) if won["loserSeat"] is not None else None
+                        won_hands.setdefault(player["id"], []).append({
+                            "session": session, "table": table, "hanchan": game,
+                            "yaku": list(won["yaku"]), "hand": won["hand"], "win": won["win"],
+                            "melds": list(won["melds"]), "dora": won["dora"],
+                            "points": won["points"], "fu": won["fu"],
+                            "han": won["han"], "yakuman": won["yakuman"], "tsumo": won["tsumo"],
+                            "riichi": won["riichi"], "turn": won["turn"],
+                            "loser": rival["name"] if rival else None,
+                        })
             paipu_date, paipu_weekday, paipu_date_iso = date_from_paipu_uuid(submission.get("uuid") if submission else None)
             date_display = fixture["date"] if fixture and fixture["dateISO"] else paipu_date
             date_weekday = fixture["weekday"] if fixture and fixture["dateISO"] else paipu_weekday
@@ -431,6 +449,30 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
                 "table": table, "players": match_players,
                 "paipuUrl": submission["url"] if submission else None,
                 "verified": source == "paipu", "source": source,
+                "rounds": [
+                    {
+                        **round_item,
+                        "outcomes": [
+                            {
+                                **outcome,
+                                "winner": (seat_map or {}).get(outcome.get("winnerSeat"), {}).get("name"),
+                                "loser": (seat_map or {}).get(outcome.get("loserSeat"), {}).get("name") if outcome.get("loserSeat") is not None else None,
+                            }
+                            for outcome in round_item.get("outcomes", [])
+                        ],
+                        "settlement": [
+                            {
+                                "seat": seat,
+                                "player": (seat_map or {}).get(seat, {}).get("name"),
+                                "score": score,
+                                "delta": (round_item.get("scoreDeltas") or [0, 0, 0, 0])[seat],
+                                "tenpai": seat in round_item.get("tenpaiSeats", []),
+                            }
+                            for seat, score in enumerate(round_item.get("endScores", []))
+                        ],
+                    }
+                    for round_item in (parsed.get("rounds", []) if parsed else [])
+                ],
             })
         for player in players:
             running = 0.0
@@ -531,7 +573,7 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
         })
     data = {
         "divisions": divisions, "allPlayers": all_players, "nationalities": nationalities,
-        "iormc": iormc, "calendar": calendar,
+        "iormc": iormc, "calendar": calendar, "yakuHands": won_hands,
         "league": {"season": config["seasonLabel"], "currentSession": current_session, "sessionsPlayed": sessions_played, "sessionsTotal": int(config["sessionsTotal"]), "hanchanPerSession": 2, "playersPerDiv": 24, "hanchanPerDiv": max(len(divisions["A"]["matches"]), len(divisions["B"]["matches"])), "hanchanTotal": len(divisions["A"]["matches"]) + len(divisions["B"]["matches"]), "nextSession": next_session, "rules": {key: {"initialPoints": value["initialPoints"], "uma": value["uma"]} for key, value in config["divisions"].items()}},
     }
     add_hall_of_fame(data)

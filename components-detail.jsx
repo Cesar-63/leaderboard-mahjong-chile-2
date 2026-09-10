@@ -4,6 +4,12 @@ function accentFor(div) { return div === 'B' ? 'var(--accent-2)' : 'var(--accent
 // Dos primeras letras para el círculo del avatar (el handle completo se desborda)
 function initials(h) { return (h || '').slice(0, 2); }
 
+// La planilla guarda el enlace como "Mahjong Soul Game Log:https://…" en algunas
+// filas y pelado en otras: se limpia siempre antes de usarlo como href.
+function paipuHref(url) {
+  return String(url || '').replace(/^Mahjong Soul Game Log:/, '');
+}
+
 const HOF_KEYS = ['leader', 'wins', 'defense', 'riichi', 'consistency', 'recent'];
 function hallOfFameCopy(record, index) {
   const key = record.key || HOF_KEYS[index];
@@ -85,8 +91,16 @@ function yakuStory(top) {
   return { title: tr('yaku_story_varied_title'), text: tr('yaku_story_varied_text', args) };
 }
 
-function YakuProfile({ yakus, color }) {
+// `canOpen`/`onOpen` son opcionales: sin manos ganadas en los datos el perfil se
+// ve igual, sólo que nada abre. Cada yaku que sí las tiene se vuelve un botón,
+// en las tres formas en que aparece: top 3, grupo de yakuhai y ledger.
+function YakuProfile({ yakus, color, canOpen, onOpen }) {
   if (!yakus.length) return <div className="yaku-empty">{tr('yaku_empty')}</div>;
+  // Envuelve un yaku en botón si tiene manos que mostrar; si no, lo deja tal cual.
+  const openable = (name, className, key, children, Tag = 'div') => (canOpen && canOpen(name)
+    ? <button type="button" className={`${className} clickable`} key={key}
+        onClick={() => onOpen(name)} title={tr('yaku_open_hands', { yaku: name })}>{children}</button>
+    : <Tag className={className} key={key}>{children}</Tag>);
   const sorted = [...yakus].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
   const total = sorted.reduce((sum, yaku) => sum + yaku.count, 0);
   const top = sorted.slice(0, 3);
@@ -99,21 +113,21 @@ function YakuProfile({ yakus, color }) {
   return <div className="yaku-profile" style={{ '--yaku-accent': color }}>
     <div className="yaku-signature">
       <div className="yaku-story"><div className="block-label">{tr('yaku_story_label')}</div><h4>{story.title}</h4><p>{story.text}</p></div>
-      <div className="yaku-top-three">{top.map((yaku, index) => <div className="yaku-top" key={yaku.name}>
+      <div className="yaku-top-three">{top.map((yaku, index) => openable(yaku.name, 'yaku-top', yaku.name, <React.Fragment>
         <span className="yaku-top-rank">{index === 0 ? tr('yaku_high') : tr('yaku_rank_n', { n: index + 1 })}</span>
         <i>{yakuGlyph(yaku.name)}</i><strong>{yaku.name}</strong><b>{yaku.count} · {pct(yaku.count)}%</b>
-      </div>)}</div>
+      </React.Fragment>))}</div>
     </div>
     <div className="yaku-rest-label">{tr('yaku_other_title')}</div>
     <div className="yaku-ledger">
       {!!yakuhai.length && <div className="yaku-yakuhai-group">
         <div><strong>{tr('yaku_yakuhai_group')}</strong><span>{tr('yaku_yakuhai_hint')}</span></div>
-        <div className="yaku-yakuhai-items">{yakuhai.map(yaku => <span key={yaku.name}>{yaku.name.replace(/^Yakuhai\s*/i, '')} <b>{yaku.count} · {pct(yaku.count)}%</b></span>)}</div>
+        <div className="yaku-yakuhai-items">{yakuhai.map(yaku => openable(yaku.name, 'yaku-yakuhai-item', yaku.name, <React.Fragment><span>{yaku.name.replace(/^Yakuhai\s*/i, '')}</span> <b>{yaku.count} · {pct(yaku.count)}%</b></React.Fragment>, 'span'))}</div>
         <div className="yaku-yakuhai-total"><strong>{yakuhaiTotal}</strong><span>{pct(yakuhaiTotal)}% {tr('yaku_total_suffix')}</span></div>
       </div>}
-      {other.map(yaku => <div className="yaku-ledger-row" key={yaku.name}>
+      {other.map(yaku => openable(yaku.name, 'yaku-ledger-row', yaku.name, <React.Fragment>
         <span>{yaku.name}</span><div><i style={{ width: `${Math.max(4, pct(yaku.count))}%` }} /></div><b>{yaku.count}</b><small>{pct(yaku.count)}%</small>
-      </div>)}
+      </React.Fragment>))}
     </div>
   </div>;
 }
@@ -152,17 +166,95 @@ function QuickProfileSummary({ player }) {
 }
 
 function PlayerSelect({ value, onChange, data, style }) {
-  return (
-    <select value={value} onChange={e => onChange(e.target.value)} style={style}>
-      {['A', 'B'].map(d => (
-        <optgroup key={d} label={`División ${d}`}>
-          {data.divisions[d].players.map(pp => (
-            <option key={pp.id} value={pp.id}>#{pp.rank} · {pp.shortName} · {COUNTRIES[pp.nat].name}</option>
-          ))}
-        </optgroup>
-      ))}
-    </select>
-  );
+  return <select value={value} onChange={event => onChange(event.target.value)} style={style}>
+    {['A', 'B'].map(division => <optgroup key={division} label={`División ${division}`}>
+      {data.divisions[division].players.map(player => <option key={player.id} value={player.id}>#{player.rank} · {player.shortName} · {COUNTRIES[player.nat].name}</option>)}
+    </optgroup>)}
+  </select>;
+}
+
+function ComparePlayerSelect({ value, onChange, data, side }) {
+  const current = data.allPlayers.find(player => player.id === value);
+  const [open, setOpen] = React.useState(false);
+  const [division, setDivision] = React.useState(current.div);
+  const [query, setQuery] = React.useState('');
+  const rootRef = React.useRef(null);
+  const inputRef = React.useRef(null);
+  const normalized = query.trim().toLocaleLowerCase();
+  const players = data.divisions[division].players.filter(player => !normalized || `${player.shortName} ${player.handle} ${COUNTRIES[player.nat].name}`.toLocaleLowerCase().includes(normalized));
+  React.useEffect(() => {
+    const close = event => rootRef.current && !rootRef.current.contains(event.target) && setOpen(false);
+    document.addEventListener('pointerdown', close);
+    return () => document.removeEventListener('pointerdown', close);
+  }, []);
+  React.useEffect(() => {
+    if (open) requestAnimationFrame(() => inputRef.current?.focus());
+    else setQuery('');
+  }, [open]);
+  const pick = player => { onChange(player.id); setDivision(player.div); setOpen(false); };
+  return <div className={`compare-picker ${side} ${open ? 'open' : ''}`} ref={rootRef}>
+    <button className="compare-picker-trigger" onClick={() => setOpen(value => !value)} aria-expanded={open}>
+      <span className={`avatar div-${current.div}`}>{initials(current.handle)}</span>
+      <span className="compare-picker-current"><small>{tr(side === 'a' ? 'compare_player_a' : 'compare_player_b')} · DIV {current.div}</small><strong>{current.shortName}</strong><em><Flag nat={current.nat} size={14} /> {COUNTRIES[current.nat].name} · #{current.rank} · {fmtPts(current.points)}</em></span>
+      <i className="compare-picker-chevron">⌄</i>
+    </button>
+    {open && <div className="compare-picker-menu">
+      <div className="compare-picker-tools">
+        <div className="compare-picker-divisions">{['A','B'].map(div => <button key={div} className={division === div ? 'active' : ''} onClick={() => setDivision(div)}>DIV {div}<small>{data.divisions[div].players.length}</small></button>)}</div>
+        <label><span>⌕</span><input ref={inputRef} value={query} onChange={event => setQuery(event.target.value)} onKeyDown={event => event.key === 'Escape' && setOpen(false)} placeholder={tr('compare_search_player')} /></label>
+      </div>
+      <div className="compare-picker-list">{players.map(player => <button key={player.id} className={player.id === current.id ? 'active' : ''} onClick={() => pick(player)}><span className={`avatar div-${player.div}`}>{initials(player.handle)}</span><span><strong>{player.shortName}</strong><small><Flag nat={player.nat} size={12} /> {COUNTRIES[player.nat].name}</small></span><span><b>#{player.rank}</b><small>{fmtPts(player.points)}</small></span></button>)}{!players.length && <p>{tr('player_no_results')}</p>}</div>
+    </div>}
+  </div>;
+}
+
+function DivisionPlayerSelect({ value, onChange, data, division }) {
+  const players = data.divisions[division].players;
+  const currentIndex = Math.max(0, players.findIndex(player => player.id === value));
+  const current = players[currentIndex];
+  const [open, setOpen] = React.useState(false);
+  const [query, setQuery] = React.useState('');
+  const rootRef = React.useRef(null);
+  const inputRef = React.useRef(null);
+  const normalized = query.trim().toLocaleLowerCase();
+  const visiblePlayers = players.filter(player => !normalized || `${player.shortName} ${player.handle} ${COUNTRIES[player.nat].name}`.toLocaleLowerCase().includes(normalized));
+  React.useEffect(() => {
+    const close = event => rootRef.current && !rootRef.current.contains(event.target) && setOpen(false);
+    document.addEventListener('pointerdown', close);
+    return () => document.removeEventListener('pointerdown', close);
+  }, []);
+  React.useEffect(() => {
+    if (open) requestAnimationFrame(() => inputRef.current?.focus());
+    else setQuery('');
+  }, [open]);
+  const pick = id => { onChange(id); setOpen(false); };
+  const move = step => pick(players[(currentIndex + step + players.length) % players.length].id);
+  React.useEffect(() => {
+    const navigateWithArrows = event => {
+      const target = event.target;
+      const isEditing = target instanceof HTMLElement && (target.isContentEditable || ['INPUT', 'SELECT', 'TEXTAREA'].includes(target.tagName));
+      if (open || isEditing || (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight')) return;
+      event.preventDefault();
+      move(event.key === 'ArrowLeft' ? -1 : 1);
+    };
+    window.addEventListener('keydown', navigateWithArrows);
+    return () => window.removeEventListener('keydown', navigateWithArrows);
+  }, [open, currentIndex, players]);
+  return <div className="player-navigator" ref={rootRef}>
+    <button className="player-nav-arrow" onClick={() => move(-1)} aria-label={tr('player_previous')}>‹</button>
+    <div className="player-picker-position"><b>{String(currentIndex + 1).padStart(2, '0')} / {players.length}</b><small>{tr('player_ranking')}</small></div>
+    <button className={`player-picker-trigger ${open ? 'open' : ''}`} onClick={() => setOpen(value => !value)} aria-expanded={open}><span>{tr('player_view_all')}</span><i>▦</i></button>
+    <button className="player-nav-arrow" onClick={() => move(1)} aria-label={tr('player_next')}>›</button>
+    {open && <div className="player-picker-menu">
+      <div className="player-picker-search"><span>⌕</span><input ref={inputRef} value={query} onChange={event => setQuery(event.target.value)} onKeyDown={event => event.key === 'Escape' && setOpen(false)} placeholder={tr('player_search', { d: division })} /></div>
+      <div className="player-picker-list" aria-label={tr('division', { d: division })}>
+        {visiblePlayers.map(player => <button key={player.id} className={player.id === current.id ? 'active' : ''} onClick={() => pick(player.id)}>
+          <span className={`avatar div-${division}`}>{initials(player.handle)}</span><span><strong>{player.shortName}</strong><small><Flag nat={player.nat} size={13} /> {COUNTRIES[player.nat].name}</small></span><span className="player-picker-rank"><b>#{player.rank}</b><small>{fmtPts(player.points)}</small></span>
+        </button>)}
+        {!visiblePlayers.length && <p className="player-picker-empty">{tr('player_no_results')}</p>}
+      </div>
+    </div>}
+  </div>;
 }
 
 function PlayerDetail({ playerId, data, onPick }) {
@@ -211,6 +303,12 @@ function PlayerDetail({ playerId, data, onPick }) {
   const leagueRecords = recordAchievements.filter(record => !distinctionKeys.has(record.key));
   const distinctions = recordAchievements.filter(record => distinctionKeys.has(record.key));
   const totalYaku = yakus.reduce((sum, y) => sum + y.count, 0);
+  // Las manos ganadas sólo existen después de correr scripts/sync.py sobre los
+  // paipus: sin ellas el perfil de yakus se ve igual, pero sin abrir nada.
+  const wonHands = (data.yakuHands || {})[p.id] || [];
+  const [openYaku, setOpenYaku] = React.useState(null);
+  React.useEffect(() => { setOpenYaku(null); }, [p.id]);
+  const yakuHands = openYaku ? wonHands.filter(h => (h.yaku || []).includes(openYaku)) : [];
 
   return (
     <div className="tab-panel">
@@ -222,8 +320,7 @@ function PlayerDetail({ playerId, data, onPick }) {
           <NatTag nat={p.nat} showName size={17} />
           <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>選手詳細</span>
         </div>
-        <PlayerSelect value={p.id} onChange={onPick} data={data}
-          style={{ background: 'var(--bg-elev)', border: '1px solid var(--line)', borderRadius: 8, padding: '8px 12px', font: 'inherit', color: 'inherit' }} />
+        <DivisionPlayerSelect value={p.id} onChange={onPick} data={data} division={p.div} />
       </div>
 
       <div className="detail-grid">
@@ -312,9 +409,159 @@ function PlayerDetail({ playerId, data, onPick }) {
 
           <div className="chart-card detail-full yaku-card">
             <div className="ch-head yaku-head"><div><h3>{tr('yaku_title')}</h3><p>{tr('yaku_summary', { types: yakus.length, total: totalYaku })}{usingPreviewYakus ? ` · ${tr('preview_data')}` : ''}</p></div><span className="jp">役一覧</span></div>
-            <YakuProfile yakus={yakus} color={color} />
+            <YakuProfile yakus={yakus} color={color}
+              canOpen={name => wonHands.some(h => (h.yaku || []).includes(name))}
+              onOpen={setOpenYaku} />
         </div>
       </div>
+      {openYaku && (
+        <YakuHandsModal yaku={openYaku} hands={yakuHands} player={p} data={data} color={color}
+          onClose={() => setOpenYaku(null)} />
+      )}
+    </div>
+  );
+}
+
+// Popup con cada mano ganada que incluyó un yaku. Se cierra con Escape, con el
+// fondo o con la X; mientras está abierto el fondo no scrollea.
+function YakuHandsModal({ yaku, hands, player, data, color, onClose }) {
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [activeMilestone, setActiveMilestone] = React.useState('all');
+  const handListRef = React.useRef(null);
+  React.useEffect(() => {
+    // El perfil navega entre jugadores con las flechas (DivisionPlayerSelect
+    // escucha en window). Con el popup abierto esas teclas no pueden llegar
+    // allá: cambiarían de jugador por detrás y cerrarían esto de rebote. Se
+    // atajan en la fase de captura, que corre antes que cualquier otro
+    // listener, y sin preventDefault para que el popup siga scrolleando con el
+    // teclado.
+    const onKey = (e) => {
+      if (e.key === 'Escape') { onClose(); return; }
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        e.stopPropagation();
+        e.preventDefault();
+        if (!hands.length) return;
+        if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+          setSelectedIndex(index => e.key === 'ArrowUp'
+            ? (index - 1 + hands.length) % hands.length
+            : (index + 1) % hands.length);
+          setActiveMilestone('all');
+          return;
+        }
+        const choices = ['all', ...milestones.map(item => item.key)];
+        const current = Math.max(0, choices.indexOf(activeMilestone));
+        const next = e.key === 'ArrowLeft'
+          ? (current - 1 + choices.length) % choices.length
+          : (current + 1) % choices.length;
+        const nextKey = choices[next];
+        setActiveMilestone(nextKey);
+        if (nextKey !== 'all') setSelectedIndex(milestones.find(item => item.key === nextKey).index);
+      }
+    };
+    window.addEventListener('keydown', onKey, true);
+    const previo = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { window.removeEventListener('keydown', onKey, true); document.body.style.overflow = previo; };
+  }, [onClose, hands.length, activeMilestone]);
+
+  React.useEffect(() => { setSelectedIndex(0); setActiveMilestone('all'); }, [yaku]);
+  React.useEffect(() => {
+    const list = handListRef.current;
+    const active = list?.querySelector(`[data-hand-index="${selectedIndex}"]`);
+    if (!list || !active) return;
+    const top = active.offsetTop;
+    const bottom = top + active.offsetHeight;
+    if (top < list.scrollTop) list.scrollTo({ top, behavior: 'smooth' });
+    else if (bottom > list.scrollTop + list.clientHeight) list.scrollTo({ top: bottom - list.clientHeight, behavior: 'smooth' });
+  }, [selectedIndex]);
+
+  const total = hands.reduce((sum, h) => sum + (h.points || 0), 0);
+  const promedio = hands.length ? Math.round(total / hands.length) : 0;
+  const indexOf = compare => hands.reduce((best, hand, index) => best < 0 || compare(hand, hands[best]) ? index : best, -1);
+  const milestones = hands.length ? [
+    { key: 'valuable', icon: '◆', label: tr('hand_most_valuable'), index: indexOf((a, b) => (a.points || 0) > (b.points || 0)) },
+    { key: 'fast', icon: '⚡', label: tr('hand_fastest'), index: indexOf((a, b) => (a.turn || Infinity) < (b.turn || Infinity)) },
+    { key: 'recent', icon: '◷', label: tr('hand_most_recent'), index: indexOf((a, b) => (a.session || 0) > (b.session || 0) || ((a.session || 0) === (b.session || 0) && (a.hanchan || 0) > (b.hanchan || 0))) },
+    { key: 'cheap', icon: '◇', label: tr('hand_cheapest'), index: indexOf((a, b) => (a.points || Infinity) < (b.points || Infinity)) },
+  ] : [];
+  const selected = hands[selectedIndex] || hands[0];
+  const selectedMilestones = milestones.filter(item => item.index === selectedIndex);
+  const chooseMilestone = milestone => { setActiveMilestone(milestone.key); setSelectedIndex(milestone.index); };
+  return ReactDOM.createPortal(
+    <div className="cal-modal-backdrop" onClick={onClose}>
+      <div className="cal-modal yaku-modal" role="dialog" aria-modal="true" aria-label={yaku}
+        style={{ '--modal-accent': color }} onClick={e => e.stopPropagation()}>
+        <div className="cm-head">
+          <div>
+            <div className="cm-kicker">{player.shortName} · {tr('yaku_title')}</div>
+            <div className="cm-title">{yaku}</div>
+            <div className="cm-sub">{tr('yaku_modal_summary', { n: hands.length, avg: promedio.toLocaleString('es-CL') })}</div>
+          </div>
+          <button className="cm-close" onClick={onClose} aria-label={tr('cerrar')}>✕</button>
+        </div>
+        <div className="hand-milestone-tabs" role="tablist" aria-label={tr('hand_highlights')}>
+          <button className={activeMilestone === 'all' ? 'active' : ''} onClick={() => setActiveMilestone('all')}>{tr('hand_all')} · {hands.length}</button>
+          {milestones.map(item => <button key={item.key} className={activeMilestone === item.key ? 'active' : ''} onClick={() => chooseMilestone(item)}><i>{item.icon}</i>{item.label}</button>)}
+        </div>
+        <div className="hand-keyboard-hint"><span>↑ ↓</span> {tr('hand_keys_hands')} <i>·</i> <span>← →</span> {tr('hand_keys_highlights')}</div>
+        {activeMilestone !== 'all' && selected && <div className="hand-milestone-reason"><strong>{milestones.find(item => item.key === activeMilestone)?.label}</strong><span>{tr(`hand_${activeMilestone}_reason`, { points: (selected.points || 0).toLocaleString('es-CL'), turn: selected.turn, session: selected.session, hanchan: selected.hanchan })}</span></div>}
+        <div className="yaku-gallery">
+          <div className="yaku-gallery-list" ref={handListRef} role="tablist" aria-label={tr('hand_all')}>
+            {hands.map((hand, index) => <button key={index} data-hand-index={index} role="tab" aria-selected={selectedIndex === index} className={selectedIndex === index ? 'active' : ''} onClick={() => { setSelectedIndex(index); setActiveMilestone('all'); }}><span>{tr('sesion_n', { n: hand.session })} · H{hand.hanchan}</span><strong>{(hand.points || 0).toLocaleString('es-CL')}</strong><small>{hand.tsumo ? tr('by_tsumo') : tr('by_ron')} · {tr('hand_turn', { n: hand.turn })}</small>{milestones.filter(item => item.index === index).length > 0 && <em>{milestones.filter(item => item.index === index).map(item => item.icon).join(' ')}</em>}</button>)}
+          </div>
+          <div className="yaku-mobile-nav">
+            <button onClick={() => { setSelectedIndex((selectedIndex - 1 + hands.length) % hands.length); setActiveMilestone('all'); }} aria-label={tr('hand_previous')}>‹</button>
+            <div><span>{selectedIndex + 1} / {hands.length}</span><strong>{tr('sesion_n', { n: selected?.session })} · {tr('hanchan_n', { n: selected?.hanchan })}</strong><small>{(selected?.points || 0).toLocaleString('es-CL')} · {selected?.tsumo ? tr('by_tsumo') : tr('by_ron')}</small></div>
+            <button onClick={() => { setSelectedIndex((selectedIndex + 1) % hands.length); setActiveMilestone('all'); }} aria-label={tr('hand_next')}>›</button>
+          </div>
+          {selected && <YakuHandRow hand={selected} yaku={yaku} player={player} data={data} milestones={selectedMilestones} average={promedio} featured />}
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+
+function YakuHandRow({ hand, yaku, player, data, milestones = [], average = 0, featured = false }) {
+  const otros = (hand.yaku || []).filter(y => y !== yaku);
+  // La mano no guarda el enlace: se llega a la partida por su código, que es lo
+  // mismo que ya guarda (sesión, mesa, hanchan). Así no se duplica la URL 1.285
+  // veces en el payload.
+  const code = `${player.div}-S${hand.session}-M${hand.table}-G${hand.hanchan}`;
+  const match = (data.divisions[player.div].matches || []).find(m => m.id === code);
+  return (
+    <div className={`yaku-hand ${featured ? 'featured' : ''}`}>
+      {milestones.length > 0 && <div className="yaku-hand-milestones">{milestones.map(item => <span key={item.key}><i>{item.icon}</i>{item.label}</span>)}</div>}
+      <div className="yaku-hand-head">
+        <span className="where">{tr('sesion_n', { n: hand.session })} · {tr('mesa', { n: hand.table })} · {tr('hanchan_n', { n: hand.hanchan })}</span>
+        <span className={`how ${hand.tsumo ? 'tsumo' : 'ron'}`}>
+          {hand.tsumo ? tr('by_tsumo') : (hand.loser ? tr('by_ron_from', { rival: hand.loser }) : tr('by_ron'))}
+        </span>
+        {match && match.paipuUrl && (
+          <a className="paipu-link" href={paipuHref(match.paipuUrl)} target="_blank" rel="noopener noreferrer"
+            onClick={e => e.stopPropagation()}>{tr('view_paipu')}</a>
+        )}
+        <span className="pts">{(hand.points || 0).toLocaleString('es-CL')}</span>
+      </div>
+      <HandTiles hand={hand.hand} win={hand.win} melds={hand.melds} />
+      <div className="yaku-hand-foot">
+        {otros.length > 0 && <span className="others">{otros.join(' · ')}</span>}
+        <span className="meta">
+          {hand.riichi && <em className="badge-riichi">{tr('badge_riichi')}</em>}
+          <span className="nw han">{hand.yakuman
+            ? (hand.han > 1 ? tr('hand_yakuman_n', { n: hand.han }) : tr('hand_yakuman'))
+            : tr('hand_han', { n: hand.han })}</span>
+          <span className="nw">{tr('hand_fu', { n: hand.fu })}</span>
+          <span className="nw">{tr('hand_turn', { n: hand.turn })}</span>
+          {hand.dora && (
+            <span className="nw dora-group">
+              {tr('hand_dora')}
+              {(hand.dora.match(/.{2}/g) || []).map((c, i) => <Tile key={i} code={c} size={18} />)}
+            </span>
+          )}
+        </span>
+      </div>
+      {featured && average > 0 && <div className="yaku-hand-comparison">{tr('hand_vs_average', { delta: Math.round(((hand.points || 0) / average - 1) * 100), average: average.toLocaleString('es-CL') })}</div>}
     </div>
   );
 }
@@ -428,6 +675,43 @@ function metricScale(allPlayers, key, lowerIsBetter) {
   };
 }
 
+function ComparisonRadar({ aStats, bStats }) {
+  const size = 340, center = size / 2, radius = 105, count = aStats.length;
+  const point = (index, value = 1) => { const angle = -Math.PI / 2 + index / count * Math.PI * 2; return [center + Math.cos(angle) * radius * value, center + Math.sin(angle) * radius * value]; };
+  const polygon = (stats, scale = 1) => stats.map((stat, index) => point(index, stat.value * scale).join(',')).join(' ');
+  return <svg className="comparison-radar" viewBox={`0 0 ${size} ${size}`} role="img" aria-label={tr('compare_profiles')}>
+    {[.25,.5,.75,1].map(level => <polygon key={level} points={aStats.map((_, index) => point(index, level).join(',')).join(' ')} fill="none" stroke="var(--line)" />)}
+    {aStats.map((stat, index) => { const [x,y] = point(index); return <line key={stat.label} x1={center} y1={center} x2={x} y2={y} stroke="var(--line)"/>; })}
+    <polygon points={polygon(aStats)} fill="var(--accent)" fillOpacity=".13" stroke="var(--accent)" strokeWidth="2"/>
+    <polygon points={polygon(bStats)} fill="var(--accent-2)" fillOpacity=".13" stroke="var(--accent-2)" strokeWidth="2"/>
+    {aStats.map((stat,index) => { const [x,y] = point(index,1.32); const anchor = x > center + 10 ? 'start' : x < center - 10 ? 'end' : 'middle'; return <g key={stat.label}><text x={x} y={y} textAnchor={anchor} fontFamily="var(--font-mono)" fontSize="11" fill="var(--ink-soft)">{stat.label.toUpperCase()}</text><text x={x} y={y+16} textAnchor={anchor} fontFamily="var(--font-mono)" fontSize="11" fontWeight="700" fill="var(--ink)">{stat.display} / {bStats[index].display}</text></g>; })}
+  </svg>;
+}
+
+function CompareMatchChart({ a, b }) {
+  const width = 900, height = 230, pad = { l: 42, r: 22, t: 24, b: 34 };
+  const series = [a.history || [], b.history || []], length = Math.max(...series.map(values => values.length), 1);
+  const low = Math.min(0, ...series.flat()), high = Math.max(0, ...series.flat()), span = high - low || 1;
+  const x = index => pad.l + index / Math.max(1, length - 1) * (width - pad.l - pad.r);
+  const y = value => pad.t + (high - value) / span * (height - pad.t - pad.b);
+  const path = values => values.map((value,index) => `${index ? 'L' : 'M'}${x(index)},${y(value)}`).join(' ');
+  return <svg className="compare-match-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label={tr('compare_match_results')}>
+    <line x1={pad.l} y1={y(0)} x2={width-pad.r} y2={y(0)} stroke="var(--line-strong)"/>
+    {series.map((values,seriesIndex) => <g key={seriesIndex}><path d={path(values)} fill="none" stroke={seriesIndex ? 'var(--accent-2)' : 'var(--accent)'} strokeWidth="2"/>{values.map((value,index) => <circle key={index} cx={x(index)} cy={y(value)} r="3" fill={seriesIndex ? 'var(--accent-2)' : 'var(--accent)'}><title>{`${seriesIndex ? b.shortName : a.shortName} · H${index+1}: ${fmtPts(value)}`}</title></circle>)}</g>)}
+    {Array.from({length},(_,index) => <text key={index} x={x(index)} y={height-10} textAnchor="middle" fontFamily="var(--font-mono)" fontSize="11" fill="var(--ink-faint)">H{index+1}</text>)}
+  </svg>;
+}
+
+function comparisonStory(a, b) {
+  const args = { a: a.shortName, b: b.shortName };
+  if (Math.abs(a.openRate - b.openRate) >= 8 && Math.abs(a.dealInRate - b.dealInRate) >= 4) return { title: tr('compare_story_contrast_title'), text: tr('compare_story_contrast_text', { ...args, open: a.openRate > b.openRate ? a.shortName : b.shortName, safe: a.dealInRate < b.dealInRate ? a.shortName : b.shortName }) };
+  if (Math.abs(a.riichiRate - b.riichiRate) >= 8) return { title: tr('compare_story_riichi_title'), text: tr('compare_story_riichi_text', { ...args, pressure: a.riichiRate > b.riichiRate ? a.shortName : b.shortName, patient: a.riichiRate > b.riichiRate ? b.shortName : a.shortName }) };
+  if (a.openRate >= 38 && b.openRate >= 38) return { title: tr('compare_story_open_title'), text: tr('compare_story_open_text', args) };
+  if (a.riichiRate >= 25 && b.riichiRate >= 25) return { title: tr('compare_story_closed_title'), text: tr('compare_story_closed_text', args) };
+  if (Math.abs(a.avgRank - b.avgRank) >= .3) return { title: tr('compare_story_control_title'), text: tr('compare_story_control_text', { ...args, leader: a.avgRank < b.avgRank ? a.shortName : b.shortName }) };
+  return { title: tr('compare_story_balanced_title'), text: tr('compare_story_balanced_text', args) };
+}
+
 function Comparator({ data }) {
   const all = data.allPlayers;
   const [aId, setAId] = React.useState(data.divisions.A.players[0].id);
@@ -454,8 +738,26 @@ function Comparator({ data }) {
     return m;
   }, [data.allPlayers]);
   const readVal = (p, key) => key === 'firstRate' ? p.placements.p1 : p[key];
-
   const crossDiv = a.div !== b.div;
+  const results = metrics.map(metric => {
+    const av = readVal(a, metric.key), bv = readVal(b, metric.key);
+    const winner = av === bv ? null : (metric.lower ? (av < bv ? 'a' : 'b') : (av > bv ? 'a' : 'b'));
+    return { ...metric, av, bv, winner };
+  });
+  const winsA = results.filter(metric => metric.winner === 'a').length;
+  const winsB = results.filter(metric => metric.winner === 'b').length;
+  const topYakus = player => [...(Array.isArray(player.yakus) ? player.yakus : Array.isArray(player.topYaku) ? player.topYaku : [])].sort((x, y) => y.count - x.count).slice(0, 4);
+  const yakumanNames = new Set(['Tenhou','Chiihou','Daisangen','Suuankou','Tsuuiisou','Ryuuiisou','Chinroutou','Kokushi Musou','Shousuushii','Suukantsu','Chuuren Poutou','Suuankou Tanki','Kokushi 13-men','Daisuushii','Junsei Chuuren']);
+  const yakumanIcon = name => ({ 'Kokushi Musou': '十三', 'Kokushi 13-men': '十三', Daisangen: '大三', Suuankou: '四暗', 'Suuankou Tanki': '四暗', Daisuushii: '大四', Shousuushii: '小四', Suukantsu: '四槓', 'Chuuren Poutou': '九蓮', 'Junsei Chuuren': '純九', Tsuuiisou: '字一', Ryuuiisou: '緑一', Chinroutou: '清老', Tenhou: '天和', Chiihou: '地和' }[name] || '役満');
+  const yakumans = player => (Array.isArray(player.yakumans) ? player.yakumans : (player.yakus || []).filter(yaku => yakumanNames.has(yaku.name)));
+  const achievements = player => (data.divisions[player.div].hallOfFame || []).filter(record => record.player?.id === player.id).slice(0, 3);
+  const recentDelta = player => {
+    const history = player.history || [];
+    return history.slice(-5).reduce((sum, value) => sum + value, 0);
+  };
+  const placement = (player, place) => Math.round((player.placements?.[`p${place}`] || 0) * 100);
+  const radar = player => metricsToRadar(player, data.divisions[player.div].players);
+  const story = comparisonStory(a, b);
 
   return (
     <div className="tab-panel">
@@ -465,68 +767,118 @@ function Comparator({ data }) {
           <h1>{tr('cara_a_cara')}</h1>
           <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>対戦比較</span>
         </div>
-        <div className="vs-header">
-          <span className={`div-chip ${a.div}`}>{a.handle}</span>
-          <span style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)', fontWeight: 700 }}>VS</span>
-          <span className={`div-chip ${b.div}`}>{b.handle}</span>
-          {crossDiv && <span className="cross-tag">{tr('inter_division')}</span>}
-        </div>
+        {crossDiv && <span className="cross-tag">{tr('inter_division')}</span>}
       </div>
-
-      <div className="comp-wrap">
+      <div className="compare-duel-card">
+        <div className="compare-duel-head">
         {[{ p: a, side: 'a', set: setAId }, { p: b, side: 'b', set: setBId }].map(({ p, side, set }) => (
-          <div className={`comp-col ${side} div-${p.div}`} key={side}>
-            <div className="comp-pick">
-              <div className={`avatar div-${p.div}`} style={{ width: 48, height: 48, fontSize: 13, borderRadius: 12 }}>{initials(p.handle)}</div>
-              <PlayerSelect value={p.id} onChange={set} data={data} />
-            </div>
-            <div className="comp-sub">
-              <span className={`div-chip ${p.div}`}>DIV {p.div}</span>
-              <NatTag nat={p.nat} showName size={16} />
-              <span>#{p.rank} · {p.games} han</span>
-            </div>
-            <RadarChart key={side + animKey} stats={metricsToRadar(p, data.divisions[p.div].players)} color={side === 'a' ? 'var(--accent)' : 'var(--accent-2)'} size={260} />
+          <div className={`compare-player ${side}`} key={side}>
+            <ComparePlayerSelect value={p.id} onChange={set} data={data} side={side} />
           </div>
         ))}
-      </div>
-
-      <div className="metrics-card">
+          <div className="compare-score"><b>{winsA} — {winsB}</b><span>{tr('compare_metrics_won')}</span></div>
+        </div>
+        <div className="compare-story"><span>{tr('compare_reading')}</span><b>{story.title}</b><p>{story.text}</p></div>
+        <div className="compare-main-grid">
+          <section className="compare-radars"><h3>{tr('compare_profiles')}</h3><ComparisonRadar key={animKey} aStats={radar(a)} bStats={radar(b)} /><div className="compare-radar-legend"><span className="a">{a.shortName}</span><span className="b">{b.shortName}</span></div></section>
+          <section className="compare-metrics">
         <div className="metrics-head">
           <span className="block-label">{tr('metrics_title')} · 成績比較</span>
           <span className="metrics-note">{tr('metrics_note')}</span>
         </div>
-        {metrics.map(m => {
-          const av = readVal(a, m.key), bv = readVal(b, m.key);
-          const aBetter = m.lower ? av < bv : av > bv;
-          const bBetter = m.lower ? bv < av : bv > av;
+        {results.map(m => {
           const sc = scales[m.key];
           return (
-            <div key={m.key} className={`versus-row ${aBetter ? 'win-a' : ''} ${bBetter ? 'win-b' : ''}`}>
+            <div key={m.key} className={`versus-row ${m.winner === 'a' ? 'win-a' : ''} ${m.winner === 'b' ? 'win-b' : ''}`}>
               <div className="val-a">
-                <span style={{ flex: 1, textAlign: 'right' }}>{m.fmt(av)}</span>
-                <div className="bar-a"><div key={animKey + 'a' + m.key} style={{ transform: `scaleX(${sc(av)})` }} /></div>
+                <span style={{ flex: 1, textAlign: 'right' }}>{m.fmt(m.av)}</span>
+                <div className="bar-a"><div key={animKey + 'a' + m.key} style={{ transform: `scaleX(${sc(m.av)})` }} /></div>
               </div>
               <div className="vs-label">{m.label}<span className="jp">{m.jp}</span></div>
               <div className="val-b">
-                <div className="bar-b"><div key={animKey + 'b' + m.key} style={{ transform: `scaleX(${sc(bv)})` }} /></div>
-                <span style={{ flex: 1, textAlign: 'left' }}>{m.fmt(bv)}</span>
+                <div className="bar-b"><div key={animKey + 'b' + m.key} style={{ transform: `scaleX(${sc(m.bv)})` }} /></div>
+                <span style={{ flex: 1, textAlign: 'left' }}>{m.fmt(m.bv)}</span>
               </div>
             </div>
           );
         })}
+          </section>
+          <section className="compare-outcomes"><h3>{tr('compare_results_form')}</h3>{[a, b].map(player => <div className="compare-outcome" key={player.id}><div className="compare-placement">{[1,2,3,4].map(place => { const pct = placement(player, place); return pct > 0 && <i key={place} className={`p${place} ${pct <= 10 ? 'compact' : ''}`} style={{ width: `${pct}%` }} title={`${place}º · ${pct}%`}>{pct >= 10 ? <><span>{place}º</span> <b>{pct}%</b></> : ''}</i>; })}</div><div className="compare-outcome-meta"><b>{player.shortName}</b><span>{tr('lbl_avgrank')} {player.avgRank.toFixed(2)}</span></div><div className="compare-form">{(player.history || []).slice(-5).map((value, i) => <i key={i} className={value >= 0 ? 'up' : 'down'}>{value >= 0 ? '+' : '−'}</i>)}<b className={recentDelta(player) >= 0 ? 'pos' : 'neg'}>{fmtPts(recentDelta(player))}</b></div></div>)}</section>
+        </div>
+        <div className="compare-detail-grid">
+          <section><h3>{tr('compare_match_results')}</h3><CompareMatchChart key={animKey} a={a} b={b}/><div className="compare-chart-legend"><span className="a">{a.shortName}</span><span className="b">{b.shortName}</span></div></section>
+          <section><h3>{tr('compare_signature_yaku')}</h3>{[a,b].map(player => <div className="compare-yakus" key={player.id}><b>{player.shortName}</b><div>{topYakus(player).map(yaku => <span key={yaku.name}>{yakuGlyph(yaku.name)} {yaku.name} <i>×{yaku.count}</i></span>)}{!topYakus(player).length && <small>{tr('yaku_empty')}</small>}</div></div>)}</section>
+          <section><h3>{tr('compare_achievements')}</h3>{[a,b].map(player => { const playerYakuman = yakumans(player); const playerAchievements = achievements(player); return <div className="compare-honors" key={player.id}><b>{player.shortName}</b><div>{playerYakuman.map(yaku => <span className="yakuman" key={yaku.name}><i>{yakuGlyph(yaku.name)}</i>{yaku.name} ×{yaku.count}</span>)}{playerAchievements.map((record,index) => { const copy = hallOfFameCopy(record,index); return <span key={record.key || index}><i>{['王','和','守','立','均','昇'][index] || '賞'}</i>{copy.tag}</span>; })}{!playerYakuman.length && !playerAchievements.length && <small>{tr('compare_no_achievements')}</small>}</div></div>; })}</section>
+        </div>
+        {crossDiv && <p className="compare-context">{tr('compare_cross_context')}</p>}
       </div>
     </div>
   );
 }
 
+function HanchanReplay({ match }) {
+  const roundNames = ['history_round_east', 'history_round_south', 'history_round_west', 'history_round_north'];
+  const windNames = ['history_wind_east', 'history_wind_south', 'history_wind_west', 'history_wind_north'];
+  const rounds = match.rounds || [];
+  return <div className="hanchan-replay">
+    <div className="hanchan-replay-head"><div><span>{tr('history_replay_kicker')}</span><h3>{tr('history_replay_title')}</h3></div><small>{rounds.length} {tr('history_hands')}</small></div>
+    {!rounds.length && <div className="hanchan-replay-empty">{tr('history_replay_unavailable')}</div>}
+    <div className="hanchan-rounds">{rounds.map(round => {
+      const outcomes = round.outcomes || [];
+      const outcome = outcomes[0];
+      const label = tr(roundNames[round.chang] || 'history_round', { n: (round.ju || 0) + 1 });
+      const settlement = round.settlement || [];
+      const tenpai = settlement.filter(player => player.tenpai);
+      const noten = settlement.filter(player => !player.tenpai);
+      return <article className={`hanchan-round ${round.result}`} key={round.index}>
+        <header><div className="round-marker"><b>{label}</b><span>{round.honba ? `${round.honba} ${tr('history_honba')}` : tr('history_no_honba')}</span></div><div className="round-result"><strong>{round.result === 'tsumo' ? tr('by_tsumo') : round.result === 'ron' ? tr('by_ron') : round.result === 'draw' ? tr('history_draw') : tr('history_abortive')}</strong>{outcome && <span>{outcomes.map(item => `${item.winner}${item.loser ? ` ← ${item.loser}` : ''}`).join(' · ')}</span>}</div>{outcome && <b className="round-points">{outcomes.length > 1 ? `${outcomes.length}×` : (outcome.points || 0).toLocaleString('es-CL')}</b>}</header>
+        {outcome ? <div className="round-outcomes">{outcomes.map((item, outcomeIndex) => <div className="round-body" key={`${item.winnerSeat}-${outcomeIndex}`}><div className="round-outcome-title"><strong>{item.winner}</strong><b>{(item.points || 0).toLocaleString('es-CL')}</b></div><HandTiles hand={item.hand} win={item.win} melds={item.melds} /><div className="round-meta"><span>{(item.yaku || []).join(' · ')}</span><div>{item.riichi && <em className="badge-riichi">{tr('badge_riichi')}</em>}<b>{item.yakuman ? tr('hand_yakuman') : tr('hand_han', { n: item.han })}</b><b>{tr('hand_fu', { n: item.fu })}</b><b>{tr('hand_turn', { n: item.turn })}</b></div></div></div>)}</div>
+        : <div className="round-draw"><strong>{round.result === 'draw' ? tr('history_draw') : tr('history_abortive')}</strong><div><p>{round.result === 'draw' ? tr('history_draw_detail') : tr('history_abortive_detail')}</p>{round.result === 'draw' && settlement.length > 0 && <div className="draw-status"><span className="tenpai"><b>{tr('history_tenpai')}</b>{tenpai.length ? tenpai.map(player => `${player.player} ${player.delta > 0 ? '+' : ''}${Number(player.delta).toLocaleString('es-CL')}`).join(' · ') : tr('history_nobody')}</span><span className="noten"><b>{tr('history_noten')}</b>{noten.length ? noten.map(player => `${player.player} ${player.delta > 0 ? '+' : ''}${Number(player.delta).toLocaleString('es-CL')}`).join(' · ') : tr('history_nobody')}</span></div>}</div></div>}
+        {settlement.length === 4 && <footer className="round-settlement"><div className="settlement-title">{tr('history_score_after')}</div>{settlement.map(player => { const wind = (player.seat - (round.ju || 0) + 4) % 4; return <span key={player.seat}><i>{player.player}</i><small>{tr(windNames[wind])}</small><strong>{Number(player.score).toLocaleString('es-CL')}</strong><b className={player.delta > 0 ? 'pos' : player.delta < 0 ? 'neg' : ''}>{player.delta > 0 ? '+' : ''}{Number(player.delta).toLocaleString('es-CL')}</b></span>; })}</footer>}
+      </article>;
+    })}</div>
+  </div>;
+}
+
 function HanchanLog({ data, div }) {
   const [filter, setFilter] = React.useState('all');
+  const [playerFilter, setPlayerFilter] = React.useState('');
+  const [countryFilter, setCountryFilter] = React.useState('');
+  const [dateFilter, setDateFilter] = React.useState('');
+  const [expanded, setExpanded] = React.useState(null);
+  const cardRefs = React.useRef(new Map());
   const divData = data.divisions[div];
   const sessions = divData.sessions;
+  const allMatches = React.useMemo(() => [...divData.matches].reverse(), [divData.matches]);
+  const playerOptions = (() => {
+    const players = new Map();
+    allMatches.flatMap(match => match.players || []).forEach(player => players.set(player.name, player));
+    return [{ value: '', label: tr('calendar_all_players') }, ...[...players.values()].sort((a, b) => a.name.localeCompare(b.name)).map(player => ({ value: player.name, label: player.name, nat: player.nat }))];
+  })();
+  const countryOptions = (() => {
+    const countries = [...new Set(allMatches.flatMap(match => match.players || []).map(player => player.nat).filter(Boolean))].sort();
+    return [{ value: '', label: tr('calendar_all_countries') }, ...countries.map(nat => ({ value: nat, label: COUNTRIES[nat]?.name || nat, nat }))];
+  })();
+  const dateOptions = (() => {
+    const dates = new Map();
+    allMatches.forEach(match => dates.set(match.dateISO || match.date, match.date));
+    return [{ value: '', label: tr('history_all_dates') }, ...[...dates].map(([value, label]) => ({ value, label }))];
+  })();
   const matches = React.useMemo(() => {
-    const arr = [...divData.matches].reverse();
-    return filter === 'all' ? arr : arr.filter(m => m.sessionCode === filter);
-  }, [divData.matches, filter]);
+    return allMatches.filter(match => (filter === 'all' || match.sessionCode === filter)
+      && (!playerFilter || match.players.some(player => player.name === playerFilter))
+      && (!countryFilter || match.players.some(player => player.nat === countryFilter))
+      && (!dateFilter || (match.dateISO || match.date) === dateFilter));
+  }, [allMatches, filter, playerFilter, countryFilter, dateFilter]);
+  const filtersActive = filter !== 'all' || playerFilter || countryFilter || dateFilter;
+  const resetFilters = () => { setFilter('all'); setPlayerFilter(''); setCountryFilter(''); setDateFilter(''); };
+  React.useLayoutEffect(() => {
+    if (!expanded) return undefined;
+    const frame = requestAnimationFrame(() => {
+      cardRefs.current.get(expanded)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [expanded]);
   const sessionDate = (session) => {
     const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
     const dated = [];
@@ -569,14 +921,28 @@ function HanchanLog({ data, div }) {
         ))}
       </div>
 
+      <div className="history-filter-bar">
+        <CalendarFilterDropdown label={tr('calendar_filter_player')} icon="◉" value={playerFilter} options={playerOptions} onChange={setPlayerFilter} searchable />
+        <CalendarFilterDropdown label={tr('calendar_filter_country')} icon="◎" value={countryFilter} options={countryOptions} onChange={setCountryFilter} />
+        <CalendarFilterDropdown label={tr('history_filter_date')} icon="□" value={dateFilter} options={dateOptions} onChange={setDateFilter} />
+        {filtersActive && <button className="history-clear-filters" onClick={resetFilters}>{tr('calendar_clear_filters')}</button>}
+      </div>
+
       <div className="hanchan-list">
         {matches.map((m, idx) => (
-          <div className="hanchan-card" key={m.id} style={{ animation: 'rowin .35s ease both', animationDelay: `${Math.min(idx, 30) * 14}ms` }}>
+          <div ref={element => element ? cardRefs.current.set(m.id, element) : cardRefs.current.delete(m.id)} className={`hanchan-card ${expanded === m.id ? 'expanded' : ''}`} key={m.id} style={{ animation: 'rowin .35s ease both', animationDelay: `${Math.min(idx, 30) * 14}ms` }}>
             <div className="code-block">
               <div className="code">{m.code}</div>
               <div className="date">{m.sessionCode} · H{m.hanchan}</div>
               <div className="table">{tr('mesa', { n: m.table })} · {m.date}</div>
-              {m.paipuUrl && <a href={m.paipuUrl.replace(/^Mahjong Soul Game Log:/, '')} target="_blank" rel="noopener noreferrer" className="paipu-link">{tr('view_paipu')}</a>}
+              <div className="hanchan-round-count"><strong>{m.rounds?.length || 0}</strong><span>{tr('history_hands')}</span></div>
+              <div className="hanchan-outcome-summary">
+                <span className="tsumo">{tr('history_tsumo_count')} <b>{(m.rounds || []).filter(round => round.result === 'tsumo').length}</b></span>
+                <span className="ron">{tr('history_ron_count')} <b>{(m.rounds || []).filter(round => round.result === 'ron').length}</b></span>
+                <span className="draw">{tr('history_draw_count')} <b>{(m.rounds || []).filter(round => round.result === 'draw' || round.result === 'abortive').length}</b></span>
+              </div>
+              <button className="hanchan-replay-toggle" onClick={() => setExpanded(expanded === m.id ? null : m.id)} aria-expanded={expanded === m.id}><span>{expanded === m.id ? tr('history_hide_replay') : tr('history_open_replay')}</span><i>{expanded === m.id ? '−' : '▶'}</i></button>
+              {m.paipuUrl && <a href={paipuHref(m.paipuUrl)} target="_blank" rel="noopener noreferrer" className="paipu-link">{tr('view_paipu')}</a>}
             </div>
             <div className="four-results">
               {m.players.map((pl, i) => (
@@ -588,8 +954,10 @@ function HanchanLog({ data, div }) {
                 </div>
               ))}
             </div>
+            {expanded === m.id && <HanchanReplay match={m} />}
           </div>
         ))}
+        {!matches.length && <div className="history-empty"><strong>{tr('history_no_results')}</strong><span>{tr('history_no_results_detail')}</span><button onClick={resetFilters}>{tr('calendar_clear_filters')}</button></div>}
       </div>
     </div>
   );
@@ -645,9 +1013,36 @@ function CalModal({ entry, onClose }) {
   );
 }
 
-function CalendarView({ data }) {
-  const played = data.divisions.A.sessions;
+function CalendarFilterDropdown({ label, icon, value, options, onChange, searchable = false }) {
+  const [open, setOpen] = React.useState(false);
+  const [query, setQuery] = React.useState('');
+  const rootRef = React.useRef(null);
+  React.useEffect(() => {
+    const close = event => { if (!rootRef.current?.contains(event.target)) setOpen(false); };
+    document.addEventListener('pointerdown', close);
+    return () => document.removeEventListener('pointerdown', close);
+  }, []);
+  const selected = options.find(option => option.value === value) || options[0];
+  const visible = options.filter((option, index) => index === 0 || !query || option.label.toLowerCase().includes(query.toLowerCase()));
+  const pick = option => { onChange(option.value); setOpen(false); setQuery(''); };
+  return <div className={`calendar-filter-dropdown ${open ? 'open' : ''}`} ref={rootRef}>
+    <span className="calendar-filter-label"><i>{icon}</i>{label}</span>
+    <button className="calendar-filter-trigger" onClick={() => setOpen(current => !current)} aria-expanded={open} aria-haspopup="listbox">
+      <span>{selected.nat && <Flag nat={selected.nat} size={15} />}{selected.mark && <i className={`calendar-filter-mark ${selected.mark}`}></i>}<strong>{selected.label}</strong></span><b>⌄</b>
+    </button>
+    {open && <div className="calendar-filter-menu" role="listbox">
+      {searchable && <label className="calendar-filter-search"><span>⌕</span><input autoFocus value={query} onChange={event => setQuery(event.target.value)} onKeyDown={event => event.key === 'Escape' && setOpen(false)} placeholder={tr('calendar_filter_search')} /></label>}
+      <div className="calendar-filter-options">{visible.map(option => <button className={option.value === value ? 'active' : ''} key={option.value || 'all'} onClick={() => pick(option)} role="option" aria-selected={option.value === value}><span>{option.nat ? <Flag nat={option.nat} size={16} /> : option.mark ? <i className={`calendar-filter-mark ${option.mark}`}></i> : <i className="calendar-filter-all">◇</i>}<strong>{option.label}</strong></span>{option.value === value && <b>✓</b>}</button>)}</div>
+    </div>}
+  </div>;
+}
+
+function CalendarView({ data, div = 'A' }) {
   const [modal, setModal] = React.useState(null);
+  const [view, setView] = React.useState('week');
+  const [playerFilter, setPlayerFilter] = React.useState('');
+  const [countryFilter, setCountryFilter] = React.useState('');
+  const [timeFilter, setTimeFilter] = React.useState('all');
   const MONTHS = { ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5, jul: 6, ago: 7, sep: 8, oct: 9, nov: 10, dic: 11 };
   const toDate = (s) => {
     const parts = String(s || '').split(' ');
@@ -661,35 +1056,50 @@ function CalendarView({ data }) {
   const sessNum = (c) => c.session || parseInt((c.round || '').replace(/\D/g, ''), 10) || 0;
   const currentSession = currentSessionNumber(data);
   const byDate = (a, b) => (toDate(a.date) - toDate(b.date)) || (a.div === 'B' ? 1 : 0) - (b.div === 'B' ? 1 : 0);
-  // Próximas: con fecha válida y no pasada (>= hoy). Pasadas quedan ocultas.
-  const upcoming = data.calendar.filter(c => { const d = toDate(c.date); return d && d >= today; }).sort(byDate);
-  // Por definir: sin fecha.
-  const porDef = data.calendar
-    .filter(c => !toDate(c.date) && sessNum(c) === currentSession)
-    .sort((a, b) => (a.table || 0) - (b.table || 0));
-  const renderCard = (c, i) => (
-    <button className={`cal-card ${c.status === 'highlight' ? 'highlight' : ''} div-${c.div}`} key={c.round + c.mesa + c.div}
-         onClick={() => setModal(c)}
-         style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 30}ms`, textAlign: 'left', cursor: 'pointer', font: 'inherit', color: 'inherit', width: '100%' }}>
-      <div className="badge"><span className={`div-chip ${c.div}`}>{c.div === 'AB' ? 'A+B' : c.div === 'CL' ? 'CHILE' : 'DIV ' + c.div}</span>{c.div === 'CL' && <Flag nat="CL" size={16} />}</div>
-      <div className="date-row">
-        <span className="d">{c.date.split(' ')[0]}</span>
-        <span className="dy">{c.date.split(' ')[1]} · {c.day}</span>
-      </div>
-      <div className="round-l">{c.round}</div>
-      <div className="meta-l">{c.mesa}</div>
-      <div className="meta-l">{c.date === 'Por definir' ? tr('por_definir') : <React.Fragment><TzTime date={c.date} time={c.time} tz={window.TZ} /> · {window.TZ}</React.Fragment>}</div>
-      {c.players && c.players.length > 0 && (
-        <div className="cal-players">
-          {c.players.map(pl => (
-            <span className="cal-p" key={pl.name}><Flag nat={pl.nat} size={10} />{pl.name}</span>
-          ))}
-        </div>
-      )}
+  const divisionEntries = data.calendar.filter(c => c.div === div && sessNum(c) === currentSession);
+  const namedPlayers = [...new Set(divisionEntries.flatMap(c => c.players || []).map(p => p.name).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+  const countries = [...new Set(divisionEntries.flatMap(c => c.players || []).map(p => p.nat).filter(nat => nat && nat !== 'OT'))].sort();
+  const playerOptions = [{ value: '', label: tr('calendar_all_players') }, ...namedPlayers.map(name => ({ value: name, label: name, nat: divisionEntries.flatMap(c => c.players || []).find(player => player.name === name)?.nat }))];
+  const countryOptions = [{ value: '', label: tr('calendar_all_countries') }, ...countries.map(nat => ({ value: nat, label: COUNTRIES[nat]?.name || nat, nat }))];
+  const timeOptions = [{ value: 'all', label: tr('calendar_all_times'), mark: 'all' }, { value: 'defined', label: tr('calendar_defined'), mark: 'defined' }, { value: 'pending', label: tr('calendar_undefined'), mark: 'pending' }];
+  const matchesFilters = entry => {
+    const players = entry.players || [];
+    const hasTime = Boolean(toDate(entry.date)) && entry.time !== 'Por definir';
+    return (!playerFilter || players.some(p => p.name === playerFilter))
+      && (!countryFilter || players.some(p => p.nat === countryFilter))
+      && (timeFilter === 'all' || (timeFilter === 'defined' ? hasTime : !hasTime));
+  };
+  const filtered = divisionEntries.filter(matchesFilters);
+  const scheduled = filtered.filter(c => toDate(c.date)).sort(byDate);
+  const pending = filtered.filter(c => !toDate(c.date)).sort((a, b) => sessNum(a) - sessNum(b) || (a.table || 0) - (b.table || 0));
+  const nextEntry = scheduled.find(c => toDate(c.date) >= today);
+  const focusDate = toDate(nextEntry?.date) || toDate(data.league.nextSession.date) || today;
+  const monthStart = new Date(focusDate.getFullYear(), focusDate.getMonth(), 1);
+  const firstOffset = (monthStart.getDay() + 6) % 7;
+  const daysInMonth = new Date(focusDate.getFullYear(), focusDate.getMonth() + 1, 0).getDate();
+  const monthCells = Array.from({ length: Math.ceil((firstOffset + daysInMonth) / 7) * 7 }, (_, index) => {
+    const day = index - firstOffset + 1;
+    return day > 0 && day <= daysInMonth ? day : null;
+  });
+  const monthNames = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const datedForDay = day => scheduled.filter(entry => { const d = toDate(entry.date); return d && d.getMonth() === focusDate.getMonth() && d.getDate() === day; });
+  const weekStart = new Date(focusDate); weekStart.setDate(focusDate.getDate() - ((focusDate.getDay() + 6) % 7));
+  const weekDays = Array.from({ length: 7 }, (_, index) => { const d = new Date(weekStart); d.setDate(weekStart.getDate() + index); return d; });
+  const hours = [...new Set(scheduled.map(entry => entry.time).filter(time => time && time !== 'Por definir'))].sort();
+  const visibleHours = hours.length ? hours : ['—:—'];
+  const sameDate = (entry, date) => { const d = toDate(entry.date); return d && d.getFullYear() === date.getFullYear() && d.getMonth() === date.getMonth() && d.getDate() === date.getDate(); };
+  const resetFilters = () => { setPlayerFilter(''); setCountryFilter(''); setTimeFilter('all'); };
+  const renderCalendarPlayers = entry => <span className="calendar-event-players">{(entry.players || []).filter(player => player.name).map(player => <span key={player.name}><Flag nat={player.nat} size={11} /><em>{player.name}</em><small>{player.nat && player.nat !== 'OT' ? (COUNTRIES[player.nat]?.name || player.nat) : ''}</small></span>)}</span>;
+  const renderPendingCard = entry => (
+    <button className={`calendar-pending-card div-${div}`} key={`${entry.round}-${entry.table}`} onClick={() => setModal(entry)}>
+      <div className="cpc-head"><span>{entry.round} · {tr('mesa', { n: entry.table })}</span><b>{tr('calendar_needs_coordination')}</b></div>
+      <div className="cpc-time">—:—</div><small>{tr('calendar_time_undefined')}</small>
+      {renderCalendarPlayers(entry)}
+      <div className="cpc-format">2 hanchan · {tr('division', { d: div })}</div>
     </button>
   );
   return (
-    <div className="tab-panel">
+    <div className="tab-panel" style={{ '--calendar-accent': accentFor(div) }}>
       <div className="section-head">
         <div className="h-left">
           <span className="num">05 / Agenda</span>
@@ -697,86 +1107,81 @@ function CalendarView({ data }) {
           <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>予定</span>
         </div>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)' }}>
-          {tr('cal_subtitle', { total: data.league.sessionsTotal, per: data.league.hanchanPerSession })}
+          {tr('cal_subtitle', { total: data.league.sessionsTotal, per: data.league.hanchanPerSession })} · {tr('division', { d: div })}
         </div>
       </div>
 
-      {upcoming.length > 0 && (
-        <React.Fragment>
-          <div className="block-label" style={{ marginBottom: 12 }}>{tr('next_cal')} · 次回</div>
-          <div className="cal-grid">{upcoming.map(renderCard)}</div>
-        </React.Fragment>
-      )}
-      {porDef.length > 0 && (
-        <React.Fragment>
-          <div className="block-label" style={{ margin: '28px 0 12px' }}>{tr('por_definir')} · 未定</div>
-          <div className="cal-grid">{porDef.map(renderCard)}</div>
-        </React.Fragment>
-      )}
+      <div className="calendar-season-line">{Array.from({ length: data.league.sessionsTotal }, (_, index) => { const n = index + 1; return <div className={`calendar-season-step ${n < currentSession ? 'done' : n === currentSession ? 'current' : ''}`} key={n}><i>{n < currentSession ? '✓' : n}</i><span>{n === currentSession ? tr('calendar_current') : `S${n}`}</span></div>; })}</div>
+
+      <div className="calendar-toolbar">
+        <div className="calendar-view-switch"><button className={view === 'month' ? 'active' : ''} onClick={() => setView('month')}>▦ {tr('calendar_month_view')}</button><button className={view === 'week' ? 'active' : ''} onClick={() => setView('week')}>◫ {tr('calendar_week_view')}</button></div>
+        <div className="calendar-filters">
+          <CalendarFilterDropdown label={tr('calendar_filter_player')} icon="選" value={playerFilter} options={playerOptions} onChange={setPlayerFilter} searchable />
+          <CalendarFilterDropdown label={tr('calendar_filter_country')} icon="国" value={countryFilter} options={countryOptions} onChange={setCountryFilter} />
+          <CalendarFilterDropdown label={tr('calendar_filter_time')} icon="時" value={timeFilter} options={timeOptions} onChange={setTimeFilter} />
+          {(playerFilter || countryFilter || timeFilter !== 'all') && <button onClick={resetFilters}>{tr('calendar_clear_filters')}</button>}
+        </div>
+      </div>
+
+      {nextEntry ? <button className={`calendar-next-feature div-${div}`} onClick={() => setModal(nextEntry)}><div className="cnf-date"><strong>{nextEntry.date.split(' ')[0]}</strong><span>{nextEntry.date.split(' ')[1]} · {nextEntry.day}</span></div><div className="cnf-copy"><span>{tr('calendar_next_session')}</span><h2>{nextEntry.round} · {tr('mesa', { n: nextEntry.table })}</h2><p>{(nextEntry.players || []).filter(player => player.name).map(player => player.name).join(' · ')}</p></div><div className="cnf-time"><strong><TzTime date={nextEntry.date} time={nextEntry.time} tz={window.TZ} /></strong><span>{window.TZ}</span></div></button>
+      : <div className={`calendar-next-feature undefined div-${div}`}><div className="cnf-date"><strong>—</strong><span>{tr('por_definir')}</span></div><div className="cnf-copy"><span>{tr('calendar_next_session')}</span><h2>{tr('calendar_still_undefined')}</h2><p>{tr('calendar_no_scheduled_session')}</p></div><div className="cnf-time pending"><strong>—:—</strong><span>{tr('calendar_needs_coordination')}</span></div></div>}
+
+      {view === 'month' ? <section className="calendar-month-panel"><div className="calendar-panel-head"><div><span className="block-label">{tr('calendar_month_view')}</span><h2>{monthNames[focusDate.getMonth()]} {focusDate.getFullYear()}</h2></div><span>{scheduled.length} {tr('calendar_scheduled_count')}</span></div><div className="calendar-month-grid">{['L','M','X','J','V','S','D'].map(day => <div className="calendar-weekday" key={day}>{day}</div>)}{monthCells.map((day, index) => <div className={`calendar-day ${day === focusDate.getDate() ? 'focus' : ''}`} key={index}>{day && <span>{day}</span>}{day && datedForDay(day).map(entry => <button className={`calendar-day-event div-${div}`} key={`${entry.session}-${entry.table}`} onClick={() => setModal(entry)}><span className="calendar-mobile-date">{entry.day} · {entry.date}</span><span>{entry.round} · M{entry.table}</span><strong><TzTime date={entry.date} time={entry.time} tz={window.TZ} /></strong>{renderCalendarPlayers(entry)}</button>)}</div>)}</div></section>
+      : <section className="calendar-week-panel"><div className="calendar-panel-head"><div><span className="block-label">{tr('calendar_week_view')}</span><h2>{tr('calendar_week_of', { date: `${weekDays[0].getDate()} ${monthNames[weekDays[0].getMonth()]}` })}</h2></div><span>{window.TZ}</span></div><div className="calendar-week-grid"><div className="calendar-week-corner"></div>{weekDays.map(day => <div className="calendar-week-day" key={day.toISOString()}><strong>{['L','M','X','J','V','S','D'][(day.getDay() + 6) % 7]}</strong><span>{day.getDate()}</span></div>)}{visibleHours.map(hour => <React.Fragment key={hour}><div className="calendar-hour">{hour}</div>{weekDays.map(day => { const entries = scheduled.filter(entry => entry.time === hour && sameDate(entry, day)); return <div className="calendar-week-slot" key={day.toISOString() + hour}>{entries.map(entry => <button className={`calendar-week-event div-${div}`} key={entry.table} onClick={() => setModal(entry)}><span className="calendar-mobile-date">{entry.day} · {entry.date}</span><span>{entry.round} · {tr('mesa', { n: entry.table })}</span><strong><TzTime date={entry.date} time={entry.time} tz={window.TZ} /></strong>{renderCalendarPlayers(entry)}</button>)}</div>; })}</React.Fragment>)}</div></section>}
+
+      {pending.length > 0 && <section className="calendar-pending-section"><div className="calendar-panel-head"><div><span className="block-label">{tr('calendar_coordination')}</span><h2>{tr('calendar_undefined')}</h2></div><span>{pending.length} {tr('calendar_tables')}</span></div><div className="calendar-pending-grid">{pending.map(renderPendingCard)}</div></section>}
+      {!filtered.length && <div className="calendar-empty"><strong>{tr('calendar_no_results')}</strong><button onClick={resetFilters}>{tr('calendar_clear_filters')}</button></div>}
       {modal && ReactDOM.createPortal(<CalModal entry={modal} onClose={() => setModal(null)} />, document.body)}
 
-      <div className="block-label" style={{ margin: '28px 0 12px' }}>{tr('played_sessions')} · 実施済み</div>
-      <div className="session-strip">
-        {played.map((s, i) => (
-          <div className="session-pill done" key={s.code} style={{ animation: 'rowin .35s ease both', animationDelay: `${i * 30}ms` }}>
-            <div className="sp-code">{s.code}</div>
-            <div className="sp-date">{s.date}</div>
-            <div className="sp-meta">{s.matches} hanchan × 2 div</div>
-          </div>
-        ))}
-        <div className="session-pill pending">
-          <div className="sp-code">{data.league.nextSession.code}</div>
-          <div className="sp-date">{data.league.nextSession.date}</div>
-          <div className="sp-meta">pendiente</div>
-        </div>
-      </div>
     </div>
   );
 }
 
-function HallOfFame({ data }) {
+function HallOfFame({ data, div = 'A' }) {
+  const division = data.divisions[div];
+  const recordKeys = new Set(['leader', 'wins', 'defense', 'riichi', 'consistency', 'recent']);
+  const distinctionKeys = new Set(['kans', 'doras', 'ura_doras', 'renchan']);
+  const yakumanNames = new Set(['Tenhou','Chiihou','Daisangen','Suuankou','Tsuuiisou','Ryuuiisou','Chinroutou','Kokushi Musou','Shousuushii','Suukantsu','Chuuren Poutou','Suuankou Tanki','Kokushi 13-men','Daisuushii','Junsei Chuuren']);
+  const yakumanIcon = name => ({ 'Kokushi Musou': '十三', 'Kokushi 13-men': '十三', Daisangen: '大三', Suuankou: '四暗', 'Suuankou Tanki': '四暗', Daisuushii: '大四', Shousuushii: '小四', Suukantsu: '四槓', 'Chuuren Poutou': '九蓮', 'Junsei Chuuren': '純九', Tsuuiisou: '字一', Ryuuiisou: '緑一', Chinroutou: '清老', Tenhou: '天和', Chiihou: '地和' }[name] || '役満');
+  const icons = { leader: '王', wins: '和', defense: '守', riichi: '立', consistency: '均', recent: '昇', kans: '槓', doras: '輝', ura_doras: '運', renchan: '連', saki: '咲' };
+  const records = division.hallOfFame.filter(item => recordKeys.has(item.key));
+  const sakiPlayer = [...division.players].sort((a, b) => Math.abs(a.points) - Math.abs(b.points))[0];
+  const distinctions = [
+    { key: 'saki', value: fmtPts(sakiPlayer.points), player: sakiPlayer, jp: '咲' },
+    ...division.hallOfFame.filter(item => distinctionKeys.has(item.key)),
+  ];
+  const yakumans = division.players.flatMap(player => (player.yakus || []).filter(yaku => yakumanNames.has(yaku.name)).map(yaku => ({ ...yaku, player })));
+  const yakumanEvents = division.players.flatMap(player => (data.yakuHands?.[player.id] || []).filter(hand => hand.yakuman).map(hand => ({ ...hand, player }))).sort((a, b) => b.session - a.session || b.hanchan - a.hanchan);
+  const latestSession = Math.max(0, ...(division.sessions || []).map(session => session.n || Number(String(session.code || '').replace(/\D/g, '')) || 0));
+  const feature = records[0];
+  const distinctionCopy = item => ({
+    saki: [tr('achievement_saki'), tr('achievement_saki_hint')],
+    kans: [tr('achievement_kans'), tr('achievement_kans_hint')],
+    doras: [tr('achievement_doras'), tr('achievement_doras_hint')],
+    ura_doras: [tr('achievement_ura_doras'), tr('achievement_ura_doras_hint')],
+    renchan: [tr('achievement_renchan'), tr('achievement_renchan_hint')],
+  }[item.key] || [item.key, '']);
+  const HonorPlayer = ({ player }) => <span className="museum-player"><span className={`avatar div-${div}`}>{initials(player.handle)}</span><span><strong>{player.shortName}</strong><small><Flag nat={player.nat} size={13} /> {COUNTRIES[player.nat].name} · #{player.rank}</small></span></span>;
   return (
     <div className="tab-panel">
       <div className="section-head">
         <div className="h-left">
           <span className="num">06 / Records</span>
-          <h1>{tr('records_title')}</h1>
+          <h1>{tr('museum_title')}</h1>
           <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>名誉殿堂</span>
         </div>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)' }}>{tr('app_tagline')} · ambos</div>
+        <div className="museum-meta">{tr('division', { d: div })} · {tr('app_tagline')}</div>
       </div>
-
-      {['A', 'B'].map(d => (
-        <div key={d} style={{ marginBottom: 32 }}>
-          <div className="hof-div-head">
-            <span className={`div-chip ${d}`}>DIVISIÓN {d}</span>
-            <span className="hof-div-line"></span>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-faint)', letterSpacing: '0.1em' }}>
-              {data.divisions[d].players.length} JUGADORES
-            </span>
-          </div>
-          <div className="hof-grid">
-            {data.divisions[d].hallOfFame.map((h, i) => {
-              const copy = hallOfFameCopy(h, i);
-              return <div className={`hof-card div-${d}`} key={h.key || i} style={{ animation: 'rowin .4s ease both', animationDelay: `${i * 45}ms` }}>
-                <div className="jp-mark">{h.jp}</div>
-                <div className="tag">{copy.tag}</div>
-                <div className="value" style={{ color: accentFor(d) }}>{h.value}</div>
-                <div className="sub">{copy.sub}</div>
-                <div className="player-line">
-                  <div className={`avatar div-${d}`}>{initials(h.player.handle)}</div>
-                  <div>
-                    <div style={{ fontWeight: 600, fontSize: 14 }}>{h.player.shortName}</div>
-                    <div className="nat-line" style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)' }}>
-                      <Flag nat={h.player.nat} size={14} /><span>{COUNTRIES[h.player.nat].name}</span><span className="dot-sep">·</span><span>#{h.player.rank}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>;
-            })}
-          </div>
-        </div>
-      ))}
+      <div className={`museum-summary div-${div}`}><div><span className="block-label">{tr('museum_kicker')}</span><h2>{tr('museum_division_title', { d: div })}</h2><p>{tr('museum_intro')}</p></div><div className="museum-counts"><span><b>{records.length}</b>{tr('records_title')}</span><span><b>{distinctions.length}</b>{tr('achievement_distinctions')}</span><span><b>{yakumans.reduce((sum, item) => sum + item.count, 0)}</b>{tr('yakuman_title')}</span></div></div>
+      <div className="museum-layout">
+        <main className="museum-gallery">
+          {feature && <article className={`museum-feature div-${div}`}><div><span className="museum-eyebrow">{tr('museum_feature')}</span><h2>{feature.player.shortName}</h2><p>{hallOfFameCopy(feature, 0).tag}</p><strong>{feature.value}</strong><small>{hallOfFameCopy(feature, 0).sub}</small><HonorPlayer player={feature.player} /></div><i>{icons[feature.key]}</i></article>}
+          <section className="museum-family"><div className="museum-family-head"><div><span>{tr('records_title')}</span><small>{tr('museum_records_hint')}</small></div><b>{records.length}</b></div><div className="museum-items">{records.slice(1).map((item, index) => { const copy = hallOfFameCopy(item, index + 1); return <article className="museum-item" key={item.key}><i className="record">{icons[item.key]}</i><div><h3>{copy.tag}</h3><p>{copy.sub}</p><HonorPlayer player={item.player} /></div><strong>{item.value}</strong></article>; })}</div></section>
+          <section className="museum-family"><div className="museum-family-head"><div><span>{tr('achievement_distinctions')}</span><small>{tr('museum_distinctions_hint')}</small></div><b>{distinctions.length}</b></div><div className="museum-items">{distinctions.map(item => { const copy = distinctionCopy(item); return <article className="museum-item" key={item.key}><i className="distinction">{icons[item.key]}</i><div><h3>{copy[0]}</h3><p>{copy[1]}</p><HonorPlayer player={item.player} /></div><strong>{item.value}</strong></article>; })}</div></section>
+          <section className="museum-family"><div className="museum-family-head"><div><span>{tr('yakuman_title')}</span><small>{tr('museum_yakuman_hint')}</small></div><b>{yakumans.reduce((sum, item) => sum + item.count, 0)}</b></div>{yakumans.length ? <div className="museum-items">{yakumans.map(item => <article className="museum-item" key={`${item.player.id}-${item.name}`}><i className="yakuman">{yakumanIcon(item.name)}</i><div><h3>{item.name}</h3><p>{tr('achievement_yakuman_detail', { n: item.count })}</p><HonorPlayer player={item.player} /></div><strong>×{item.count}</strong></article>)}</div> : <div className="museum-empty">◇ <span>{tr('yakuman_empty')}</span></div>}</section>
+        </main>
+        <aside className="museum-chronicle"><div className="museum-chronicle-head"><span className="block-label">{tr('museum_chronicle')}</span><h2>{tr('museum_latest')}</h2></div>{yakumanEvents.slice(0, 3).map(event => { const name = event.yaku.find(yaku => yakumanNames.has(yaku)) || event.yaku[0]; return <article className="museum-event" key={`${event.player.id}-${event.session}-${event.hanchan}-${event.yaku.join('-')}`}><i>{yakumanIcon(name)}</i><div><span>{tr('museum_new_yakuman')}</span><h3>{event.player.shortName}</h3><p>{event.yaku.filter(yaku => yakumanNames.has(yaku)).join(' · ')}</p><small>S{event.session} · H{event.hanchan}</small></div></article>; })}{feature && <article className="museum-event current"><i>{icons.leader}</i><div><span>{tr('museum_current_record')}</span><h3>{feature.player.shortName}</h3><p>{hallOfFameCopy(feature, 0).tag} · {feature.value}</p><small>{tr('museum_after_session', { n: latestSession })}</small></div></article>}<article className="museum-event current"><i>{icons.saki}</i><div><span>{tr('museum_current_distinction')}</span><h3>{sakiPlayer.shortName}</h3><p>{tr('achievement_saki')} · {fmtPts(sakiPlayer.points)}</p><small>{tr('museum_after_session', { n: latestSession })}</small></div></article></aside>
+      </div>
     </div>
   );
 }

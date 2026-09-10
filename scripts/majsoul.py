@@ -24,6 +24,11 @@ RECORD_URL = "https://record-v2.maj-soul.com:5333/majsoul/game_record/{uuid}"
 # paipus de data/raw-paipu: los 76 eventos type=2 caen siempre en un asiento que
 # ya había llamado, y 62 de los 76 type=3 en asientos sin ninguna llamada.
 ANKAN_TYPE = 3
+# Combinación declarada tal como la escribe el paipu: "kezi(6z,6z,6z)". Se
+# guarda con una letra por delante para que la mano ganada quepa en un string:
+# k=pon, s=chi, g=kan abierto, a=kan cerrado.
+MELD_RE = re.compile(r"^(\w+)\((.*)\)$")
+MELD_PREFIX = {"kezi": "k", "shunzi": "s", "minggang": "g", "angang": "a"}
 # Enumerado de "fans" de Mahjong Soul: el paipu trae solo `id` y `val` (el campo
 # `name` viene vacío), así que la tabla es la única fuente del nombre.
 # Verificada contra los 72 paipus de data/raw-paipu por la forma de cada yaku:
@@ -50,6 +55,11 @@ YAKU_NAMES = {
 # entrar en el ranking de "yaku más jugados" (si entran, el dora se lleva el
 # primer puesto de todos los jugadores).
 NON_YAKU_FAN_IDS = frozenset({31, 32, 33, 34})
+# Los yakuman (35 en adelante en YAKU_NAMES) no se cuentan en han: el paipu les
+# pone `count` = 1, que es el múltiplo del yakuman, no trece han. Verificado en
+# las tres de la liga: kokushi, suuankou y shousuushii, todas con count=1 y
+# 32.000/48.000 puntos.
+YAKUMAN_FAN_IDS = frozenset(range(35, 50))
 MS_HOST = "https://mahjongsoul.game.yo-star.com"
 MS_GATEWAY_HOSTS = (
     "https://engs.mahjongsoul.com",
@@ -475,6 +485,7 @@ class ParsedPaipu:
     hands: int
     seat_stats: list[dict[str, Any]]
     players: list[dict[str, Any]]
+    rounds: list[dict[str, Any]]
     record_game_seen: bool
     sha256: str
 
@@ -487,6 +498,14 @@ def _protobuf_module():
             "Falta ms_api/protobuf. Ejecuta: python -m pip install -r requirements.txt"
         ) from exc
     return pb
+
+
+def parse_meld(combo: Any) -> str:
+    """Codifica "kezi(6z,6z,6z)" como "k6z6z6z" (ver MELD_PREFIX)."""
+    match = MELD_RE.match(str(combo))
+    if not match:
+        return str(combo)
+    return MELD_PREFIX.get(match.group(1), "?") + "".join(match.group(2).split(","))
 
 
 def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
@@ -527,7 +546,8 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
         {"hands": 0, "wins": 0, "tsumo": 0, "ron": 0, "dealIns": 0,
          "kans": 0, "doras": 0, "uraDoras": 0, "maxHonba": 0,
          "riichis": 0, "openHands": 0, "damaten": 0,
-         "winPoints": 0, "dealInPoints": 0, "winTurns": 0, "yaku": Counter()}
+         "winPoints": 0, "dealInPoints": 0, "winTurns": 0, "yaku": Counter(),
+         "wonHands": []}
         for _ in range(4)
     ]
     final_scores: list[int] = []
@@ -540,6 +560,8 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
     seat_identity: dict[int, dict[str, Any]] = {}
     record_game_points: dict[int, int] = {}
     record_game_seen = head_record is not None
+    rounds: list[dict[str, Any]] = []
+    current_round: dict[str, Any] | None = None
     if head_record is not None:
         for account in head_record.accounts:
             if account.seat < 4:
@@ -577,6 +599,13 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                 final_scores = list(message.scores)
             for seat in range(4):
                 stats[seat]["maxHonba"] = max(stats[seat]["maxHonba"], int(message.ben))
+            current_round = {
+                "index": round_index,
+                "chang": int(message.chang), "ju": int(message.ju),
+                "honba": int(message.ben), "riichiSticks": int(message.liqibang),
+                "startScores": list(message.scores), "result": "playing", "outcomes": [],
+            }
+            rounds.append(current_round)
         elif name == "RecordDealTile":
             seat = int(message.seat)
             if seat < 4:
@@ -602,6 +631,18 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                 final_scores = list(message.scores)
             elif message.old_scores and message.delta_scores:
                 final_scores = [a + b for a, b in zip(message.old_scores, message.delta_scores)]
+            if current_round is not None:
+                start_scores = list(message.old_scores) or list(current_round.get("startScores", []))
+                deltas = list(message.delta_scores)
+                end_scores = list(message.scores)
+                if len(end_scores) != 4 and len(start_scores) == 4 and len(deltas) == 4:
+                    end_scores = [score + delta for score, delta in zip(start_scores, deltas)]
+                if len(deltas) != 4 and len(start_scores) == 4 and len(end_scores) == 4:
+                    deltas = [score - start for score, start in zip(end_scores, start_scores)]
+                if len(end_scores) == 4:
+                    current_round["endScores"] = end_scores
+                if len(deltas) == 4:
+                    current_round["scoreDeltas"] = deltas
             for hule in message.hules:
                 seat = int(hule.seat)
                 if seat >= 4:
@@ -612,15 +653,20 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                 stats[seat]["tsumo" if hule.zimo else "ron"] += 1
                 # `ming` lista las combinaciones declaradas; el kan cerrado
                 # aparece como "angang(...)" y no rompe el menzen.
-                menzen = all(str(combo).startswith("angang") for combo in hule.ming)
+                melds = [parse_meld(combo) for combo in hule.ming]
+                menzen = all(meld.startswith("a") for meld in melds)
                 if menzen and not hule.liqi:
                     stats[seat]["damaten"] += 1
                 # `dadian` es el valor de la mano, sin palos de riichi ni honba.
                 stats[seat]["winPoints"] += int(hule.dadian)
                 stats[seat]["winTurns"] += draws[seat] if hule.zimo else draws[seat] + 1
+                paga = None
                 if not hule.zimo and last_discard is not None and last_discard < 4:
                     stats[last_discard]["dealIns"] += 1
                     stats[last_discard]["dealInPoints"] += int(hule.dadian)
+                    paga = last_discard
+                yakus = []
+                es_yakuman = any(fan.id in YAKUMAN_FAN_IDS for fan in hule.fans)
                 for fan in hule.fans:
                     if fan.id in NON_YAKU_FAN_IDS:
                         continue
@@ -628,10 +674,53 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                     yaku = str(yaku).strip()
                     if yaku:
                         stats[seat]["yaku"][yaku] += 1
+                        yakus.append(yaku)
+                # La mano completa, para poder mostrarla ficha por ficha: la
+                # parte oculta y la ganadora van por separado de los melds
+                # porque se dibujan distinto (los melds, volteados).
+                stats[seat]["wonHands"].append({
+                    "roundIndex": round_index,
+                    "yaku": yakus, "hand": "".join(hule.hand), "win": hule.hu_tile,
+                    "melds": melds, "dora": "".join(hule.doras),
+                    "points": int(hule.dadian), "fu": int(hule.fu),
+                    # `count` es el han de la mano, dora incluido; en un yakuman
+                    # es el múltiplo (1 = simple, 2 = doble).
+                    "han": int(hule.count), "yakuman": es_yakuman,
+                    "tsumo": bool(hule.zimo), "riichi": bool(hule.liqi),
+                    "turn": draws[seat] if hule.zimo else draws[seat] + 1,
+                    "loserSeat": paga,
+                })
+                if current_round is not None:
+                    current_round["result"] = "tsumo" if hule.zimo else "ron"
+                    current_round["outcomes"].append({
+                        "winnerSeat": seat, "loserSeat": paga,
+                        "yaku": yakus, "hand": "".join(hule.hand), "win": hule.hu_tile,
+                        "melds": melds, "dora": "".join(hule.doras),
+                        "points": int(hule.dadian), "fu": int(hule.fu),
+                        "han": int(hule.count), "yakuman": es_yakuman,
+                        "tsumo": bool(hule.zimo), "riichi": bool(hule.liqi),
+                        "turn": draws[seat] if hule.zimo else draws[seat] + 1,
+                    })
         elif name == "RecordNoTile" and message.scores:
+            if current_round is not None:
+                current_round["result"] = "draw"
             score_info = message.scores[0]
             if score_info.old_scores and score_info.delta_scores:
                 final_scores = [a + b for a, b in zip(score_info.old_scores, score_info.delta_scores)]
+            if current_round is not None:
+                current_round["tenpaiSeats"] = [
+                    seat for seat, player_info in enumerate(message.players[:4])
+                    if player_info.tingpai
+                ]
+                start_scores = list(score_info.old_scores) or list(current_round.get("startScores", []))
+                deltas = list(score_info.delta_scores)
+                end_scores = [score + delta for score, delta in zip(start_scores, deltas)] if len(start_scores) == len(deltas) == 4 else []
+                if len(end_scores) == 4:
+                    current_round["endScores"] = end_scores
+                    current_round["scoreDeltas"] = deltas
+        elif name == "RecordLiuJu":
+            if current_round is not None:
+                current_round["result"] = "abortive"
 
     if len(final_scores) != 4:
         raise PaipuError(f"Se esperaban 4 scores finales y se obtuvieron {len(final_scores)}")
@@ -656,6 +745,7 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
         hands=max((seat["hands"] for seat in stats), default=0),
         seat_stats=normalized,
         players=players,
+        rounds=rounds,
         record_game_seen=record_game_seen,
         sha256=hashlib.sha256(raw).hexdigest(),
     )
