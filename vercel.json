@@ -5,7 +5,8 @@
   "outputDirectory": "dist-site",
   "trailingSlash": false,
   "functions": {
-    "api/discord.mjs": { "includeFiles": "sync-config.json" }
+    "api/discord.mjs": { "includeFiles": "sync-config.json" },
+    "api/availability.mjs": { "includeFiles": "sync-config.json" }
   },
   "github": {
     "silent": true

@@ -19,7 +19,7 @@ const TABS = [
 ];
 
 // tabs that are scoped to a single division
-const DIV_SCOPED = ['standings', 'detail', 'log', 'calendar', 'hof'];
+const DIV_SCOPED = ['standings', 'detail', 'log', 'calendar', 'coordinate', 'hof'];
 
 // ── Rutas por hash: #/<tab>/<div|jugador> ──
 // Cada pestaña x división tiene su propia URL (funciona en estático, sin server).
@@ -27,6 +27,8 @@ const ROUTE_TABS = TABS.map(t => t.id);
 const ROUTE_RE = /^#\/([a-z]+)(?:\/([A-Za-z0-9_!.\-]+))?/;
 
 function parseRoute() {
+  const coordination = window.location.hash.match(/^#\/coordinar\/([AB])\/(\d+)\/(\d+)$/);
+  if (coordination) return { tab: 'coordinate', div: coordination[1], session: Number(coordination[2]), table: Number(coordination[3]), playerId: null };
   const m = window.location.hash.match(ROUTE_RE);
   let tab = m && ROUTE_TABS.includes(m[1]) ? m[1] : 'standings';
   let div = 'A';
@@ -268,7 +270,7 @@ function App() {
   const [route, setRoute] = React.useState(parseRoute);
   const data = window.MJC_DATA;
   const L = data.league;
-  const { tab, div, playerId } = route;
+  const { tab, div, playerId, session, table } = route;
 
   React.useEffect(() => {
     if (!window.location.hash) window.location.hash = routeToHash(tab, div, playerId);
@@ -334,8 +336,8 @@ function App() {
       </header>
 
       <div className="control-bar">
-        <DivisionSwitch div={div} onChange={(d) => navigate({ div: d, playerId: tab === 'detail' ? data.divisions[d].players[0].id : playerId })} data={data} disabled={!scoped} />
-        <TabBar active={tab} onChange={(id) => navigate({ tab: id })} lang={window.LANG} />
+        <DivisionSwitch div={div} onChange={(d) => navigate({ tab: tab === 'coordinate' ? 'calendar' : tab, div: d, playerId: tab === 'detail' ? data.divisions[d].players[0].id : playerId })} data={data} disabled={!scoped} />
+        <TabBar active={tab === 'coordinate' ? 'calendar' : tab} onChange={(id) => navigate({ tab: id })} lang={window.LANG} />
       </div>
 
       <main className="main">
@@ -363,6 +365,7 @@ function App() {
         {tab === 'log' && <HanchanLog data={data} div={div} />}
         {tab === 'iormc' && <IORMCView data={data} onPick={selectPlayer} />}
         {tab === 'calendar' && <CalendarView data={data} div={div} />}
+        {tab === 'coordinate' && <AvailabilityPage data={data} div={div} session={session} table={table} />}
         {tab === 'hof' && <HallOfFame data={data} div={div} />}
       </main>
       {rulesOpen && <RulesModal division={div} rules={L.rules} onClose={() => setRulesOpen(false)} />}

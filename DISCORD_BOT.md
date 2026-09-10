@@ -125,6 +125,7 @@ En *Project Settings → Environment Variables* (Production y Preview):
 | --- | --- | --- |
 | `DISCORD_PUBLIC_KEY` | sí | Verificar la firma Ed25519 de cada interacción |
 | `SHEET_ID` | sí | El id de la planilla (`spreadsheetId` de `sync-config.json`) |
+| `AVAILABILITY_SHEET_ID` | para el coordinador web | Id de una planilla independiente donde se guardan exclusivamente las disponibilidades de los jugadores |
 | `GOOGLE_SERVICE_ACCOUNT_JSON` | sí | El JSON completo de la cuenta de servicio (igual que el secret de GitHub); también acepta el mismo JSON en base64 |
 | `DISCORD_BOT_TOKEN` | recomendada | Leer el nombre del canal padre y resolver @Staff por nombre |
 | `DISCORD_STAFF_ROLE_ID` | opcional | Id del rol de organizadores; evita depender del token de bot |
@@ -133,6 +134,12 @@ En *Project Settings → Environment Variables* (Production y Preview):
 
 En vez de `GOOGLE_SERVICE_ACCOUNT_JSON` se pueden usar
 `GOOGLE_SERVICE_ACCOUNT_EMAIL` y `GOOGLE_PRIVATE_KEY` (con `\n` literales).
+
+El coordinador web **no escribe en la planilla oficial de la liga**. Hay que
+crear un Google Sheet separado, compartirlo como Editor con el `client_email`
+de la misma cuenta de servicio y guardar su id en `AVAILABILITY_SHEET_ID`. La
+función crea automáticamente dentro de esa planilla la pestaña
+`Disponibilidad` y sus encabezados.
 
 ### 4. Conectar el endpoint
 
