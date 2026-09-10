@@ -1084,7 +1084,7 @@ function zonedEpoch(dateISO, timeHM, timezone = 'America/Santiago') {
   return Math.round(epoch / 1000);
 }
 
-function AvailabilityModal({ entry, div, onClose }) {
+function AvailabilityModal({ entry, div, onClose, standalone = false }) {
   const players = (entry.players || []).filter(player => player.name);
   const storageKey = `mjc-availability-${div}-${entry.session}-${entry.table}`;
   const [responses, setResponses] = React.useState([]);
@@ -1147,9 +1147,23 @@ function AvailabilityModal({ entry, div, onClose }) {
     catch { const area = document.createElement('textarea'); area.value = value; document.body.appendChild(area); area.select(); document.execCommand('copy'); area.remove(); }
     setNotice(tr('coord_copied'));
   };
+  const copyText = async (value, message = tr('coord_copied')) => {
+    try { await navigator.clipboard.writeText(value); }
+    catch { const area = document.createElement('textarea'); area.value = value; document.body.appendChild(area); area.select(); document.execCommand('copy'); area.remove(); }
+    setNotice(message);
+  };
+  const copyAll = () => {
+    const ordered = [...mine].sort((a, b) => a - b);
+    const ranges = [];
+    ordered.forEach(slot => { const last = ranges[ranges.length - 1]; if (last && slot === last[1] + 1800) last[1] = slot; else ranges.push([slot, slot]); });
+    const player = players.find(item => item.id === playerId)?.name || '';
+    const lines = ranges.map(([start, end]) => start === end ? `• <t:${start}:F>` : `• <t:${start}:F> – <t:${end}:t>`);
+    copyText(`${tr('coord_discord_heading', { player, round: entry.round, table: entry.table })}\n${lines.join('\n')}\n${window.location.href}`, tr('coord_all_copied'));
+  };
+  const copyLink = () => copyText(window.location.href, tr('coord_link_copied'));
   const visibleSlots = times.map(time => zonedEpoch(days[selectedDay], time, 'America/Santiago'));
-  return <div className="cal-modal-backdrop" onClick={onClose}>
-    <section className="availability-modal" role="dialog" aria-modal="true" aria-labelledby="coord-title" onClick={event => event.stopPropagation()} style={{ '--calendar-accent': accentFor(div) }}>
+  return <div className={standalone ? 'availability-page' : 'cal-modal-backdrop'} onClick={standalone ? undefined : onClose}>
+    <section className={`availability-modal ${standalone ? 'standalone' : ''}`} role={standalone ? 'region' : 'dialog'} aria-modal={standalone ? undefined : true} aria-labelledby="coord-title" onClick={event => event.stopPropagation()} style={{ '--calendar-accent': accentFor(div) }}>
       <header className="availability-head"><div><span>{entry.round} · {tr('mesa', { n: entry.table })}</span><h2 id="coord-title">{tr('coord_title')}</h2><p>{tr('coord_intro')}</p></div><button onClick={onClose} aria-label={tr('cerrar')}>✕</button></header>
       <div className="availability-progress">{players.map((player, index) => <button type="button" className={`${responses.some(response => response.playerId === player.id && response.slots.length) ? 'done' : ''} ${playerId === player.id ? 'active' : ''}`} style={{ '--player-color': playerColors[index % playerColors.length] }} onClick={() => selectPlayer(player.id)} key={player.id} aria-pressed={playerId === player.id}><span className="availability-mini-avatar">{player.name.slice(0, 2)}</span><Flag nat={player.nat} size={15} /><b>{player.name}</b><small>{playerId === player.id ? tr('coord_who') : responses.some(response => response.playerId === player.id && response.slots.length) ? tr('coord_answered') : tr('coord_pending')}</small></button>)}</div>
       <div className="availability-layout">
@@ -1159,7 +1173,7 @@ function AvailabilityModal({ entry, div, onClose }) {
           </div>
           <div className="availability-days">{days.map((date, index) => <button className={selectedDay === index ? 'active' : ''} key={date} onClick={() => setSelectedDay(index)}><b>{format(zonedEpoch(date, '09:00', 'America/Santiago'), { weekday: 'short' })}</b><span>{format(zonedEpoch(date, '09:00', 'America/Santiago'), { day: '2-digit', month: 'short' })}</span></button>)}</div>
           <div className="availability-slots">{visibleSlots.map(slot => <button className={mine.includes(slot) ? 'selected' : ''} key={slot} onClick={() => toggle(slot)}><em>{format(slot, { weekday: 'short', day: '2-digit' })}</em><strong>{format(slot, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })}</strong><span>{counts[slot]}/{players.length} {tr('coord_available')}</span></button>)}</div>
-          <div className="availability-actions"><span>{tr('timezone')}: <b>{timezone}</b></span><button className="coord-save" disabled={saving || !playerId} onClick={save}>{saving ? tr('coord_saving') : tr('coord_save')}</button></div>
+          <div className="availability-actions"><span>{tr('timezone')}: <b>{timezone}</b></span><div><button className="coord-secondary" disabled={!mine.length} onClick={copyAll}>{tr('coord_copy_all')}</button><button className="coord-secondary" onClick={copyLink}>{tr('coord_copy_link')}</button><button className="coord-save" disabled={saving || !playerId} onClick={save}>{saving ? tr('coord_saving') : tr('coord_save')}</button></div></div>
         </div>
         <aside className="availability-best"><span>{tr('coord_best_title')}</span><h3>{best.length ? tr('coord_best_found') : tr('coord_best_empty')}</h3>{best.map(slot => <div className="best-slot" key={slot}><div><strong>{format(slot, { weekday: 'long', day: 'numeric', month: 'short' })}</strong><b>{format(slot, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })}</b><small>{counts[slot]}/{players.length} {tr('coord_players')}</small></div><button onClick={() => copy(slot)}>{tr('coord_copy_discord')}</button></div>)}<p>{tr('coord_staff_note')}</p></aside>
       </div>
@@ -1168,9 +1182,15 @@ function AvailabilityModal({ entry, div, onClose }) {
   </div>;
 }
 
+function AvailabilityPage({ data, div, session, table }) {
+  const raw = data.calendar.find(entry => entry.div === div && entry.session === session && entry.table === table);
+  if (!raw) return <div className="calendar-empty"><strong>{tr('calendar_no_results')}</strong><button onClick={() => { window.location.hash = `#/calendar/${div}`; }}>{tr('calendario_title')}</button></div>;
+  const entry = { ...raw, players: (raw.players || []).map(player => ({ ...player, id: data.divisions[div].players.find(candidate => candidate.name === player.name)?.id || player.name })) };
+  return <AvailabilityModal entry={entry} div={div} standalone onClose={() => { window.location.hash = `#/calendar/${div}`; }} />;
+}
+
 function CalendarView({ data, div = 'A' }) {
   const [modal, setModal] = React.useState(null);
-  const [coordination, setCoordination] = React.useState(null);
   const [view, setView] = React.useState('week');
   const [playerFilter, setPlayerFilter] = React.useState('');
   const [countryFilter, setCountryFilter] = React.useState('');
@@ -1228,7 +1248,7 @@ function CalendarView({ data, div = 'A' }) {
       <div className="cpc-time">—:—</div><small>{tr('calendar_time_undefined')}</small>
       {renderCalendarPlayers(entry)}
       <div className="cpc-format">2 hanchan · {tr('division', { d: div })}</div>
-      <button className="cpc-coordinate" onClick={() => setCoordination({ ...entry, players: (entry.players || []).map(player => ({ ...player, id: data.divisions[div].players.find(candidate => candidate.name === player.name)?.id || player.name })) })}>{tr('coord_open')}</button>
+      <button className="cpc-coordinate" onClick={() => { window.location.hash = `#/coordinar/${div}/${entry.session}/${entry.table}`; }}>{tr('coord_open')}</button>
     </div>
   );
   return (
@@ -1265,7 +1285,6 @@ function CalendarView({ data, div = 'A' }) {
       {pending.length > 0 && <section className="calendar-pending-section"><div className="calendar-panel-head"><div><span className="block-label">{tr('calendar_coordination')}</span><h2>{tr('calendar_undefined')}</h2></div><span>{pending.length} {tr('calendar_tables')}</span></div><div className="calendar-pending-grid">{pending.map(renderPendingCard)}</div></section>}
       {!filtered.length && <div className="calendar-empty"><strong>{tr('calendar_no_results')}</strong><button onClick={resetFilters}>{tr('calendar_clear_filters')}</button></div>}
       {modal && ReactDOM.createPortal(<CalModal entry={modal} onClose={() => setModal(null)} />, document.body)}
-      {coordination && ReactDOM.createPortal(<AvailabilityModal entry={coordination} div={div} onClose={() => setCoordination(null)} />, document.body)}
 
     </div>
   );
@@ -1320,4 +1339,4 @@ function HallOfFame({ data, div = 'A' }) {
   );
 }
 
-Object.assign(window, { PlayerDetail, Comparator, HanchanLog, CalendarView, HallOfFame, IORMCView, metricsToRadar, PlayerSelect, accentFor, placementSegments, metricScale });
+Object.assign(window, { PlayerDetail, Comparator, HanchanLog, CalendarView, AvailabilityPage, HallOfFame, IORMCView, metricsToRadar, PlayerSelect, accentFor, placementSegments, metricScale });
