@@ -1200,6 +1200,11 @@ function AvailabilityModal({ entry, div, onClose, standalone = false }) {
 }
 
 function AvailabilityPage({ data, div, session, table }) {
+  React.useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [div, session, table]);
   const raw = data.calendar.find(entry => entry.div === div && entry.session === session && entry.table === table);
   if (!raw) return <div className="calendar-empty"><strong>{tr('calendar_no_results')}</strong><button onClick={() => { window.location.hash = `#/calendar/${div}`; }}>{tr('calendario_title')}</button></div>;
   const entry = { ...raw, players: (raw.players || []).map(player => ({ ...player, id: data.divisions[div].players.find(candidate => candidate.name === player.name)?.id || player.name })) };
