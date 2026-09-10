@@ -1089,7 +1089,7 @@ function AvailabilityModal({ entry, div, onClose, standalone = false }) {
   const storageKey = `mjc-availability-${div}-${entry.session}-${entry.table}`;
   const [responses, setResponses] = React.useState([]);
   const [playerId, setPlayerId] = React.useState(players[0]?.id || '');
-  const [selectedDay, setSelectedDay] = React.useState(0);
+  const [selectedDays, setSelectedDays] = React.useState([0]);
   const [saving, setSaving] = React.useState(false);
   const [notice, setNotice] = React.useState('');
   const [timezone, setTimezone] = React.useState(window.TZ);
@@ -1106,6 +1106,8 @@ function AvailabilityModal({ entry, div, onClose, standalone = false }) {
   const locale = window.LANG === 'en' ? 'en-US' : window.LANG === 'pt' ? 'pt-BR' : 'es-CL';
   const format = (epoch, options) => new Intl.DateTimeFormat(locale, { timeZone: timezone, ...options }).format(new Date(epoch * 1000));
   const playerColors = ['#c9232d', '#1d467c', '#318257', '#a86a12'];
+  const dragMode = React.useRef(null);
+  const draggedTimes = React.useRef(new Set());
   const selectPlayer = id => { setPlayerId(id); setNotice(''); };
   const changeTimezone = value => { setTimezone(value); window.setTZ(value); };
 
@@ -1123,12 +1125,26 @@ function AvailabilityModal({ entry, div, onClose, standalone = false }) {
     return () => window.clearTimeout(timeout);
   }, [notice]);
 
-  const toggle = slot => setResponses(current => {
+  React.useEffect(() => {
+    const stopDragging = () => { dragMode.current = null; draggedTimes.current.clear(); };
+    window.addEventListener('pointerup', stopDragging);
+    window.addEventListener('pointercancel', stopDragging);
+    return () => { window.removeEventListener('pointerup', stopDragging); window.removeEventListener('pointercancel', stopDragging); };
+  }, []);
+
+  const setTimeAvailability = (time, available) => setResponses(current => {
     const own = current.find(response => response.playerId === playerId);
-    const nextSlots = (own?.slots || []).includes(slot) ? own.slots.filter(value => value !== slot) : [...(own?.slots || []), slot].sort();
+    const nextSet = new Set(own?.slots || []);
+    selectedDays.forEach(index => { const slot = zonedEpoch(days[index], time, 'America/Santiago'); if (available) nextSet.add(slot); else nextSet.delete(slot); });
+    const nextSlots = [...nextSet].sort((a, b) => a - b);
     const next = [...current.filter(response => response.playerId !== playerId), { playerId, player: players.find(player => player.id === playerId)?.name, slots: nextSlots }];
     return next;
   });
+  const toggleDay = index => setSelectedDays(current => current.includes(index) ? (current.length === 1 ? current : current.filter(value => value !== index)) : [...current, index].sort((a, b) => a - b));
+  const timeSlots = time => selectedDays.map(index => zonedEpoch(days[index], time, 'America/Santiago'));
+  const paintTime = time => { if (!dragMode.current || draggedTimes.current.has(time)) return; draggedTimes.current.add(time); setTimeAvailability(time, dragMode.current === 'add'); };
+  const startPainting = (event, time) => { event.preventDefault(); const epochs = timeSlots(time); dragMode.current = epochs.every(slot => mine.includes(slot)) ? 'remove' : 'add'; draggedTimes.current = new Set(); paintTime(time); };
+  const movePainting = event => { if (!dragMode.current) return; const button = document.elementFromPoint(event.clientX, event.clientY)?.closest('[data-availability-time]'); if (button) paintTime(button.dataset.availabilityTime); };
   const save = async () => {
     setSaving(true); setNotice('');
     const response = responses.find(item => item.playerId === playerId) || { slots: [] };
@@ -1161,7 +1177,7 @@ function AvailabilityModal({ entry, div, onClose, standalone = false }) {
     copyText(`${tr('coord_discord_heading', { player, round: entry.round, table: entry.table })}\n${lines.join('\n')}\n${window.location.href}`, tr('coord_all_copied'));
   };
   const copyLink = () => copyText(window.location.href, tr('coord_link_copied'));
-  const visibleSlots = times.map(time => zonedEpoch(days[selectedDay], time, 'America/Santiago'));
+  const visibleSlots = times.map(time => ({ time, slot: zonedEpoch(days[selectedDays[0]], time, 'America/Santiago'), epochs: timeSlots(time) }));
   return <div className={standalone ? 'availability-page' : 'cal-modal-backdrop'} onClick={standalone ? undefined : onClose}>
     <section className={`availability-modal ${standalone ? 'standalone' : ''}`} role={standalone ? 'region' : 'dialog'} aria-modal={standalone ? undefined : true} aria-labelledby="coord-title" onClick={event => event.stopPropagation()} style={{ '--calendar-accent': accentFor(div) }}>
       <header className="availability-head"><div><span>{entry.round} · {tr('mesa', { n: entry.table })}</span><h2 id="coord-title">{tr('coord_title')}</h2><p>{tr('coord_intro')}</p></div><button onClick={onClose} aria-label={tr('cerrar')}>✕</button></header>
@@ -1171,8 +1187,9 @@ function AvailabilityModal({ entry, div, onClose, standalone = false }) {
           <div className="availability-controls">
             <div className="availability-timezone"><span>{tr('timezone')}</span><TzSwitch value={timezone} onChange={changeTimezone} /></div>
           </div>
-          <div className="availability-days">{days.map((date, index) => <button className={selectedDay === index ? 'active' : ''} key={date} onClick={() => setSelectedDay(index)}><b>{format(zonedEpoch(date, '09:00', 'America/Santiago'), { weekday: 'short' })}</b><span>{format(zonedEpoch(date, '09:00', 'America/Santiago'), { day: '2-digit', month: 'short' })}</span></button>)}</div>
-          <div className="availability-slots">{visibleSlots.map(slot => <button className={mine.includes(slot) ? 'selected' : ''} key={slot} onClick={() => toggle(slot)}><em>{format(slot, { weekday: 'short', day: '2-digit' })}</em><strong>{format(slot, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })}</strong><span>{counts[slot]}/{players.length} {tr('coord_available')}</span></button>)}</div>
+          <div className="availability-selection-hint"><b>{tr('coord_days_hint')}</b><span>{tr('coord_drag_hint')}</span></div>
+          <div className="availability-days">{days.map((date, index) => <button className={selectedDays.includes(index) ? 'active' : ''} key={date} onClick={() => toggleDay(index)} aria-pressed={selectedDays.includes(index)}><b>{format(zonedEpoch(date, '09:00', 'America/Santiago'), { weekday: 'short' })}</b><span>{format(zonedEpoch(date, '09:00', 'America/Santiago'), { day: '2-digit', month: 'short' })}</span></button>)}</div>
+          <div className="availability-slots" onPointerMove={movePainting}>{visibleSlots.map(({ time, slot, epochs }) => { const chosen = epochs.filter(epoch => mine.includes(epoch)).length; return <button className={`${chosen === epochs.length ? 'selected' : ''} ${chosen > 0 && chosen < epochs.length ? 'partial' : ''}`} data-availability-time={time} key={time} onPointerDown={event => startPainting(event, time)} onPointerEnter={() => paintTime(time)} onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setTimeAvailability(time, chosen !== epochs.length); } }}><em>{selectedDays.length > 1 ? tr('coord_days_selected', { n: selectedDays.length }) : format(slot, { weekday: 'short', day: '2-digit' })}</em><strong>{format(slot, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })}</strong><span>{chosen > 0 && chosen < epochs.length ? `${chosen}/${epochs.length} · ` : ''}{counts[slot]}/{players.length} {tr('coord_available')}</span></button>; })}</div>
           <div className="availability-actions"><span>{tr('timezone')}: <b>{timezone}</b></span><div><button className="coord-secondary" disabled={!mine.length} onClick={copyAll}>{tr('coord_copy_all')}</button><button className="coord-secondary" onClick={copyLink}>{tr('coord_copy_link')}</button><button className="coord-save" disabled={saving || !playerId} onClick={save}>{saving ? tr('coord_saving') : tr('coord_save')}</button></div></div>
         </div>
         <aside className="availability-best"><span>{tr('coord_best_title')}</span><h3>{best.length ? tr('coord_best_found') : tr('coord_best_empty')}</h3>{best.map(slot => <div className="best-slot" key={slot}><div><strong>{format(slot, { weekday: 'long', day: 'numeric', month: 'short' })}</strong><b>{format(slot, { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })}</b><small>{counts[slot]}/{players.length} {tr('coord_players')}</small></div><button onClick={() => copy(slot)}>{tr('coord_copy_discord')}</button></div>)}<p>{tr('coord_staff_note')}</p></aside>
