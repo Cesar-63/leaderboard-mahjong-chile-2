@@ -63006,9 +63006,9 @@
           "session": 6,
           "sessionCode": "S6",
           "hanchan": 1,
-          "date": "07 sep",
-          "dateISO": "2026-09-07",
-          "weekday": "lun",
+          "date": "06 sep",
+          "dateISO": "2026-09-06",
+          "weekday": "dom",
           "table": 2,
           "players": [
             {
@@ -63968,9 +63968,9 @@
           "session": 6,
           "sessionCode": "S6",
           "hanchan": 2,
-          "date": "07 sep",
-          "dateISO": "2026-09-07",
-          "weekday": "lun",
+          "date": "06 sep",
+          "dateISO": "2026-09-06",
+          "weekday": "dom",
           "table": 2,
           "players": [
             {
@@ -64959,9 +64959,9 @@
           "session": 6,
           "sessionCode": "S6",
           "hanchan": 1,
-          "date": "08 sep",
-          "dateISO": "2026-09-08",
-          "weekday": "mar",
+          "date": "07 sep",
+          "dateISO": "2026-09-07",
+          "weekday": "lun",
           "table": 4,
           "players": [
             {
@@ -66049,9 +66049,9 @@
           "session": 6,
           "sessionCode": "S6",
           "hanchan": 2,
-          "date": "08 sep",
-          "dateISO": "2026-09-08",
-          "weekday": "mar",
+          "date": "07 sep",
+          "dateISO": "2026-09-07",
+          "weekday": "lun",
           "table": 4,
           "players": [
             {
@@ -67019,8 +67019,8 @@
         {
           "n": 6,
           "code": "S6",
-          "date": "07 sep",
-          "weekday": "lun",
+          "date": "06 sep",
+          "weekday": "dom",
           "div": "A",
           "matches": 4,
           "status": "partial"
@@ -141500,13 +141500,13 @@
       "status": "highlight"
     },
     {
-      "date": "Por definir",
-      "day": "—",
+      "date": "06 sep",
+      "day": "dom",
       "round": "Sesión 6",
       "session": 6,
       "table": 2,
       "mesa": "División A — Mesa 2",
-      "time": "Por definir",
+      "time": "21:00",
       "div": "A",
       "players": [
         {
@@ -141558,13 +141558,13 @@
       "status": "highlight"
     },
     {
-      "date": "Por definir",
-      "day": "—",
+      "date": "07 sep",
+      "day": "lun",
       "round": "Sesión 6",
       "session": 6,
       "table": 4,
       "mesa": "División A — Mesa 4",
-      "time": "Por definir",
+      "time": "22:00",
       "div": "A",
       "players": [
         {
@@ -170645,8 +170645,8 @@
     "hanchanTotal": 126,
     "nextSession": {
       "code": "S6",
-      "date": "09 sep",
-      "day": "mié"
+      "date": "06 sep",
+      "day": "dom"
     },
     "rules": {
       "A": {
