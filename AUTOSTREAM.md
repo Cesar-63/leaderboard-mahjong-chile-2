@@ -80,6 +80,49 @@ circuito y no vale la pena arriesgar la cuenta por ahorrárselo.
 Detalle de calidad: sin Nitro, el Go Live llega hasta 720p30, que sobra para
 comentar. Con Nitro sube a 1080p60.
 
+## 2 bis. El monitor de los comentaristas (el problema de verdad)
+
+Los comentaristas necesitan ver la partida **con muy poco atraso respecto de lo
+que sale al aire**. Si se apoyan en el propio stream de Twitch, comentan sobre
+algo que el espectador ya vio hace 10–20 segundos, y el comentario llega tarde
+toda la transmisión.
+
+**Y no se arregla retrasando la salida.** Es tentador pensar "si su monitor
+atrasa 15 s, atraso yo el video 15 s y calza", pero el monitor está *después* de
+ese retardo: atrasar la salida también atrasa lo que ellos ven, y el desfase
+queda igual. Es un lazo que se persigue la cola. La única salida es que el
+monitor sea **una toma aparte, anterior al retardo de programa**.
+
+### La cuenta que sí cierra
+
+Con un monitor de baja latencia, el desfase restante se corrige con dos
+perillas nativas de OBS, sin plugins:
+
+- **`Ajustes → Avanzado → Retardo de transmisión`** atrasa **sólo la salida de
+  stream**. La salida de grabación —de donde sale el monitor— no se toca.
+- El valor a poner es: **latencia del monitor + latencia del audio de vuelta**
+  (típicamente 0,5–1,5 s en total). La reacción humana no se compensa: que el
+  comentario caiga un pelo después de la jugada es lo natural en televisión.
+
+Para medirlo: un reloj con milisegundos en pantalla, se fotografían juntas la
+señal de programa y el monitor, y se resta. Diez minutos de trabajo, una sola
+vez.
+
+### Opciones de monitor, de menos a más atraso
+
+| Camino | Atraso | Costo | Qué hay que hacer |
+| --- | --- | --- | --- |
+| **Parsec / Sunshine+Moonlight** | <100 ms | $0 | Escritorio remoto para juegos. El mejor número de todos. Requiere instalar en cada comentarista, y **Parsec sólo hostea desde Windows/macOS** (calza con la opción Steam de §7). |
+| **Discord Go Live** | ~0,5–1 s | $0 | Lo de §2. Sigue siendo el mejor equilibrio si la cuenta normal no molesta. |
+| **Toma WebRTC propia (MediaMTX)** | ~0,3–0,8 s | $0 local, o ~US$5/mes de VPS | OBS: salida de **grabación** → FFmpeg personalizado → SRT hacia `mediamtx` (un solo binario Go), y los comentaristas abren **una página web**. Sin instalar nada, sin cuentas. La opción más limpia de ingeniería. |
+| **Cada comentarista espectando la misma mesa en su cliente** | ~0 s, *si sincroniza* | $0 | El candidato de costo cero: la vista de espectador ya viene con el retardo de 5 min del juego, así que dos clientes en la misma partida deberían mostrar casi el mismo momento. **Hay que medirlo** (dos clientes lado a lado). Riesgo: cada uno ve la mesa desde la perspectiva que el cliente le dé, distinta de la de la cámara. |
+| **Meet / Jitsi compartiendo pantalla** | ~0,5–1 s | $0 | Como el Go Live pero sin depender de Discord. Calidad de imagen peor, porque re-comprime. |
+| **Twitch/YouTube en modo baja latencia** | ~2–5 s | $0 | El último recurso. Para riichi —juego lento— es soportable, pero se nota en cada descarte. |
+
+**Recomendación para probar, en orden:** primero la de costo cero (comentaristas
+espectando la misma mesa), porque si sincroniza no hay nada que construir;
+si no, la toma WebRTC con MediaMTX, que no le pide instalar nada a nadie.
+
 ## 3. Vuelta: el bot de voz
 
 - Bot con `@discordjs/voice` + `prism-media`: entra al canal, se suscribe a cada
@@ -229,8 +272,10 @@ perderlo:
 2. **Secretos.** Stream key de Twitch/YouTube, token del bot y credenciales de la
    cuenta cámara **no pueden entrar al repo**: es público y `data/generated.js`
    se sirve tal cual. `.env` fuera de git, o SSM Parameter Store en AWS.
-3. **Sincronía comentario ↔ imagen.** El Go Live la resuelve. Lo que la rompe es
-   que un comentarista mire la partida por un camino sin el retardo de 5 min.
+3. **Sincronía comentario ↔ imagen.** La resuelve el monitor de baja latencia de
+   §2 bis más el retardo de transmisión de OBS. Lo que la rompe es que un
+   comentarista se apoye en el stream de Twitch, o que mire la partida por un
+   camino sin el retardo de 5 min.
 4. **Suplentes.** Un asiento puede ser un suplente ajeno al torneo: el overlay
    debe caer a "Suplente" sin publicar identidad, como el resto del pipeline.
 5. **Aviso** de que es una transmisión de la liga, no oficial de Yostar.
@@ -240,7 +285,8 @@ perderlo:
 | Fase | Qué entrega | Esfuerzo |
 | --- | --- | --- |
 | 0 | **Medición.** Web vs Steam en la máquina real: fps, estabilidad, cuánto demora entrar a observar. Confirmar cómo se vincula la cuenta en Steam. | 1–2 días |
-| 1 | **Primera sesión al aire, manual.** Cliente + OBS + Go Live a mano, overlay estático con la mesa del día. Se transmite este mes y se aprende qué falta. | 1 día |
+| 0 bis | **Prueba de monitor** (§2 bis): medir si dos clientes espectando la misma mesa muestran el mismo momento. Si sí, el monitor sale gratis; si no, montar la toma WebRTC. | medio día |
+| 1 | **Primera sesión al aire, manual.** Cliente + OBS + monitor elegido, overlay estático con la mesa del día. Se transmite este mes y se aprende qué falta. | 1 día |
 | 2 | Overlay dinámico desde `Calendario` + `data/generated.js`: mesa, jugadores con nombre de liga, bandera, puntos y posición. | 2–3 días |
 | 3 | Bot de voz de Discord + ducking. | 2–3 días |
 | 4 | Automatizar el cliente: entrar a observar por template matching, con verificación y reintento. | 3–5 días |
