@@ -846,6 +846,7 @@ function HanchanLog({ data, div }) {
   const [countryFilter, setCountryFilter] = React.useState('');
   const [dateFilter, setDateFilter] = React.useState('');
   const [expanded, setExpanded] = React.useState(null);
+  const cardRefs = React.useRef(new Map());
   const divData = data.divisions[div];
   const sessions = divData.sessions;
   const allMatches = React.useMemo(() => [...divData.matches].reverse(), [divData.matches]);
@@ -871,6 +872,13 @@ function HanchanLog({ data, div }) {
   }, [allMatches, filter, playerFilter, countryFilter, dateFilter]);
   const filtersActive = filter !== 'all' || playerFilter || countryFilter || dateFilter;
   const resetFilters = () => { setFilter('all'); setPlayerFilter(''); setCountryFilter(''); setDateFilter(''); };
+  React.useLayoutEffect(() => {
+    if (!expanded) return undefined;
+    const frame = requestAnimationFrame(() => {
+      cardRefs.current.get(expanded)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [expanded]);
   const sessionDate = (session) => {
     const months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
     const dated = [];
@@ -922,7 +930,7 @@ function HanchanLog({ data, div }) {
 
       <div className="hanchan-list">
         {matches.map((m, idx) => (
-          <div className={`hanchan-card ${expanded === m.id ? 'expanded' : ''}`} key={m.id} style={{ animation: 'rowin .35s ease both', animationDelay: `${Math.min(idx, 30) * 14}ms` }}>
+          <div ref={element => element ? cardRefs.current.set(m.id, element) : cardRefs.current.delete(m.id)} className={`hanchan-card ${expanded === m.id ? 'expanded' : ''}`} key={m.id} style={{ animation: 'rowin .35s ease both', animationDelay: `${Math.min(idx, 30) * 14}ms` }}>
             <div className="code-block">
               <div className="code">{m.code}</div>
               <div className="date">{m.sessionCode} · H{m.hanchan}</div>
