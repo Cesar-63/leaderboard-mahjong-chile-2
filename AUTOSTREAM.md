@@ -17,111 +17,111 @@ Esto no se re-discute en el resto del documento:
 - **Nada por protocolo, por ahora.** Ver §6.
 - **Canal propio de Twitch** (tipo *Liga Mahjong Chile TV*), no el canal personal
   de nadie.
-- **La transmisión también entra a Discord** para que los comentaristas la vean,
-  y el audio de ese canal sale al aire.
+- **Los comentaristas ven la señal por una URL** (WebRTC), no por Twitch ni por
+  Go Live de Discord, y el audio de su canal de voz sale al aire.
 
 ## 1. El circuito completo
 
 ```
-   Mahjong Soul                    ┌──────────────────────────────┐
-   (cuenta "cámara",               │            OBS               │
-    modo espectador) ──ventana────▶│  escena: juego + overlay     │
-                                   │  audio: juego (atenuado)     │
-   overlay.html ──browser source──▶│         + voces de Discord   │
-   (Calendario + generated.js)     └──────┬───────────┬───────────┘
-                                          │           │
-                                    rtmp  │           │  Go Live (cuenta normal)
-                                          ▼           ▼
-                             Twitch  +  YouTube    Discord #comentarios
-                                                        │  (los comentaristas
-                                                        │   ven la señal acá)
-                                                        │
-                             discord-audio.mjs ◀── voces del canal
-                                    │
-                                    └──PCM──▶ de vuelta a OBS
+  PC de la casa                                  VPS (US$5/mes)
+  ─────────────                                  ──────────────
+  Mahjong Soul (cuenta "cámara")
+        │ ventana
+        ▼
+  ┌──────────────────────────────┐
+  │ OBS                          │
+  │  video: juego + overlay      │
+  │  pista 1: juego + voces      │──stream, con retardo──▶ ffmpeg -c copy ──▶ Twitch
+  │  pista 2: juego solo         │                                      └──▶ YouTube
+  │                              │
+  │  salida grabación, SIN retardo│──srt──────────────────▶ mediamtx ──▶ https://…/mesa
+  └──────────────────────────────┘                                       (WebRTC, ~0,4 s)
+        ▲                                                                      │
+        │ PCM                                                                  │ los
+  discord-audio.mjs ◀── voces del canal ── Discord ◀────────────────────────────┘ comentaristas
+                                                                                abren la URL
 ```
 
-Dos direcciones distintas y conviene no confundirlas:
+Tres flujos y ninguno se pisa:
 
-- **Ida (video):** la máquina entra al canal de voz y hace **Go Live** con la
-  señal. Los comentaristas ven exactamente los mismos pixeles que salen al aire,
-  con menos de un segundo de atraso. Esto es lo que mantiene el comentario
-  pegado a la imagen.
-- **Vuelta (audio):** un bot escucha las voces del canal y las devuelve a OBS
-  como pista de audio.
+- **Programa** → Twitch y YouTube, con el retardo de sincronía puesto.
+- **Monitor** → los comentaristas, sin retardo, por una URL.
+- **Voces** → vuelven a OBS y entran al programa.
 
-**El eco.** Si la ida llevara el audio del juego, el bot lo volvería a capturar y
-saldría duplicado y desfasado. Solución: **el Go Live va sin audio de juego**
-(sólo video), y el sonido del juego lo agrega OBS localmente. Los comentaristas
-no escuchan los efectos del juego por Discord; si les molesta, que abran su
-propio cliente como espectadores, que ya viene con el mismo retardo de 5 min.
+El VPS hace dos trabajos chicos: duplicar el programa hacia las dos plataformas
+y servir el monitor. Eso deja la subida de la casa en ~9 Mbps fijos, sin importar
+cuántos comentaristas haya —cada uno tira del VPS, no del PC—, y evita darles la
+IP de la casa.
 
-## 2. Ida: por qué una cuenta normal y no un bot
-
-**Un bot de Discord no puede hacer Go Live.** La API oficial le permite a un bot
-*enviar y recibir audio* en un canal de voz, pero **no compartir pantalla ni
-enviar video**: eso no está expuesto para cuentas de bot. Las bibliotecas que lo
-logran lo hacen con una cuenta de usuario y por caminos no soportados.
-
-Entonces, como dijiste, **cuenta normal**. Dos maneras:
-
-- **Manual (recomendado para empezar):** la cuenta de la liga queda logueada en
-  el Discord de escritorio de la máquina, y alguien hace clic en *Go Live* una
-  vez al empezar la sesión. Cero automatización, cero zona gris de ToS, dos
-  segundos de trabajo.
-- **Automático:** `xdotool` sobre la ventana del Discord de escritorio hace ese
-  clic solo cuando arranca la ventana de emisión. Funciona, pero automatizar una
-  cuenta de usuario es zona gris del ToS de Discord y se rompe cuando cambian el
-  layout de la app.
-
-Sugerencia: manual la primera temporada. Es el único clic humano de todo el
-circuito y no vale la pena arriesgar la cuenta por ahorrárselo.
-
-Detalle de calidad: sin Nitro, el Go Live llega hasta 720p30, que sobra para
-comentar. Con Nitro sube a 1080p60.
-
-## 2 bis. El monitor de los comentaristas (el problema de verdad)
+## 2. El monitor de los comentaristas
 
 Los comentaristas necesitan ver la partida **con muy poco atraso respecto de lo
-que sale al aire**. Si se apoyan en el propio stream de Twitch, comentan sobre
-algo que el espectador ya vio hace 10–20 segundos, y el comentario llega tarde
-toda la transmisión.
+que sale al aire**. Si se apoyan en el stream de Twitch comentan sobre algo que
+el espectador vio hace 10–20 s, y el comentario llega tarde toda la transmisión.
 
 **Y no se arregla retrasando la salida.** Es tentador pensar "si su monitor
 atrasa 15 s, atraso yo el video 15 s y calza", pero el monitor está *después* de
-ese retardo: atrasar la salida también atrasa lo que ellos ven, y el desfase
-queda igual. Es un lazo que se persigue la cola. La única salida es que el
-monitor sea **una toma aparte, anterior al retardo de programa**.
+ese retardo: atrasarlo todo también atrasa lo que ellos ven y el desfase queda
+igual. Es un lazo que se persigue la cola. **El monitor tiene que ser una toma
+aparte, anterior al retardo de programa.**
 
-### La cuenta que sí cierra
+### La solución elegida: WebRTC con MediaMTX
 
-Con un monitor de baja latencia, el desfase restante se corrige con dos
-perillas nativas de OBS, sin plugins:
+Los comentaristas **abren una URL en el navegador y ya**. Nada que instalar,
+ninguna cuenta, ningún cliente. Funciona igual en el teléfono.
 
-- **`Ajustes → Avanzado → Retardo de transmisión`** atrasa **sólo la salida de
-  stream**. La salida de grabación —de donde sale el monitor— no se toca.
-- El valor a poner es: **latencia del monitor + latencia del audio de vuelta**
-  (típicamente 0,5–1,5 s en total). La reacción humana no se compensa: que el
-  comentario caiga un pelo después de la jugada es lo natural en televisión.
+- **`mediamtx`** es un binario único de Go, sin dependencias, que recibe la toma
+  y la sirve por WebRTC. Trae **su propio reproductor web**: publicando en la
+  ruta `mesa`, la dirección para mirar es `https://<host>:8889/mesa`.
+- **La toma sale de OBS por la salida de *grabación***, configurada como *Salida
+  personalizada (FFmpeg)* hacia `srt://<vps>:8890?streamid=publish:mesa`. Sin
+  plugins: la salida de grabación y la de stream son independientes, y el
+  **retardo de transmisión** de OBS afecta **sólo a la de stream**.
+- **Atraso esperado:** ~0,1 s de encode + ~0,15 s del salto SRT + ~0,1 s de
+  WebRTC ≈ **0,3–0,5 s**.
+- **Certificado HTTPS:** MediaMTX lo sirve nativo con Let's Encrypt. Conviene,
+  porque los navegadores tratan mucho mejor a un origen seguro.
+
+### Dos detalles que hay que hacer bien
+
+1. **La toma NO puede llevar las voces.** Si las lleva, cada comentarista se
+   escucha a sí mismo medio segundo después y es insoportable. OBS tiene **seis
+   pistas de audio** y la salida personalizada elige cuál usa: **pista 1 = juego
+   + voces** (programa), **pista 2 = juego solo** (monitor). Nativo, sin plugins.
+2. **Códec compatible con WebRTC:** H.264 *baseline* o *main*, **sin B-frames**,
+   keyframe cada 1–2 s, `tune=zerolatency`; audio en **Opus**, que es el único
+   que WebRTC acepta sin transcodificar. Si el contenedor pelea con Opus, el
+   plan B es RTMP hacia el VPS y un `ffmpeg` ahí que convierta sólo el audio.
+
+### El retardo que cierra la cuenta
+
+Con el monitor andando, el desfase restante se corrige con una perilla:
+
+> **`Ajustes → Avanzado → Retardo de transmisión` = latencia del monitor +
+> latencia del audio de vuelta** ≈ 0,4 s + 0,3 s ≈ **1 s** (medir, no adivinar).
+
+Así el comentario cae en el frame correcto. La reacción humana no se compensa:
+que el comentario llegue un pelo después de la jugada es lo natural en
+televisión.
 
 Para medirlo: un reloj con milisegundos en pantalla, se fotografían juntas la
-señal de programa y el monitor, y se resta. Diez minutos de trabajo, una sola
-vez.
+señal de programa y el monitor, se resta. Diez minutos, una sola vez.
 
-### Opciones de monitor, de menos a más atraso
+### Costo
 
-| Camino | Atraso | Costo | Qué hay que hacer |
-| --- | --- | --- | --- |
-| **Parsec / Sunshine+Moonlight** | <100 ms | $0 | Escritorio remoto para juegos. El mejor número de todos. Requiere instalar en cada comentarista, y **Parsec sólo hostea desde Windows/macOS** (calza con la opción Steam de §7). |
-| **Discord Go Live** | ~0,5–1 s | $0 | Lo de §2. Sigue siendo el mejor equilibrio si la cuenta normal no molesta. |
-| **Toma WebRTC propia (MediaMTX)** | ~0,3–0,8 s | $0 local, o ~US$5/mes de VPS | OBS: salida de **grabación** → FFmpeg personalizado → SRT hacia `mediamtx` (un solo binario Go), y los comentaristas abren **una página web**. Sin instalar nada, sin cuentas. La opción más limpia de ingeniería. |
-| **Cada comentarista espectando la misma mesa en su cliente** | ~0 s, *si sincroniza* | $0 | El candidato de costo cero: la vista de espectador ya viene con el retardo de 5 min del juego, así que dos clientes en la misma partida deberían mostrar casi el mismo momento. **Hay que medirlo** (dos clientes lado a lado). Riesgo: cada uno ve la mesa desde la perspectiva que el cliente le dé, distinta de la de la cámara. |
-| **Meet / Jitsi compartiendo pantalla** | ~0,5–1 s | $0 | Como el Go Live pero sin depender de Discord. Calidad de imagen peor, porque re-comprime. |
-| **Twitch/YouTube en modo baja latencia** | ~2–5 s | $0 | El último recurso. Para riichi —juego lento— es soportable, pero se nota en cada descarte. |
+Un VPS de **US$5/mes** con IP pública (Lightsail incluye 2 TB de tráfico; el
+consumo estimado es ~200 GB por temporada). Si algún día la máquina de captura
+se va a AWS, `mediamtx` se muda a esa misma instancia y el VPS desaparece.
 
-**Recomendación para probar, en orden:** primero la de costo cero (comentaristas
-espectando la misma mesa), porque si sincroniza no hay nada que construir;
-si no, la toma WebRTC con MediaMTX, que no le pide instalar nada a nadie.
+### Descartadas
+
+| Camino | Por qué no |
+| --- | --- |
+| Que cada uno espectee la mesa en su cliente | Descartado por César. |
+| Parsec / Moonlight | Mejor latencia de todas (<100 ms), pero exige que cada comentarista instale. Descartado. |
+| Discord Go Live | Anda bien (~0,5–1 s) pero **un bot no puede hacerlo**: la API no expone video a cuentas de bot, así que necesitaría una cuenta normal y alguien que apriete el botón. Queda como respaldo si el VPS falla. |
+| Meet / Jitsi | Re-comprime, imagen peor, y una cuenta más de la que depender. |
+| Twitch/YouTube en baja latencia | 2–5 s. Es el problema que estamos resolviendo. |
 
 ## 3. Vuelta: el bot de voz
 
@@ -146,8 +146,9 @@ si no, la toma WebRTC con MediaMTX, que no le pide instalar nada a nadie.
   *Modify Channel Information* de la API de Twitch deja el canal como
   "División A · Sesión 3 · Mesa 2" y la categoría en *Mahjong Soul* antes de
   arrancar. Los datos salen del `Calendario`, que ya los tiene.
-- **YouTube sale casi gratis:** el muxer `tee` de ffmpeg manda el **mismo
-  encode** a los dos destinos, sin costo extra de CPU. YouTube tiene *stream key*
+- **YouTube sale casi gratis y no lo paga la casa:** OBS manda **un** programa al
+  VPS y ahí un `ffmpeg -c copy` lo reparte a las dos plataformas, sin
+  re-codificar y sin duplicar la subida del PC. YouTube tiene *stream key*
   persistente, así que tampoco necesita API.
 - **Resolución:** sin partner, Twitch no garantiza transcodes; quien tenga mala
   conexión se queda sin opción de calidad. 720p60 a ~4,5 Mbps es más amable que
@@ -272,20 +273,23 @@ perderlo:
 2. **Secretos.** Stream key de Twitch/YouTube, token del bot y credenciales de la
    cuenta cámara **no pueden entrar al repo**: es público y `data/generated.js`
    se sirve tal cual. `.env` fuera de git, o SSM Parameter Store en AWS.
-3. **Sincronía comentario ↔ imagen.** La resuelve el monitor de baja latencia de
-   §2 bis más el retardo de transmisión de OBS. Lo que la rompe es que un
-   comentarista se apoye en el stream de Twitch, o que mire la partida por un
-   camino sin el retardo de 5 min.
-4. **Suplentes.** Un asiento puede ser un suplente ajeno al torneo: el overlay
+3. **Sincronía comentario ↔ imagen.** La resuelven el monitor WebRTC de §2 y el
+   retardo de transmisión de OBS. Lo que la rompe es que un comentarista se
+   apoye en el stream de Twitch.
+4. **El VPS es un punto único de falla** en vivo: si se cae, se caen el monitor y
+   la salida a las dos plataformas. Respaldo ensayado: apuntar OBS directo a
+   Twitch y que los comentaristas se apoyen en Discord mientras tanto. Vale la
+   pena tener las dos configuraciones guardadas en OBS como perfiles.
+5. **Suplentes.** Un asiento puede ser un suplente ajeno al torneo: el overlay
    debe caer a "Suplente" sin publicar identidad, como el resto del pipeline.
-5. **Aviso** de que es una transmisión de la liga, no oficial de Yostar.
+6. **Aviso** de que es una transmisión de la liga, no oficial de Yostar.
 
 ## 10. Plan por fases
 
 | Fase | Qué entrega | Esfuerzo |
 | --- | --- | --- |
 | 0 | **Medición.** Web vs Steam en la máquina real: fps, estabilidad, cuánto demora entrar a observar. Confirmar cómo se vincula la cuenta en Steam. | 1–2 días |
-| 0 bis | **Prueba de monitor** (§2 bis): medir si dos clientes espectando la misma mesa muestran el mismo momento. Si sí, el monitor sale gratis; si no, montar la toma WebRTC. | medio día |
+| 0 bis | **Monitor WebRTC:** VPS con `mediamtx`, toma desde OBS, medir latencia real y fijar el retardo de transmisión. | medio día |
 | 1 | **Primera sesión al aire, manual.** Cliente + OBS + monitor elegido, overlay estático con la mesa del día. Se transmite este mes y se aprende qué falta. | 1 día |
 | 2 | Overlay dinámico desde `Calendario` + `data/generated.js`: mesa, jugadores con nombre de liga, bandera, puntos y posición. | 2–3 días |
 | 3 | Bot de voz de Discord + ducking. | 2–3 días |
@@ -301,6 +305,7 @@ stream/
 ├── overlay.html        # browser source de OBS
 ├── overlay.jsx         # mesa, jugadores, puntos (usa generated.js)
 ├── discord-audio.mjs   # bot de voz → PCM
+├── mediamtx.yml        # config del monitor WebRTC (VPS)
 ├── twitch.mjs          # título y categoría antes de emitir
 ├── schedule.py         # ventana de emisión desde la hoja Calendario (gsheets.py)
 └── run.sh              # levanta todo y arma la línea de ffmpeg
