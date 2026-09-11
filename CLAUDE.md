@@ -269,9 +269,10 @@ Vercel sirve `dist-site/`, que emite `node scripts/build_site.mjs`. Ver
 
 ## Bot de Discord
 
-`/agendar` escribe la fecha y la hora de una mesa en la hoja Calendario. Vive en
-`api/discord.mjs` como Vercel Function del mismo proyecto que sirve el sitio;
-paso a paso completo en `DISCORD_BOT.md`.
+`/agendar` escribe la fecha y la hora de una mesa en la hoja Calendario, y
+`/actualizar` dispara los workflows del pipeline. Viven en `api/discord.mjs`
+como Vercel Function del mismo proyecto que sirve el sitio; paso a paso completo
+en `DISCORD_BOT.md`.
 
 - **Es el tercer escritor de la planilla**, junto a
   `fill_calendar_paipus.py --write` y `fill_game_history.py --write`. Comparten
@@ -308,6 +309,18 @@ paso a paso completo en `DISCORD_BOT.md`.
   en memoria y **nunca lo publica**: el mensaje visible en el hilo sólo lleva
   nombres de liga; el único handle que aparece es el de quien invocó, y en un
   mensaje efímero que sólo ve esa persona.
+- **`/actualizar` no corre ningún script: pide el `workflow_dispatch`.** El
+  pipeline necesita Python, los secretos de Mahjong Soul y varios minutos, y
+  Discord corta a los 3 segundos; lo que manda el bot es una llamada a la API de
+  GitHub sobre la rama `main` y lo que devuelve es el link de la corrida. Los
+  workflows que sabe lanzar son `WORKFLOWS` en `api/_lib/github.mjs`, única
+  lista: de ahí salen las opciones que se registran en Discord y un test
+  verifica que cada archivo exista y declare `workflow_dispatch`. Se lanzan en
+  el orden de `WORKFLOW_CHAIN` —`paipus` escribe la planilla y `datos` la lee;
+  al revés, lo recién escrito se publica una corrida tarde— y una corrida en
+  curso no se vuelve a pedir, que es el único freno que tiene el comando. El
+  token (`GITHUB_DISPATCH_TOKEN`, permiso *Actions: Read and write*) vive sólo
+  en Vercel: **no es** el `GITHUB_TOKEN` con el que el workflow commitea.
 - Tests: `node --test tests/test_discord_bot.mjs`, con la red simulada.
 
 ## Vistas

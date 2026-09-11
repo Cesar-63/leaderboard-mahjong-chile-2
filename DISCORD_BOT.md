@@ -1,4 +1,13 @@
-# Bot de Discord — agendar mesas
+# Bot de Discord
+
+Dos comandos, la misma Vercel Function (`api/discord.mjs`):
+
+| Comando | Qué hace |
+| --- | --- |
+| `/agendar` | Escribe la fecha y la hora de una mesa en la hoja Calendario |
+| `/actualizar` | Le pide a GitHub Actions que corra el pipeline ahora mismo |
+
+## `/agendar` — fecha y hora de una mesa
 
 `/agendar` escribe la fecha y la hora de una mesa directamente en la hoja
 **Calendario** de la planilla. El sincronizador la levanta en la corrida
@@ -87,6 +96,46 @@ Dos guardas más:
 > falsificar y sobrevive a cualquier cambio de nombre. Se copia con clic derecho
 > sobre la persona → *Copiar ID de usuario* (con Modo desarrollador activado).
 
+## `/actualizar` — correr el pipeline sin esperar al cron
+
+Los scripts del pipeline corren en GitHub Actions y no en Vercel: necesitan
+Python, los secretos de Mahjong Soul y varios minutos, y Discord corta a los 3
+segundos. `/actualizar` es el botón remoto. **El bot no ejecuta ningún script**:
+manda un `workflow_dispatch` sobre la rama `main` y devuelve el link de la
+corrida, así que el único costo en el camino crítico es esa llamada HTTP.
+
+```
+/actualizar                     # los dos procesos, en orden
+/actualizar que:datos           # sólo republicar el sitio desde la planilla
+/actualizar solo_estado:True    # no lanza nada: cómo terminó la última corrida
+```
+
+| `que` | Workflow | Qué hace | Automático |
+| --- | --- | --- | --- |
+| `todo` (por defecto) | los dos, en ese orden | | |
+| `paipus` | `calendar-paipus.yml` | busca las partidas nuevas del torneo, las pega en el Calendario y completa el Game History | cada hora |
+| `datos` | `sync-data.yml` | relee la planilla, recalcula las estadísticas y publica `data/generated.js` | cada 15 minutos |
+
+**El orden no es negociable:** `paipus` escribe en la planilla y `datos` la lee.
+Al revés, lo que acaba de registrarse recién se publicaría en la corrida
+siguiente. Los dos comparten el grupo de concurrencia `sync-mahjong-data`
+—Mahjong Soul admite una sola sesión por cuenta—, así que con `todo` el segundo
+espera a que termine el primero; eso es lo normal y no hay nada que hacer.
+
+**Una corrida en curso no se vuelve a pedir.** Si el workflow ya está corriendo
+o en la cola, el bot lo dice con el link y no dispara nada: sería exactamente el
+mismo trabajo. Eso es también lo que limita el uso — no hay más freno que ése.
+
+**Quién puede:** los jugadores del roster, con la misma comparación contra la
+columna **Discord** que `/agendar`, y @Staff. Si la planilla no se puede leer,
+@Staff igual puede lanzarlo: un problema con Google no tiene por qué dejar el
+sitio sin sincronizar.
+
+La respuesta que confirma el lanzamiento es pública —conviene que el canal vea
+que alguien ya lo pidió—; los rechazos y `solo_estado` son efímeros. Si la
+corrida anterior no terminó bien, la respuesta lo dice con su link: es la
+explicación más probable de por qué faltan datos.
+
 ## Puesta en marcha
 
 ### 1. Aplicación de Discord
@@ -131,9 +180,21 @@ En *Project Settings → Environment Variables* (Production y Preview):
 | `DISCORD_STAFF_ROLE_ID` | opcional | Id del rol de organizadores; evita depender del token de bot |
 | `DISCORD_STAFF_ROLE_NAME` | opcional | Nombre del rol si no es `Staff` |
 | `LEAGUE_TIMEZONE` | opcional | Huso de la liga; por defecto `America/Santiago` |
+| `GITHUB_DISPATCH_TOKEN` | para `/actualizar` | Token de GitHub con permiso de escritura sobre Actions |
+| `GITHUB_REPOSITORY` | opcional | `usuario/repo`; por defecto, el repo del deploy |
+| `GITHUB_BRANCH` | opcional | Rama donde corren los workflows; por defecto `main` |
 
 En vez de `GOOGLE_SERVICE_ACCOUNT_JSON` se pueden usar
 `GOOGLE_SERVICE_ACCOUNT_EMAIL` y `GOOGLE_PRIVATE_KEY` (con `\n` literales).
+
+El token de `/actualizar` se saca en *GitHub → Settings → Developer settings →
+Personal access tokens → Fine-grained tokens*: **sólo este repositorio**, y el
+único permiso **Actions: Read and write** (para leer el estado de la última
+corrida y para pedir el `workflow_dispatch`). No necesita `contents`: los
+commits de datos los hace el propio workflow con su `GITHUB_TOKEN`. Los tokens
+de alcance fino vencen, así que conviene anotarse la fecha; cuando vence, el bot
+responde que GitHub rechazó el token. Sin esta variable el resto del bot
+funciona igual y sólo `/actualizar` avisa qué le falta.
 
 El coordinador web **no escribe en la planilla oficial de la liga**. Hay que
 crear un Google Sheet separado, compartirlo como Editor con el `client_email`
@@ -159,16 +220,18 @@ curl https://<dominio-del-sitio>/api/discord
 
 Devuelve un JSON con `ready` y qué variables están puestas. No expone secretos.
 
-### 5. Registrar el comando
+### 5. Registrar los comandos
 
 ```bash
 DISCORD_APPLICATION_ID=... DISCORD_BOT_TOKEN=... DISCORD_GUILD_ID=... \
   node scripts/register_discord_commands.mjs
 ```
 
-Con `DISCORD_GUILD_ID` el comando aparece al instante en ese servidor. Sin él se
-registra global y Discord tarda hasta una hora en propagarlo. Hay que volver a
-correrlo cada vez que cambien las opciones del comando.
+Con `DISCORD_GUILD_ID` los comandos aparecen al instante en ese servidor. Sin él
+se registran globales y Discord tarda hasta una hora en propagarlos. Hay que
+volver a correrlo cada vez que cambien las opciones de algún comando, y también
+la primera vez que se despliega `/actualizar`: el registro es una lista completa
+—se manda con `PUT`—, así que un comando que no esté ahí no existe para Discord.
 
 ## Qué escribe, exactamente
 
@@ -183,7 +246,9 @@ de vuelta como número de serie para confirmarlo; si Google lo hubiera guardado
 como texto, lo avisa en la respuesta, porque en ese caso `sync.py` lo leería
 como "Por definir" sin fallar.
 
-Nunca toca las celdas de paipu, ni el roster, ni el Game History.
+Nunca toca las celdas de paipu, ni el roster, ni el Game History. `/actualizar`
+no escribe nada en la planilla por su cuenta: lo que escribe es el workflow, con
+sus propias credenciales.
 
 ## Arquitectura
 
@@ -195,10 +260,16 @@ api/
     ├── time.mjs       parseo de `cuando` y conversión de huso
     ├── target.mjs     nombre del hilo → división / sesión / mesa
     ├── sheets.mjs     cuenta de servicio, lectura y escritura de la planilla
+    ├── github.mjs     registro de workflows y `workflow_dispatch`
     └── discord.mjs    llamadas a la API de Discord y armado de respuestas
 scripts/register_discord_commands.mjs
 tests/test_discord_bot.mjs
 ```
+
+Los workflows que `/actualizar` sabe lanzar están en un solo lugar, `WORKFLOWS`
+en `api/_lib/github.mjs`: de ahí salen las opciones que se registran en Discord
+y un test verifica que cada archivo exista en `.github/workflows/` y declare
+`workflow_dispatch`. Agregar un proceso al comando es agregar una entrada ahí.
 
 Sin dependencias de npm: la firma Ed25519, el JWT RS256 de Google y las
 llamadas HTTP salen de `node:crypto` y `fetch`. El `package.json` de la raíz
@@ -217,9 +288,12 @@ node --test tests/test_discord_bot.mjs
 
 Cubren el parseo de fechas, la deducción de la mesa, la aritmética de celdas, la
 verificación de firma y el `POST` completo con la red simulada (permisos de
-jugador y de @Staff, mesa ya jugada, datos faltantes, fecha ilegible). Uno de
-los tests relee las constantes de `scripts/sync.py`: si la planilla se reordena
-y sólo se toca uno de los dos, falla.
+jugador y de @Staff, mesa ya jugada, datos faltantes, fecha ilegible). Para
+`/actualizar`: qué workflow se pide y en qué orden, que no se repita una corrida
+en curso, quién puede lanzarlo y qué pasa sin token. Dos de los tests releen
+otros archivos: las constantes de `scripts/sync.py` —si la planilla se reordena
+y sólo se toca uno de los dos, falla— y los `.github/workflows/*.yml` del
+registro, que tienen que declarar `workflow_dispatch`.
 
 ## Problemas frecuentes
 
@@ -230,4 +304,7 @@ y sólo se toca uno de los dos, falla.
 | "No pude deducir división, sesión, mesa" | El hilo no sigue la convención de nombres; pasar las opciones a mano |
 | A un jugador lo rechaza siendo de la mesa | Su celda **Discord** en el roster no coincide con su usuario actual |
 | @Staff no tiene privilegios | Falta `DISCORD_BOT_TOKEN` (para resolver el rol por nombre) o `DISCORD_STAFF_ROLE_ID` |
-| La fecha aparece en la planilla pero no en el sitio | El sincronizador todavía no corrió; espera hasta 15 minutos |
+| La fecha aparece en la planilla pero no en el sitio | El sincronizador todavía no corrió; espera hasta 15 minutos, o corré `/actualizar que:datos` |
+| `/actualizar` dice que falta `GITHUB_DISPATCH_TOKEN` | No está la variable en Vercel (acordate de marcarla en Production **y** Preview) |
+| `/actualizar` responde 404 sobre el repositorio | Al token le falta **Actions: Read and write**, o el workflow no existe en `main` |
+| `/actualizar` no aparece en el menú de Discord | Falta volver a correr `scripts/register_discord_commands.mjs` |

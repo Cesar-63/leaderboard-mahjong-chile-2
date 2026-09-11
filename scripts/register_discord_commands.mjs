@@ -1,13 +1,23 @@
 #!/usr/bin/env node
-// Registra /agendar en Discord. Se corre a mano, una vez, y otra vez cada vez
-// que cambien las opciones del comando.
+// Registra los comandos del bot en Discord. Se corre a mano, una vez, y otra
+// vez cada vez que cambien las opciones de algún comando.
 //
 //   DISCORD_APPLICATION_ID=... DISCORD_BOT_TOKEN=... \
 //   DISCORD_GUILD_ID=... node scripts/register_discord_commands.mjs
 //
 // Con DISCORD_GUILD_ID el comando aparece al instante en ese servidor; sin él
 // se registra global y Discord tarda hasta una hora en propagarlo.
+import { WORKFLOWS, WORKFLOW_CHAIN } from "../api/_lib/github.mjs";
+
 const API = "https://discord.com/api/v10";
+
+// Las opciones de /actualizar salen del registro de workflows, que es el mismo
+// que usa el endpoint: así no se puede ofrecer en Discord un proceso que el bot
+// no sepa lanzar.
+const PROCESOS = [
+  { name: "Todo: los paipus y después los datos del sitio", value: "todo" },
+  ...WORKFLOW_CHAIN.map((key) => ({ name: WORKFLOWS[key].label, value: key })),
+];
 
 const COMMANDS = [
   {
@@ -47,6 +57,27 @@ const COMMANDS = [
         required: false,
         min_value: 1,
         max_value: 6,
+      },
+    ],
+  },
+  {
+    name: "actualizar",
+    description: "Corre el pipeline en GitHub Actions ahora, sin esperar al cron",
+    type: 1,
+    dm_permission: false,
+    options: [
+      {
+        name: "que",
+        description: "Qué proceso correr; por defecto, todo",
+        type: 3,
+        required: false,
+        choices: PROCESOS,
+      },
+      {
+        name: "solo_estado",
+        description: "No lanza nada: sólo dice cómo terminó la última corrida",
+        type: 5,
+        required: false,
       },
     ],
   },

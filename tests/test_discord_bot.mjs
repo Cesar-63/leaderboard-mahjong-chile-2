@@ -16,6 +16,7 @@ import {
 } from "../api/_lib/sheets.mjs";
 import { verifyDiscordSignature } from "../api/_lib/verify.mjs";
 import { playersFor } from "../api/discord.mjs";
+import { WORKFLOWS } from "../api/_lib/github.mjs";
 
 // Antes de julio, para que los casos sin año no crucen el salto de año.
 const NOW = Date.parse("2026-07-01T12:00:00Z");
@@ -529,4 +530,225 @@ test("una fecha ilegible no llega a tocar la planilla", async () => {
   });
   assert.equal(body.data.flags, 64);
   assert.match(body.data.content, /No pude interpretar la fecha/);
+});
+
+// --- /actualizar: lanzar el pipeline desde Discord ---------------------------
+//
+// El bot no corre los scripts: le pide a GitHub Actions que corra el workflow.
+// Lo que hay que probar es justamente eso —qué workflow pide, en qué orden y a
+// quién se lo permite—, porque una corrida de más escribe en la planilla de la
+// liga y gasta minutos de Actions.
+
+const GITHUB_ENV = {
+  GITHUB_REPOSITORY: "cesar-63/leaderboard-mahjong-chile-2",
+  GITHUB_DISPATCH_TOKEN: "token-de-actions",
+};
+
+function workflowRun({ id = 7, status = "completed", conclusion = "success" } = {}) {
+  return {
+    id,
+    status,
+    conclusion,
+    event: "schedule",
+    run_started_at: "2026-07-01T11:00:00Z",
+    html_url: `https://github.com/cesar-63/leaderboard-mahjong-chile-2/actions/runs/${id}`,
+  };
+}
+
+/** Red simulada: GitHub acá, y todo lo demás (Google y Discord) al mock que ya
+ *  usa /agendar. */
+function githubNetwork({ runs = {}, onDispatch } = {}) {
+  const rest = fakeNetwork({ grid: calendarGrid() });
+  return async (url, init = {}) => {
+    const href = String(url);
+    if (!href.startsWith("https://api.github.com/")) return rest(url, init);
+    const dispatched = /\/actions\/workflows\/([^/]+)\/dispatches$/.exec(href);
+    if (dispatched) {
+      assert.equal(init.headers.authorization, `Bearer ${GITHUB_ENV.GITHUB_DISPATCH_TOKEN}`);
+      onDispatch?.({ file: dispatched[1], body: JSON.parse(init.body) });
+      return new Response(null, { status: 204 });
+    }
+    const listed = /\/actions\/workflows\/([^/]+)\/runs\?/.exec(href);
+    if (listed) {
+      const run = runs[listed[1]];
+      return Response.json({ workflow_runs: run ? [run] : [] });
+    }
+    throw new Error(`Llamada a GitHub no simulada: ${href}`);
+  };
+}
+
+function updateInteraction({ username = ".bodoque", roles = [], options = [], userId = "user-1" } = {}) {
+  return {
+    type: 2,
+    guild_id: "guild-1",
+    channel_id: "channel-1",
+    channel: { id: "channel-1", name: "general", type: 0 },
+    member: { user: { id: userId, username }, roles },
+    data: { name: "actualizar", options },
+  };
+}
+
+test("cada workflow del registro existe y acepta workflow_dispatch", () => {
+  // El comando no puede ofrecer un proceso que GitHub no sepa lanzar: sin
+  // `workflow_dispatch` declarado, la API contesta 404 y el bot culpa al token.
+  for (const [key, workflow] of Object.entries(WORKFLOWS)) {
+    const source = readFileSync(new URL(`../.github/workflows/${workflow.file}`, import.meta.url), "utf8");
+    assert.match(source, /^on:\n(?:.*\n)*?\s{2}workflow_dispatch:/m, `${key} → ${workflow.file}`);
+  }
+});
+
+test("por defecto lanza los dos, y los paipus antes que los datos", async () => {
+  // El orden es el del pipeline: `paipus` escribe en la planilla y `datos` la
+  // lee. Al revés, lo recién escrito recién se publicaría en la corrida
+  // siguiente.
+  const dispatched = [];
+  const { body } = await callHandler(
+    updateInteraction(),
+    githubNetwork({ onDispatch: (call) => dispatched.push(call) }),
+    GITHUB_ENV,
+  );
+  assert.deepEqual(dispatched.map((call) => call.file), ["calendar-paipus.yml", "sync-data.yml"]);
+  assert.deepEqual(dispatched[0].body, { ref: "main", inputs: {} });
+  assert.equal(body.data.flags, undefined, "la confirmación es pública");
+  assert.match(body.data.content, /Paipus del torneo hacia el Calendario/);
+  assert.match(body.data.content, /actions\/workflows\/sync-data\.yml/);
+});
+
+test("una opción explícita lanza sólo ese workflow", async () => {
+  const dispatched = [];
+  await callHandler(
+    updateInteraction({ options: [{ name: "que", type: 3, value: "datos" }] }),
+    githubNetwork({ onDispatch: (call) => dispatched.push(call) }),
+    GITHUB_ENV,
+  );
+  assert.deepEqual(dispatched.map((call) => call.file), ["sync-data.yml"]);
+});
+
+test("no vuelve a pedir una corrida que ya está en curso", async () => {
+  const dispatched = [];
+  const { body } = await callHandler(
+    updateInteraction(),
+    githubNetwork({
+      runs: { "calendar-paipus.yml": workflowRun({ status: "in_progress", conclusion: null }) },
+      onDispatch: (call) => dispatched.push(call),
+    }),
+    GITHUB_ENV,
+  );
+  assert.deepEqual(dispatched.map((call) => call.file), ["sync-data.yml"], "pedir de nuevo lo que corre repite el mismo trabajo");
+  assert.match(body.data.content, /ya está corriendo/);
+});
+
+test("con todo en curso no dispara nada y lo dice en privado", async () => {
+  const dispatched = [];
+  const { body } = await callHandler(
+    updateInteraction(),
+    githubNetwork({
+      runs: {
+        "calendar-paipus.yml": workflowRun({ status: "in_progress", conclusion: null }),
+        "sync-data.yml": workflowRun({ id: 8, status: "queued", conclusion: null }),
+      },
+      onDispatch: (call) => dispatched.push(call),
+    }),
+    GITHUB_ENV,
+  );
+  assert.deepEqual(dispatched, []);
+  assert.equal(body.data.flags, 64, "no hay nada que anunciarle al canal");
+  assert.match(body.data.content, /está en la cola/);
+});
+
+test("avisa cuando la corrida anterior falló", async () => {
+  const { body } = await callHandler(
+    updateInteraction({ options: [{ name: "que", type: 3, value: "datos" }] }),
+    githubNetwork({ runs: { "sync-data.yml": workflowRun({ conclusion: "failure" }) } }),
+    GITHUB_ENV,
+  );
+  assert.match(body.data.content, /La última falló/);
+  assert.match(body.data.content, /actions\/runs\/7/);
+});
+
+test("solo_estado informa sin lanzar nada", async () => {
+  const dispatched = [];
+  const { body } = await callHandler(
+    updateInteraction({ options: [{ name: "solo_estado", type: 5, value: true }] }),
+    githubNetwork({
+      runs: { "sync-data.yml": workflowRun() },
+      onDispatch: (call) => dispatched.push(call),
+    }),
+    GITHUB_ENV,
+  );
+  assert.deepEqual(dispatched, []);
+  assert.equal(body.data.flags, 64);
+  assert.match(body.data.content, /La última terminó bien/);
+  assert.match(body.data.content, /Nunca corrió todavía/, "el que nunca corrió también se informa");
+});
+
+test("un ajeno al roster no puede lanzar el pipeline", async () => {
+  const dispatched = [];
+  const { body } = await callHandler(
+    updateInteraction({ username: "alguien-que-pasaba", userId: "user-9" }),
+    githubNetwork({ onDispatch: (call) => dispatched.push(call) }),
+    GITHUB_ENV,
+  );
+  assert.deepEqual(dispatched, [], "quema minutos de Actions y escribe en la planilla: no es para cualquiera");
+  assert.equal(body.data.flags, 64);
+  assert.match(body.data.content, /no figura en la columna Discord/);
+});
+
+test("@Staff lanza el pipeline aunque no juegue la liga", async () => {
+  const dispatched = [];
+  await callHandler(
+    updateInteraction({ username: "unaorganizadora", roles: ["role-staff"] }),
+    githubNetwork({ onDispatch: (call) => dispatched.push(call) }),
+    { ...GITHUB_ENV, DISCORD_STAFF_ROLE_ID: "role-staff" },
+  );
+  assert.equal(dispatched.length, 2);
+});
+
+test("sin planilla configurada, @Staff igual puede lanzarlo", async () => {
+  // Un problema con Google no tiene por qué dejar sin sincronizar al sitio: lo
+  // único que se pierde es poder verificar a un jugador contra el roster.
+  const dispatched = [];
+  const network = async (url, init) => {
+    if (String(url).includes("sheets.googleapis.com")) throw new Error("Google caído");
+    return githubNetwork({ onDispatch: (call) => dispatched.push(call) })(url, init);
+  };
+  const staff = await callHandler(
+    updateInteraction({ username: "unaorganizadora", roles: ["role-staff"] }),
+    network,
+    { ...GITHUB_ENV, DISCORD_STAFF_ROLE_ID: "role-staff" },
+  );
+  assert.equal(dispatched.length, 2);
+  assert.match(staff.body.data.content, /Paipus del torneo/);
+
+  const jugador = await callHandler(updateInteraction(), network, { ...GITHUB_ENV, DISCORD_STAFF_ROLE_ID: "role-staff" });
+  assert.equal(dispatched.length, 2, "al jugador no se lo puede verificar, así que no lanza");
+  assert.match(jugador.body.data.content, /No pude leer el roster/);
+});
+
+test("sin token de GitHub dice qué falta y no sale a la red", async () => {
+  const { body } = await callHandler(
+    updateInteraction(),
+    async (url) => { throw new Error(`no debería salir a la red: ${url}`); },
+    // Vacíos a propósito: el proceso que corre los tests puede tener su propio
+    // GITHUB_TOKEN (GitHub Actions se lo inyecta a cada job) y el caso que se
+    // prueba es el del entorno sin credencial.
+    { GITHUB_REPOSITORY: GITHUB_ENV.GITHUB_REPOSITORY, GITHUB_DISPATCH_TOKEN: "", GITHUB_TOKEN: "" },
+  );
+  assert.equal(body.data.flags, 64);
+  assert.match(body.data.content, /GITHUB_DISPATCH_TOKEN/);
+});
+
+test("el error de GitHub llega al chat en vez de un 500 mudo", async () => {
+  const { body } = await callHandler(
+    updateInteraction(),
+    async (url, init) => {
+      if (String(url).startsWith("https://api.github.com/")) {
+        return Response.json({ message: "Not Found" }, { status: 404 });
+      }
+      return fakeNetwork({ grid: calendarGrid() })(url, init);
+    },
+    GITHUB_ENV,
+  );
+  assert.equal(body.data.flags, 64);
+  assert.match(body.data.content, /Actions: Read and write/);
 });
