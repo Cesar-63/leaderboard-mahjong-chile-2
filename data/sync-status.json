@@ -430,8 +430,9 @@
     {
       "key": "A-S6-M1-G2",
       "cell": "Calendario!C52",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260912-ed3db089-5227-413e-8830-1105c0ab5608",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado (identidad de asientos)"
     },
     {
       "key": "A-S6-M2-G1",
@@ -450,14 +451,16 @@
     {
       "key": "A-S6-M3-G1",
       "cell": "Calendario!I51",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260912-a730e779-16ea-4d46-a870-58cfb6b636ae",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado (identidad de asientos)"
     },
     {
       "key": "A-S6-M3-G2",
       "cell": "Calendario!I52",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260912-e69e761e-ef49-492b-93b0-22bc593915d9",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado (identidad de asientos)"
     },
     {
       "key": "A-S6-M4-G1",
