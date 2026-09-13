@@ -500,6 +500,22 @@ def _protobuf_module():
     return pb
 
 
+def settlement_scores(result: Any) -> dict[int, int]:
+    """Puntaje final por asiento según la liquidación del paipu (`GameEndResult`).
+
+    `part_point_1` es el puntaje crudo con el que cada uno termina la partida;
+    `total_point` ya lleva el uma de la sala (en milésimas), así que no sirve
+    para la celda. Es la única fuente que incluye los palos de riichi que
+    quedan sobre la mesa cuando la última mano termina en ryūkyoku: Mahjong
+    Soul se los da al 1º al cerrar, y eso no aparece en ninguna mano del log.
+    Devuelve vacío si el registro no trae liquidación.
+    """
+    points = {int(player.seat): int(player.part_point_1) for player in result.players if player.seat < 4}
+    if len(points) == 4 and any(points.values()):
+        return points
+    return {}
+
+
 def parse_meld(combo: Any) -> str:
     """Codifica "kezi(6z,6z,6z)" como "k6z6z6z" (ver MELD_PREFIX)."""
     match = MELD_RE.match(str(combo))
@@ -568,6 +584,7 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
                 seat_identity[int(account.seat)] = {
                     "account_id": int(account.account_id), "nickname": account.nickname,
                 }
+        record_game_points = settlement_scores(head_record.result)
 
     for payload in payloads:
         item = pb.Wrapper()
@@ -580,15 +597,13 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
         message.ParseFromString(item.data)
 
         if name == "RecordGame" and hasattr(message, "accounts"):
-            # El inicio del registro declara los 4 jugadores y el resultado final.
+            # Formato legacy: el registro declara adentro del log los 4
+            # jugadores y la liquidación, igual que la cabecera del nuevo.
             record_game_seen = True
             for account in message.accounts:
                 if account.seat < 4:
                     seat_identity[int(account.seat)] = {"account_id": int(account.account_id), "nickname": account.nickname}
-            for player in message.result.players:
-                record_game_points[int(player.seat)] = int(player.total_point)
-            if len(record_game_points) == 4:
-                final_scores = [record_game_points[seat] for seat in range(4)]
+            record_game_points = settlement_scores(message.result) or record_game_points
         elif name == "RecordNewRound":
             round_index += 1
             last_discard = None
@@ -722,6 +737,12 @@ def parse_record(uuid: str, raw: bytes) -> ParsedPaipu:
             if current_round is not None:
                 current_round["result"] = "abortive"
 
+    # La liquidación manda sobre el marcador de la última mano. Difieren
+    # cuando la partida cierra en ryūkyoku con riichi declarados: el log deja
+    # esos palos fuera de todos los asientos (la suma baja de 120.000) y la
+    # liquidación se los da al 1º. Pasó en 12 de los 134 hanchan de la liga.
+    if len(record_game_points) == 4:
+        final_scores = [record_game_points[seat] for seat in range(4)]
     if len(final_scores) != 4:
         raise PaipuError(f"Se esperaban 4 scores finales y se obtuvieron {len(final_scores)}")
     normalized = []

@@ -38,8 +38,8 @@ from scripts.majsoul import (
     pending_record_uuids,
 )
 from scripts.sync import (
-    MIN_ROSTER_OVERLAP, TOTAL_RAW_SCORE, SyncError, align_history_with_fixtures, download_sheet,
-    format_history_line, history_rows, load_config, match_fixture_order, match_paipu_seats,
+    MIN_ROSTER_OVERLAP, TOTAL_RAW_SCORE, SyncError, align_history_with_fixtures, demote_unexpected_seats,
+    download_sheet, format_history_line, history_rows, load_config, match_fixture_order, match_paipu_seats,
     parse_history, read_calendar, read_roster,
 )
 
@@ -147,11 +147,25 @@ def resolve_seat_names(parsed: Any, fixture_players: list[str], roster: list[dic
     """
     seat_map = match_paipu_seats(parsed.players, roster) if len(parsed.players) == 4 else None
     identity, reason = "paipu", "El paipu nombra a los asientos"
+    # Un jugador del roster sentado en una mesa ajena es suplente de la misma
+    # división: con su nombre de liga en la celda pasaría por titular, y no
+    # hay formato acordado para anotarlo. Lo decide una persona.
+    intruders: list[str] = []
+    if seat_map is not None:
+        expected = demote_unexpected_seats(seat_map, fixture_players)
+        intruders = [str(seat_map[seat]["name"]) for seat in seat_map if seat not in expected]
+        seat_map = expected
     if seat_map is None:
         seat_map = match_fixture_order(fixture_players, roster)
         identity, reason = "revisar", "El paipu no nombra a los asientos; el orden sale del Calendario"
     if seat_map is None:
         return None, "revisar", "Ni el paipu ni el Calendario identifican a los cuatro asientos"
+    if intruders:
+        identity = "revisar"
+        reason = (
+            f"{', '.join(intruders)} es del roster pero no de esta mesa (suplente de la "
+            "misma división); decide cómo anotarlo"
+        )
     names: list[str] = []
     for seat in range(4):
         player = seat_map.get(seat)

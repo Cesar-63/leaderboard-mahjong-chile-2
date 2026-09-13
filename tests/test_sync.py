@@ -8,9 +8,10 @@ from scripts.majsoul import (
     has_yostar_credentials, parse_record,
 )
 from scripts.sync import (
-    CALENDAR_VALUE_COLS, PRIVATE_PLAYER_FIELDS, SESSION_G1_ROWS, advanced_stats_health,
+    CALENDAR_VALUE_COLS, PRIVATE_PLAYER_FIELDS, SESSION_G1_ROWS, TOTAL_RAW_SCORE, advanced_stats_health,
     align_history_with_fixtures, build_excel_results, build_paipu_results, build_public_data,
-    date_from_paipu_uuid, find_absent_player, match_paipu_seats, normalize_nat, strip_private_fields,
+    crosscheck_substitutes, date_from_paipu_uuid, demote_unexpected_seats, find_absent_player, match_paipu_seats, merge_paipus,
+    normalize_nat, strip_private_fields,
 )
 
 
@@ -24,7 +25,10 @@ def synthetic_paipu(accounts):
         account.nickname = nickname
         result = record_game.result.players.add()
         result.seat = seat
-        result.total_point = point
+        # Como en los paipus reales: el puntaje crudo va en part_point_1 y
+        # total_point trae los puntos con uma de la sala, en milésimas.
+        result.part_point_1 = point
+        result.total_point = (point - 30000) + [15000, 5000, -5000, -15000][seat]
     inner = pb.Wrapper()
     inner.name = "RecordGame"
     inner.data = record_game.SerializeToString()
@@ -372,6 +376,62 @@ class SyncTests(unittest.TestCase):
         self.assertEqual([p["nickname"] for p in parsed.players], ["A-P1", "A-P2", "A-P3", "A-P4"])
         self.assertEqual(parsed.final_scores, [45000, 38500, 32000, 4500])
 
+    def test_la_liquidacion_manda_sobre_la_ultima_mano(self):
+        """A-S6-M3-G1 (260912-a730e779): la última mano fue ryūkyoku con tres
+        riichi declarados. El log deja 117.000 repartidos y los 3.000 de los
+        palos en ninguna parte; la liquidación se los da al 1º."""
+        from ms import protocol_pb2 as pb
+        head = pb.RecordGame()
+        for seat, (acc, nick, raw_score) in enumerate([
+            (1111, "KillerHUD", 29500), (2222, "Twining1999", 44900),
+            (3333, "AuroraShine", 22400), (4444, "YotsugiNagi", 23200),
+        ]):
+            account = head.accounts.add()
+            account.account_id = acc
+            account.seat = seat
+            account.nickname = nick
+            result = head.result.players.add()
+            result.seat = seat
+            result.part_point_1 = raw_score
+            result.total_point = (raw_score - 30000) + [5000, 15000, -15000, -5000][seat]
+        new_round = pb.RecordNewRound()
+        new_round.scores.extend([29500, 41900, 22400, 26200])
+        no_tile = pb.RecordNoTile()
+        score_info = no_tile.scores.add()
+        # Los tres riichi ya están descontados en old_scores; el noten paga 3.000.
+        score_info.old_scores.extend([28500, 40900, 21400, 26200])
+        score_info.delta_scores.extend([1000, 1000, 1000, -3000])
+        res = pb.ResGameRecord()
+        res.data = wrap_records([("RecordNewRound", new_round), ("RecordNoTile", no_tile)])
+        res.head.CopyFrom(head)
+        parsed = parse_record("260912-a730e779-16ea-4d46-a870-58cfb6b636ae", res.SerializeToString())
+        self.assertEqual(parsed.final_scores, [29500, 44900, 22400, 23200])
+        self.assertEqual(sum(parsed.final_scores), TOTAL_RAW_SCORE)
+        self.assertEqual(parsed.players[1]["point"], 44900)
+        # El marcador mano a mano sigue contando lo que pasó en la mesa.
+        self.assertEqual(parsed.rounds[-1]["endScores"], [29500, 41900, 22400, 23200])
+
+    def test_sin_liquidacion_queda_el_marcador_del_log(self):
+        from ms import protocol_pb2 as pb
+        new_round = pb.RecordNewRound()
+        new_round.scores.extend([45000, 38500, 32000, 4500])
+        parsed = parse_record("260101-00000000-0000-0000-0000-000000000000", wrap_records([("RecordNewRound", new_round)]))
+        self.assertEqual(parsed.final_scores, [45000, 38500, 32000, 4500])
+        self.assertEqual([p["point"] for p in parsed.players], [None] * 4)
+
+    def test_merge_paipus_no_publica_un_puntaje_que_no_suma_120000(self):
+        from ms import protocol_pb2 as pb
+        new_round = pb.RecordNewRound()
+        new_round.scores.extend([29500, 41900, 22400, 23200])
+        raw = wrap_records([("RecordNewRound", new_round)])
+        submission = {"key": "A-S6-M3-G1", "cell": "Calendario!I51", "uuid": "u", "recordId": "u",
+                      "url": "https://x/paipu", "players": ["KillerHUD", "AuroraShine", "Twining1999", "YotsugiNagi"]}
+        with patch("scripts.sync.fetch_record", return_value=raw):
+            parsed_games, status = merge_paipus([submission], {}, pathlib.Path("data/raw-paipu"), offline=False)
+        self.assertEqual(parsed_games, {})
+        self.assertEqual(status["submissions"][0]["status"], "ERROR")
+        self.assertIn("117.000", status["submissions"][0]["message"])
+
     def test_match_paipu_seats_is_order_agnostic(self):
         players = _rosters()["A"]
         parsed_players = _paipu_game()["players"]
@@ -665,6 +725,93 @@ class SuplentesYAusenciasTests(unittest.TestCase):
         # Las manos del asiento del suplente no son de nadie del roster.
         self.assertEqual(ausente["hands"], 0)
         self.assertEqual(by_id["A01"]["hands"], 7)
+
+    def test_suplente_de_la_misma_division_no_se_lleva_la_partida(self):
+        """B-S5-M1 (30 ago): OnIShadow jugó por Cuervo_Gris. Como está en el
+        roster de B, el emparejamiento lo tomó por titular: 14 partidas para él
+        y ni partida ni −60 para el ausente."""
+        config = _division_config() | {"absencePenaltyPerHanchan": -30}
+        rosters = _rosters()
+        rosters["A"].append({"id": "A05", "div": "A", "num": "05", "name": "Kaiser", "shortName": "Kaiser",
+                             "handle": "Kaiser", "accountId": 105, "discord": "", "nat": "CL"})
+        fixtures = [_fixture("A", 1, 1, ["Bodoque", "Mon_96", "Meme000", "Twining1999"])]
+        submissions = [{"key": "A-S1-M1-G1", "division": "A", "session": 1, "table": 1,
+                        "players": ["Bodoque", "Mon_96", "Meme000", "Twining1999"],
+                        "game": 1, "cell": "Calendario!C11", "url": "u"}]
+        parsed = _paipu_game()
+        # El asiento 3 lo ocupa Kaiser (A05), del roster pero de otra mesa.
+        parsed["players"] = [
+            {"seat": 0, "account_id": 101, "nickname": "Bodoque", "point": 45000},
+            {"seat": 1, "account_id": 102, "nickname": "Mon_96", "point": 38500},
+            {"seat": 2, "account_id": 103, "nickname": "Meme000", "point": 32000},
+            {"seat": 3, "account_id": 105, "nickname": "Kaiser", "point": 4500},
+        ]
+        data, stats = build_public_data(config, rosters, fixtures, submissions, {}, {"A-S1-M1-G1": parsed})
+        by_id = {p["id"]: p for p in data["divisions"]["A"]["players"]}
+        ausente, suplente = by_id["A04"], by_id["A05"]
+        self.assertEqual((ausente["games"], ausente["absences"], ausente["points"]), (1, 1, -30.0))
+        self.assertEqual((suplente["games"], suplente["points"], suplente["hands"]), (0, 0.0, 0))
+        self.assertEqual(by_id["A01"]["hands"], 7)
+        match = data["divisions"]["A"]["matches"][0]
+        sub = next(p for p in match["players"] if p["esSuplente"])
+        self.assertEqual((sub["name"], sub["sustitutoDe"], sub["place"]), ("Kaiser", "A04", 4))
+
+    def test_demote_unexpected_seats_exige_tres_titulares(self):
+        players = _rosters()["A"]
+        seat_map = {seat: players[seat] for seat in range(4)}
+        # Mesa de otros cuatro: no hay cómo saber si el fixture está desactualizado.
+        self.assertEqual(demote_unexpected_seats(seat_map, ["X", "Y", "Z", "W"]), seat_map)
+        # Tres titulares y un ajeno: el ajeno sale.
+        self.assertEqual(set(demote_unexpected_seats(seat_map, ["Bodoque", "Mon_96", "Meme000", "W"])), {0, 1, 2})
+        # Sin fixture, se confía en la identidad.
+        self.assertEqual(demote_unexpected_seats(seat_map, ["", "", "", ""]), seat_map)
+
+    def _mesa_con_suplente(self):
+        """Mesa 1 de A: Twining1999 (A04) falta y juega Kaiser (A05), del roster."""
+        rosters = _rosters()
+        rosters["A"].append({"id": "A05", "div": "A", "num": "05", "name": "Kaiser", "shortName": "Kaiser",
+                             "handle": "Kaiser", "accountId": 105, "discord": "", "nat": "CL"})
+        fixtures = [_fixture("A", 1, 1, ["Bodoque", "Mon_96", "Meme000", "Twining1999"])]
+        parsed = _paipu_game()
+        parsed["players"] = [
+            {"seat": 0, "account_id": 101, "nickname": "Bodoque", "point": 45000},
+            {"seat": 1, "account_id": 102, "nickname": "Mon_96", "point": 38500},
+            {"seat": 2, "account_id": 103, "nickname": "Meme000", "point": 32000},
+            {"seat": 3, "account_id": 105, "nickname": "Kaiser", "point": 4500},
+        ]
+        return rosters, fixtures, parsed
+
+    def test_crosscheck_calla_cuando_game_history_y_paipu_coinciden(self):
+        rosters, fixtures, parsed = self._mesa_con_suplente()
+        # Anotado a mano como en la planilla real: «NOTKaiser», fuera del roster.
+        histories = _history("A-S1-M1-G1", 1, 1, 1, ["Bodoque", "Mon_96", "Meme000", "NOTKaiser"])
+        self.assertEqual(crosscheck_substitutes(histories, {"A-S1-M1-G1": parsed}, rosters, fixtures), [])
+
+    def test_crosscheck_avisa_si_una_fuente_no_penaliza_al_ausente(self):
+        rosters, fixtures, parsed = self._mesa_con_suplente()
+        # Tipeado sin la marca: para la ruta Excel, Kaiser jugó como titular y
+        # Twining1999 no debe nada.
+        histories = _history("A-S1-M1-G1", 1, 1, 1, ["Bodoque", "Mon_96", "Meme000", "Kaiser"])
+        avisos = crosscheck_substitutes(histories, {"A-S1-M1-G1": parsed}, rosters, fixtures)
+        self.assertEqual(len(avisos), 1)
+        self.assertIn("según el Game History no se sentó Twining1999", avisos[0])
+        self.assertIn("le cae a nadie", avisos[0])
+
+    def test_crosscheck_avisa_si_las_fuentes_no_coinciden_en_quien_falto(self):
+        rosters, fixtures, parsed = self._mesa_con_suplente()
+        # El Game History dice que jugaron los cuatro titulares; el paipu, que no.
+        histories = _history("A-S1-M1-G1", 1, 1, 1, ["Bodoque", "Mon_96", "Meme000", "Twining1999"])
+        avisos = crosscheck_substitutes(histories, {"A-S1-M1-G1": parsed}, rosters, fixtures)
+        self.assertEqual(len(avisos), 1)
+        self.assertIn("el Game History dice que faltó nadie y el paipu que faltó Twining1999", avisos[0])
+
+    def test_crosscheck_compara_por_mesa_aunque_g1_y_g2_esten_invertidos(self):
+        rosters, fixtures, parsed = self._mesa_con_suplente()
+        # Game History con G1 y G2 al revés que el Calendario, como en 40 mesas
+        # reales: el suplente es el mismo en los dos hanchan, así que no hay aviso.
+        histories = _history("A-S1-M1-G1", 1, 1, 1, ["Meme000", "NOTKaiser", "Bodoque", "Mon_96"])
+        histories |= _history("A-S1-M1-G2", 1, 1, 2, ["Bodoque", "Mon_96", "Meme000", "NOTKaiser"])
+        self.assertEqual(crosscheck_substitutes(histories, {"A-S1-M1-G1": parsed, "A-S1-M1-G2": parsed}, rosters, fixtures), [])
 
     def test_find_absent_player_devuelve_al_que_falta(self):
         players = _rosters()["A"]

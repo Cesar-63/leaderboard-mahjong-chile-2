@@ -55,6 +55,17 @@ paralela que haya que mantener sincronizada a mano.
 **El paipu manda sobre el Excel** para resultados y puntos cuando existe; el
 Game History es el respaldo para las mesas sin paipu.
 
+**El puntaje final de un paipu es su liquidación, no el marcador de la última
+mano.** `parse_record` lo lee de `GameEndResult.part_point_1` (cabecera del
+`ResGameRecord`; `total_point` ya trae el uma de la sala). Difieren cuando el
+hanchan cierra en ryūkyoku con riichi declarados: los palos quedan fuera de
+todos los asientos en el log (la suma baja de 120.000) y Mahjong Soul se los
+da al 1º al liquidar. Pasó en 12 de los primeros 134 hanchan de la liga, y
+durante dos meses el sitio publicó al 1º con 1.000–3.000 menos mientras
+`fill_game_history.py` dejaba la celda vacía por `PAIPU_INVALIDO`. Por eso
+`merge_paipus` rechaza (`ERROR`) cualquier paipu cuya suma no cierre en
+120.000 en vez de publicarlo.
+
 **Las mesas del Game History NO están numeradas como en el Calendario.** Solo la
 sesión coincide. El emparejamiento se hace por grupo de jugadores: se asocia cada
 grupo del historial con la mesa del calendario con la que comparta al menos 3 de
@@ -188,7 +199,13 @@ jugador y publica las tasas. Definiciones, alineadas con amae-koromo:
 - Mesas sin jugar emiten `hanchans: []` y se muestran como fixture pendiente.
 - Resultados de sustitutos llevan `sustitutoDe` y `esSuplente`; entran en el
   historial de mesas pero **no** en standings ni en estadísticas avanzadas. El
-  suplente puede ser de otra división, ajeno al torneo o incluso un bot.
+  suplente puede ser de otra división, ajeno al torneo o incluso un bot. **O de
+  la misma división:** ahí la identidad no lo delata (está en el roster), y es
+  el Calendario el que dice que no era de esa mesa. `demote_unexpected_seats`
+  en `sync.py` lo saca del mapa de asientos cuando quedan al menos 3 titulares;
+  sin eso, B-S5-M1 le contó a OnIShadow 14 partidas en 6 sesiones y dejó a
+  Cuervo_Gris sin partida ni −60. En el Game History ese caso queda en REVISAR,
+  porque el nombre de liga en la celda lo haría pasar por titular.
 - Hay como máximo **un ausente por hanchan**.
 - Standings, promedios y rachas se derivan en build. **Nunca duplicar datos
   calculados dentro del JSON.**
@@ -206,6 +223,12 @@ El script falla con mensaje que indique **división, sesión y mesa**:
 6. Orden: no puede existir hanchan 2 sin hanchan 1 en la misma mesa.
 7. Crosscheck contra la hoja de clasificación: totales de uma, conteo de puestos y
    partidas jugadas. Se salta si (1)–(6) fallaron, para mostrar causa raíz.
+8. Suplentes: `crosscheck_substitutes` en `sync.py` compara, por mesa y por
+   fuente (Game History y paipu), quién del sorteo no se sentó contra quién
+   recibe los −30, y avisa si no coinciden o si las dos fuentes no ven al mismo
+   ausente. Es un AVISO, no falla el job: la marca a mano en el Game History
+   (`NOTOnishadow`) y el paipu son señales independientes y una puede estar
+   atrasada.
 
 ## Arquitectura
 
