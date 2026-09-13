@@ -263,6 +263,15 @@ def merge_paipus(submissions: list[dict[str, Any]], histories: dict[str, dict[st
             parsed = parse_record(uuid, raw)
             if any(not name for name in submission["players"]):
                 raise PaipuError("El fixture todavía no contiene cuatro jugadores")
+            # Misma validación que la celda del Game History: un puntaje que no
+            # cierra en 120.000 es un paipu mal leído, no un resultado. Queda
+            # como ERROR (visible en el aviso del job) y la mesa cae al respaldo
+            # del Game History en vez de publicar un puntaje corto.
+            if sum(parsed.final_scores) != TOTAL_RAW_SCORE:
+                raise PaipuError(
+                    f"Los puntajes finales suman {sum(parsed.final_scores):,} y no "
+                    f"{TOTAL_RAW_SCORE:,}".replace(",", ".")
+                )
             # El paipu manda sobre Game History (que es un duplicado). Si el
             # registro declara la identidad de los 4 asientos, lo aceptamos
             # como fuente; si no, se conserva Game History como respaldo.
@@ -327,6 +336,36 @@ def match_fixture_order(fixture_players: list[str], players: list[dict[str, Any]
         # 4 asientos = mesa completa; 3 = hay exactamente un suplente.
         return seat_map
     return None
+
+
+def demote_unexpected_seats(seat_map: dict[int, dict[str, Any]], fixture_players: list[str]) -> dict[int, dict[str, Any]]:
+    """Saca del mapa a los del roster que no estaban en la mesa sorteada.
+
+    `match_paipu_seats` sólo distingue roster de no-roster, así que un suplente
+    de la misma división pasa por titular: se lleva la partida y el ausente
+    queda sin penalización (B-S5-M1: OnIShadow jugó por Cuervo_Gris y el
+    pipeline le contó 14 partidas en 6 sesiones). Quién debía sentarse lo sabe
+    el Calendario. Se exige que queden al menos MIN_ROSTER_OVERLAP titulares:
+    es lo que confirma que el paipu es de esa mesa y no un fixture desactualizado.
+    """
+    group = {str(name).strip().lower() for name in fixture_players if name}
+    expected = {seat: player for seat, player in seat_map.items() if player["name"].strip().lower() in group}
+    if len(expected) >= MIN_ROSTER_OVERLAP and len(expected) < len(seat_map):
+        return expected
+    return seat_map
+
+
+def paipu_seat_map(parsed: dict[str, Any], players: list[dict[str, Any]], fixture_players: list[str]) -> dict[int, dict[str, Any]] | None:
+    """Asiento→jugador de un paipu: por identidad, depurado con el Calendario, o
+    en su defecto por el orden del fixture."""
+    seat_map = None
+    if len(parsed.get("players", [])) == 4:
+        seat_map = match_paipu_seats(parsed["players"], players)
+        if seat_map and fixture_players:
+            seat_map = demote_unexpected_seats(seat_map, fixture_players)
+    if seat_map is None and fixture_players:
+        seat_map = match_fixture_order(fixture_players, players)
+    return seat_map
 
 
 def find_absent_player(fixture_players: list[str], players: list[dict[str, Any]], present_ids: set[str]) -> dict[str, Any] | None:
@@ -414,11 +453,7 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
             fixture = next((item for item in fixtures if item["division"] == division and item["session"] == session and item["table"] == table), None)
             fixture_names = fixture["players"] if fixture else []
             source = "sin resultado"
-            seat_map = None
-            if parsed and len(parsed.get("players", [])) == 4:
-                seat_map = match_paipu_seats(parsed["players"], players)
-            if parsed and seat_map is None and fixture_names:
-                seat_map = match_fixture_order(fixture_names, players)
+            seat_map = paipu_seat_map(parsed, players, fixture_names) if parsed else None
             if parsed and seat_map and len(parsed["finalScoresBySeat"]) == 4:
                 absent = None
                 if len(seat_map) < 4:
@@ -643,6 +678,74 @@ def add_hall_of_fame(data: dict[str, Any]) -> None:
         data["divisions"][division]["hallOfFame"] = records
 
 
+def crosscheck_substitutes(histories: dict[str, dict[str, Any]], parsed_games: dict[str, Any], rosters: dict[str, list[dict[str, Any]]], fixtures: list[dict[str, Any]]) -> list[str]:
+    """Avisa cuando un titular no se sentó y nadie queda penalizado, o cuando
+    Game History y paipu no coinciden en quién faltó a una mesa.
+
+    Son dos fuentes independientes: en el Game History la persona anota al
+    suplente con un nombre fuera del roster («NOTOnishadow»), y en el paipu lo
+    delata la identidad o el Calendario. Para cada una se compara quién del
+    sorteo no aparece contra quién recibiría la penalización por esa ruta. Se
+    agrupa por mesa y no por hanchan porque el rótulo G1/G2 del Game History
+    suele estar invertido. Es lo que habría cantado B-S5-M1 el mismo día: la
+    celda decía suplente y el pipeline publicó a OnIShadow como titular sin
+    penalizar a Cuervo_Gris.
+    """
+    fixture_by = {(f["division"], f["session"], f["table"]): f["players"] for f in fixtures}
+    # Por mesa y fuente: (titulares que no se sentaron, titulares penalizados).
+    seen: dict[tuple[str, int, int], dict[str, tuple[set[str], set[str]]]] = {}
+    covered: dict[tuple[str, int, int], set[str]] = {}
+    for key in sorted(set(histories) | set(parsed_games), key=key_sort_key):
+        division = key.split("-", 1)[0]
+        session, table, _game = key_sort_key(key)
+        cell = (division, session, table)
+        fixture_players = [str(n).strip() for n in fixture_by.get(cell, []) if str(n).strip()]
+        if len(fixture_players) < 4:
+            continue
+        players = rosters[division]
+        by_name = {p["name"].strip().lower(): p["id"] for p in players}
+        expected = {by_name[n.lower()] for n in fixture_players if n.lower() in by_name}
+        sources = seen.setdefault(cell, {"Game History": (set(), set()), "paipu": (set(), set())})
+        official = histories.get(key)
+        if official:
+            results = build_excel_results(official, fixture_players, players)
+            present = {r["id"] for r in results if not r["id"].startswith("sub-")}
+            penalized = {r["sustitutoDe"] for r in results if r.get("sustitutoDe")}
+            sources["Game History"][0].update(expected - present)
+            sources["Game History"][1].update(penalized)
+            covered.setdefault(cell, set()).add("Game History")
+        parsed = parsed_games.get(key)
+        if parsed:
+            seat_map = paipu_seat_map(parsed, players, fixture_players) or {}
+            present = {p["id"] for p in seat_map.values()}
+            absent = find_absent_player(fixture_players, players, present) if seat_map and len(seat_map) < 4 else None
+            sources["paipu"][0].update(expected - present)
+            sources["paipu"][1].update({absent["id"]} if absent else set())
+            covered.setdefault(cell, set()).add("paipu")
+    names = {p["id"]: p["name"] for roster in rosters.values() for p in roster}
+
+    def label(ids: set[str]) -> str:
+        return ", ".join(names.get(i, i) for i in sorted(ids)) if ids else "nadie"
+
+    avisos = []
+    for cell, sources in sorted(seen.items()):
+        division, session, table = cell
+        where = f"División {division}, sesión {session}, mesa {table}"
+        for source in sorted(covered.get(cell, set())):
+            absent, penalized = sources[source]
+            if absent != penalized:
+                avisos.append(
+                    f"{where}: según el {source} no se sentó {label(absent)} pero la penalización "
+                    f"le cae a {label(penalized)}; revisa quién jugó y quién debe los -30."
+                )
+        if covered.get(cell) == {"Game History", "paipu"} and sources["Game History"][0] != sources["paipu"][0]:
+            avisos.append(
+                f"{where}: el Game History dice que faltó {label(sources['Game History'][0])} y el paipu "
+                f"que faltó {label(sources['paipu'][0])}; una de las dos fuentes está mal."
+            )
+    return avisos
+
+
 def advanced_stats_health(stats: dict[str, Any], status: dict[str, Any]) -> dict[str, Any]:
     submissions = status.get("submissions", [])
     counter = Counter(item.get("status") for item in submissions)
@@ -801,6 +904,8 @@ def main() -> int:
             except PaipuError as exc:
                 print(f"AVISO: la descarga autenticada de paipus falló: {exc}", file=sys.stderr)
         parsed_games, status = merge_paipus(submissions, histories, ROOT / "data" / "raw-paipu", args.offline)
+        for aviso in crosscheck_substitutes(histories, parsed_games, rosters, fixtures):
+            print(f"AVISO: {aviso}", file=sys.stderr)
         if args.strict_paipu:
             failures = [item for item in status["submissions"] if item["status"] == "ERROR"]
             if failures:

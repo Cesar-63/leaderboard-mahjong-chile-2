@@ -174,6 +174,19 @@ class AsientosYPuestosTests(unittest.TestCase):
         self.assertEqual(names, ["MasterFofo", "Uznaiker", "Mon_96", "InvitadoX"])
         self.assertEqual(identity, "paipu")
 
+    def test_un_suplente_de_la_misma_division_queda_para_revisar(self):
+        # Kaiser (A05) es del roster pero de la mesa 2: jugó por Tobippi. Con su
+        # nombre de liga en la celda pasaría por titular (B-S5-M1: OnIShadow por
+        # Cuervo_Gris), así que no se pega solo.
+        parsed = parsed_paipu([(101, "MasterFofo"), (102, "Uznaiker"),
+                               (103, "Mon_96"), (105, "kaiser")],
+                              [35900, 31100, 30900, 22100])
+        names, identity, reason = resolve_seat_names(parsed, MESA_1, ROSTER_A)
+        self.assertEqual(names, ["MasterFofo", "Uznaiker", "Mon_96", "kaiser"])
+        self.assertEqual(identity, "revisar")
+        self.assertIn("Kaiser", reason)
+        self.assertIn("suplente de la misma división", reason)
+
     def test_sin_identidad_en_el_paipu_el_orden_queda_para_revisar(self):
         parsed = parsed_paipu([(None, ""), (None, ""), (None, ""), (None, "")],
                               [35900, 31100, 30900, 22100])
