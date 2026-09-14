@@ -2689,20 +2689,20 @@
       "statsReliable": true
     },
     "B12": {
-      "hands": 165,
+      "hands": 146,
       "wins": 34,
-      "dealIns": 32,
-      "kans": 12,
+      "dealIns": 29,
+      "kans": 10,
       "doras": 39,
       "uraDoras": 10,
       "maxHonba": 6,
-      "winRate": 20.6,
-      "dealInRate": 19.4,
-      "riichiRate": 12.1,
-      "openRate": 55.2,
+      "winRate": 23.3,
+      "dealInRate": 19.9,
+      "riichiRate": 13.7,
+      "openRate": 57.5,
       "damatenRate": 2.9,
       "avgWinPoints": 5562,
-      "avgDealInPoints": 7028,
+      "avgDealInPoints": 7031,
       "avgWinTurn": 10.38,
       "yakus": [
         {
