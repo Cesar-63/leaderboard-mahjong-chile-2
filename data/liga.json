@@ -1747,8 +1747,8 @@
           "shortName": "Haruzen",
           "handle": "Haruzen",
           "nat": "MX",
-          "games": 10,
-          "points": -15.0,
+          "games": 12,
+          "points": -1.6,
           "history": [
             -25.8,
             38.3,
@@ -1759,7 +1759,9 @@
             21.1,
             10.5,
             -14.2,
-            -29.6
+            -29.6,
+            25.1,
+            -11.7
           ],
           "cum": [
             -25.8,
@@ -1771,48 +1773,54 @@
             18.3,
             28.8,
             14.6,
-            -15.0
+            -15.0,
+            10.1,
+            -1.6
           ],
           "counts": [
-            3,
+            4,
             2,
-            1,
+            2,
             4
           ],
           "absences": 0,
-          "hands": 108,
-          "wins": 22,
-          "dealIns": 23,
-          "riichis": 11,
-          "openHands": 48,
+          "hands": 133,
+          "wins": 32,
+          "dealIns": 27,
+          "riichis": 15,
+          "openHands": 59,
           "damaten": 6,
-          "kans": 5,
-          "doras": 27,
-          "uraDoras": 6,
+          "kans": 6,
+          "doras": 40,
+          "uraDoras": 9,
           "maxHonba": 4,
-          "winPoints": 99300,
-          "dealInPoints": 69600,
-          "winTurns": 236,
+          "winPoints": 128300,
+          "dealInPoints": 89600,
+          "winTurns": 352,
           "placements": {
-            "p1": 0.3,
-            "p2": 0.2,
-            "p3": 0.1,
-            "p4": 0.4
+            "p1": 0.33,
+            "p2": 0.17,
+            "p3": 0.17,
+            "p4": 0.33
           },
-          "avgRank": 2.6,
-          "avgPoints": -1.5,
-          "streak": -12.2,
-          "winRate": 20.4,
-          "dealInRate": 21.3,
-          "riichiRate": 10.2,
+          "avgRank": 2.5,
+          "avgPoints": -0.1,
+          "streak": -30.4,
+          "winRate": 24.1,
+          "dealInRate": 20.3,
+          "riichiRate": 11.3,
           "openRate": 44.4,
-          "damatenRate": 27.3,
-          "avgWinPoints": 4514,
-          "avgDealInPoints": 3026,
-          "avgWinTurn": 10.73,
+          "damatenRate": 18.8,
+          "avgWinPoints": 4009,
+          "avgDealInPoints": 3319,
+          "avgWinTurn": 11.0,
           "yakus": [
             {
               "name": "Tanyao",
+              "count": 10
+            },
+            {
+              "name": "Riichi",
               "count": 7
             },
             {
@@ -1820,27 +1828,27 @@
               "count": 5
             },
             {
-              "name": "Riichi",
+              "name": "Pinfu",
               "count": 5
             },
             {
               "name": "Yakuhai Jikaze",
-              "count": 3
-            },
-            {
-              "name": "Pinfu",
-              "count": 3
+              "count": 4
             },
             {
               "name": "Yakuhai Hatsu",
               "count": 3
             },
             {
-              "name": "Sanshoku Doujun",
-              "count": 1
+              "name": "Yakuhai Bakaze",
+              "count": 3
             },
             {
               "name": "Chanta",
+              "count": 2
+            },
+            {
+              "name": "Sanshoku Doujun",
               "count": 1
             },
             {
@@ -1856,15 +1864,23 @@
               "count": 1
             },
             {
-              "name": "Yakuhai Bakaze",
+              "name": "Iipeiko",
               "count": 1
             },
             {
-              "name": "Iipeiko",
+              "name": "Yakuhai Haku",
+              "count": 1
+            },
+            {
+              "name": "Houtei Raoyui",
+              "count": 1
+            },
+            {
+              "name": "Honitsu",
               "count": 1
             }
           ],
-          "statsSample": 108,
+          "statsSample": 133,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 13,
@@ -2168,8 +2184,8 @@
           "shortName": "FS525",
           "handle": "FS525",
           "nat": "AR",
-          "games": 10,
-          "points": -53.4,
+          "games": 12,
+          "points": -41.8,
           "history": [
             -20.1,
             -25.6,
@@ -2180,7 +2196,9 @@
             -17.3,
             7.3,
             25.4,
-            8.6
+            8.6,
+            -12.7,
+            24.3
           ],
           "cum": [
             -20.1,
@@ -2192,53 +2210,55 @@
             -94.7,
             -87.4,
             -62.0,
-            -53.4
+            -53.4,
+            -66.1,
+            -41.8
           ],
           "counts": [
-            2,
             3,
-            1,
+            3,
+            2,
             4
           ],
           "absences": 0,
-          "hands": 123,
-          "wins": 17,
-          "dealIns": 20,
-          "riichis": 21,
-          "openHands": 24,
+          "hands": 148,
+          "wins": 20,
+          "dealIns": 25,
+          "riichis": 27,
+          "openHands": 27,
           "damaten": 0,
           "kans": 1,
-          "doras": 24,
-          "uraDoras": 15,
+          "doras": 27,
+          "uraDoras": 17,
           "maxHonba": 5,
-          "winPoints": 115700,
-          "dealInPoints": 81200,
-          "winTurns": 201,
+          "winPoints": 140900,
+          "dealInPoints": 96900,
+          "winTurns": 231,
           "placements": {
-            "p1": 0.2,
-            "p2": 0.3,
-            "p3": 0.1,
-            "p4": 0.4
+            "p1": 0.25,
+            "p2": 0.25,
+            "p3": 0.17,
+            "p4": 0.33
           },
-          "avgRank": 2.7,
-          "avgPoints": -5.3,
-          "streak": 24.0,
-          "winRate": 13.8,
-          "dealInRate": 16.3,
-          "riichiRate": 17.1,
-          "openRate": 19.5,
+          "avgRank": 2.58,
+          "avgPoints": -3.5,
+          "streak": 45.6,
+          "winRate": 13.5,
+          "dealInRate": 16.9,
+          "riichiRate": 18.2,
+          "openRate": 18.2,
           "damatenRate": 0.0,
-          "avgWinPoints": 6806,
-          "avgDealInPoints": 4060,
-          "avgWinTurn": 11.82,
+          "avgWinPoints": 7045,
+          "avgDealInPoints": 3876,
+          "avgWinTurn": 11.55,
           "yakus": [
             {
               "name": "Riichi",
-              "count": 11
+              "count": 13
             },
             {
               "name": "Menzen Tsumo",
-              "count": 5
+              "count": 7
             },
             {
               "name": "Pinfu",
@@ -2250,7 +2270,15 @@
             },
             {
               "name": "Tanyao",
+              "count": 4
+            },
+            {
+              "name": "Iipeiko",
               "count": 3
+            },
+            {
+              "name": "Yakuhai Jikaze",
+              "count": 2
             },
             {
               "name": "Ittsu",
@@ -2258,10 +2286,6 @@
             },
             {
               "name": "Yakuhai Haku",
-              "count": 1
-            },
-            {
-              "name": "Iipeiko",
               "count": 1
             },
             {
@@ -2279,9 +2303,13 @@
             {
               "name": "Yakuhai Hatsu",
               "count": 1
+            },
+            {
+              "name": "Yakuhai Bakaze",
+              "count": 1
             }
           ],
-          "statsSample": 123,
+          "statsSample": 148,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 16,
@@ -2572,133 +2600,6 @@
           "iormc": "out"
         },
         {
-          "id": "A06",
-          "div": "A",
-          "num": "06",
-          "name": "DiosioわTensai",
-          "shortName": "DiosioわTensai",
-          "handle": "DiosioわTensai",
-          "nat": "MX",
-          "games": 10,
-          "points": -65.6,
-          "history": [
-            5.9,
-            -28.6,
-            18.0,
-            32.1,
-            18.7,
-            18.4,
-            -37.5,
-            -29.3,
-            -53.7,
-            -9.6
-          ],
-          "cum": [
-            5.9,
-            -22.7,
-            -4.7,
-            27.4,
-            46.1,
-            64.5,
-            27.0,
-            -2.3,
-            -56.0,
-            -65.6
-          ],
-          "counts": [
-            1,
-            4,
-            2,
-            3
-          ],
-          "absences": 0,
-          "hands": 129,
-          "wins": 22,
-          "dealIns": 21,
-          "riichis": 27,
-          "openHands": 52,
-          "damaten": 0,
-          "kans": 9,
-          "doras": 28,
-          "uraDoras": 7,
-          "maxHonba": 6,
-          "winPoints": 123700,
-          "dealInPoints": 126700,
-          "winTurns": 232,
-          "placements": {
-            "p1": 0.1,
-            "p2": 0.4,
-            "p3": 0.2,
-            "p4": 0.3
-          },
-          "avgRank": 2.7,
-          "avgPoints": -6.6,
-          "streak": -130.1,
-          "winRate": 17.1,
-          "dealInRate": 16.3,
-          "riichiRate": 20.9,
-          "openRate": 40.3,
-          "damatenRate": 0.0,
-          "avgWinPoints": 5623,
-          "avgDealInPoints": 6033,
-          "avgWinTurn": 10.55,
-          "yakus": [
-            {
-              "name": "Tanyao",
-              "count": 7
-            },
-            {
-              "name": "Riichi",
-              "count": 5
-            },
-            {
-              "name": "Yakuhai Haku",
-              "count": 4
-            },
-            {
-              "name": "Yakuhai Bakaze",
-              "count": 3
-            },
-            {
-              "name": "Yakuhai Chun",
-              "count": 3
-            },
-            {
-              "name": "Pinfu",
-              "count": 3
-            },
-            {
-              "name": "Toitoi",
-              "count": 2
-            },
-            {
-              "name": "Yakuhai Hatsu",
-              "count": 2
-            },
-            {
-              "name": "Chanta",
-              "count": 1
-            },
-            {
-              "name": "Ippatsu",
-              "count": 1
-            },
-            {
-              "name": "Yakuhai Jikaze",
-              "count": 1
-            },
-            {
-              "name": "Honitsu",
-              "count": 1
-            }
-          ],
-          "statsSample": 129,
-          "statsReliable": true,
-          "arch": "con datos",
-          "rank": 19,
-          "zone": null
-        },
-        {
           "id": "A19",
           "div": "A",
           "num": "19",
@@ -2816,6 +2717,141 @@
             }
           ],
           "statsSample": 144,
+          "statsReliable": true,
+          "arch": "con datos",
+          "rank": 19,
+          "zone": null
+        },
+        {
+          "id": "A06",
+          "div": "A",
+          "num": "06",
+          "name": "DiosioわTensai",
+          "shortName": "DiosioわTensai",
+          "handle": "DiosioわTensai",
+          "nat": "MX",
+          "games": 12,
+          "points": -76.6,
+          "history": [
+            5.9,
+            -28.6,
+            18.0,
+            32.1,
+            18.7,
+            18.4,
+            -37.5,
+            -29.3,
+            -53.7,
+            -9.6,
+            -23.1,
+            12.1
+          ],
+          "cum": [
+            5.9,
+            -22.7,
+            -4.7,
+            27.4,
+            46.1,
+            64.5,
+            27.0,
+            -2.3,
+            -56.0,
+            -65.6,
+            -88.7,
+            -76.6
+          ],
+          "counts": [
+            1,
+            5,
+            2,
+            4
+          ],
+          "absences": 0,
+          "hands": 154,
+          "wins": 29,
+          "dealIns": 26,
+          "riichis": 33,
+          "openHands": 64,
+          "damaten": 1,
+          "kans": 10,
+          "doras": 35,
+          "uraDoras": 11,
+          "maxHonba": 6,
+          "winPoints": 153500,
+          "dealInPoints": 149400,
+          "winTurns": 306,
+          "placements": {
+            "p1": 0.08,
+            "p2": 0.42,
+            "p3": 0.17,
+            "p4": 0.33
+          },
+          "avgRank": 2.75,
+          "avgPoints": -6.4,
+          "streak": -74.3,
+          "winRate": 18.8,
+          "dealInRate": 16.9,
+          "riichiRate": 21.4,
+          "openRate": 41.6,
+          "damatenRate": 3.4,
+          "avgWinPoints": 5293,
+          "avgDealInPoints": 5746,
+          "avgWinTurn": 10.55,
+          "yakus": [
+            {
+              "name": "Tanyao",
+              "count": 9
+            },
+            {
+              "name": "Riichi",
+              "count": 9
+            },
+            {
+              "name": "Pinfu",
+              "count": 5
+            },
+            {
+              "name": "Yakuhai Haku",
+              "count": 5
+            },
+            {
+              "name": "Yakuhai Bakaze",
+              "count": 3
+            },
+            {
+              "name": "Yakuhai Chun",
+              "count": 3
+            },
+            {
+              "name": "Ippatsu",
+              "count": 2
+            },
+            {
+              "name": "Toitoi",
+              "count": 2
+            },
+            {
+              "name": "Yakuhai Hatsu",
+              "count": 2
+            },
+            {
+              "name": "Menzen Tsumo",
+              "count": 2
+            },
+            {
+              "name": "Chanta",
+              "count": 1
+            },
+            {
+              "name": "Yakuhai Jikaze",
+              "count": 1
+            },
+            {
+              "name": "Honitsu",
+              "count": 1
+            }
+          ],
+          "statsSample": 154,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 20,
@@ -3262,8 +3298,8 @@
           "shortName": "ikanajin",
           "handle": "ikanajin",
           "nat": "CL",
-          "games": 10,
-          "points": -206.1,
+          "games": 12,
+          "points": -220.1,
           "history": [
             -29.8,
             -12.8,
@@ -3274,7 +3310,9 @@
             -39.4,
             -17.6,
             -51.6,
-            -14.7
+            -14.7,
+            10.7,
+            -24.7
           ],
           "cum": [
             -29.8,
@@ -3286,60 +3324,66 @@
             -122.2,
             -139.8,
             -191.4,
-            -206.1
+            -206.1,
+            -195.4,
+            -220.1
           ],
           "counts": [
             1,
-            0,
+            1,
             4,
-            5
+            6
           ],
           "absences": 0,
-          "hands": 127,
-          "wins": 20,
-          "dealIns": 34,
-          "riichis": 28,
-          "openHands": 48,
+          "hands": 152,
+          "wins": 24,
+          "dealIns": 38,
+          "riichis": 34,
+          "openHands": 57,
           "damaten": 1,
-          "kans": 5,
-          "doras": 23,
-          "uraDoras": 6,
+          "kans": 8,
+          "doras": 29,
+          "uraDoras": 8,
           "maxHonba": 6,
-          "winPoints": 104000,
-          "dealInPoints": 178700,
-          "winTurns": 217,
+          "winPoints": 126800,
+          "dealInPoints": 189000,
+          "winTurns": 270,
           "placements": {
-            "p1": 0.1,
-            "p2": 0.0,
-            "p3": 0.4,
+            "p1": 0.08,
+            "p2": 0.08,
+            "p3": 0.33,
             "p4": 0.5
           },
-          "avgRank": 3.3,
-          "avgPoints": -20.6,
-          "streak": -123.3,
-          "winRate": 15.7,
-          "dealInRate": 26.8,
-          "riichiRate": 22.0,
-          "openRate": 37.8,
-          "damatenRate": 5.0,
-          "avgWinPoints": 5200,
-          "avgDealInPoints": 5256,
-          "avgWinTurn": 10.85,
+          "avgRank": 3.25,
+          "avgPoints": -18.3,
+          "streak": -80.3,
+          "winRate": 15.8,
+          "dealInRate": 25.0,
+          "riichiRate": 22.4,
+          "openRate": 37.5,
+          "damatenRate": 4.2,
+          "avgWinPoints": 5283,
+          "avgDealInPoints": 4974,
+          "avgWinTurn": 11.25,
           "yakus": [
             {
               "name": "Tanyao",
-              "count": 8
+              "count": 9
             },
             {
               "name": "Riichi",
-              "count": 6
+              "count": 7
             },
             {
               "name": "Yakuhai Chun",
-              "count": 5
+              "count": 6
             },
             {
               "name": "Yakuhai Jikaze",
+              "count": 3
+            },
+            {
+              "name": "Yakuhai Haku",
               "count": 3
             },
             {
@@ -3351,24 +3395,20 @@
               "count": 2
             },
             {
-              "name": "Honitsu",
+              "name": "Pinfu",
               "count": 2
             },
             {
-              "name": "Yakuhai Haku",
+              "name": "Ippatsu",
+              "count": 2
+            },
+            {
+              "name": "Honitsu",
               "count": 2
             },
             {
               "name": "Chiitoitsu",
               "count": 2
-            },
-            {
-              "name": "Pinfu",
-              "count": 1
-            },
-            {
-              "name": "Ippatsu",
-              "count": 1
             },
             {
               "name": "Chanta",
@@ -3389,9 +3429,13 @@
             {
               "name": "Toitoi",
               "count": 1
+            },
+            {
+              "name": "Ittsu",
+              "count": 1
             }
           ],
-          "statsSample": 127,
+          "statsSample": 152,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 24,
@@ -70953,6 +70997,2124 @@
           ]
         },
         {
+          "id": "A-S6-M5-G1",
+          "code": "A-S6-M5-G1",
+          "div": "A",
+          "session": 6,
+          "sessionCode": "S6",
+          "hanchan": 1,
+          "date": "13 sep",
+          "dateISO": "2026-09-13",
+          "weekday": "dom",
+          "table": 5,
+          "players": [
+            {
+              "id": "A10",
+              "name": "Haruzen",
+              "handle": "Haruzen",
+              "nat": "MX",
+              "scoreRaw": 40100,
+              "place": 1,
+              "delta": 25.1,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A13",
+              "name": "ikanajin",
+              "handle": "ikanajin",
+              "nat": "CL",
+              "scoreRaw": 35700,
+              "place": 2,
+              "delta": 10.7,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A12",
+              "name": "FS525",
+              "handle": "FS525",
+              "nat": "AR",
+              "scoreRaw": 22300,
+              "place": 3,
+              "delta": -12.7,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A06",
+              "name": "DiosioわTensai",
+              "handle": "DiosioわTensai",
+              "nat": "MX",
+              "scoreRaw": 21900,
+              "place": 4,
+              "delta": -23.1,
+              "sustitutoDe": null,
+              "esSuplente": false
+            }
+          ],
+          "paipuUrl": "https://mahjongsoul.game.yo-star.com/?paipu=260914-01344c94-484e-4823-abc2-aadb88364b5f",
+          "verified": true,
+          "source": "paipu",
+          "rounds": [
+            {
+              "index": 0,
+              "chang": 0,
+              "ju": 0,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                30000,
+                30000,
+                30000,
+                30000
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 1,
+                  "loserSeat": 3,
+                  "yaku": [
+                    "Tanyao"
+                  ],
+                  "hand": "6m7m8m2p3p4p5s5s6s7s",
+                  "win": "8s",
+                  "melds": [
+                    "k4s4s4s"
+                  ],
+                  "dora": "5s",
+                  "points": 2000,
+                  "fu": 30,
+                  "han": 2,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 9,
+                  "winner": "Haruzen",
+                  "loser": "ikanajin"
+                }
+              ],
+              "endScores": [
+                30000,
+                32000,
+                30000,
+                28000
+              ],
+              "scoreDeltas": [
+                0,
+                2000,
+                0,
+                -2000
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "DiosioわTensai",
+                  "score": 30000,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "Haruzen",
+                  "score": 32000,
+                  "delta": 2000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "FS525",
+                  "score": 30000,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "ikanajin",
+                  "score": 28000,
+                  "delta": -2000,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 1,
+              "chang": 0,
+              "ju": 1,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                30000,
+                32000,
+                30000,
+                28000
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 0,
+                  "loserSeat": 2,
+                  "yaku": [
+                    "Pinfu",
+                    "Riichi",
+                    "Ippatsu"
+                  ],
+                  "hand": "2p3p4p7p8p9p2s2s4s5s6s7s8s",
+                  "win": "9s",
+                  "melds": [],
+                  "dora": "5p",
+                  "points": 8000,
+                  "fu": 30,
+                  "han": 4,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": true,
+                  "turn": 12,
+                  "winner": "DiosioわTensai",
+                  "loser": "FS525"
+                }
+              ],
+              "endScores": [
+                39000,
+                31000,
+                22000,
+                28000
+              ],
+              "scoreDeltas": [
+                10000,
+                0,
+                -8000,
+                0
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "DiosioわTensai",
+                  "score": 39000,
+                  "delta": 10000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "Haruzen",
+                  "score": 31000,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "FS525",
+                  "score": 22000,
+                  "delta": -8000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "ikanajin",
+                  "score": 28000,
+                  "delta": 0,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 2,
+              "chang": 0,
+              "ju": 2,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                39000,
+                31000,
+                22000,
+                28000
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 1,
+                  "loserSeat": 0,
+                  "yaku": [
+                    "Chanta"
+                  ],
+                  "hand": "7m8m9m7z",
+                  "win": "7z",
+                  "melds": [
+                    "k1p1p1p",
+                    "k3z3z3z",
+                    "k1m1m1m"
+                  ],
+                  "dora": "3s",
+                  "points": 1300,
+                  "fu": 40,
+                  "han": 1,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 12,
+                  "winner": "Haruzen",
+                  "loser": "DiosioわTensai"
+                }
+              ],
+              "endScores": [
+                37700,
+                32300,
+                22000,
+                28000
+              ],
+              "scoreDeltas": [
+                -1300,
+                1300,
+                0,
+                0
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "DiosioわTensai",
+                  "score": 37700,
+                  "delta": -1300,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "Haruzen",
+                  "score": 32300,
+                  "delta": 1300,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "FS525",
+                  "score": 22000,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "ikanajin",
+                  "score": 28000,
+                  "delta": 0,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 3,
+              "chang": 0,
+              "ju": 3,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                37700,
+                32300,
+                22000,
+                28000
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 3,
+                  "loserSeat": 1,
+                  "yaku": [
+                    "Yakuhai Haku"
+                  ],
+                  "hand": "4p6p7p8p",
+                  "win": "4p",
+                  "melds": [
+                    "a1s1s1s1s",
+                    "k5z5z5z",
+                    "s3s4s2s"
+                  ],
+                  "dora": "5s5p",
+                  "points": 5800,
+                  "fu": 60,
+                  "han": 2,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 9,
+                  "winner": "ikanajin",
+                  "loser": "Haruzen"
+                }
+              ],
+              "endScores": [
+                37700,
+                26500,
+                22000,
+                33800
+              ],
+              "scoreDeltas": [
+                0,
+                -5800,
+                0,
+                5800
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "DiosioわTensai",
+                  "score": 37700,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "Haruzen",
+                  "score": 26500,
+                  "delta": -5800,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "FS525",
+                  "score": 22000,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "ikanajin",
+                  "score": 33800,
+                  "delta": 5800,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 4,
+              "chang": 0,
+              "ju": 3,
+              "honba": 1,
+              "riichiSticks": 0,
+              "startScores": [
+                37700,
+                26500,
+                22000,
+                33800
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 0,
+                  "loserSeat": 2,
+                  "yaku": [
+                    "Riichi"
+                  ],
+                  "hand": "1m1m5m6m7m1s2s3s5s6s6s6s7s",
+                  "win": "6s",
+                  "melds": [],
+                  "dora": "1z",
+                  "points": 1300,
+                  "fu": 40,
+                  "han": 1,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": true,
+                  "turn": 14,
+                  "winner": "DiosioわTensai",
+                  "loser": "FS525"
+                }
+              ],
+              "endScores": [
+                40300,
+                26500,
+                19400,
+                33800
+              ],
+              "scoreDeltas": [
+                3600,
+                0,
+                -1600,
+                0
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "DiosioわTensai",
+                  "score": 40300,
+                  "delta": 3600,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "Haruzen",
+                  "score": 26500,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "FS525",
+                  "score": 19400,
+                  "delta": -1600,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "ikanajin",
+                  "score": 33800,
+                  "delta": 0,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 5,
+              "chang": 1,
+              "ju": 0,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                40300,
+                26500,
+                19400,
+                33800
+              ],
+              "result": "tsumo",
+              "outcomes": [
+                {
+                  "winnerSeat": 0,
+                  "loserSeat": null,
+                  "yaku": [
+                    "Yakuhai Haku"
+                  ],
+                  "hand": "7p8p9p3s4s7z7z",
+                  "win": "2s",
+                  "melds": [
+                    "s5m6m4m",
+                    "k5z5z5z"
+                  ],
+                  "dora": "3s",
+                  "points": 3000,
+                  "fu": 30,
+                  "han": 2,
+                  "yakuman": false,
+                  "tsumo": true,
+                  "riichi": false,
+                  "turn": 8,
+                  "winner": "DiosioわTensai",
+                  "loser": null
+                }
+              ],
+              "endScores": [
+                43300,
+                25500,
+                18400,
+                32800
+              ],
+              "scoreDeltas": [
+                3000,
+                -1000,
+                -1000,
+                -1000
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "DiosioわTensai",
+                  "score": 43300,
+                  "delta": 3000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "Haruzen",
+                  "score": 25500,
+                  "delta": -1000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "FS525",
+                  "score": 18400,
+                  "delta": -1000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "ikanajin",
+                  "score": 32800,
+                  "delta": -1000,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 6,
+              "chang": 1,
+              "ju": 0,
+              "honba": 1,
+              "riichiSticks": 0,
+              "startScores": [
+                43300,
+                25500,
+                18400,
+                32800
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 0,
+                  "loserSeat": 3,
+                  "yaku": [
+                    "Tanyao"
+                  ],
+                  "hand": "4m6m7s7s",
+                  "win": "5m",
+                  "melds": [
+                    "k2m2m2m",
+                    "k3p3p3p",
+                    "k5s5s5s"
+                  ],
+                  "dora": "5z",
+                  "points": 1500,
+                  "fu": 30,
+                  "han": 1,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 4,
+                  "winner": "DiosioわTensai",
+                  "loser": "ikanajin"
+                }
+              ],
+              "endScores": [
+                45100,
+                25500,
+                18400,
+                31000
+              ],
+              "scoreDeltas": [
+                1800,
+                0,
+                0,
+                -1800
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "DiosioわTensai",
+                  "score": 45100,
+                  "delta": 1800,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "Haruzen",
+                  "score": 25500,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "FS525",
+                  "score": 18400,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "ikanajin",
+                  "score": 31000,
+                  "delta": -1800,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 7,
+              "chang": 1,
+              "ju": 0,
+              "honba": 2,
+              "riichiSticks": 0,
+              "startScores": [
+                45100,
+                25500,
+                18400,
+                31000
+              ],
+              "result": "tsumo",
+              "outcomes": [
+                {
+                  "winnerSeat": 2,
+                  "loserSeat": null,
+                  "yaku": [
+                    "Iipeiko",
+                    "Tanyao",
+                    "Menzen Tsumo",
+                    "Riichi"
+                  ],
+                  "hand": "6m6m7m7m7m3p4p5p6s6s7s7s8s",
+                  "win": "8s",
+                  "melds": [],
+                  "dora": "2z",
+                  "points": 8000,
+                  "fu": 30,
+                  "han": 4,
+                  "yakuman": false,
+                  "tsumo": true,
+                  "riichi": true,
+                  "turn": 7,
+                  "winner": "FS525",
+                  "loser": null
+                }
+              ],
+              "endScores": [
+                40900,
+                23300,
+                27000,
+                28800
+              ],
+              "scoreDeltas": [
+                -4200,
+                -2200,
+                9600,
+                -2200
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "DiosioわTensai",
+                  "score": 40900,
+                  "delta": -4200,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "Haruzen",
+                  "score": 23300,
+                  "delta": -2200,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "FS525",
+                  "score": 27000,
+                  "delta": 9600,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "ikanajin",
+                  "score": 28800,
+                  "delta": -2200,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 8,
+              "chang": 1,
+              "ju": 1,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                40900,
+                23300,
+                27000,
+                28800
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 1,
+                  "loserSeat": 2,
+                  "yaku": [
+                    "Yakuhai Bakaze"
+                  ],
+                  "hand": "1m2m3m1s1s1s2s3s6s7s",
+                  "win": "5s",
+                  "melds": [
+                    "k2z2z2z"
+                  ],
+                  "dora": "9m1p",
+                  "points": 2900,
+                  "fu": 30,
+                  "han": 2,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 10,
+                  "winner": "Haruzen",
+                  "loser": "FS525"
+                }
+              ],
+              "endScores": [
+                40900,
+                26200,
+                24100,
+                28800
+              ],
+              "scoreDeltas": [
+                0,
+                2900,
+                -2900,
+                0
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "DiosioわTensai",
+                  "score": 40900,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "Haruzen",
+                  "score": 26200,
+                  "delta": 2900,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "FS525",
+                  "score": 24100,
+                  "delta": -2900,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "ikanajin",
+                  "score": 28800,
+                  "delta": 0,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 9,
+              "chang": 1,
+              "ju": 1,
+              "honba": 1,
+              "riichiSticks": 0,
+              "startScores": [
+                40900,
+                26200,
+                24100,
+                28800
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 1,
+                  "loserSeat": 2,
+                  "yaku": [
+                    "Tanyao"
+                  ],
+                  "hand": "2p3p4p6p7p7s7s",
+                  "win": "8p",
+                  "melds": [
+                    "s2m3m4m",
+                    "g7m7m7m7m"
+                  ],
+                  "dora": "6z2z",
+                  "points": 1500,
+                  "fu": 30,
+                  "han": 1,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 11,
+                  "winner": "Haruzen",
+                  "loser": "FS525"
+                }
+              ],
+              "endScores": [
+                40900,
+                28000,
+                22300,
+                28800
+              ],
+              "scoreDeltas": [
+                0,
+                1800,
+                -1800,
+                0
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "DiosioわTensai",
+                  "score": 40900,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "Haruzen",
+                  "score": 28000,
+                  "delta": 1800,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "FS525",
+                  "score": 22300,
+                  "delta": -1800,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "ikanajin",
+                  "score": 28800,
+                  "delta": 0,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 10,
+              "chang": 1,
+              "ju": 1,
+              "honba": 2,
+              "riichiSticks": 0,
+              "startScores": [
+                40900,
+                28000,
+                22300,
+                28800
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 1,
+                  "loserSeat": 0,
+                  "yaku": [
+                    "Tanyao"
+                  ],
+                  "hand": "4m4m5m5m5m8p8p5s6s7s",
+                  "win": "8p",
+                  "melds": [
+                    "s7s8s6s"
+                  ],
+                  "dora": "9p",
+                  "points": 1500,
+                  "fu": 30,
+                  "han": 1,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 17,
+                  "winner": "Haruzen",
+                  "loser": "DiosioわTensai"
+                }
+              ],
+              "endScores": [
+                38800,
+                30100,
+                22300,
+                28800
+              ],
+              "scoreDeltas": [
+                -2100,
+                2100,
+                0,
+                0
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "DiosioわTensai",
+                  "score": 38800,
+                  "delta": -2100,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "Haruzen",
+                  "score": 30100,
+                  "delta": 2100,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "FS525",
+                  "score": 22300,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "ikanajin",
+                  "score": 28800,
+                  "delta": 0,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 11,
+              "chang": 1,
+              "ju": 1,
+              "honba": 3,
+              "riichiSticks": 0,
+              "startScores": [
+                38800,
+                30100,
+                22300,
+                28800
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 3,
+                  "loserSeat": 0,
+                  "yaku": [
+                    "Tanyao"
+                  ],
+                  "hand": "2m3m3m4m4m5m8m8m7s7s",
+                  "win": "8m",
+                  "melds": [
+                    "k8p8p8p"
+                  ],
+                  "dora": "7p",
+                  "points": 8000,
+                  "fu": 30,
+                  "han": 4,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 18,
+                  "winner": "ikanajin",
+                  "loser": "DiosioわTensai"
+                }
+              ],
+              "endScores": [
+                29900,
+                30100,
+                21300,
+                38700
+              ],
+              "scoreDeltas": [
+                -8900,
+                0,
+                0,
+                9900
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "DiosioわTensai",
+                  "score": 29900,
+                  "delta": -8900,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "Haruzen",
+                  "score": 30100,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "FS525",
+                  "score": 21300,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "ikanajin",
+                  "score": 38700,
+                  "delta": 9900,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 12,
+              "chang": 1,
+              "ju": 2,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                29900,
+                30100,
+                21300,
+                38700
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 1,
+                  "loserSeat": 0,
+                  "yaku": [
+                    "Pinfu",
+                    "Riichi"
+                  ],
+                  "hand": "5m6m7m7p8p2s3s3s4s4s5s8s8s",
+                  "win": "9p",
+                  "melds": [],
+                  "dora": "3m2m",
+                  "points": 8000,
+                  "fu": 30,
+                  "han": 4,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": true,
+                  "turn": 11,
+                  "winner": "Haruzen",
+                  "loser": "DiosioわTensai"
+                }
+              ],
+              "endScores": [
+                21900,
+                38100,
+                21300,
+                38700
+              ],
+              "scoreDeltas": [
+                -8000,
+                9000,
+                0,
+                0
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "DiosioわTensai",
+                  "score": 21900,
+                  "delta": -8000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "Haruzen",
+                  "score": 38100,
+                  "delta": 9000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "FS525",
+                  "score": 21300,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "ikanajin",
+                  "score": 38700,
+                  "delta": 0,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 13,
+              "chang": 1,
+              "ju": 3,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                21900,
+                38100,
+                21300,
+                38700
+              ],
+              "result": "draw",
+              "outcomes": [],
+              "tenpaiSeats": [
+                0,
+                1,
+                2
+              ],
+              "endScores": [
+                21900,
+                39100,
+                22300,
+                35700
+              ],
+              "scoreDeltas": [
+                1000,
+                1000,
+                1000,
+                -3000
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "DiosioわTensai",
+                  "score": 21900,
+                  "delta": 1000,
+                  "tenpai": true
+                },
+                {
+                  "seat": 1,
+                  "player": "Haruzen",
+                  "score": 39100,
+                  "delta": 1000,
+                  "tenpai": true
+                },
+                {
+                  "seat": 2,
+                  "player": "FS525",
+                  "score": 22300,
+                  "delta": 1000,
+                  "tenpai": true
+                },
+                {
+                  "seat": 3,
+                  "player": "ikanajin",
+                  "score": 35700,
+                  "delta": -3000,
+                  "tenpai": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "A-S6-M5-G2",
+          "code": "A-S6-M5-G2",
+          "div": "A",
+          "session": 6,
+          "sessionCode": "S6",
+          "hanchan": 2,
+          "date": "13 sep",
+          "dateISO": "2026-09-13",
+          "weekday": "dom",
+          "table": 5,
+          "players": [
+            {
+              "id": "A12",
+              "name": "FS525",
+              "handle": "FS525",
+              "nat": "AR",
+              "scoreRaw": 39300,
+              "place": 1,
+              "delta": 24.3,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A06",
+              "name": "DiosioわTensai",
+              "handle": "DiosioわTensai",
+              "nat": "MX",
+              "scoreRaw": 37100,
+              "place": 2,
+              "delta": 12.1,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A10",
+              "name": "Haruzen",
+              "handle": "Haruzen",
+              "nat": "MX",
+              "scoreRaw": 23300,
+              "place": 3,
+              "delta": -11.7,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A13",
+              "name": "ikanajin",
+              "handle": "ikanajin",
+              "nat": "CL",
+              "scoreRaw": 20300,
+              "place": 4,
+              "delta": -24.7,
+              "sustitutoDe": null,
+              "esSuplente": false
+            }
+          ],
+          "paipuUrl": "https://mahjongsoul.game.yo-star.com/?paipu=260914-ad63f93b-d0b5-41c1-927f-cf4975211366",
+          "verified": true,
+          "source": "paipu",
+          "rounds": [
+            {
+              "index": 0,
+              "chang": 0,
+              "ju": 0,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                30000,
+                30000,
+                30000,
+                30000
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 3,
+                  "loserSeat": 1,
+                  "yaku": [
+                    "Pinfu",
+                    "Riichi"
+                  ],
+                  "hand": "3m4m5m7m8m7p7p3s4s5s6s7s8s",
+                  "win": "9m",
+                  "melds": [],
+                  "dora": "2p",
+                  "points": 3900,
+                  "fu": 30,
+                  "han": 3,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": true,
+                  "turn": 7,
+                  "winner": "Haruzen",
+                  "loser": "DiosioわTensai"
+                }
+              ],
+              "endScores": [
+                30000,
+                26100,
+                29000,
+                34900
+              ],
+              "scoreDeltas": [
+                0,
+                -3900,
+                0,
+                5900
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "FS525",
+                  "score": 30000,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "DiosioわTensai",
+                  "score": 26100,
+                  "delta": -3900,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "ikanajin",
+                  "score": 29000,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Haruzen",
+                  "score": 34900,
+                  "delta": 5900,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 1,
+              "chang": 0,
+              "ju": 1,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                30000,
+                26100,
+                29000,
+                34900
+              ],
+              "result": "tsumo",
+              "outcomes": [
+                {
+                  "winnerSeat": 0,
+                  "loserSeat": null,
+                  "yaku": [
+                    "Iipeiko",
+                    "Menzen Tsumo",
+                    "Yakuhai Jikaze",
+                    "Riichi"
+                  ],
+                  "hand": "4m4m5m5m6m6m8s8s8s4z4z6z6z",
+                  "win": "4z",
+                  "melds": [],
+                  "dora": "7z",
+                  "points": 12000,
+                  "fu": 40,
+                  "han": 7,
+                  "yakuman": false,
+                  "tsumo": true,
+                  "riichi": true,
+                  "turn": 15,
+                  "winner": "FS525",
+                  "loser": null
+                }
+              ],
+              "endScores": [
+                42000,
+                20100,
+                26000,
+                31900
+              ],
+              "scoreDeltas": [
+                13000,
+                -6000,
+                -3000,
+                -3000
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "FS525",
+                  "score": 42000,
+                  "delta": 13000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "DiosioわTensai",
+                  "score": 20100,
+                  "delta": -6000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "ikanajin",
+                  "score": 26000,
+                  "delta": -3000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Haruzen",
+                  "score": 31900,
+                  "delta": -3000,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 2,
+              "chang": 0,
+              "ju": 2,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                42000,
+                20100,
+                26000,
+                31900
+              ],
+              "result": "tsumo",
+              "outcomes": [
+                {
+                  "winnerSeat": 3,
+                  "loserSeat": null,
+                  "yaku": [
+                    "Yakuhai Jikaze"
+                  ],
+                  "hand": "1m1m6p7p8p6s7s",
+                  "win": "8s",
+                  "melds": [
+                    "k2z2z2z",
+                    "s5m6m4m"
+                  ],
+                  "dora": "3s",
+                  "points": 1100,
+                  "fu": 30,
+                  "han": 1,
+                  "yakuman": false,
+                  "tsumo": true,
+                  "riichi": false,
+                  "turn": 13,
+                  "winner": "Haruzen",
+                  "loser": null
+                }
+              ],
+              "endScores": [
+                41700,
+                19800,
+                25500,
+                33000
+              ],
+              "scoreDeltas": [
+                -300,
+                -300,
+                -500,
+                1100
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "FS525",
+                  "score": 41700,
+                  "delta": -300,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "DiosioわTensai",
+                  "score": 19800,
+                  "delta": -300,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "ikanajin",
+                  "score": 25500,
+                  "delta": -500,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Haruzen",
+                  "score": 33000,
+                  "delta": 1100,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 3,
+              "chang": 0,
+              "ju": 3,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                41700,
+                19800,
+                25500,
+                33000
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 3,
+                  "loserSeat": 2,
+                  "yaku": [
+                    "Yakuhai Haku",
+                    "Houtei Raoyui"
+                  ],
+                  "hand": "2m3m4m3p4p5p3s",
+                  "win": "3s",
+                  "melds": [
+                    "k5z5z5z",
+                    "k4z4z4z"
+                  ],
+                  "dora": "9m",
+                  "points": 2900,
+                  "fu": 30,
+                  "han": 2,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 17,
+                  "winner": "Haruzen",
+                  "loser": "ikanajin"
+                }
+              ],
+              "endScores": [
+                40700,
+                18800,
+                21600,
+                38900
+              ],
+              "scoreDeltas": [
+                0,
+                0,
+                -2900,
+                5900
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "FS525",
+                  "score": 40700,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "DiosioわTensai",
+                  "score": 18800,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "ikanajin",
+                  "score": 21600,
+                  "delta": -2900,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Haruzen",
+                  "score": 38900,
+                  "delta": 5900,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 4,
+              "chang": 0,
+              "ju": 3,
+              "honba": 1,
+              "riichiSticks": 0,
+              "startScores": [
+                40700,
+                18800,
+                21600,
+                38900
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 2,
+                  "loserSeat": 3,
+                  "yaku": [
+                    "Yakuhai Chun"
+                  ],
+                  "hand": "5m6m4p4p2s3s4s5s6s7s",
+                  "win": "7m",
+                  "melds": [
+                    "k7z7z7z"
+                  ],
+                  "dora": "3m",
+                  "points": 1000,
+                  "fu": 30,
+                  "han": 1,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 9,
+                  "winner": "ikanajin",
+                  "loser": "Haruzen"
+                }
+              ],
+              "endScores": [
+                40700,
+                18800,
+                22900,
+                37600
+              ],
+              "scoreDeltas": [
+                0,
+                0,
+                1300,
+                -1300
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "FS525",
+                  "score": 40700,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "DiosioわTensai",
+                  "score": 18800,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "ikanajin",
+                  "score": 22900,
+                  "delta": 1300,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Haruzen",
+                  "score": 37600,
+                  "delta": -1300,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 5,
+              "chang": 1,
+              "ju": 0,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                40700,
+                18800,
+                22900,
+                37600
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 2,
+                  "loserSeat": 3,
+                  "yaku": [
+                    "Ittsu",
+                    "Pinfu",
+                    "Riichi",
+                    "Ippatsu"
+                  ],
+                  "hand": "6m6m6p7p8p2s3s4s5s6s7s8s9s",
+                  "win": "1s",
+                  "melds": [],
+                  "dora": "8p1p",
+                  "points": 8000,
+                  "fu": 30,
+                  "han": 5,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": true,
+                  "turn": 17,
+                  "winner": "ikanajin",
+                  "loser": "Haruzen"
+                }
+              ],
+              "endScores": [
+                40700,
+                18800,
+                31900,
+                28600
+              ],
+              "scoreDeltas": [
+                0,
+                0,
+                10000,
+                -8000
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "FS525",
+                  "score": 40700,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "DiosioわTensai",
+                  "score": 18800,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "ikanajin",
+                  "score": 31900,
+                  "delta": 10000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Haruzen",
+                  "score": 28600,
+                  "delta": -8000,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 6,
+              "chang": 1,
+              "ju": 1,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                40700,
+                18800,
+                31900,
+                28600
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 1,
+                  "loserSeat": 0,
+                  "yaku": [
+                    "Riichi"
+                  ],
+                  "hand": "7m7m7m7p8p9p4s4s6s7s8s3z3z",
+                  "win": "4s",
+                  "melds": [],
+                  "dora": "1p",
+                  "points": 2000,
+                  "fu": 40,
+                  "han": 1,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": true,
+                  "turn": 8,
+                  "winner": "DiosioわTensai",
+                  "loser": "FS525"
+                }
+              ],
+              "endScores": [
+                38700,
+                20800,
+                31900,
+                28600
+              ],
+              "scoreDeltas": [
+                -2000,
+                3000,
+                0,
+                0
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "FS525",
+                  "score": 38700,
+                  "delta": -2000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "DiosioわTensai",
+                  "score": 20800,
+                  "delta": 3000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "ikanajin",
+                  "score": 31900,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Haruzen",
+                  "score": 28600,
+                  "delta": 0,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 7,
+              "chang": 1,
+              "ju": 1,
+              "honba": 1,
+              "riichiSticks": 0,
+              "startScores": [
+                38700,
+                20800,
+                31900,
+                28600
+              ],
+              "result": "tsumo",
+              "outcomes": [
+                {
+                  "winnerSeat": 1,
+                  "loserSeat": null,
+                  "yaku": [
+                    "Menzen Tsumo",
+                    "Pinfu",
+                    "Riichi"
+                  ],
+                  "hand": "4m5m6m6m7m8m1p1p4s5s6s7s8s",
+                  "win": "9s",
+                  "melds": [],
+                  "dora": "7m",
+                  "points": 12000,
+                  "fu": 20,
+                  "han": 5,
+                  "yakuman": false,
+                  "tsumo": true,
+                  "riichi": true,
+                  "turn": 15,
+                  "winner": "DiosioわTensai",
+                  "loser": null
+                }
+              ],
+              "endScores": [
+                34600,
+                34100,
+                26800,
+                24500
+              ],
+              "scoreDeltas": [
+                -4100,
+                14300,
+                -4100,
+                -4100
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "FS525",
+                  "score": 34600,
+                  "delta": -4100,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "DiosioわTensai",
+                  "score": 34100,
+                  "delta": 14300,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "ikanajin",
+                  "score": 26800,
+                  "delta": -4100,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Haruzen",
+                  "score": 24500,
+                  "delta": -4100,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 8,
+              "chang": 1,
+              "ju": 1,
+              "honba": 2,
+              "riichiSticks": 0,
+              "startScores": [
+                34600,
+                34100,
+                26800,
+                24500
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 3,
+                  "loserSeat": 2,
+                  "yaku": [
+                    "Honitsu",
+                    "Yakuhai Bakaze"
+                  ],
+                  "hand": "2m3m4m6m7m3z3z",
+                  "win": "8m",
+                  "melds": [
+                    "k2z2z2z",
+                    "k4z4z4z"
+                  ],
+                  "dora": "6p",
+                  "points": 3900,
+                  "fu": 30,
+                  "han": 3,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 9,
+                  "winner": "Haruzen",
+                  "loser": "ikanajin"
+                }
+              ],
+              "endScores": [
+                34600,
+                34100,
+                22300,
+                29000
+              ],
+              "scoreDeltas": [
+                0,
+                0,
+                -4500,
+                4500
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "FS525",
+                  "score": 34600,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "DiosioわTensai",
+                  "score": 34100,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "ikanajin",
+                  "score": 22300,
+                  "delta": -4500,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Haruzen",
+                  "score": 29000,
+                  "delta": 4500,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 9,
+              "chang": 1,
+              "ju": 2,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                34600,
+                34100,
+                22300,
+                29000
+              ],
+              "result": "tsumo",
+              "outcomes": [
+                {
+                  "winnerSeat": 1,
+                  "loserSeat": null,
+                  "yaku": [
+                    "Tanyao",
+                    "Menzen Tsumo"
+                  ],
+                  "hand": "4p5p5p6p6p7p7p7p2s4s5s6s7s",
+                  "win": "3s",
+                  "melds": [],
+                  "dora": "8p",
+                  "points": 2000,
+                  "fu": 30,
+                  "han": 2,
+                  "yakuman": false,
+                  "tsumo": true,
+                  "riichi": false,
+                  "turn": 13,
+                  "winner": "DiosioわTensai",
+                  "loser": null
+                }
+              ],
+              "endScores": [
+                34100,
+                37100,
+                20300,
+                28500
+              ],
+              "scoreDeltas": [
+                -500,
+                3000,
+                -1000,
+                -500
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "FS525",
+                  "score": 34100,
+                  "delta": -500,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "DiosioわTensai",
+                  "score": 37100,
+                  "delta": 3000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "ikanajin",
+                  "score": 20300,
+                  "delta": -1000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Haruzen",
+                  "score": 28500,
+                  "delta": -500,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 10,
+              "chang": 1,
+              "ju": 3,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                34100,
+                37100,
+                20300,
+                28500
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 0,
+                  "loserSeat": 3,
+                  "yaku": [
+                    "Yakuhai Bakaze",
+                    "Yakuhai Jikaze"
+                  ],
+                  "hand": "7m8m1p1p1p1s1s5s6s7s",
+                  "win": "9m",
+                  "melds": [
+                    "k2z2z2z"
+                  ],
+                  "dora": "6s",
+                  "points": 5200,
+                  "fu": 40,
+                  "han": 3,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 8,
+                  "winner": "FS525",
+                  "loser": "Haruzen"
+                }
+              ],
+              "endScores": [
+                39300,
+                37100,
+                20300,
+                23300
+              ],
+              "scoreDeltas": [
+                5200,
+                0,
+                0,
+                -5200
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "FS525",
+                  "score": 39300,
+                  "delta": 5200,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "DiosioわTensai",
+                  "score": 37100,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "ikanajin",
+                  "score": 20300,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Haruzen",
+                  "score": 23300,
+                  "delta": -5200,
+                  "tenpai": false
+                }
+              ]
+            }
+          ]
+        },
+        {
           "id": "A-S6-M6-G1",
           "code": "A-S6-M6-G1",
           "div": "A",
@@ -73021,8 +75183,8 @@
           "date": "06 sep",
           "weekday": "dom",
           "div": "A",
-          "matches": 10,
-          "status": "partial"
+          "matches": 12,
+          "status": "played"
         },
         {
           "n": 7,
@@ -142158,8 +144320,8 @@
       "shortName": "Haruzen",
       "handle": "Haruzen",
       "nat": "MX",
-      "games": 10,
-      "points": -15.0,
+      "games": 12,
+      "points": -1.6,
       "history": [
         -25.8,
         38.3,
@@ -142170,7 +144332,9 @@
         21.1,
         10.5,
         -14.2,
-        -29.6
+        -29.6,
+        25.1,
+        -11.7
       ],
       "cum": [
         -25.8,
@@ -142182,48 +144346,54 @@
         18.3,
         28.8,
         14.6,
-        -15.0
+        -15.0,
+        10.1,
+        -1.6
       ],
       "counts": [
-        3,
+        4,
         2,
-        1,
+        2,
         4
       ],
       "absences": 0,
-      "hands": 108,
-      "wins": 22,
-      "dealIns": 23,
-      "riichis": 11,
-      "openHands": 48,
+      "hands": 133,
+      "wins": 32,
+      "dealIns": 27,
+      "riichis": 15,
+      "openHands": 59,
       "damaten": 6,
-      "kans": 5,
-      "doras": 27,
-      "uraDoras": 6,
+      "kans": 6,
+      "doras": 40,
+      "uraDoras": 9,
       "maxHonba": 4,
-      "winPoints": 99300,
-      "dealInPoints": 69600,
-      "winTurns": 236,
+      "winPoints": 128300,
+      "dealInPoints": 89600,
+      "winTurns": 352,
       "placements": {
-        "p1": 0.3,
-        "p2": 0.2,
-        "p3": 0.1,
-        "p4": 0.4
+        "p1": 0.33,
+        "p2": 0.17,
+        "p3": 0.17,
+        "p4": 0.33
       },
-      "avgRank": 2.6,
-      "avgPoints": -1.5,
-      "streak": -12.2,
-      "winRate": 20.4,
-      "dealInRate": 21.3,
-      "riichiRate": 10.2,
+      "avgRank": 2.5,
+      "avgPoints": -0.1,
+      "streak": -30.4,
+      "winRate": 24.1,
+      "dealInRate": 20.3,
+      "riichiRate": 11.3,
       "openRate": 44.4,
-      "damatenRate": 27.3,
-      "avgWinPoints": 4514,
-      "avgDealInPoints": 3026,
-      "avgWinTurn": 10.73,
+      "damatenRate": 18.8,
+      "avgWinPoints": 4009,
+      "avgDealInPoints": 3319,
+      "avgWinTurn": 11.0,
       "yakus": [
         {
           "name": "Tanyao",
+          "count": 10
+        },
+        {
+          "name": "Riichi",
           "count": 7
         },
         {
@@ -142231,27 +144401,27 @@
           "count": 5
         },
         {
-          "name": "Riichi",
+          "name": "Pinfu",
           "count": 5
         },
         {
           "name": "Yakuhai Jikaze",
-          "count": 3
-        },
-        {
-          "name": "Pinfu",
-          "count": 3
+          "count": 4
         },
         {
           "name": "Yakuhai Hatsu",
           "count": 3
         },
         {
-          "name": "Sanshoku Doujun",
-          "count": 1
+          "name": "Yakuhai Bakaze",
+          "count": 3
         },
         {
           "name": "Chanta",
+          "count": 2
+        },
+        {
+          "name": "Sanshoku Doujun",
           "count": 1
         },
         {
@@ -142267,15 +144437,23 @@
           "count": 1
         },
         {
-          "name": "Yakuhai Bakaze",
+          "name": "Iipeiko",
           "count": 1
         },
         {
-          "name": "Iipeiko",
+          "name": "Yakuhai Haku",
+          "count": 1
+        },
+        {
+          "name": "Houtei Raoyui",
+          "count": 1
+        },
+        {
+          "name": "Honitsu",
           "count": 1
         }
       ],
-      "statsSample": 108,
+      "statsSample": 133,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 13,
@@ -142579,8 +144757,8 @@
       "shortName": "FS525",
       "handle": "FS525",
       "nat": "AR",
-      "games": 10,
-      "points": -53.4,
+      "games": 12,
+      "points": -41.8,
       "history": [
         -20.1,
         -25.6,
@@ -142591,7 +144769,9 @@
         -17.3,
         7.3,
         25.4,
-        8.6
+        8.6,
+        -12.7,
+        24.3
       ],
       "cum": [
         -20.1,
@@ -142603,53 +144783,55 @@
         -94.7,
         -87.4,
         -62.0,
-        -53.4
+        -53.4,
+        -66.1,
+        -41.8
       ],
       "counts": [
-        2,
         3,
-        1,
+        3,
+        2,
         4
       ],
       "absences": 0,
-      "hands": 123,
-      "wins": 17,
-      "dealIns": 20,
-      "riichis": 21,
-      "openHands": 24,
+      "hands": 148,
+      "wins": 20,
+      "dealIns": 25,
+      "riichis": 27,
+      "openHands": 27,
       "damaten": 0,
       "kans": 1,
-      "doras": 24,
-      "uraDoras": 15,
+      "doras": 27,
+      "uraDoras": 17,
       "maxHonba": 5,
-      "winPoints": 115700,
-      "dealInPoints": 81200,
-      "winTurns": 201,
+      "winPoints": 140900,
+      "dealInPoints": 96900,
+      "winTurns": 231,
       "placements": {
-        "p1": 0.2,
-        "p2": 0.3,
-        "p3": 0.1,
-        "p4": 0.4
+        "p1": 0.25,
+        "p2": 0.25,
+        "p3": 0.17,
+        "p4": 0.33
       },
-      "avgRank": 2.7,
-      "avgPoints": -5.3,
-      "streak": 24.0,
-      "winRate": 13.8,
-      "dealInRate": 16.3,
-      "riichiRate": 17.1,
-      "openRate": 19.5,
+      "avgRank": 2.58,
+      "avgPoints": -3.5,
+      "streak": 45.6,
+      "winRate": 13.5,
+      "dealInRate": 16.9,
+      "riichiRate": 18.2,
+      "openRate": 18.2,
       "damatenRate": 0.0,
-      "avgWinPoints": 6806,
-      "avgDealInPoints": 4060,
-      "avgWinTurn": 11.82,
+      "avgWinPoints": 7045,
+      "avgDealInPoints": 3876,
+      "avgWinTurn": 11.55,
       "yakus": [
         {
           "name": "Riichi",
-          "count": 11
+          "count": 13
         },
         {
           "name": "Menzen Tsumo",
-          "count": 5
+          "count": 7
         },
         {
           "name": "Pinfu",
@@ -142661,7 +144843,15 @@
         },
         {
           "name": "Tanyao",
+          "count": 4
+        },
+        {
+          "name": "Iipeiko",
           "count": 3
+        },
+        {
+          "name": "Yakuhai Jikaze",
+          "count": 2
         },
         {
           "name": "Ittsu",
@@ -142669,10 +144859,6 @@
         },
         {
           "name": "Yakuhai Haku",
-          "count": 1
-        },
-        {
-          "name": "Iipeiko",
           "count": 1
         },
         {
@@ -142690,9 +144876,13 @@
         {
           "name": "Yakuhai Hatsu",
           "count": 1
+        },
+        {
+          "name": "Yakuhai Bakaze",
+          "count": 1
         }
       ],
-      "statsSample": 123,
+      "statsSample": 148,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 16,
@@ -142983,133 +145173,6 @@
       "iormc": "out"
     },
     {
-      "id": "A06",
-      "div": "A",
-      "num": "06",
-      "name": "DiosioわTensai",
-      "shortName": "DiosioわTensai",
-      "handle": "DiosioわTensai",
-      "nat": "MX",
-      "games": 10,
-      "points": -65.6,
-      "history": [
-        5.9,
-        -28.6,
-        18.0,
-        32.1,
-        18.7,
-        18.4,
-        -37.5,
-        -29.3,
-        -53.7,
-        -9.6
-      ],
-      "cum": [
-        5.9,
-        -22.7,
-        -4.7,
-        27.4,
-        46.1,
-        64.5,
-        27.0,
-        -2.3,
-        -56.0,
-        -65.6
-      ],
-      "counts": [
-        1,
-        4,
-        2,
-        3
-      ],
-      "absences": 0,
-      "hands": 129,
-      "wins": 22,
-      "dealIns": 21,
-      "riichis": 27,
-      "openHands": 52,
-      "damaten": 0,
-      "kans": 9,
-      "doras": 28,
-      "uraDoras": 7,
-      "maxHonba": 6,
-      "winPoints": 123700,
-      "dealInPoints": 126700,
-      "winTurns": 232,
-      "placements": {
-        "p1": 0.1,
-        "p2": 0.4,
-        "p3": 0.2,
-        "p4": 0.3
-      },
-      "avgRank": 2.7,
-      "avgPoints": -6.6,
-      "streak": -130.1,
-      "winRate": 17.1,
-      "dealInRate": 16.3,
-      "riichiRate": 20.9,
-      "openRate": 40.3,
-      "damatenRate": 0.0,
-      "avgWinPoints": 5623,
-      "avgDealInPoints": 6033,
-      "avgWinTurn": 10.55,
-      "yakus": [
-        {
-          "name": "Tanyao",
-          "count": 7
-        },
-        {
-          "name": "Riichi",
-          "count": 5
-        },
-        {
-          "name": "Yakuhai Haku",
-          "count": 4
-        },
-        {
-          "name": "Yakuhai Bakaze",
-          "count": 3
-        },
-        {
-          "name": "Yakuhai Chun",
-          "count": 3
-        },
-        {
-          "name": "Pinfu",
-          "count": 3
-        },
-        {
-          "name": "Toitoi",
-          "count": 2
-        },
-        {
-          "name": "Yakuhai Hatsu",
-          "count": 2
-        },
-        {
-          "name": "Chanta",
-          "count": 1
-        },
-        {
-          "name": "Ippatsu",
-          "count": 1
-        },
-        {
-          "name": "Yakuhai Jikaze",
-          "count": 1
-        },
-        {
-          "name": "Honitsu",
-          "count": 1
-        }
-      ],
-      "statsSample": 129,
-      "statsReliable": true,
-      "arch": "con datos",
-      "rank": 19,
-      "zone": null
-    },
-    {
       "id": "A19",
       "div": "A",
       "num": "19",
@@ -143227,6 +145290,141 @@
         }
       ],
       "statsSample": 144,
+      "statsReliable": true,
+      "arch": "con datos",
+      "rank": 19,
+      "zone": null
+    },
+    {
+      "id": "A06",
+      "div": "A",
+      "num": "06",
+      "name": "DiosioわTensai",
+      "shortName": "DiosioわTensai",
+      "handle": "DiosioわTensai",
+      "nat": "MX",
+      "games": 12,
+      "points": -76.6,
+      "history": [
+        5.9,
+        -28.6,
+        18.0,
+        32.1,
+        18.7,
+        18.4,
+        -37.5,
+        -29.3,
+        -53.7,
+        -9.6,
+        -23.1,
+        12.1
+      ],
+      "cum": [
+        5.9,
+        -22.7,
+        -4.7,
+        27.4,
+        46.1,
+        64.5,
+        27.0,
+        -2.3,
+        -56.0,
+        -65.6,
+        -88.7,
+        -76.6
+      ],
+      "counts": [
+        1,
+        5,
+        2,
+        4
+      ],
+      "absences": 0,
+      "hands": 154,
+      "wins": 29,
+      "dealIns": 26,
+      "riichis": 33,
+      "openHands": 64,
+      "damaten": 1,
+      "kans": 10,
+      "doras": 35,
+      "uraDoras": 11,
+      "maxHonba": 6,
+      "winPoints": 153500,
+      "dealInPoints": 149400,
+      "winTurns": 306,
+      "placements": {
+        "p1": 0.08,
+        "p2": 0.42,
+        "p3": 0.17,
+        "p4": 0.33
+      },
+      "avgRank": 2.75,
+      "avgPoints": -6.4,
+      "streak": -74.3,
+      "winRate": 18.8,
+      "dealInRate": 16.9,
+      "riichiRate": 21.4,
+      "openRate": 41.6,
+      "damatenRate": 3.4,
+      "avgWinPoints": 5293,
+      "avgDealInPoints": 5746,
+      "avgWinTurn": 10.55,
+      "yakus": [
+        {
+          "name": "Tanyao",
+          "count": 9
+        },
+        {
+          "name": "Riichi",
+          "count": 9
+        },
+        {
+          "name": "Pinfu",
+          "count": 5
+        },
+        {
+          "name": "Yakuhai Haku",
+          "count": 5
+        },
+        {
+          "name": "Yakuhai Bakaze",
+          "count": 3
+        },
+        {
+          "name": "Yakuhai Chun",
+          "count": 3
+        },
+        {
+          "name": "Ippatsu",
+          "count": 2
+        },
+        {
+          "name": "Toitoi",
+          "count": 2
+        },
+        {
+          "name": "Yakuhai Hatsu",
+          "count": 2
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 2
+        },
+        {
+          "name": "Chanta",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Jikaze",
+          "count": 1
+        },
+        {
+          "name": "Honitsu",
+          "count": 1
+        }
+      ],
+      "statsSample": 154,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 20,
@@ -143673,8 +145871,8 @@
       "shortName": "ikanajin",
       "handle": "ikanajin",
       "nat": "CL",
-      "games": 10,
-      "points": -206.1,
+      "games": 12,
+      "points": -220.1,
       "history": [
         -29.8,
         -12.8,
@@ -143685,7 +145883,9 @@
         -39.4,
         -17.6,
         -51.6,
-        -14.7
+        -14.7,
+        10.7,
+        -24.7
       ],
       "cum": [
         -29.8,
@@ -143697,60 +145897,66 @@
         -122.2,
         -139.8,
         -191.4,
-        -206.1
+        -206.1,
+        -195.4,
+        -220.1
       ],
       "counts": [
         1,
-        0,
+        1,
         4,
-        5
+        6
       ],
       "absences": 0,
-      "hands": 127,
-      "wins": 20,
-      "dealIns": 34,
-      "riichis": 28,
-      "openHands": 48,
+      "hands": 152,
+      "wins": 24,
+      "dealIns": 38,
+      "riichis": 34,
+      "openHands": 57,
       "damaten": 1,
-      "kans": 5,
-      "doras": 23,
-      "uraDoras": 6,
+      "kans": 8,
+      "doras": 29,
+      "uraDoras": 8,
       "maxHonba": 6,
-      "winPoints": 104000,
-      "dealInPoints": 178700,
-      "winTurns": 217,
+      "winPoints": 126800,
+      "dealInPoints": 189000,
+      "winTurns": 270,
       "placements": {
-        "p1": 0.1,
-        "p2": 0.0,
-        "p3": 0.4,
+        "p1": 0.08,
+        "p2": 0.08,
+        "p3": 0.33,
         "p4": 0.5
       },
-      "avgRank": 3.3,
-      "avgPoints": -20.6,
-      "streak": -123.3,
-      "winRate": 15.7,
-      "dealInRate": 26.8,
-      "riichiRate": 22.0,
-      "openRate": 37.8,
-      "damatenRate": 5.0,
-      "avgWinPoints": 5200,
-      "avgDealInPoints": 5256,
-      "avgWinTurn": 10.85,
+      "avgRank": 3.25,
+      "avgPoints": -18.3,
+      "streak": -80.3,
+      "winRate": 15.8,
+      "dealInRate": 25.0,
+      "riichiRate": 22.4,
+      "openRate": 37.5,
+      "damatenRate": 4.2,
+      "avgWinPoints": 5283,
+      "avgDealInPoints": 4974,
+      "avgWinTurn": 11.25,
       "yakus": [
         {
           "name": "Tanyao",
-          "count": 8
+          "count": 9
         },
         {
           "name": "Riichi",
-          "count": 6
+          "count": 7
         },
         {
           "name": "Yakuhai Chun",
-          "count": 5
+          "count": 6
         },
         {
           "name": "Yakuhai Jikaze",
+          "count": 3
+        },
+        {
+          "name": "Yakuhai Haku",
           "count": 3
         },
         {
@@ -143762,24 +145968,20 @@
           "count": 2
         },
         {
-          "name": "Honitsu",
+          "name": "Pinfu",
           "count": 2
         },
         {
-          "name": "Yakuhai Haku",
+          "name": "Ippatsu",
+          "count": 2
+        },
+        {
+          "name": "Honitsu",
           "count": 2
         },
         {
           "name": "Chiitoitsu",
           "count": 2
-        },
-        {
-          "name": "Pinfu",
-          "count": 1
-        },
-        {
-          "name": "Ippatsu",
-          "count": 1
         },
         {
           "name": "Chanta",
@@ -143800,9 +146002,13 @@
         {
           "name": "Toitoi",
           "count": 1
+        },
+        {
+          "name": "Ittsu",
+          "count": 1
         }
       ],
-      "statsSample": 127,
+      "statsSample": 152,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 24,
@@ -147045,8 +149251,8 @@
       "count": 4,
       "inA": 3,
       "inB": 1,
-      "avgPoints": 65.3,
-      "avgRank": 2.3,
+      "avgPoints": 68.2,
+      "avgRank": 2.27,
       "best": {
         "id": "B15",
         "div": "B",
@@ -147335,7 +149541,7 @@
       "count": 24,
       "inA": 12,
       "inB": 12,
-      "avgPoints": 8.9,
+      "avgPoints": 8.4,
       "avgRank": 2.51,
       "best": {
         "id": "B04",
@@ -147494,8 +149700,8 @@
       "count": 5,
       "inA": 4,
       "inB": 1,
-      "avgPoints": -98.8,
-      "avgRank": 2.79,
+      "avgPoints": -98.3,
+      "avgRank": 2.78,
       "best": {
         "id": "A15",
         "div": "A",
@@ -149570,8 +151776,8 @@
         "shortName": "ikanajin",
         "handle": "ikanajin",
         "nat": "CL",
-        "games": 10,
-        "points": -206.1,
+        "games": 12,
+        "points": -220.1,
         "history": [
           -29.8,
           -12.8,
@@ -149582,7 +151788,9 @@
           -39.4,
           -17.6,
           -51.6,
-          -14.7
+          -14.7,
+          10.7,
+          -24.7
         ],
         "cum": [
           -29.8,
@@ -149594,60 +151802,66 @@
           -122.2,
           -139.8,
           -191.4,
-          -206.1
+          -206.1,
+          -195.4,
+          -220.1
         ],
         "counts": [
           1,
-          0,
+          1,
           4,
-          5
+          6
         ],
         "absences": 0,
-        "hands": 127,
-        "wins": 20,
-        "dealIns": 34,
-        "riichis": 28,
-        "openHands": 48,
+        "hands": 152,
+        "wins": 24,
+        "dealIns": 38,
+        "riichis": 34,
+        "openHands": 57,
         "damaten": 1,
-        "kans": 5,
-        "doras": 23,
-        "uraDoras": 6,
+        "kans": 8,
+        "doras": 29,
+        "uraDoras": 8,
         "maxHonba": 6,
-        "winPoints": 104000,
-        "dealInPoints": 178700,
-        "winTurns": 217,
+        "winPoints": 126800,
+        "dealInPoints": 189000,
+        "winTurns": 270,
         "placements": {
-          "p1": 0.1,
-          "p2": 0.0,
-          "p3": 0.4,
+          "p1": 0.08,
+          "p2": 0.08,
+          "p3": 0.33,
           "p4": 0.5
         },
-        "avgRank": 3.3,
-        "avgPoints": -20.6,
-        "streak": -123.3,
-        "winRate": 15.7,
-        "dealInRate": 26.8,
-        "riichiRate": 22.0,
-        "openRate": 37.8,
-        "damatenRate": 5.0,
-        "avgWinPoints": 5200,
-        "avgDealInPoints": 5256,
-        "avgWinTurn": 10.85,
+        "avgRank": 3.25,
+        "avgPoints": -18.3,
+        "streak": -80.3,
+        "winRate": 15.8,
+        "dealInRate": 25.0,
+        "riichiRate": 22.4,
+        "openRate": 37.5,
+        "damatenRate": 4.2,
+        "avgWinPoints": 5283,
+        "avgDealInPoints": 4974,
+        "avgWinTurn": 11.25,
         "yakus": [
           {
             "name": "Tanyao",
-            "count": 8
+            "count": 9
           },
           {
             "name": "Riichi",
-            "count": 6
+            "count": 7
           },
           {
             "name": "Yakuhai Chun",
-            "count": 5
+            "count": 6
           },
           {
             "name": "Yakuhai Jikaze",
+            "count": 3
+          },
+          {
+            "name": "Yakuhai Haku",
             "count": 3
           },
           {
@@ -149659,24 +151873,20 @@
             "count": 2
           },
           {
-            "name": "Honitsu",
+            "name": "Pinfu",
             "count": 2
           },
           {
-            "name": "Yakuhai Haku",
+            "name": "Ippatsu",
+            "count": 2
+          },
+          {
+            "name": "Honitsu",
             "count": 2
           },
           {
             "name": "Chiitoitsu",
             "count": 2
-          },
-          {
-            "name": "Pinfu",
-            "count": 1
-          },
-          {
-            "name": "Ippatsu",
-            "count": 1
           },
           {
             "name": "Chanta",
@@ -149697,9 +151907,13 @@
           {
             "name": "Toitoi",
             "count": 1
+          },
+          {
+            "name": "Ittsu",
+            "count": 1
           }
         ],
-        "statsSample": 127,
+        "statsSample": 152,
         "statsReliable": true,
         "arch": "con datos",
         "rank": 24,
@@ -151332,8 +153546,8 @@
         "shortName": "ikanajin",
         "handle": "ikanajin",
         "nat": "CL",
-        "games": 10,
-        "points": -206.1,
+        "games": 12,
+        "points": -220.1,
         "history": [
           -29.8,
           -12.8,
@@ -151344,7 +153558,9 @@
           -39.4,
           -17.6,
           -51.6,
-          -14.7
+          -14.7,
+          10.7,
+          -24.7
         ],
         "cum": [
           -29.8,
@@ -151356,60 +153572,66 @@
           -122.2,
           -139.8,
           -191.4,
-          -206.1
+          -206.1,
+          -195.4,
+          -220.1
         ],
         "counts": [
           1,
-          0,
+          1,
           4,
-          5
+          6
         ],
         "absences": 0,
-        "hands": 127,
-        "wins": 20,
-        "dealIns": 34,
-        "riichis": 28,
-        "openHands": 48,
+        "hands": 152,
+        "wins": 24,
+        "dealIns": 38,
+        "riichis": 34,
+        "openHands": 57,
         "damaten": 1,
-        "kans": 5,
-        "doras": 23,
-        "uraDoras": 6,
+        "kans": 8,
+        "doras": 29,
+        "uraDoras": 8,
         "maxHonba": 6,
-        "winPoints": 104000,
-        "dealInPoints": 178700,
-        "winTurns": 217,
+        "winPoints": 126800,
+        "dealInPoints": 189000,
+        "winTurns": 270,
         "placements": {
-          "p1": 0.1,
-          "p2": 0.0,
-          "p3": 0.4,
+          "p1": 0.08,
+          "p2": 0.08,
+          "p3": 0.33,
           "p4": 0.5
         },
-        "avgRank": 3.3,
-        "avgPoints": -20.6,
-        "streak": -123.3,
-        "winRate": 15.7,
-        "dealInRate": 26.8,
-        "riichiRate": 22.0,
-        "openRate": 37.8,
-        "damatenRate": 5.0,
-        "avgWinPoints": 5200,
-        "avgDealInPoints": 5256,
-        "avgWinTurn": 10.85,
+        "avgRank": 3.25,
+        "avgPoints": -18.3,
+        "streak": -80.3,
+        "winRate": 15.8,
+        "dealInRate": 25.0,
+        "riichiRate": 22.4,
+        "openRate": 37.5,
+        "damatenRate": 4.2,
+        "avgWinPoints": 5283,
+        "avgDealInPoints": 4974,
+        "avgWinTurn": 11.25,
         "yakus": [
           {
             "name": "Tanyao",
-            "count": 8
+            "count": 9
           },
           {
             "name": "Riichi",
-            "count": 6
+            "count": 7
           },
           {
             "name": "Yakuhai Chun",
-            "count": 5
+            "count": 6
           },
           {
             "name": "Yakuhai Jikaze",
+            "count": 3
+          },
+          {
+            "name": "Yakuhai Haku",
             "count": 3
           },
           {
@@ -151421,24 +153643,20 @@
             "count": 2
           },
           {
-            "name": "Honitsu",
+            "name": "Pinfu",
             "count": 2
           },
           {
-            "name": "Yakuhai Haku",
+            "name": "Ippatsu",
+            "count": 2
+          },
+          {
+            "name": "Honitsu",
             "count": 2
           },
           {
             "name": "Chiitoitsu",
             "count": 2
-          },
-          {
-            "name": "Pinfu",
-            "count": 1
-          },
-          {
-            "name": "Ippatsu",
-            "count": 1
           },
           {
             "name": "Chanta",
@@ -151459,9 +153677,13 @@
           {
             "name": "Toitoi",
             "count": 1
+          },
+          {
+            "name": "Ittsu",
+            "count": 1
           }
         ],
-        "statsSample": 127,
+        "statsSample": 152,
         "statsReliable": true,
         "arch": "con datos",
         "rank": 24,
@@ -155604,6 +157826,232 @@
         "riichi": false,
         "turn": 12,
         "loser": "AuroraShine"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 1,
+        "yaku": [
+          "Tanyao"
+        ],
+        "hand": "6m7m8m2p3p4p5s5s6s7s",
+        "win": "8s",
+        "melds": [
+          "k4s4s4s"
+        ],
+        "dora": "5s",
+        "points": 2000,
+        "fu": 30,
+        "han": 2,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 9,
+        "loser": "ikanajin"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 1,
+        "yaku": [
+          "Chanta"
+        ],
+        "hand": "7m8m9m7z",
+        "win": "7z",
+        "melds": [
+          "k1p1p1p",
+          "k3z3z3z",
+          "k1m1m1m"
+        ],
+        "dora": "3s",
+        "points": 1300,
+        "fu": 40,
+        "han": 1,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 12,
+        "loser": "DiosioわTensai"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 1,
+        "yaku": [
+          "Yakuhai Bakaze"
+        ],
+        "hand": "1m2m3m1s1s1s2s3s6s7s",
+        "win": "5s",
+        "melds": [
+          "k2z2z2z"
+        ],
+        "dora": "9m1p",
+        "points": 2900,
+        "fu": 30,
+        "han": 2,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 10,
+        "loser": "FS525"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 1,
+        "yaku": [
+          "Tanyao"
+        ],
+        "hand": "2p3p4p6p7p7s7s",
+        "win": "8p",
+        "melds": [
+          "s2m3m4m",
+          "g7m7m7m7m"
+        ],
+        "dora": "6z2z",
+        "points": 1500,
+        "fu": 30,
+        "han": 1,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 11,
+        "loser": "FS525"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 1,
+        "yaku": [
+          "Tanyao"
+        ],
+        "hand": "4m4m5m5m5m8p8p5s6s7s",
+        "win": "8p",
+        "melds": [
+          "s7s8s6s"
+        ],
+        "dora": "9p",
+        "points": 1500,
+        "fu": 30,
+        "han": 1,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 17,
+        "loser": "DiosioわTensai"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 1,
+        "yaku": [
+          "Pinfu",
+          "Riichi"
+        ],
+        "hand": "5m6m7m7p8p2s3s3s4s4s5s8s8s",
+        "win": "9p",
+        "melds": [],
+        "dora": "3m2m",
+        "points": 8000,
+        "fu": 30,
+        "han": 4,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": true,
+        "turn": 11,
+        "loser": "DiosioわTensai"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 2,
+        "yaku": [
+          "Pinfu",
+          "Riichi"
+        ],
+        "hand": "3m4m5m7m8m7p7p3s4s5s6s7s8s",
+        "win": "9m",
+        "melds": [],
+        "dora": "2p",
+        "points": 3900,
+        "fu": 30,
+        "han": 3,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": true,
+        "turn": 7,
+        "loser": "DiosioわTensai"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 2,
+        "yaku": [
+          "Yakuhai Jikaze"
+        ],
+        "hand": "1m1m6p7p8p6s7s",
+        "win": "8s",
+        "melds": [
+          "k2z2z2z",
+          "s5m6m4m"
+        ],
+        "dora": "3s",
+        "points": 1100,
+        "fu": 30,
+        "han": 1,
+        "yakuman": false,
+        "tsumo": true,
+        "riichi": false,
+        "turn": 13,
+        "loser": null
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 2,
+        "yaku": [
+          "Yakuhai Haku",
+          "Houtei Raoyui"
+        ],
+        "hand": "2m3m4m3p4p5p3s",
+        "win": "3s",
+        "melds": [
+          "k5z5z5z",
+          "k4z4z4z"
+        ],
+        "dora": "9m",
+        "points": 2900,
+        "fu": 30,
+        "han": 2,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 17,
+        "loser": "ikanajin"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 2,
+        "yaku": [
+          "Honitsu",
+          "Yakuhai Bakaze"
+        ],
+        "hand": "2m3m4m6m7m3z3z",
+        "win": "8m",
+        "melds": [
+          "k2z2z2z",
+          "k4z4z4z"
+        ],
+        "dora": "6p",
+        "points": 3900,
+        "fu": 30,
+        "han": 3,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 9,
+        "loser": "ikanajin"
       }
     ],
     "A05": [
@@ -160532,6 +162980,97 @@
         "riichi": false,
         "turn": 12,
         "loser": "caballo"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 1,
+        "yaku": [
+          "Yakuhai Haku"
+        ],
+        "hand": "4p6p7p8p",
+        "win": "4p",
+        "melds": [
+          "a1s1s1s1s",
+          "k5z5z5z",
+          "s3s4s2s"
+        ],
+        "dora": "5s5p",
+        "points": 5800,
+        "fu": 60,
+        "han": 2,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 9,
+        "loser": "Haruzen"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 1,
+        "yaku": [
+          "Tanyao"
+        ],
+        "hand": "2m3m3m4m4m5m8m8m7s7s",
+        "win": "8m",
+        "melds": [
+          "k8p8p8p"
+        ],
+        "dora": "7p",
+        "points": 8000,
+        "fu": 30,
+        "han": 4,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 18,
+        "loser": "DiosioわTensai"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 2,
+        "yaku": [
+          "Yakuhai Chun"
+        ],
+        "hand": "5m6m4p4p2s3s4s5s6s7s",
+        "win": "7m",
+        "melds": [
+          "k7z7z7z"
+        ],
+        "dora": "3m",
+        "points": 1000,
+        "fu": 30,
+        "han": 1,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 9,
+        "loser": "Haruzen"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 2,
+        "yaku": [
+          "Ittsu",
+          "Pinfu",
+          "Riichi",
+          "Ippatsu"
+        ],
+        "hand": "6m6m6p7p8p2s3s4s5s6s7s8s9s",
+        "win": "1s",
+        "melds": [],
+        "dora": "8p1p",
+        "points": 8000,
+        "fu": 30,
+        "han": 5,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": true,
+        "turn": 17,
+        "loser": "Haruzen"
       }
     ],
     "A04": [
@@ -163313,6 +165852,158 @@
         "tsumo": true,
         "riichi": false,
         "turn": 9,
+        "loser": null
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 1,
+        "yaku": [
+          "Pinfu",
+          "Riichi",
+          "Ippatsu"
+        ],
+        "hand": "2p3p4p7p8p9p2s2s4s5s6s7s8s",
+        "win": "9s",
+        "melds": [],
+        "dora": "5p",
+        "points": 8000,
+        "fu": 30,
+        "han": 4,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": true,
+        "turn": 12,
+        "loser": "FS525"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 1,
+        "yaku": [
+          "Riichi"
+        ],
+        "hand": "1m1m5m6m7m1s2s3s5s6s6s6s7s",
+        "win": "6s",
+        "melds": [],
+        "dora": "1z",
+        "points": 1300,
+        "fu": 40,
+        "han": 1,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": true,
+        "turn": 14,
+        "loser": "FS525"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 1,
+        "yaku": [
+          "Yakuhai Haku"
+        ],
+        "hand": "7p8p9p3s4s7z7z",
+        "win": "2s",
+        "melds": [
+          "s5m6m4m",
+          "k5z5z5z"
+        ],
+        "dora": "3s",
+        "points": 3000,
+        "fu": 30,
+        "han": 2,
+        "yakuman": false,
+        "tsumo": true,
+        "riichi": false,
+        "turn": 8,
+        "loser": null
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 1,
+        "yaku": [
+          "Tanyao"
+        ],
+        "hand": "4m6m7s7s",
+        "win": "5m",
+        "melds": [
+          "k2m2m2m",
+          "k3p3p3p",
+          "k5s5s5s"
+        ],
+        "dora": "5z",
+        "points": 1500,
+        "fu": 30,
+        "han": 1,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 4,
+        "loser": "ikanajin"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 2,
+        "yaku": [
+          "Riichi"
+        ],
+        "hand": "7m7m7m7p8p9p4s4s6s7s8s3z3z",
+        "win": "4s",
+        "melds": [],
+        "dora": "1p",
+        "points": 2000,
+        "fu": 40,
+        "han": 1,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": true,
+        "turn": 8,
+        "loser": "FS525"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 2,
+        "yaku": [
+          "Menzen Tsumo",
+          "Pinfu",
+          "Riichi"
+        ],
+        "hand": "4m5m6m6m7m8m1p1p4s5s6s7s8s",
+        "win": "9s",
+        "melds": [],
+        "dora": "7m",
+        "points": 12000,
+        "fu": 20,
+        "han": 5,
+        "yakuman": false,
+        "tsumo": true,
+        "riichi": true,
+        "turn": 15,
+        "loser": null
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 2,
+        "yaku": [
+          "Tanyao",
+          "Menzen Tsumo"
+        ],
+        "hand": "4p5p5p6p6p7p7p7p2s4s5s6s7s",
+        "win": "3s",
+        "melds": [],
+        "dora": "8p",
+        "points": 2000,
+        "fu": 30,
+        "han": 2,
+        "yakuman": false,
+        "tsumo": true,
+        "riichi": false,
+        "turn": 13,
         "loser": null
       }
     ],
@@ -168307,6 +170998,75 @@
         "riichi": true,
         "turn": 12,
         "loser": "Uznaiker"
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 1,
+        "yaku": [
+          "Iipeiko",
+          "Tanyao",
+          "Menzen Tsumo",
+          "Riichi"
+        ],
+        "hand": "6m6m7m7m7m3p4p5p6s6s7s7s8s",
+        "win": "8s",
+        "melds": [],
+        "dora": "2z",
+        "points": 8000,
+        "fu": 30,
+        "han": 4,
+        "yakuman": false,
+        "tsumo": true,
+        "riichi": true,
+        "turn": 7,
+        "loser": null
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 2,
+        "yaku": [
+          "Iipeiko",
+          "Menzen Tsumo",
+          "Yakuhai Jikaze",
+          "Riichi"
+        ],
+        "hand": "4m4m5m5m6m6m8s8s8s4z4z6z6z",
+        "win": "4z",
+        "melds": [],
+        "dora": "7z",
+        "points": 12000,
+        "fu": 40,
+        "han": 7,
+        "yakuman": false,
+        "tsumo": true,
+        "riichi": true,
+        "turn": 15,
+        "loser": null
+      },
+      {
+        "session": 6,
+        "table": 5,
+        "hanchan": 2,
+        "yaku": [
+          "Yakuhai Bakaze",
+          "Yakuhai Jikaze"
+        ],
+        "hand": "7m8m1p1p1p1s1s5s6s7s",
+        "win": "9m",
+        "melds": [
+          "k2z2z2z"
+        ],
+        "dora": "6s",
+        "points": 5200,
+        "fu": 40,
+        "han": 3,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 8,
+        "loser": "Haruzen"
       }
     ],
     "B02": [
@@ -182752,8 +185512,8 @@
     "sessionsTotal": 7,
     "hanchanPerSession": 2,
     "playersPerDiv": 24,
-    "hanchanPerDiv": 70,
-    "hanchanTotal": 134,
+    "hanchanPerDiv": 72,
+    "hanchanTotal": 136,
     "nextSession": {
       "code": "S6",
       "date": "06 sep",
