@@ -1385,6 +1385,13 @@ select{font:inherit;color:inherit}
   .compare-context{font-size:9px;line-height:1.5}
 }
 
+
+/* ── Oro de campeón: un token por tema, como el resto de la paleta ── */
+[data-theme="washi"]{--champion:#9a6a12;--champion-2:#d8ae4e;--champion-glow:rgba(154,106,18,.18)}
+[data-theme="washi"][data-dark="true"]{--champion:#e9c069;--champion-2:#f6dfa4;--champion-glow:rgba(233,192,105,.16)}
+[data-theme="neon"]{--champion:#ffcb4d;--champion-2:#fff0b8;--champion-glow:rgba(255,203,77,.26)}
+[data-theme="neon"][data-dark="false"]{--champion:#b07d12;--champion-2:#e9c463;--champion-glow:rgba(176,125,18,.18)}
+
 /* ── Eliminatorias ─────────────────────────────────────────────────────────
    Cuadro (cuartos → semis → final) y clasificados de la división. El acento
    sale de --playoff-accent, que la vista fija según la división. */
@@ -1453,11 +1460,11 @@ select{font:inherit;color:inherit}
 @media(max-width:1100px){.playoff-seeds{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:900px){
   .playoff-bracket{flex-direction:column;overflow-x:visible}
-  .playoff-round{min-width:0}
+  .playoff-round{flex:0 0 auto;min-width:0}
   .playoff-tables{grid-template-columns:repeat(2,minmax(0,1fr));align-content:start}
   .playoff-arrow{grid-auto-flow:column;gap:9px}
   .playoff-arrow i{transform:rotate(90deg)}
-  .playoff-trophy{flex:0 0 auto;padding:15px}
+  .playoff-trophy{flex:0 0 auto;width:100%;padding:18px 16px}
   .playoff-seeds{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 @media(max-width:600px){
@@ -1471,3 +1478,23 @@ select{font:inherit;color:inherit}
   .playoff-seed{grid-template-columns:20px 32px minmax(0,1fr) auto;padding:10px}
   .playoff-seed .avatar{width:32px;height:32px}
 }
+
+/* ── La final ── */
+.playoff-round{position:relative;overflow:hidden}
+.playoff-round.final{border-color:color-mix(in oklab,var(--champion) 50%,var(--line));background:linear-gradient(180deg,color-mix(in oklab,var(--champion) 9%,var(--bg-sunk)),var(--bg-sunk) 62%);box-shadow:0 0 0 1px color-mix(in oklab,var(--champion) 16%,transparent),0 20px 44px -28px var(--champion-glow)}
+.playoff-round.final .playoff-round-head{border-bottom-color:color-mix(in oklab,var(--champion) 26%,var(--line))}
+.playoff-round.final .pr-jp{color:var(--champion);text-shadow:0 0 12px var(--champion-glow)}
+.playoff-round.final .pr-meta b{color:var(--champion)}
+.playoff-round.final .playoff-round-foot{border-top-color:color-mix(in oklab,var(--champion) 26%,var(--line));background:color-mix(in oklab,var(--champion) 8%,transparent);color:var(--champion);font-weight:700}
+.playoff-round.final>header,.playoff-round.final>.playoff-tables,.playoff-round.final>footer{position:relative;z-index:1}
+.playoff-round-mark{position:absolute;z-index:0;right:-8px;bottom:46px;font-family:var(--font-jp);font-size:104px;line-height:1;color:var(--champion);opacity:.07;pointer-events:none;user-select:none}
+.playoff-table.final{border-color:color-mix(in oklab,var(--champion) 45%,var(--line));background:linear-gradient(180deg,color-mix(in oklab,var(--champion) 7%,var(--bg-elev)),var(--bg-elev))}
+.playoff-table.final .pt-head span{padding:2px 7px;border-radius:999px;background:color-mix(in oklab,var(--champion) 16%,transparent);color:var(--champion)}
+.playoff-table.final .pt-seats i{border-color:color-mix(in oklab,var(--champion) 42%,var(--line-strong))}
+.playoff-trophy{display:grid;flex:0 0 172px;align-self:center;place-items:center;gap:4px;padding:20px 16px 18px;border:1px solid color-mix(in oklab,var(--champion) 45%,var(--line));border-radius:16px;background:radial-gradient(120% 90% at 50% 0,color-mix(in oklab,var(--champion) 16%,transparent),var(--bg-sunk) 70%);box-shadow:0 0 0 1px color-mix(in oklab,var(--champion) 14%,transparent),0 22px 48px -28px var(--champion-glow);text-align:center}
+.playoff-cup{filter:drop-shadow(0 6px 14px var(--champion-glow));animation:cup-glow 3.6s ease-in-out infinite}
+@keyframes cup-glow{0%,100%{filter:drop-shadow(0 6px 14px var(--champion-glow))}50%{filter:drop-shadow(0 6px 22px color-mix(in oklab,var(--champion) 45%,transparent))}}
+.playoff-trophy i{margin-top:4px;font-family:var(--font-jp);font-size:15px;font-style:normal;letter-spacing:.24em;text-indent:.24em;color:var(--champion)}
+.playoff-trophy b{font-family:var(--font-display);font-size:14px;line-height:1.25;color:var(--ink)}
+.playoff-trophy span{font-size:9px;line-height:1.4;color:var(--ink-faint)}
+@media (prefers-reduced-motion:reduce){.playoff-cup{animation:none}}

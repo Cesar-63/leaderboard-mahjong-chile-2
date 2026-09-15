@@ -43,9 +43,28 @@ function playoffSeasonProgress(data, div) {
   return { played, total, left: Math.max(0, total - played), settled: played >= total && total > 0 };
 }
 
-function PlayoffTable({ round, number }) {
+function PlayoffTrophy() {
   return (
-    <article className="playoff-table">
+    <svg className="playoff-cup" viewBox="0 0 64 64" width="58" height="58" aria-hidden="true">
+      <defs>
+        <linearGradient id="mjc-cup-gold" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" style={{ stopColor: 'var(--champion-2)' }} />
+          <stop offset="1" style={{ stopColor: 'var(--champion)' }} />
+        </linearGradient>
+      </defs>
+      <path d="M18 15h-6a9 9 0 0 0 9 12" fill="none" stroke="url(#mjc-cup-gold)" strokeWidth="3" strokeLinecap="round" />
+      <path d="M46 15h6a9 9 0 0 1-9 12" fill="none" stroke="url(#mjc-cup-gold)" strokeWidth="3" strokeLinecap="round" />
+      <path d="M17 9h30v13a15 15 0 0 1-30 0z" fill="url(#mjc-cup-gold)" />
+      <path d="M29.5 37h5v8h-5z" fill="url(#mjc-cup-gold)" />
+      <path d="M21 50h22l2.5 6h-27z" fill="url(#mjc-cup-gold)" />
+      <path d="m32 14 2.3 4.8 5.2.8-3.8 3.7.9 5.2-4.6-2.5-4.6 2.5.9-5.2-3.8-3.7 5.2-.8z" fill="var(--bg-elev)" opacity=".92" />
+    </svg>
+  );
+}
+
+function PlayoffTable({ round, number, isFinal }) {
+  return (
+    <article className={`playoff-table ${isFinal ? 'final' : ''}`}>
       <div className="pt-head">
         <b>{tr('playoffs_mesa', { n: number })}</b>
         <span>{round.hanchan} 半荘</span>
@@ -61,8 +80,10 @@ function PlayoffTable({ round, number }) {
 
 function PlayoffRound({ round, next, div }) {
   const advancing = round.tables * round.advancePerTable;
+  const isFinal = !next;
   return (
-    <section className={`playoff-round div-${div}`}>
+    <section className={`playoff-round div-${div} ${isFinal ? 'final' : ''}`}>
+      {isFinal && <span className="playoff-round-mark" aria-hidden="true">決勝</span>}
       <header className="playoff-round-head">
         <span className="pr-jp">{PLAYOFF_ROUND_JP[round.id] || '決勝'}</span>
         <h3>{playoffRoundLabel(round.id)}<small className="pr-draw">{tr('playoffs_draw_pending')}</small></h3>
@@ -74,7 +95,7 @@ function PlayoffRound({ round, next, div }) {
       </header>
       <div className="playoff-tables">
         {Array.from({ length: round.tables }, (_, index) => (
-          <PlayoffTable key={index} round={round} number={index + 1} />
+          <PlayoffTable key={index} round={round} number={index + 1} isFinal={isFinal} />
         ))}
       </div>
       <footer className="playoff-round-foot">
@@ -171,8 +192,10 @@ function PlayoffsView({ data, div = 'A', onSelectPlayer }) {
             </React.Fragment>
           ))}
           <div className="playoff-trophy">
+            <PlayoffTrophy />
             <i>優勝</i>
-            <span>{tr('playoffs_champion')}</span>
+            <b>{tr('playoffs_champion_of', { div })}</b>
+            <span>{tr('playoffs_final_note', { n: finalRound.hanchan })}</span>
           </div>
         </div>
         <p className="playoff-empty-note">{tr('playoffs_no_results')}</p>
