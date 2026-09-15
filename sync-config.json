@@ -5,6 +5,29 @@
   "sessionsTotal": 7,
   "minimumAdvancedStatsHands": 8,
   "absencePenaltyPerHanchan": -30,
+  "playoffs": {
+    "qualifiers": 16,
+    "rounds": [
+      {
+        "id": "quarters",
+        "tables": 4,
+        "hanchan": 2,
+        "advancePerTable": 2
+      },
+      {
+        "id": "semis",
+        "tables": 2,
+        "hanchan": 2,
+        "advancePerTable": 2
+      },
+      {
+        "id": "final",
+        "tables": 1,
+        "hanchan": 3,
+        "advancePerTable": 1
+      }
+    ]
+  },
   "divisions": {
     "A": {
       "uma": [

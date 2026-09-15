@@ -50,6 +50,9 @@ function StandingsView({ data, div, layout, onSelectPlayer }) {
   const [sortBy, setSortBy] = useState('rank');
   const [natFilter, setNatFilter] = useState(null);
   const divData = data.divisions[div];
+  // Hasta qué puesto se clasifica a eliminatorias: el mismo número que arma el
+  // cuadro (sync-config.json → league.playoffs), nunca un literal acá.
+  const playoffCut = playoffFormat(data).qualifiers;
 
   const natCounts = useMemo(() => {
     const m = {};
@@ -146,8 +149,8 @@ function StandingsView({ data, div, layout, onSelectPlayer }) {
           </table>
           <div className="zone-key">
             {div === 'A'
-              ? <React.Fragment><span className="zk playoff">{tr('zone_playoff')}</span><span className="zk iormc">{tr('zone_iormc')}</span><span className="zk releg">{tr('zone_relegation')}</span></React.Fragment>
-              : <React.Fragment><span className="zk playoff">{tr('zone_playoff')}</span><span className="zk">{tr('zone_bottom')}</span></React.Fragment>}
+              ? <React.Fragment><span className="zk playoff">{tr('zone_playoff', { n: playoffCut })}</span><span className="zk iormc">{tr('zone_iormc')}</span><span className="zk releg">{tr('zone_relegation')}</span></React.Fragment>
+              : <React.Fragment><span className="zk playoff">{tr('zone_playoff', { n: playoffCut })}</span><span className="zk">{tr('zone_bottom')}</span></React.Fragment>}
           </div>
         </div>
       </div>

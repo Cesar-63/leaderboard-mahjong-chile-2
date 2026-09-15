@@ -297,6 +297,63 @@ def merge_paipus(submissions: list[dict[str, Any]], histories: dict[str, dict[st
     return parsed_games, {"submissions": status}
 
 
+# Formato de las eliminatorias. Vive en sync-config.json y no acá porque es
+# regla de liga: el mismo número de clasificados dibuja el cuadro y pinta la
+# zona de eliminatorias en la tabla. El default es el respaldo si el archivo
+# viene de una versión anterior.
+PLAYOFF_FORMAT_DEFAULT: dict[str, Any] = {
+    "qualifiers": 16,
+    "rounds": [
+        {"id": "quarters", "tables": 4, "hanchan": 2, "advancePerTable": 2},
+        {"id": "semis", "tables": 2, "hanchan": 2, "advancePerTable": 2},
+        {"id": "final", "tables": 1, "hanchan": 3, "advancePerTable": 1},
+    ],
+}
+
+
+def playoff_format(config: dict[str, Any]) -> dict[str, Any]:
+    """Valida el formato de eliminatorias y lo deja listo para el payload.
+
+    Se juega en mesas de cuatro, así que el cuadro sólo cierra si cada ronda
+    llena sus mesas con los que avanzaron de la anterior: 16 → 4 mesas → 8 →
+    2 mesas → 4 → 1 mesa. Un formato que no cuadre es un error de
+    configuración y se canta acá, no se maquilla en la vista.
+    """
+    fmt = config.get("playoffs") or PLAYOFF_FORMAT_DEFAULT
+    rounds = [dict(item) for item in fmt.get("rounds") or []]
+    if not rounds:
+        raise SyncError("Eliminatorias: 'rounds' está vacío en la configuración")
+    for round_item in rounds:
+        for field in ("id", "tables", "hanchan", "advancePerTable"):
+            if round_item.get(field) in (None, ""):
+                raise SyncError(f"Eliminatorias: ronda sin '{field}' en la configuración")
+        if int(round_item["advancePerTable"]) > 4:
+            raise SyncError(f"Eliminatorias: la ronda {round_item['id']} hace avanzar más de 4 por mesa")
+    qualifiers = int(fmt.get("qualifiers") or int(rounds[0]["tables"]) * 4)
+    if qualifiers != int(rounds[0]["tables"]) * 4:
+        raise SyncError(f"Eliminatorias: {qualifiers} clasificados no llenan {rounds[0]['tables']} mesas de 4")
+    for previous, current in zip(rounds, rounds[1:]):
+        advancing = int(previous["tables"]) * int(previous["advancePerTable"])
+        seats = int(current["tables"]) * 4
+        if advancing != seats:
+            raise SyncError(f"Eliminatorias: de {previous['id']} avanzan {advancing} y {current['id']} tiene {seats} asientos")
+    if int(rounds[-1]["tables"]) != 1:
+        raise SyncError("Eliminatorias: la última ronda debe ser una sola mesa")
+    return {
+        "qualifiers": qualifiers,
+        "rounds": [
+            {
+                "id": str(round_item["id"]),
+                "tables": int(round_item["tables"]),
+                "hanchan": int(round_item["hanchan"]),
+                "advancePerTable": int(round_item["advancePerTable"]),
+                "seats": int(round_item["tables"]) * 4,
+            }
+            for round_item in rounds
+        ],
+    }
+
+
 def pct(value: int, total: int) -> float:
     return round(value * 100 / total, 1) if total else 0.0
 
@@ -439,6 +496,8 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
     won_hands: dict[str, list[dict[str, Any]]] = {}
     submission_by_key = {item["key"]: item for item in submissions if item.get("url")}
     absence_penalty = float(config.get("absencePenaltyPerHanchan", -30))
+    playoffs = playoff_format(config)
+    playoff_cut = playoffs["qualifiers"]
     for division in ("A", "B"):
         rule = config["divisions"][division]
         players = [{**player, "games": 0, "points": 0.0, "history": [], "cum": [], "counts": [0, 0, 0, 0], "absences": 0, "hands": 0, "wins": 0, "dealIns": 0, "riichis": 0, "openHands": 0, "damaten": 0, "kans": 0, "doras": 0, "uraDoras": 0, "maxHonba": 0, "winPoints": 0, "dealInPoints": 0, "winTurns": 0, "yakuCounts": Counter()} for player in rosters[division]]
@@ -580,7 +639,7 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
         players.sort(key=lambda item: (-item["points"], item["avgRank"] if item["games"] else 99, item["name"].lower()))
         for index, player in enumerate(players, start=1):
             player["rank"] = index
-            player["zone"] = ("playoff" if index <= 8 else "relegation" if index >= 21 else None) if division == "A" else ("playoff" if index <= 8 else "bottom" if index >= 21 else None)
+            player["zone"] = ("playoff" if index <= playoff_cut else "relegation" if index >= 21 else None) if division == "A" else ("playoff" if index <= playoff_cut else "bottom" if index >= 21 else None)
         session_items = []
         for session in range(1, int(config["sessionsTotal"]) + 1):
             session_matches = [match for match in matches if match["session"] == session]
@@ -640,7 +699,7 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
     data = {
         "divisions": divisions, "allPlayers": all_players, "nationalities": nationalities,
         "iormc": iormc, "calendar": calendar, "yakuHands": won_hands,
-        "league": {"season": config["seasonLabel"], "currentSession": current_session, "sessionsPlayed": sessions_played, "sessionsTotal": int(config["sessionsTotal"]), "hanchanPerSession": 2, "playersPerDiv": 24, "hanchanPerDiv": max(len(divisions["A"]["matches"]), len(divisions["B"]["matches"])), "hanchanTotal": len(divisions["A"]["matches"]) + len(divisions["B"]["matches"]), "nextSession": next_session, "rules": {key: {"initialPoints": value["initialPoints"], "uma": value["uma"]} for key, value in config["divisions"].items()}},
+        "league": {"season": config["seasonLabel"], "currentSession": current_session, "sessionsPlayed": sessions_played, "sessionsTotal": int(config["sessionsTotal"]), "hanchanPerSession": 2, "playersPerDiv": 24, "hanchanPerDiv": max(len(divisions["A"]["matches"]), len(divisions["B"]["matches"])), "hanchanTotal": len(divisions["A"]["matches"]) + len(divisions["B"]["matches"]), "nextSession": next_session, "playoffs": playoffs, "rules": {key: {"initialPoints": value["initialPoints"], "uma": value["uma"]} for key, value in config["divisions"].items()}},
     }
     add_hall_of_fame(data)
     # Última parada antes de que los datos salgan de la función: lo que se

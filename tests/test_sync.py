@@ -8,10 +8,10 @@ from scripts.majsoul import (
     has_yostar_credentials, parse_record,
 )
 from scripts.sync import (
-    CALENDAR_VALUE_COLS, PRIVATE_PLAYER_FIELDS, SESSION_G1_ROWS, TOTAL_RAW_SCORE, advanced_stats_health,
-    align_history_with_fixtures, build_excel_results, build_paipu_results, build_public_data,
-    crosscheck_substitutes, date_from_paipu_uuid, demote_unexpected_seats, find_absent_player, match_paipu_seats, merge_paipus,
-    normalize_nat, strip_private_fields,
+    CALENDAR_VALUE_COLS, PLAYOFF_FORMAT_DEFAULT, PRIVATE_PLAYER_FIELDS, SESSION_G1_ROWS, SyncError, TOTAL_RAW_SCORE,
+    advanced_stats_health, align_history_with_fixtures, build_excel_results, build_paipu_results, build_public_data,
+    crosscheck_substitutes, date_from_paipu_uuid, demote_unexpected_seats, find_absent_player, load_config,
+    match_paipu_seats, merge_paipus, normalize_nat, playoff_format, strip_private_fields,
 )
 
 
@@ -880,6 +880,65 @@ class PrivacidadTests(unittest.TestCase):
             crudo = generated.read_text(encoding="utf-8")
             cuerpo = crudo[crudo.index("window.MJC_DATA = ") + len("window.MJC_DATA = "):].rstrip().rstrip(";")
             self.assertEqual(_private_paths(json.loads(cuerpo), "generated.js"), [])
+
+
+
+class EliminatoriasTests(unittest.TestCase):
+    """El cuadro se juega en mesas de cuatro: cuartos, semis y final tienen que
+    encadenar sin dejar asientos sueltos, y el número de clasificados es el
+    mismo que pinta la zona de eliminatorias en la tabla."""
+
+    def test_el_formato_del_repo_encadena_las_tres_rondas(self):
+        raiz = pathlib.Path(__file__).resolve().parent.parent
+        fmt = playoff_format(load_config(raiz / "sync-config.json"))
+        self.assertEqual(fmt["qualifiers"], fmt["rounds"][0]["seats"])
+        self.assertEqual([r["id"] for r in fmt["rounds"]], ["quarters", "semis", "final"])
+        self.assertEqual([r["hanchan"] for r in fmt["rounds"]], [2, 2, 3])
+        for previa, actual in zip(fmt["rounds"], fmt["rounds"][1:]):
+            self.assertEqual(previa["tables"] * previa["advancePerTable"], actual["seats"])
+        self.assertEqual(fmt["rounds"][-1]["tables"], 1)
+
+    def test_sin_bloque_de_eliminatorias_cae_al_default(self):
+        self.assertEqual(playoff_format({}), playoff_format({"playoffs": PLAYOFF_FORMAT_DEFAULT}))
+
+    def test_un_cuadro_que_no_cierra_es_error_de_configuracion(self):
+        # De 4 mesas avanzan 8, pero la siguiente ronda sólo tiene 4 asientos.
+        roto = {"playoffs": {"qualifiers": 16, "rounds": [
+            {"id": "quarters", "tables": 4, "hanchan": 2, "advancePerTable": 2},
+            {"id": "final", "tables": 1, "hanchan": 3, "advancePerTable": 1},
+        ]}}
+        with self.assertRaises(SyncError) as ctx:
+            playoff_format(roto)
+        self.assertIn("quarters", str(ctx.exception))
+        # Y 12 clasificados no llenan 4 mesas de 4.
+        with self.assertRaises(SyncError):
+            playoff_format({"playoffs": {"qualifiers": 12, "rounds": [
+                {"id": "quarters", "tables": 4, "hanchan": 2, "advancePerTable": 2},
+                {"id": "semis", "tables": 2, "hanchan": 2, "advancePerTable": 2},
+                {"id": "final", "tables": 1, "hanchan": 3, "advancePerTable": 1},
+            ]}})
+
+    def test_el_payload_publica_el_formato_del_cuadro(self):
+        data, _ = build_public_data(_division_config(), _rosters(), [], [], {}, {})
+        self.assertEqual(data["league"]["playoffs"], playoff_format({}))
+
+    def test_la_zona_de_eliminatorias_usa_el_corte_del_formato(self):
+        # 24 por división y sin resultados: el orden es alfabético y lo único
+        # que decide la zona es el puesto contra el corte del formato.
+        def roster(division):
+            return [
+                {"id": f"{division}{n:02d}", "div": division, "num": f"{n:02d}", "name": f"{division}-{n:02d}",
+                 "shortName": f"{division}-{n:02d}", "handle": f"{division}{n:02d}", "accountId": 0, "discord": "", "nat": "CL"}
+                for n in range(1, 25)
+            ]
+        config = {**_division_config(), "playoffs": PLAYOFF_FORMAT_DEFAULT}
+        data, _ = build_public_data(config, {"A": roster("A"), "B": roster("B")}, [], [], {}, {})
+        corte = data["league"]["playoffs"]["qualifiers"]
+        for division, fuera_abajo in (("A", "relegation"), ("B", "bottom")):
+            zonas = {p["rank"]: p["zone"] for p in data["divisions"][division]["players"]}
+            self.assertEqual(zonas[corte], "playoff")
+            self.assertIsNone(zonas[corte + 1])
+            self.assertEqual(zonas[21], fuera_abajo)
 
 
 if __name__ == "__main__":
