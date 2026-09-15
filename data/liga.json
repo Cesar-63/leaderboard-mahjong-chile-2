@@ -1324,7 +1324,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 9,
-          "zone": "playoff",
+          "zone": null,
           "natRank": 5,
           "iormc": "contention"
         },
@@ -1465,7 +1465,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 10,
-          "zone": "playoff"
+          "zone": null
         },
         {
           "id": "A14",
@@ -1596,7 +1596,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 11,
-          "zone": "playoff"
+          "zone": null
         },
         {
           "id": "A02",
@@ -1735,7 +1735,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 12,
-          "zone": "playoff",
+          "zone": null,
           "natRank": 6,
           "iormc": "contention"
         },
@@ -1884,7 +1884,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 13,
-          "zone": "playoff"
+          "zone": null
         },
         {
           "id": "A08",
@@ -2031,7 +2031,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 14,
-          "zone": "playoff",
+          "zone": null,
           "natRank": 7,
           "iormc": "contention"
         },
@@ -2172,7 +2172,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 15,
-          "zone": "playoff",
+          "zone": null,
           "natRank": 8,
           "iormc": "out"
         },
@@ -2313,7 +2313,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 16,
-          "zone": "playoff"
+          "zone": null
         },
         {
           "id": "A21",
@@ -75777,7 +75777,7 @@
             "statsReliable": true,
             "arch": "con datos",
             "rank": 9,
-            "zone": "playoff",
+            "zone": null,
             "natRank": 5,
             "iormc": "contention"
           },
@@ -76537,7 +76537,7 @@
             "statsReliable": true,
             "arch": "con datos",
             "rank": 9,
-            "zone": "playoff",
+            "zone": null,
             "natRank": 5,
             "iormc": "contention"
           },
@@ -77945,7 +77945,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 9,
-          "zone": "playoff"
+          "zone": null
         },
         {
           "id": "B01",
@@ -78084,7 +78084,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 10,
-          "zone": "playoff"
+          "zone": null
         },
         {
           "id": "B03",
@@ -78227,7 +78227,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 11,
-          "zone": "playoff"
+          "zone": null
         },
         {
           "id": "B11",
@@ -78366,7 +78366,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 12,
-          "zone": "playoff"
+          "zone": null
         },
         {
           "id": "B07",
@@ -78485,7 +78485,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 13,
-          "zone": "playoff"
+          "zone": null
         },
         {
           "id": "B02",
@@ -78624,7 +78624,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 14,
-          "zone": "playoff"
+          "zone": null
         },
         {
           "id": "B16",
@@ -78755,7 +78755,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 15,
-          "zone": "playoff"
+          "zone": null
         },
         {
           "id": "B18",
@@ -78890,7 +78890,7 @@
           "statsReliable": true,
           "arch": "con datos",
           "rank": 16,
-          "zone": "playoff"
+          "zone": null
         },
         {
           "id": "B24",
@@ -143670,7 +143670,7 @@
             "statsReliable": true,
             "arch": "con datos",
             "rank": 9,
-            "zone": "playoff"
+            "zone": null
           },
           "jp": "立直"
         },
@@ -143974,7 +143974,7 @@
             "statsReliable": true,
             "arch": "con datos",
             "rank": 11,
-            "zone": "playoff"
+            "zone": null
           },
           "jp": "連勝"
         },
@@ -145899,7 +145899,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 9,
-      "zone": "playoff",
+      "zone": null,
       "natRank": 5,
       "iormc": "contention"
     },
@@ -146040,7 +146040,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 10,
-      "zone": "playoff"
+      "zone": null
     },
     {
       "id": "A14",
@@ -146171,7 +146171,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 11,
-      "zone": "playoff"
+      "zone": null
     },
     {
       "id": "A02",
@@ -146310,7 +146310,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 12,
-      "zone": "playoff",
+      "zone": null,
       "natRank": 6,
       "iormc": "contention"
     },
@@ -146459,7 +146459,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 13,
-      "zone": "playoff"
+      "zone": null
     },
     {
       "id": "A08",
@@ -146606,7 +146606,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 14,
-      "zone": "playoff",
+      "zone": null,
       "natRank": 7,
       "iormc": "contention"
     },
@@ -146747,7 +146747,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 15,
-      "zone": "playoff",
+      "zone": null,
       "natRank": 8,
       "iormc": "out"
     },
@@ -146888,7 +146888,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 16,
-      "zone": "playoff"
+      "zone": null
     },
     {
       "id": "A21",
@@ -149263,7 +149263,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 9,
-      "zone": "playoff"
+      "zone": null
     },
     {
       "id": "B01",
@@ -149402,7 +149402,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 10,
-      "zone": "playoff"
+      "zone": null
     },
     {
       "id": "B03",
@@ -149545,7 +149545,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 11,
-      "zone": "playoff"
+      "zone": null
     },
     {
       "id": "B11",
@@ -149684,7 +149684,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 12,
-      "zone": "playoff"
+      "zone": null
     },
     {
       "id": "B07",
@@ -149803,7 +149803,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 13,
-      "zone": "playoff"
+      "zone": null
     },
     {
       "id": "B02",
@@ -149942,7 +149942,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 14,
-      "zone": "playoff"
+      "zone": null
     },
     {
       "id": "B16",
@@ -150073,7 +150073,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 15,
-      "zone": "playoff"
+      "zone": null
     },
     {
       "id": "B18",
@@ -150208,7 +150208,7 @@
       "statsReliable": true,
       "arch": "con datos",
       "rank": 16,
-      "zone": "playoff"
+      "zone": null
     },
     {
       "id": "B24",
@@ -151877,7 +151877,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 10,
-        "zone": "playoff"
+        "zone": null
       }
     },
     {
@@ -152024,7 +152024,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 10,
-        "zone": "playoff"
+        "zone": null
       }
     },
     {
@@ -152938,7 +152938,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 9,
-        "zone": "playoff",
+        "zone": null,
         "natRank": 5,
         "iormc": "contention"
       },
@@ -153079,7 +153079,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 12,
-        "zone": "playoff",
+        "zone": null,
         "natRank": 6,
         "iormc": "contention"
       },
@@ -153228,7 +153228,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 14,
-        "zone": "playoff",
+        "zone": null,
         "natRank": 7,
         "iormc": "contention"
       }
@@ -153371,7 +153371,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 15,
-        "zone": "playoff",
+        "zone": null,
         "natRank": 8,
         "iormc": "out"
       },
@@ -154710,7 +154710,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 9,
-        "zone": "playoff",
+        "zone": null,
         "natRank": 5,
         "iormc": "contention"
       },
@@ -154851,7 +154851,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 12,
-        "zone": "playoff",
+        "zone": null,
         "natRank": 6,
         "iormc": "contention"
       },
@@ -155000,7 +155000,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 14,
-        "zone": "playoff",
+        "zone": null,
         "natRank": 7,
         "iormc": "contention"
       },
@@ -155141,7 +155141,7 @@
         "statsReliable": true,
         "arch": "con datos",
         "rank": 15,
-        "zone": "playoff",
+        "zone": null,
         "natRank": 8,
         "iormc": "out"
       },
@@ -188044,6 +188044,7 @@
     },
     "playoffs": {
       "qualifiers": 16,
+      "qualifiersPerDivision": 8,
       "rounds": [
         {
           "id": "quarters",
