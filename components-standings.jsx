@@ -52,7 +52,7 @@ function StandingsView({ data, div, layout, onSelectPlayer }) {
   const divData = data.divisions[div];
   // Hasta qué puesto se clasifica a eliminatorias: el mismo número que arma el
   // cuadro (sync-config.json → league.playoffs), nunca un literal acá.
-  const playoffCut = playoffFormat(data).qualifiers;
+  const playoffCut = playoffFormat(data).perDivision;
 
   const natCounts = useMemo(() => {
     const m = {};

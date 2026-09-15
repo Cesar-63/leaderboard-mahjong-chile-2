@@ -1,16 +1,24 @@
 // components-playoffs.jsx — vista de eliminatorias: cuadro y clasificados.
 //
-// El formato (cuántos clasifican, mesas y hanchan por ronda) viaja en
-// `data.league.playoffs` y sale de `sync-config.json`: el mismo número que
-// dibuja el cuadro pinta la zona de eliminatorias en la tabla.
+// **El cuadro es uno solo para toda la liga.** Cada división clasifica a sus
+// mejores y los dos grupos se mezclan en las mismas mesas, así que esta vista
+// no está scopeada por división: no hay eliminatorias de A y de B.
+//
+// El formato (cuántos clasifican por división, mesas y hanchan por ronda)
+// viaja en `data.league.playoffs` y sale de `sync-config.json`: el mismo
+// número por división que arma el cuadro pinta la zona de eliminatorias en la
+// tabla.
 //
 // Los clasificados NO vienen en el JSON. Se derivan acá de la tabla ya
 // publicada, como el resto de lo calculado: duplicarlos en el payload sería
 // tener dos verdades para el mismo corte.
 
+const PLAYOFF_DIVISIONS = ['A', 'B'];
+
 // Respaldo si el payload viene de una corrida anterior a las eliminatorias.
 // Es el mismo default que `PLAYOFF_FORMAT_DEFAULT` en scripts/sync.py.
 const PLAYOFF_FORMAT_FALLBACK = {
+  qualifiersPerDivision: 8,
   qualifiers: 16,
   rounds: [
     { id: 'quarters', tables: 4, hanchan: 2, advancePerTable: 2, seats: 16 },
@@ -25,7 +33,12 @@ function playoffFormat(data) {
   const raw = (data.league && data.league.playoffs) || PLAYOFF_FORMAT_FALLBACK;
   const source = raw.rounds && raw.rounds.length ? raw.rounds : PLAYOFF_FORMAT_FALLBACK.rounds;
   const rounds = source.map(round => ({ ...round, seats: round.seats || round.tables * 4 }));
-  return { qualifiers: raw.qualifiers || rounds[0].seats, rounds };
+  const qualifiers = raw.qualifiers || rounds[0].seats;
+  return {
+    qualifiers,
+    perDivision: raw.qualifiersPerDivision || Math.floor(qualifiers / PLAYOFF_DIVISIONS.length),
+    rounds,
+  };
 }
 
 function playoffRoundLabel(id) {
@@ -34,13 +47,14 @@ function playoffRoundLabel(id) {
   return label === key ? id : label;
 }
 
-// Sesiones de la división que ya están jugadas enteras. Mientras quede una,
-// el cuadro es proyección y la vista lo dice en vez de mostrarlo como cerrado.
-function playoffSeasonProgress(data, div) {
-  const sessions = data.divisions[div].sessions || [];
-  const played = sessions.filter(session => session.status === 'played').length;
-  const total = data.league.sessionsTotal || sessions.length;
-  return { played, total, left: Math.max(0, total - played), settled: played >= total && total > 0 };
+// Sesiones jugadas enteras en las DOS divisiones: el cuadro las mezcla, así
+// que no está cerrado hasta que las dos terminaron. Mientras quede una, la
+// vista muestra los clasificados como proyección.
+function playoffSeasonProgress(data) {
+  const total = data.league.sessionsTotal || 0;
+  const played = Math.min(...PLAYOFF_DIVISIONS.map(division =>
+    (data.divisions[division].sessions || []).filter(session => session.status === 'played').length));
+  return { played, total, left: Math.max(0, total - played), settled: total > 0 && played >= total };
 }
 
 function PlayoffTrophy() {
@@ -78,11 +92,11 @@ function PlayoffTable({ round, number, isFinal }) {
   );
 }
 
-function PlayoffRound({ round, next, div }) {
+function PlayoffRound({ round, next }) {
   const advancing = round.tables * round.advancePerTable;
   const isFinal = !next;
   return (
-    <section className={`playoff-round div-${div} ${isFinal ? 'final' : ''}`}>
+    <section className={`playoff-round ${isFinal ? 'final' : ''}`}>
       {isFinal && <span className="playoff-round-mark" aria-hidden="true">決勝</span>}
       <header className="playoff-round-head">
         <span className="pr-jp">{PLAYOFF_ROUND_JP[round.id] || '決勝'}</span>
@@ -129,30 +143,70 @@ function PlayoffSeed({ player, seed, onSelect, muted }) {
   );
 }
 
-function PlayoffsView({ data, div = 'A', onSelectPlayer }) {
-  const format = playoffFormat(data);
-  const rounds = format.rounds;
-  const cut = format.qualifiers;
-  const players = data.divisions[div].players;
-  const progress = playoffSeasonProgress(data, div);
-  const seeds = players.slice(0, cut);
-  const bubble = players.slice(cut, cut + 3);
+// Un grupo por división: su cuota de clasificados, su corte y su burbuja. Los
+// puntos de A y B no son comparables entre sí (uma y akadora distintos), por
+// eso la vista nunca los mezcla en una sola lista ordenada.
+function PlayoffDivisionGroup({ data, division, perDivision, onSelectPlayer }) {
+  const players = data.divisions[division].players;
+  const seeds = players.slice(0, perDivision);
+  const bubble = players.slice(perDivision, perDivision + 2);
   const lastIn = seeds[seeds.length - 1];
-  const firstOut = players[cut];
+  const firstOut = players[perDivision];
   const gap = lastIn && firstOut ? Math.round((lastIn.points - firstOut.points) * 10) / 10 : null;
-  const uma = (data.league.rules[div].uma || []).map(v => (v >= 0 ? `+${v}` : `−${Math.abs(v)}`)).join(' / ');
-  const finalRound = rounds[rounds.length - 1];
 
   return (
-    <div className="tab-panel" style={{ '--playoff-accent': accentFor(div) }}>
+    <section className={`playoff-group div-${division}`}>
+      <header className="playoff-group-head">
+        <span className={`div-chip ${division}`}>DIV {division}</span>
+        <h3>{tr('playoffs_group_title', { d: division, n: perDivision })}</h3>
+        <p>
+          {lastIn && <span>{tr('playoffs_group_cut', { pts: fmtPts(lastIn.points) })}</span>}
+          {gap !== null && <span>{tr('playoffs_group_gap', { gap: gap.toFixed(1), n: perDivision + 1 })}</span>}
+        </p>
+      </header>
+      {seeds.length < perDivision
+        ? <div className="calendar-empty"><strong>{tr('playoffs_not_enough', { n: perDivision })}</strong></div>
+        : (
+          <React.Fragment>
+            <div className="playoff-seeds">
+              {seeds.map((player, index) => (
+                <PlayoffSeed key={player.id} player={player} seed={index + 1} onSelect={onSelectPlayer} />
+              ))}
+            </div>
+            {bubble.length > 0 && (
+              <div className="playoff-bubble">
+                <span className="playoff-cut-line">{tr('playoffs_cut')}</span>
+                <div className="playoff-seeds">
+                  {bubble.map((player, index) => (
+                    <PlayoffSeed key={player.id} player={player} seed={perDivision + index + 1} onSelect={onSelectPlayer} muted />
+                  ))}
+                </div>
+                <small>{tr('playoffs_bubble')}</small>
+              </div>
+            )}
+          </React.Fragment>
+        )}
+    </section>
+  );
+}
+
+function PlayoffsView({ data, onSelectPlayer }) {
+  const format = playoffFormat(data);
+  const rounds = format.rounds;
+  const progress = playoffSeasonProgress(data);
+  const finalRound = rounds[rounds.length - 1];
+  const totalTables = rounds.reduce((total, round) => total + round.tables, 0);
+
+  return (
+    <div className="tab-panel playoffs-panel">
       <div className="section-head">
         <div className="h-left">
           <span className="num">07 / {tr('playoffs_kicker')}</span>
-          <h1>{tr('playoffs_title', { div })}</h1>
+          <h1>{tr('playoffs_title')}</h1>
           <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>決勝</span>
         </div>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)', textAlign: 'right' }}>
-          {tr('playoffs_subtitle', { n: cut, h: rounds[0].hanchan, f: finalRound.hanchan })}
+          {tr('playoffs_subtitle', { per: format.perDivision, n: format.qualifiers, h: rounds[0].hanchan, f: finalRound.hanchan })}
         </div>
       </div>
 
@@ -164,9 +218,9 @@ function PlayoffsView({ data, div = 'A', onSelectPlayer }) {
             : progress.left === 1 ? tr('playoffs_provisional_note_one') : tr('playoffs_provisional_note', { n: progress.left })}</p>
         </div>
         <div className="pst-figures">
-          <div><b>{cut}</b><span>{tr('playoffs_qualified_title')}</span></div>
-          {lastIn && <div><b className={lastIn.points >= 0 ? 'pos' : 'neg'}>{fmtPts(lastIn.points)}</b><span>{tr('playoffs_cut_points')}</span></div>}
-          {gap !== null && <div><b>{gap.toFixed(1)}</b><span>{tr('playoffs_gap', { n: cut + 1 })}</span></div>}
+          <div><b>{format.qualifiers}</b><span>{tr('playoffs_qualified_title')}</span></div>
+          <div><b>{format.perDivision}</b><span>{tr('playoffs_per_division')}</span></div>
+          <div><b>{totalTables}</b><span>{tr('playoffs_total_tables')}</span></div>
         </div>
       </section>
 
@@ -176,13 +230,13 @@ function PlayoffsView({ data, div = 'A', onSelectPlayer }) {
             <span className="block-label">{tr('playoffs_format_title')}</span>
             <h2>{rounds.map(round => playoffRoundLabel(round.id)).join(' · ')}</h2>
           </div>
-          <span>{tr('playoffs_uma_note', { uma })}</span>
+          <span>{tr('playoffs_mixed_note')}</span>
         </div>
         <p className="playoff-format-note">{tr('playoffs_format_note')}</p>
         <div className="playoff-bracket">
           {rounds.map((round, index) => (
             <React.Fragment key={round.id}>
-              <PlayoffRound round={round} next={rounds[index + 1]} div={div} />
+              <PlayoffRound round={round} next={rounds[index + 1]} />
               {index < rounds.length - 1 && (
                 <div className="playoff-arrow" aria-hidden="true">
                   <b>{round.tables * round.advancePerTable}</b>
@@ -194,7 +248,7 @@ function PlayoffsView({ data, div = 'A', onSelectPlayer }) {
           <div className="playoff-trophy">
             <PlayoffTrophy />
             <i>優勝</i>
-            <b>{tr('playoffs_champion_of', { div })}</b>
+            <b>{tr('playoffs_champion_of', { league: tr('app_title') })}</b>
             <span>{tr('playoffs_final_note', { n: finalRound.hanchan })}</span>
           </div>
         </div>
@@ -207,30 +261,14 @@ function PlayoffsView({ data, div = 'A', onSelectPlayer }) {
             <span className="block-label">{tr('playoffs_regular_phase')}</span>
             <h2>{tr('playoffs_qualified_title')}</h2>
           </div>
-          <span>{tr('playoffs_qualified_note', { n: cut })}</span>
+          <span>{tr('playoffs_qualified_note', { per: format.perDivision })}</span>
         </div>
-        {seeds.length < cut
-          ? <div className="calendar-empty"><strong>{tr('playoffs_not_enough', { n: cut })}</strong></div>
-          : (
-            <React.Fragment>
-              <div className="playoff-seeds">
-                {seeds.map((player, index) => (
-                  <PlayoffSeed key={player.id} player={player} seed={index + 1} onSelect={onSelectPlayer} />
-                ))}
-              </div>
-              {bubble.length > 0 && (
-                <div className="playoff-bubble">
-                  <span className="playoff-cut-line">{tr('playoffs_cut')}</span>
-                  <div className="playoff-seeds">
-                    {bubble.map((player, index) => (
-                      <PlayoffSeed key={player.id} player={player} seed={cut + index + 1} onSelect={onSelectPlayer} muted />
-                    ))}
-                  </div>
-                  <small>{tr('playoffs_bubble')}</small>
-                </div>
-              )}
-            </React.Fragment>
-          )}
+        <div className="playoff-groups">
+          {PLAYOFF_DIVISIONS.map(division => (
+            <PlayoffDivisionGroup key={division} data={data} division={division}
+              perDivision={format.perDivision} onSelectPlayer={onSelectPlayer} />
+          ))}
+        </div>
       </section>
     </div>
   );

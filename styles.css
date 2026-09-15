@@ -1395,6 +1395,7 @@ select{font:inherit;color:inherit}
 /* ── Eliminatorias ─────────────────────────────────────────────────────────
    Cuadro (cuartos → semis → final) y clasificados de la división. El acento
    sale de --playoff-accent, que la vista fija según la división. */
+.playoffs-panel{--playoff-accent:var(--accent)}
 .playoff-status{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-top:14px;padding:16px 19px;border:1px solid var(--line);border-left:3px solid var(--playoff-accent);border-radius:14px;background:var(--bg-elev);box-shadow:var(--shadow)}
 .playoff-status.provisional{border-left-color:var(--warn)}
 .pst-copy{display:grid;gap:6px;min-width:0}
@@ -1437,7 +1438,14 @@ select{font:inherit;color:inherit}
 .playoff-trophy i{font-family:var(--font-jp);font-size:19px;font-style:normal;color:var(--playoff-accent)}
 .playoff-trophy span{font-size:9px;line-height:1.35;color:var(--ink-faint)}
 .playoff-empty-note{margin:0;padding:0 19px 15px;font-family:var(--font-mono);font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint)}
-.playoff-seeds{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding:14px}
+.playoff-groups{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:14px}
+.playoff-group{overflow:hidden;border:1px solid var(--line);border-radius:14px;background:var(--bg-sunk)}
+.playoff-group-head{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:9px;padding:13px 14px;border-bottom:1px solid var(--line)}
+.playoff-group-head h3{margin:0;font-family:var(--font-display);font-size:17px}
+.playoff-group-head p{display:flex;flex-wrap:wrap;gap:4px 10px;grid-column:1/-1;margin:0;font-family:var(--font-mono);font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-faint)}
+.playoff-group.div-A{border-left:3px solid var(--accent)}
+.playoff-group.div-B{border-left:3px solid var(--accent-2)}
+.playoff-seeds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:12px}
 .playoff-seed{display:grid;grid-template-columns:22px 34px minmax(0,1fr) auto;align-items:center;gap:9px;padding:9px 11px;border:1px solid var(--line);border-left:3px solid var(--nat,var(--playoff-accent));border-radius:11px;background:var(--bg-sunk);color:var(--ink);text-align:left;cursor:pointer}
 .playoff-seed:hover{border-color:var(--playoff-accent);background:var(--bg-elev)}
 .playoff-seed:focus-visible{outline:2px solid var(--playoff-accent);outline-offset:2px}
@@ -1457,7 +1465,7 @@ select{font:inherit;color:inherit}
 .playoff-cut-line{display:block;padding:11px 14px 0;font-family:var(--font-mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--warn)}
 .playoff-bubble .playoff-seeds{padding-top:9px;padding-bottom:6px}
 .playoff-bubble>small{display:block;padding:0 14px 14px;font-size:9px;color:var(--ink-faint)}
-@media(max-width:1100px){.playoff-seeds{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:1100px){.playoff-groups{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:900px){
   .playoff-bracket{flex-direction:column;overflow-x:visible}
   .playoff-round{flex:0 0 auto;min-width:0}
@@ -1465,7 +1473,7 @@ select{font:inherit;color:inherit}
   .playoff-arrow{grid-auto-flow:column;gap:9px}
   .playoff-arrow i{transform:rotate(90deg)}
   .playoff-trophy{flex:0 0 auto;width:100%;padding:18px 16px}
-  .playoff-seeds{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .playoff-groups{grid-template-columns:minmax(0,1fr);padding:12px}
 }
 @media(max-width:600px){
   .playoff-status{align-items:stretch;flex-direction:column;padding:15px}
@@ -1474,7 +1482,9 @@ select{font:inherit;color:inherit}
   .playoff-format-note,.playoff-empty-note{padding-inline:15px}
   .playoff-bracket{padding:12px}
   .playoff-tables{grid-template-columns:1fr}
-  .playoff-seeds{grid-template-columns:1fr;padding:12px}
+  .playoff-groups{padding:10px;gap:10px}
+  .playoff-seeds{grid-template-columns:1fr;padding:10px}
+  .playoff-group-head{padding:12px}
   .playoff-seed{grid-template-columns:20px 32px minmax(0,1fr) auto;padding:10px}
   .playoff-seed .avatar{width:32px;height:32px}
 }
@@ -1488,7 +1498,8 @@ select{font:inherit;color:inherit}
 .playoff-round.final .playoff-round-foot{border-top-color:color-mix(in oklab,var(--champion) 26%,var(--line));background:color-mix(in oklab,var(--champion) 8%,transparent);color:var(--champion);font-weight:700}
 .playoff-round.final>header,.playoff-round.final>.playoff-tables,.playoff-round.final>footer{position:relative;z-index:1}
 .playoff-round-mark{position:absolute;z-index:0;right:-8px;bottom:46px;font-family:var(--font-jp);font-size:104px;line-height:1;color:var(--champion);opacity:.07;pointer-events:none;user-select:none}
-.playoff-table.final{border-color:color-mix(in oklab,var(--champion) 45%,var(--line));background:linear-gradient(180deg,color-mix(in oklab,var(--champion) 7%,var(--bg-elev)),var(--bg-elev))}
+.playoff-round.final .playoff-tables{justify-items:center}
+.playoff-table.final{width:100%;max-width:262px;border-color:color-mix(in oklab,var(--champion) 45%,var(--line));background:linear-gradient(180deg,color-mix(in oklab,var(--champion) 7%,var(--bg-elev)),var(--bg-elev))}
 .playoff-table.final .pt-head span{padding:2px 7px;border-radius:999px;background:color-mix(in oklab,var(--champion) 16%,transparent);color:var(--champion)}
 .playoff-table.final .pt-seats i{border-color:color-mix(in oklab,var(--champion) 42%,var(--line-strong))}
 .playoff-trophy{display:grid;flex:0 0 172px;align-self:center;place-items:center;gap:4px;padding:20px 16px 18px;border:1px solid color-mix(in oklab,var(--champion) 45%,var(--line));border-radius:16px;background:radial-gradient(120% 90% at 50% 0,color-mix(in oklab,var(--champion) 16%,transparent),var(--bg-sunk) 70%);box-shadow:0 0 0 1px color-mix(in oklab,var(--champion) 14%,transparent),0 22px 48px -28px var(--champion-glow);text-align:center}

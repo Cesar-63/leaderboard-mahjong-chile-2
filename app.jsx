@@ -20,7 +20,7 @@ const TABS = [
 ];
 
 // tabs that are scoped to a single division
-const DIV_SCOPED = ['standings', 'detail', 'log', 'calendar', 'coordinate', 'playoffs', 'hof'];
+const DIV_SCOPED = ['standings', 'detail', 'log', 'calendar', 'coordinate', 'hof'];
 
 // ── Rutas por hash: #/<tab>/<div|jugador> ──
 // Cada pestaña x división tiene su propia URL (funciona en estático, sin server).
@@ -80,7 +80,7 @@ function TabBar({ active, onChange, lang }) {
 
 function RulesModal({ division, rules, playoffs, onClose }) {
   const uma = rules[division].uma.map(v => v >= 0 ? `+${v}` : `−${Math.abs(v)}`).join(' / ');
-  const playoffCut = playoffFormat({ league: { playoffs } }).qualifiers;
+  const playoffCut = playoffFormat({ league: { playoffs } }).perDivision;
   const room = division === 'A'
     ? [tr('rules_a_red'), tr('rules_a_ron'), tr('rules_a_yakuman'), tr('rules_a_nagashi'), tr('rules_a_kokushi')]
     : [tr('rules_b_red'), tr('rules_b_ron'), tr('rules_b_yakuman'), tr('rules_b_nagashi'), tr('rules_b_kokushi')];
@@ -368,7 +368,7 @@ function App() {
         {tab === 'iormc' && <IORMCView data={data} onPick={selectPlayer} />}
         {tab === 'calendar' && <CalendarView data={data} div={div} />}
         {tab === 'coordinate' && <AvailabilityPage data={data} div={div} session={session} table={table} />}
-        {tab === 'playoffs' && <PlayoffsView data={data} div={div} onSelectPlayer={selectPlayer} />}
+        {tab === 'playoffs' && <PlayoffsView data={data} onSelectPlayer={selectPlayer} />}
         {tab === 'hof' && <HallOfFame data={data} div={div} />}
       </main>
       {rulesOpen && <RulesModal division={div} rules={L.rules} playoffs={L.playoffs} onClose={() => setRulesOpen(false)} />}

@@ -6,6 +6,7 @@
   "minimumAdvancedStatsHands": 8,
   "absencePenaltyPerHanchan": -30,
   "playoffs": {
+    "qualifiersPerDivision": 8,
     "qualifiers": 16,
     "rounds": [
       {

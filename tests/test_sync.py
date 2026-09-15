@@ -8,7 +8,7 @@ from scripts.majsoul import (
     has_yostar_credentials, parse_record,
 )
 from scripts.sync import (
-    CALENDAR_VALUE_COLS, PLAYOFF_FORMAT_DEFAULT, PRIVATE_PLAYER_FIELDS, SESSION_G1_ROWS, SyncError, TOTAL_RAW_SCORE,
+    CALENDAR_VALUE_COLS, DIVISIONS, PLAYOFF_FORMAT_DEFAULT, PRIVATE_PLAYER_FIELDS, SESSION_G1_ROWS, SyncError, TOTAL_RAW_SCORE,
     advanced_stats_health, align_history_with_fixtures, build_excel_results, build_paipu_results, build_public_data,
     crosscheck_substitutes, date_from_paipu_uuid, demote_unexpected_seats, find_absent_player, load_config,
     match_paipu_seats, merge_paipus, normalize_nat, playoff_format, strip_private_fields,
@@ -892,6 +892,8 @@ class EliminatoriasTests(unittest.TestCase):
         raiz = pathlib.Path(__file__).resolve().parent.parent
         fmt = playoff_format(load_config(raiz / "sync-config.json"))
         self.assertEqual(fmt["qualifiers"], fmt["rounds"][0]["seats"])
+        # El cuadro es uno solo: las dos divisiones aportan la misma cuota.
+        self.assertEqual(fmt["qualifiersPerDivision"] * len(DIVISIONS), fmt["qualifiers"])
         self.assertEqual([r["id"] for r in fmt["rounds"]], ["quarters", "semis", "final"])
         self.assertEqual([r["hanchan"] for r in fmt["rounds"]], [2, 2, 3])
         for previa, actual in zip(fmt["rounds"], fmt["rounds"][1:]):
@@ -918,6 +920,13 @@ class EliminatoriasTests(unittest.TestCase):
                 {"id": "final", "tables": 1, "hanchan": 3, "advancePerTable": 1},
             ]}})
 
+    def test_el_reparto_por_division_tiene_que_sumar_el_cuadro(self):
+        # 7 por división son 14 y el cuadro pide 16: faltan dos asientos.
+        roto = {"playoffs": {**PLAYOFF_FORMAT_DEFAULT, "qualifiersPerDivision": 7}}
+        with self.assertRaises(SyncError) as ctx:
+            playoff_format(roto)
+        self.assertIn("16", str(ctx.exception))
+
     def test_el_payload_publica_el_formato_del_cuadro(self):
         data, _ = build_public_data(_division_config(), _rosters(), [], [], {}, {})
         self.assertEqual(data["league"]["playoffs"], playoff_format({}))
@@ -933,7 +942,9 @@ class EliminatoriasTests(unittest.TestCase):
             ]
         config = {**_division_config(), "playoffs": PLAYOFF_FORMAT_DEFAULT}
         data, _ = build_public_data(config, {"A": roster("A"), "B": roster("B")}, [], [], {}, {})
-        corte = data["league"]["playoffs"]["qualifiers"]
+        # La zona la pinta el corte POR DIVISIÓN, no los 16 del cuadro único.
+        corte = data["league"]["playoffs"]["qualifiersPerDivision"]
+        self.assertLess(corte, data["league"]["playoffs"]["qualifiers"])
         for division, fuera_abajo in (("A", "relegation"), ("B", "bottom")):
             zonas = {p["rank"]: p["zone"] for p in data["divisions"][division]["players"]}
             self.assertEqual(zonas[corte], "playoff")

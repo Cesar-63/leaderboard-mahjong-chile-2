@@ -28,19 +28,27 @@ mahjong, jugada en sala de torneo de MahjongSoul. Estático, sin backend, sin au
   hora y no una vez al día, y por eso una sesión en curso tiene casi siempre
   mesas jugadas y mesas pendientes a la vez.
 - **Ascenso/descenso:** hay serie de promoción entre A 21-24 y B 1-4.
-- **Eliminatorias:** terminada la fase regular clasifican los **16 primeros de cada
-  división**. Se juegan en mesas de cuatro y cada ronda llena sus mesas con los
-  que avanzaron de la anterior: cuartos (4 mesas) y semifinales (2 mesas) a **2
-  hanchan**, final (1 mesa) a **3**; avanzan los dos primeros de cada mesa. El
-  formato vive en `sync-config.json` bajo `playoffs` y es **el mismo número que
-  pinta la zona de eliminatorias en la tabla**: cambiar el corte ahí lo cambia en
-  las dos partes. `playoff_format` en `sync.py` lo valida (si una ronda no llena
-  sus mesas con los que avanzaron, el job falla) y lo publica en
+- **Eliminatorias:** terminada la fase regular clasifican los **8 primeros de
+  cada división** y **el cuadro es uno solo para toda la liga**: los 16 se
+  mezclan en las mismas mesas y el campeón es de Liga Mahjong Chile, no de una
+  división. No existen «eliminatorias de A» y «de B», así que la vista no está
+  scopeada por división (no entra en `DIV_SCOPED`). Se juegan en mesas de cuatro
+  y cada ronda llena sus mesas con los que avanzaron de la anterior: cuartos
+  (4 mesas) y semifinales (2 mesas) a **2 hanchan**, final (1 mesa) a **3**;
+  avanzan los dos primeros de cada mesa. El formato vive en `sync-config.json`
+  bajo `playoffs`, con `qualifiersPerDivision` (el corte que **pinta la zona de
+  eliminatorias en la tabla**) y `qualifiers` (los que llenan los cuartos):
+  cambiar el corte ahí lo cambia en las dos partes. `playoff_format` en
+  `sync.py` lo valida —si una ronda no llena sus mesas con los que avanzaron, o
+  si las cuotas por división no suman el cuadro, el job falla— y lo publica en
   `league.playoffs`. **Los clasificados no van en el JSON**: se derivan de la
-  tabla en la vista, como el resto de lo calculado. Mientras quede una sesión
-  por jugar la vista los muestra como proyección, no como cuadro cerrado. El
-  sorteo de las mesas del cuadro todavía no está definido, así que los asientos
-  se muestran pendientes en vez de inventar un emparejamiento.
+  tabla en la vista, como el resto de lo calculado. **Los puntos de A y B no se
+  mezclan en una sola lista**: con uma y akadora distintos no son la misma vara,
+  así que cada división muestra su grupo, su corte y su burbuja. Mientras quede
+  una sesión por jugar en cualquiera de las dos, la vista los muestra como
+  proyección, no como cuadro cerrado. El sorteo de las mesas todavía no está
+  definido, así que los asientos se muestran pendientes en vez de inventar un
+  emparejamiento.
 
 ## Reglas de puntaje
 
@@ -360,8 +368,9 @@ paso a paso completo en `DISCORD_BOT.md`.
 5. **Calendario** — próximos eventos por división, serie de promoción, strip de
    sesiones jugadas.
 6. **Records** — Hall of Fame, 6 récords por división.
-7. **Eliminatorias** — cuadro de la división (cuartos → semis → final) con el
-   formato de cada ronda, y los 16 clasificados con su corte y la burbuja.
+7. **Eliminatorias** — cuadro único de la liga (cuartos → semis → final) con el
+   formato de cada ronda y el nodo de campeón, más los clasificados en dos
+   grupos (top 8 de A y top 8 de B) con su corte y su burbuja.
 
 ## Reglas de trabajo
 

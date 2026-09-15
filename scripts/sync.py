@@ -69,6 +69,8 @@ def json_default(value: Any) -> Any:
     raise TypeError(type(value).__name__)
 
 
+DIVISIONS = ("A", "B")
+
 # Identidad que el pipeline necesita en memoria pero que NO se publica: el
 # account_id de Mahjong Soul permite buscar y seguir a un jugador dentro del
 # juego, y el Discord es contacto directo. Se leen de la planilla, se usan para
@@ -165,7 +167,7 @@ def read_calendar(workbook: Any) -> tuple[list[dict[str, Any]], list[dict[str, A
     fixtures: list[dict[str, Any]] = []
     submissions: list[dict[str, Any]] = []
     seen_uuids: dict[str, str] = {}
-    for division in ("A", "B"):
+    for division in DIVISIONS:
         for session, g1_row in enumerate(SESSION_G1_ROWS, start=1):
             for table_idx, (player_col, value_col) in enumerate(zip(CALENDAR_PLAYER_COLS[division], CALENDAR_VALUE_COLS[division]), start=1):
                 players = [str(cell_value(ws.cell(g1_row - 2 + offset, player_col)) or "") for offset in range(4)]
@@ -302,6 +304,7 @@ def merge_paipus(submissions: list[dict[str, Any]], histories: dict[str, dict[st
 # zona de eliminatorias en la tabla. El default es el respaldo si el archivo
 # viene de una versión anterior.
 PLAYOFF_FORMAT_DEFAULT: dict[str, Any] = {
+    "qualifiersPerDivision": 8,
     "qualifiers": 16,
     "rounds": [
         {"id": "quarters", "tables": 4, "hanchan": 2, "advancePerTable": 2},
@@ -313,6 +316,11 @@ PLAYOFF_FORMAT_DEFAULT: dict[str, Any] = {
 
 def playoff_format(config: dict[str, Any]) -> dict[str, Any]:
     """Valida el formato de eliminatorias y lo deja listo para el payload.
+
+    **El cuadro es uno solo para toda la liga**: cada división clasifica a sus
+    `qualifiersPerDivision` mejores y los dos grupos se mezclan en las mismas
+    mesas. Por eso el corte que pinta la tabla es el de división y el que llena
+    los cuartos es la suma de los dos.
 
     Se juega en mesas de cuatro, así que el cuadro sólo cierra si cada ronda
     llena sus mesas con los que avanzaron de la anterior: 16 → 4 mesas → 8 →
@@ -332,6 +340,9 @@ def playoff_format(config: dict[str, Any]) -> dict[str, Any]:
     qualifiers = int(fmt.get("qualifiers") or int(rounds[0]["tables"]) * 4)
     if qualifiers != int(rounds[0]["tables"]) * 4:
         raise SyncError(f"Eliminatorias: {qualifiers} clasificados no llenan {rounds[0]['tables']} mesas de 4")
+    per_division = int(fmt.get("qualifiersPerDivision") or qualifiers // len(DIVISIONS))
+    if per_division * len(DIVISIONS) != qualifiers:
+        raise SyncError(f"Eliminatorias: {per_division} por división en {len(DIVISIONS)} divisiones no dan {qualifiers} clasificados")
     for previous, current in zip(rounds, rounds[1:]):
         advancing = int(previous["tables"]) * int(previous["advancePerTable"])
         seats = int(current["tables"]) * 4
@@ -341,6 +352,7 @@ def playoff_format(config: dict[str, Any]) -> dict[str, Any]:
         raise SyncError("Eliminatorias: la última ronda debe ser una sola mesa")
     return {
         "qualifiers": qualifiers,
+        "qualifiersPerDivision": per_division,
         "rounds": [
             {
                 "id": str(round_item["id"]),
@@ -497,8 +509,8 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
     submission_by_key = {item["key"]: item for item in submissions if item.get("url")}
     absence_penalty = float(config.get("absencePenaltyPerHanchan", -30))
     playoffs = playoff_format(config)
-    playoff_cut = playoffs["qualifiers"]
-    for division in ("A", "B"):
+    playoff_cut = playoffs["qualifiersPerDivision"]
+    for division in DIVISIONS:
         rule = config["divisions"][division]
         players = [{**player, "games": 0, "points": 0.0, "history": [], "cum": [], "counts": [0, 0, 0, 0], "absences": 0, "hands": 0, "wins": 0, "dealIns": 0, "riichis": 0, "openHands": 0, "damaten": 0, "kans": 0, "doras": 0, "uraDoras": 0, "maxHonba": 0, "winPoints": 0, "dealInPoints": 0, "winTurns": 0, "yakuCounts": Counter()} for player in rosters[division]]
         by_id = {player["id"]: player for player in players}
@@ -653,12 +665,12 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
         divisions[division] = {"key": division, "players": players, "matches": matches, "sessions": session_items}
         all_players.extend(players)
 
-    sessions_played = min(sum(1 for s in divisions[d]["sessions"] if s["status"] == "played") for d in ("A", "B"))
+    sessions_played = min(sum(1 for s in divisions[d]["sessions"] if s["status"] == "played") for d in DIVISIONS)
     # Una sesión ya está en curso cuando tiene al menos una partida registrada
     # o una mesa fechada; no hace falta esperar a que ambas divisiones terminen.
     evidenced_sessions = {
         match["session"]
-        for division in ("A", "B")
+        for division in DIVISIONS
         for match in divisions[division]["matches"]
     } | {fixture["session"] for fixture in fixtures if fixture["dateISO"]}
     current_session = max(evidenced_sessions, default=min(sessions_played + 1, int(config["sessionsTotal"])))
@@ -708,7 +720,7 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
 
 
 def add_hall_of_fame(data: dict[str, Any]) -> None:
-    for division in ("A", "B"):
+    for division in DIVISIONS:
         players = data["divisions"][division]["players"]
         top = players[0]
         def best(field: str, lower: bool = False) -> dict[str, Any]:
