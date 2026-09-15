@@ -1498,7 +1498,7 @@ select{font:inherit;color:inherit}
 .playoff-round.final .playoff-round-foot{border-top-color:color-mix(in oklab,var(--champion) 26%,var(--line));background:color-mix(in oklab,var(--champion) 8%,transparent);color:var(--champion);font-weight:700}
 .playoff-round.final>header,.playoff-round.final>.playoff-tables,.playoff-round.final>footer{position:relative;z-index:1}
 .playoff-round-mark{position:absolute;z-index:0;right:-8px;bottom:46px;font-family:var(--font-jp);font-size:104px;line-height:1;color:var(--champion);opacity:.07;pointer-events:none;user-select:none}
-.playoff-round.final .playoff-tables{justify-items:center}
+.playoff-round.final .playoff-tables{grid-template-columns:minmax(0,1fr);justify-items:center}
 .playoff-table.final{width:100%;max-width:262px;border-color:color-mix(in oklab,var(--champion) 45%,var(--line));background:linear-gradient(180deg,color-mix(in oklab,var(--champion) 7%,var(--bg-elev)),var(--bg-elev))}
 .playoff-table.final .pt-head span{padding:2px 7px;border-radius:999px;background:color-mix(in oklab,var(--champion) 16%,transparent);color:var(--champion)}
 .playoff-table.final .pt-seats i{border-color:color-mix(in oklab,var(--champion) 42%,var(--line-strong))}
@@ -1509,3 +1509,13 @@ select{font:inherit;color:inherit}
 .playoff-trophy b{font-family:var(--font-display);font-size:14px;line-height:1.25;color:var(--ink)}
 .playoff-trophy span{font-size:9px;line-height:1.4;color:var(--ink-faint)}
 @media (prefers-reduced-motion:reduce){.playoff-cup{animation:none}}
+@media(max-width:900px){
+  /* Apilada, la caja es ancha y baja: el kanji a 104px salía cortado. */
+  .playoff-round-mark{right:18px;bottom:auto;top:50%;font-size:68px;transform:translateY(-50%)}
+  .playoff-trophy{flex:0 0 auto;width:100%;padding:18px 16px}
+}
+@media(max-width:600px){
+  /* En el teléfono la mesa ocupa el ancho entero: el kanji sólo asomaría
+     cortado detrás de la tarjeta, así que no se dibuja. */
+  .playoff-round-mark{display:none}
+}
