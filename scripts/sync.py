@@ -48,6 +48,12 @@ TOTAL_RAW_SCORE = 120000
 # Mínimo de jugadores en común para dar por equivalentes dos grupos: 3 de 4,
 # para tolerar exactamente un suplente.
 MIN_ROSTER_OVERLAP = 3
+# Marca del suplente en la celda del Game History: «NOTSircrab» es Sircrab
+# sentado en una mesa que no era la suya. Es lo único que separa a un suplente
+# de un titular cuando el nombre igual está en el roster; sin ella el pipeline
+# le cuenta la partida al suplente y deja al ausente sin su −30 (B-S5-M1:
+# OnIShadow jugó por Cuervo_Gris). Va en mayúsculas y siempre igual.
+SUBSTITUTE_MARK = "NOT"
 WEEKDAYS_ES = ["lun", "mar", "mié", "jue", "vie", "sáb", "dom"]
 MONTHS_ES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"]
 
@@ -207,11 +213,26 @@ def history_rows(ws: Any) -> dict[tuple[int, int, int], int]:
     return rows
 
 
+def split_substitute_mark(raw: str) -> tuple[str, bool]:
+    """Separa la marca del nombre: «NOTSircrab» → («Sircrab», True).
+
+    La marca es el prefijo exacto en mayúsculas; ningún nombre de liga empieza
+    así, y escribirlo siempre igual es lo que evita que un «Notch» del roster
+    se lea como suplente «ch». Un suplente escrito sin la marca igual se detecta
+    por no estar en el roster: perder la marca afea el nombre, no descuadra la
+    penalización."""
+    name = str(raw).strip()
+    if name.startswith(SUBSTITUTE_MARK) and len(name) > len(SUBSTITUTE_MARK):
+        return name[len(SUBSTITUTE_MARK):].strip(), True
+    return name, False
+
+
 def parse_history_line(raw: str, rule: dict[str, Any], where: str) -> list[dict[str, Any]]:
     """`Nombre,score,Nombre,score,…` (4 pares, de 1º a 4º) → resultados de liga.
 
     Es la definición del formato de la celda del Game History; su gemelo
-    `format_history_line` la escribe. Los dos tienen que moverse juntos."""
+    `format_history_line` la escribe. Los dos tienen que moverse juntos. El
+    nombre sale sin la marca `NOT` y el que la traía queda con `suplente`."""
     parts = [part.strip() for part in str(raw).split(",")]
     if len(parts) != 8:
         raise SyncError(f"{where}: el resultado debe contener 8 valores")
@@ -220,7 +241,9 @@ def parse_history_line(raw: str, rule: dict[str, Any], where: str) -> list[dict[
         for place in range(4):
             score = int(float(parts[place * 2 + 1]))
             points = round((score - int(rule["initialPoints"])) / 1000 + float(rule["uma"][place]), 1)
-            results.append({"name": parts[place * 2], "scoreRaw": score, "place": place + 1, "delta": points})
+            name, substitute = split_substitute_mark(parts[place * 2])
+            results.append({"name": name, "scoreRaw": score, "place": place + 1,
+                            "delta": points, "suplente": substitute})
     except ValueError as exc:
         raise SyncError(f"{where}: puntaje inválido") from exc
     if sum(item["scoreRaw"] for item in results) != TOTAL_RAW_SCORE:
@@ -230,7 +253,10 @@ def parse_history_line(raw: str, rule: dict[str, Any], where: str) -> list[dict[
 
 def format_history_line(results: list[dict[str, Any]]) -> str:
     """Resultados de 1º a 4º → la celda tal cual se ve en el Game History."""
-    return ",".join(f"{item['name']},{int(item['scoreRaw'])}" for item in results)
+    return ",".join(
+        f"{SUBSTITUTE_MARK if item.get('suplente') else ''}{item['name']},{int(item['scoreRaw'])}"
+        for item in results
+    )
 
 
 def parse_history(workbook: Any, division: str, sheet_name: str, rule: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -404,13 +430,21 @@ def build_paipu_results(key: str, seat_map: dict[int, dict[str, Any]], parsed_pl
 
 
 def build_excel_results(official: dict[str, Any], fixture_players: list[str], players: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Resultados de respaldo cuando la división/game no tiene paipu con identidad."""
+    """Resultados de respaldo cuando la división/game no tiene paipu con identidad.
+
+    Un asiento marcado con `NOT` es suplente aunque su nombre esté en el roster:
+    esa marca es la única forma de anotar a un suplente de la misma división sin
+    que pase por titular."""
     by_name = {p["name"].lower(): p for p in players}
-    known = {item["name"].lower() for item in official["results"] if item["name"].lower() in by_name}
+
+    def titular(item: dict[str, Any]) -> dict[str, Any] | None:
+        return None if item.get("suplente") else by_name.get(item["name"].lower())
+
+    known = {item["name"].lower() for item in official["results"] if titular(item)}
     missing = [name for name in fixture_players if name.lower() not in known]
     results = []
     for item in official["results"]:
-        player = by_name.get(item["name"].lower())
+        player = titular(item)
         if player:
             results.append({
                 "id": player["id"], "name": player["name"], "handle": player["handle"],
@@ -789,8 +823,10 @@ def align_history_with_fixtures(histories: dict[str, dict[str, Any]], fixtures: 
     for key, official in histories.items():
         division = key.split("-", 1)[0]
         celda = (division, official["session"], official["table"])
+        # El suplente marcado no cuenta para emparejar: la marca dice
+        # justamente que ese asiento no es de este grupo.
         nombres_gh.setdefault(celda, set()).update(
-            r["name"].strip().lower() for r in official["results"]
+            r["name"].strip().lower() for r in official["results"] if not r.get("suplente")
         )
         claves_gh[celda].append(key)
 
