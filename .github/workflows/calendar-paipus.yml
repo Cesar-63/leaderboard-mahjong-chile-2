@@ -58,11 +58,7 @@ jobs:
           ARGS=""
           if [ "$ESCRIBIR" = "true" ]; then
             if [ -n "$GOOGLE_SERVICE_ACCOUNT_JSON" ]; then
-              # --write-marcas mantiene la convención «todo suplente va NOT»
-              # sin pasadas a mano. Es la única escritura sobre una celda ya
-              # escrita, y sólo cuando los cuatro nombres y puntajes coinciden:
-              # lo único que cambia es la marca.
-              ARGS="$ARGS --write --write-marcas"
+              ARGS="$ARGS --write"
             else
               echo "::warning::Sin GOOGLE_SERVICE_ACCOUNT_JSON: el job solo propone celdas, no las pega."
             fi
@@ -83,7 +79,11 @@ jobs:
           ARGS=""
           if [ "$ESCRIBIR" = "true" ]; then
             if [ -n "$GOOGLE_SERVICE_ACCOUNT_JSON" ]; then
-              ARGS="$ARGS --write"
+              # --write-marcas mantiene la convención «todo suplente va NOT»
+              # sin pasadas a mano. Es la única escritura sobre una celda ya
+              # escrita, y sólo cuando los cuatro nombres y puntajes coinciden:
+              # lo único que cambia es la marca.
+              ARGS="$ARGS --write --write-marcas"
             else
               echo "::warning::Sin GOOGLE_SERVICE_ACCOUNT_JSON: el job solo propone celdas, no las pega."
             fi
