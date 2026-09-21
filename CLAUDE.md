@@ -86,6 +86,20 @@ no escribir nada. **El formato de la celda vive en un solo lugar:**
 `parse_history_line` lo lee y `format_history_line` lo escribe, los dos en
 `sync.py`, y un test los cruza en ida y vuelta.
 
+**Todo suplente va marcado `NOT<nombre>` en la celda**, venga de la otra
+división, de fuera del torneo o del mismo roster: `NOTSircrab` es Sircrab
+sentado en una mesa que no era la suya. La marca es el prefijo exacto en
+mayúsculas (`SUBSTITUTE_MARK` en `sync.py`), se la pone `format_history_line`
+y se la saca `parse_history_line`, así que el nombre viaja limpio por el resto
+del pipeline y la vista muestra "Sircrab", no "NOTSircrab". **Es lo único que
+distingue a un suplente de un titular cuando el nombre igual está en el
+roster**, y por eso un asiento marcado no cuenta como titular ni sirve para
+emparejar la mesa con el Calendario. Una celda vieja sin la marca no cambia
+ningún puntaje —el suplente igual se detecta por no estar en el roster—, así
+que no es CONFLICTO: se reporta como `NORMALIZAR` y se corrige con
+`--write-marcas`, la única escritura que pisa una celda ya escrita y sólo
+cuando nombres y puntajes coinciden.
+
 ## Pipeline de datos
 
 1. `scripts/import.py` lee el `.xlsx` (openpyxl) → emite `data/liga.json`.
@@ -204,8 +218,9 @@ jugador y publica las tasas. Definiciones, alineadas con amae-koromo:
   el Calendario el que dice que no era de esa mesa. `demote_unexpected_seats`
   en `sync.py` lo saca del mapa de asientos cuando quedan al menos 3 titulares;
   sin eso, B-S5-M1 le contó a OnIShadow 14 partidas en 6 sesiones y dejó a
-  Cuervo_Gris sin partida ni −60. En el Game History ese caso queda en REVISAR,
-  porque el nombre de liga en la celda lo haría pasar por titular.
+  Cuervo_Gris sin partida ni −60. En el Game History ese caso se escribe con la
+  marca (`NOTSircrab` en B-S6-M3), que es lo que impide que el nombre de liga en
+  la celda lo haga pasar por titular.
 - Hay como máximo **un ausente por hanchan**.
 - Standings, promedios y rachas se derivan en build. **Nunca duplicar datos
   calculados dentro del JSON.**

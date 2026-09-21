@@ -11,7 +11,7 @@ from scripts.sync import (
     CALENDAR_VALUE_COLS, PRIVATE_PLAYER_FIELDS, SESSION_G1_ROWS, TOTAL_RAW_SCORE, advanced_stats_health,
     align_history_with_fixtures, build_excel_results, build_paipu_results, build_public_data,
     crosscheck_substitutes, date_from_paipu_uuid, demote_unexpected_seats, find_absent_player, match_paipu_seats, merge_paipus,
-    normalize_nat, strip_private_fields,
+    normalize_nat, split_substitute_mark, strip_private_fields,
 )
 
 
@@ -585,11 +585,14 @@ def _fixture(division, session, table, players, date="12 abr"):
 
 
 def _history(key, session, table, game, names, scores=(45000, 38500, 32000, 4500)):
+    """Una celda ya leída: los nombres van como en la planilla, marca incluida."""
     umas = [15, 5, -5, -15]
+    leidos = [split_substitute_mark(n) for n in names]
     return {key: {"key": key, "session": session, "table": table, "game": game,
-                  "results": [{"name": n, "scoreRaw": s, "place": i + 1,
-                               "delta": round((s - 30000) / 1000 + umas[i], 1)}
-                              for i, (n, s) in enumerate(zip(names, scores))],
+                  "results": [{"name": nombre, "scoreRaw": s, "place": i + 1,
+                               "delta": round((s - 30000) / 1000 + umas[i], 1),
+                               "suplente": marcado}
+                              for i, ((nombre, marcado), s) in enumerate(zip(leidos, scores))],
                   "sourceCell": "X!B2"}}
 
 
@@ -812,6 +815,41 @@ class SuplentesYAusenciasTests(unittest.TestCase):
         histories = _history("A-S1-M1-G1", 1, 1, 1, ["Meme000", "NOTKaiser", "Bodoque", "Mon_96"])
         histories |= _history("A-S1-M1-G2", 1, 1, 2, ["Bodoque", "Mon_96", "Meme000", "NOTKaiser"])
         self.assertEqual(crosscheck_substitutes(histories, {"A-S1-M1-G1": parsed, "A-S1-M1-G2": parsed}, rosters, fixtures), [])
+
+    def test_un_titular_marcado_es_suplente_y_el_ausente_cobra_su_penalizacion(self):
+        # El caso B-S6-M3: Sircrab es del roster de B pero jugó en una mesa que
+        # no era la suya. Sin la marca pasaría por titular y el ausente quedaría
+        # sin −30; con ella el reparto es el correcto.
+        players = _rosters()["A"]
+        fixture = ["Bodoque", "Mon_96", "Meme000", "Twining1999"]
+        historia = _history("A-S1-M1-G1", 1, 1, 1,
+                            ["Bodoque", "Mon_96", "Meme000", "NOTTwining1999"])["A-S1-M1-G1"]
+        # Twining1999 se sentó, pero marcado: no es titular de esta mesa.
+        historia["results"][3]["name"] = "Twining1999"
+        resultados = build_excel_results(historia, fixture, players)
+        self.assertEqual([r["id"] for r in resultados[:3]], ["A01", "A02", "A03"])
+        suplente = resultados[3]
+        self.assertTrue(suplente["id"].startswith("sub-"))
+        self.assertEqual(suplente["name"], "Twining1999")
+        self.assertEqual(suplente["sustitutoDe"], "A04")
+
+    def test_sin_la_marca_el_mismo_nombre_cuenta_como_titular(self):
+        # El reverso del anterior: es exactamente el bug que la marca evita.
+        players = _rosters()["A"]
+        fixture = ["Bodoque", "Mon_96", "Meme000", "Twining1999"]
+        historia = _history("A-S1-M1-G1", 1, 1, 1,
+                            ["Bodoque", "Mon_96", "Meme000", "Twining1999"])["A-S1-M1-G1"]
+        resultados = build_excel_results(historia, fixture, players)
+        self.assertEqual([r["id"] for r in resultados], ["A01", "A02", "A03", "A04"])
+
+    def test_el_suplente_marcado_no_empareja_su_mesa_con_la_del_calendario(self):
+        # «NOTTwining1999» no dice que este grupo sea la mesa de Twining1999.
+        historias = _history("A-S1-M2-G1", 1, 2, 1,
+                             ["Bodoque", "Mon_96", "Meme000", "NOTTwining1999"])
+        fixtures = [_fixture("A", 1, 1, ["Bodoque", "Mon_96", "Meme000", "Twining1999"]),
+                    _fixture("A", 1, 2, ["Twining1999", "Otro1", "Otro2", "Otro3"])]
+        alineadas, _avisos = align_history_with_fixtures(historias, fixtures)
+        self.assertEqual([entry["table"] for entry in alineadas.values()], [1])
 
     def test_find_absent_player_devuelve_al_que_falta(self):
         players = _rosters()["A"]

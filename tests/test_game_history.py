@@ -8,11 +8,12 @@ from scripts.gsheets import quote_sheet
 from scripts.majsoul import ParsedPaipu
 from scripts.sync import (
     align_history_with_fixtures, format_history_line, history_rows, parse_history,
-    parse_history_line, SyncError,
+    parse_history_line, split_substitute_mark, SyncError,
 )
 from scripts.fill_game_history import (
     apply_writes, build_report, pick_slot, planned_writes, rank_seats, resolve_seat_names,
-    score_problems, slots_by_table, slots_in_use, usable_slots, writable_rows,
+    same_line, same_marks, score_problems, slots_by_table, slots_in_use, usable_slots,
+    without_marks, writable_rows,
 )
 from scripts.fill_calendar_paipus import build_tables
 
@@ -86,6 +87,16 @@ def results_from(line, rule=RULE_A):
     return parse_history_line(line, rule, "prueba")
 
 
+def asientos(names, suplentes=()):
+    """Los cuatro asientos tal como los devuelve `resolve_seat_names`."""
+    marcados = {n.lower() for n in suplentes}
+    return [{"name": name, "suplente": name.lower() in marcados} for name in names]
+
+
+def nombres(seats):
+    return [item["name"] for item in seats]
+
+
 def sheet_rows(sessions=(1,), mesas=(1, 2, 3, 4, 5, 6)):
     """El rótulo de cada fila del Game History, en el orden de la planilla."""
     rows = {}
@@ -144,62 +155,109 @@ class FormatoDeLaCeldaTests(unittest.TestCase):
         self.assertEqual(quote_sheet("Game History A") + "!B69", "'Game History A'!B69")
 
 
+class MarcaDeSuplenteTests(unittest.TestCase):
+    """`NOTNombre`: la marca que separa a un suplente de un titular."""
+
+    MARCADO = "MasterFofo,35900,NOTKaiser,31100,Mon_96,30900,Tobippi,22100"
+
+    def test_la_marca_va_y_vuelve_igual(self):
+        results = results_from(self.MARCADO)
+        self.assertEqual(nombres(results), ["MasterFofo", "Kaiser", "Mon_96", "Tobippi"])
+        self.assertEqual([item["suplente"] for item in results], [False, True, False, False])
+        self.assertEqual(format_history_line(results), self.MARCADO)
+
+    def test_sin_marca_nadie_queda_de_suplente(self):
+        self.assertEqual([item["suplente"] for item in results_from(EJEMPLO)],
+                         [False, False, False, False])
+
+    def test_un_nombre_que_empieza_parecido_no_es_una_marca(self):
+        # «Notch» es un nombre, no «ch» marcado: la marca es NOT en mayúsculas
+        # y el resto tiene que quedar intacto.
+        self.assertEqual(split_substitute_mark("Notch"), ("Notch", False))
+        self.assertEqual(split_substitute_mark("notKaiser"), ("notKaiser", False))
+        self.assertEqual(split_substitute_mark("NOTKaiser"), ("Kaiser", True))
+        self.assertEqual(split_substitute_mark("NOT"), ("NOT", False))
+
+    def test_la_marca_no_cambia_el_puntaje_ni_el_puesto(self):
+        marcado, pelado = results_from(self.MARCADO), results_from(EJEMPLO.replace("Uznaiker", "Kaiser"))
+        self.assertEqual([item["scoreRaw"] for item in marcado], [item["scoreRaw"] for item in pelado])
+        self.assertEqual([item["delta"] for item in marcado], [item["delta"] for item in pelado])
+
+    def test_la_misma_celda_con_y_sin_marca_es_el_mismo_resultado(self):
+        marcado, pelado = results_from(self.MARCADO), results_from(EJEMPLO.replace("Uznaiker", "Kaiser"))
+        self.assertTrue(same_line(pelado, marcado))
+        self.assertFalse(same_marks(pelado, marcado))
+        self.assertEqual(without_marks(self.MARCADO), without_marks(EJEMPLO.replace("Uznaiker", "Kaiser")))
+
+
 class AsientosYPuestosTests(unittest.TestCase):
     """De los cuatro asientos del paipu a los cuatro puestos de la celda."""
 
     def test_los_asientos_se_ordenan_de_primero_a_cuarto(self):
-        ranked = rank_seats(["Tobippi", "Mon_96", "MasterFofo", "Uznaiker"],
+        ranked = rank_seats(asientos(["Tobippi", "Mon_96", "MasterFofo", "Uznaiker"]),
                             [22100, 30900, 35900, 31100])
         self.assertEqual(format_history_line(ranked), EJEMPLO)
 
     def test_un_empate_lo_desempata_el_asiento_mas_cercano_al_este(self):
-        ranked = rank_seats(["MasterFofo", "Uznaiker", "Mon_96", "Tobippi"],
+        ranked = rank_seats(asientos(["MasterFofo", "Uznaiker", "Mon_96", "Tobippi"]),
                             [30000, 30000, 30000, 30000])
-        self.assertEqual([item["name"] for item in ranked], MESA_1)
+        self.assertEqual(nombres(ranked), MESA_1)
+
+    def test_el_suplente_llega_marcado_hasta_la_celda(self):
+        ranked = rank_seats(asientos(["Tobippi", "Mon_96", "MasterFofo", "Kaiser"],
+                                     suplentes=["Kaiser"]),
+                            [22100, 30900, 35900, 31100])
+        self.assertEqual(format_history_line(ranked),
+                         "MasterFofo,35900,NOTKaiser,31100,Mon_96,30900,Tobippi,22100")
 
     def test_el_paipu_nombra_los_asientos_y_gana_el_nombre_del_roster(self):
         parsed = parsed_paipu([(101, "masterfofo"), (102, "Uznaiker"),
                                (103, "Mon_96"), (104, "Tobippi")],
                               [35900, 31100, 30900, 22100])
-        names, identity, _reason = resolve_seat_names(parsed, MESA_1, ROSTER_A)
+        seats, identity, _reason = resolve_seat_names(parsed, MESA_1, ROSTER_A)
         # El apodo del juego venía en minúsculas; en la celda va el de la liga.
-        self.assertEqual(names, MESA_1)
+        self.assertEqual(seats, asientos(MESA_1))
         self.assertEqual(identity, "paipu")
 
-    def test_un_suplente_entra_con_su_apodo_del_juego(self):
+    def test_un_suplente_entra_con_su_apodo_del_juego_y_marcado(self):
         parsed = parsed_paipu([(101, "MasterFofo"), (102, "Uznaiker"),
                                (103, "Mon_96"), (999, "InvitadoX")],
                               [35900, 31100, 30900, 22100])
-        names, identity, _reason = resolve_seat_names(parsed, MESA_1, ROSTER_A)
-        self.assertEqual(names, ["MasterFofo", "Uznaiker", "Mon_96", "InvitadoX"])
+        seats, identity, _reason = resolve_seat_names(parsed, MESA_1, ROSTER_A)
+        self.assertEqual(seats, asientos(["MasterFofo", "Uznaiker", "Mon_96", "InvitadoX"],
+                                         suplentes=["InvitadoX"]))
         self.assertEqual(identity, "paipu")
 
-    def test_un_suplente_de_la_misma_division_queda_para_revisar(self):
+    def test_un_suplente_de_la_misma_division_va_con_la_marca(self):
         # Kaiser (A05) es del roster pero de la mesa 2: jugó por Tobippi. Con su
-        # nombre de liga en la celda pasaría por titular (B-S5-M1: OnIShadow por
-        # Cuervo_Gris), así que no se pega solo.
+        # nombre pelado pasaría por titular (B-S5-M1: OnIShadow por Cuervo_Gris);
+        # con la marca se anota sin ambigüedad y se puede pegar solo.
         parsed = parsed_paipu([(101, "MasterFofo"), (102, "Uznaiker"),
                                (103, "Mon_96"), (105, "kaiser")],
                               [35900, 31100, 30900, 22100])
-        names, identity, reason = resolve_seat_names(parsed, MESA_1, ROSTER_A)
-        self.assertEqual(names, ["MasterFofo", "Uznaiker", "Mon_96", "kaiser"])
-        self.assertEqual(identity, "revisar")
+        seats, identity, reason = resolve_seat_names(parsed, MESA_1, ROSTER_A)
+        # En la celda va el nombre de liga, no el apodo del juego.
+        self.assertEqual(seats, asientos(["MasterFofo", "Uznaiker", "Mon_96", "Kaiser"],
+                                         suplentes=["Kaiser"]))
+        self.assertEqual(identity, "paipu")
         self.assertIn("Kaiser", reason)
-        self.assertIn("suplente de la misma división", reason)
+        self.assertIn("marca de suplente", reason)
+        self.assertEqual(format_history_line(rank_seats(seats, [35900, 31100, 30900, 22100])),
+                         "MasterFofo,35900,Uznaiker,31100,Mon_96,30900,NOTKaiser,22100")
 
     def test_sin_identidad_en_el_paipu_el_orden_queda_para_revisar(self):
         parsed = parsed_paipu([(None, ""), (None, ""), (None, ""), (None, "")],
                               [35900, 31100, 30900, 22100])
-        names, identity, reason = resolve_seat_names(parsed, MESA_1, ROSTER_A)
-        self.assertEqual(names, MESA_1)
+        seats, identity, reason = resolve_seat_names(parsed, MESA_1, ROSTER_A)
+        self.assertEqual(seats, asientos(MESA_1))
         self.assertEqual(identity, "revisar")
         self.assertIn("Calendario", reason)
 
     def test_sin_paipu_ni_calendario_no_hay_nombres(self):
         parsed = parsed_paipu([(None, ""), (None, ""), (None, ""), (None, "")],
                               [35900, 31100, 30900, 22100])
-        names, identity, _reason = resolve_seat_names(parsed, ["", "", "", ""], ROSTER_A)
-        self.assertIsNone(names)
+        seats, identity, _reason = resolve_seat_names(parsed, ["", "", "", ""], ROSTER_A)
+        self.assertIsNone(seats)
         self.assertEqual(identity, "revisar")
 
     def test_un_paipu_que_no_suma_120000_no_sirve_de_fuente(self):
@@ -414,6 +472,37 @@ class EscrituraEnLaPlanillaTests(unittest.TestCase):
         resumen = apply_writes(client, self.filas())
         self.assertEqual((resumen["written"], resumen["already"]), (0, 1))
         self.assertEqual(client.written, {})
+
+    def test_corrige_la_marca_de_suplente_sobre_una_celda_escrita(self):
+        # Misma mesa, mismos puntajes: lo único que cambia es el NOT. Es la
+        # única escritura permitida sobre una celda que ya tiene resultado.
+        pelado = "MasterFofo,35900,Kaiser,31100,Mon_96,30900,Tobippi,22100"
+        marcado = "MasterFofo,35900,NOTKaiser,31100,Mon_96,30900,Tobippi,22100"
+        client = FakeSheets({"'Game History A'!B2": pelado})
+        filas = [{"key": "A-S1-M1-G1", "cell": "'Game History A'!B2",
+                  "value": marcado, "overwrite": True}]
+        resumen = apply_writes(client, filas)
+        self.assertEqual(resumen["written"], 1)
+        self.assertEqual(client.current["'Game History A'!B2"], marcado)
+        self.assertEqual(filas[0]["writeOutcome"], "ESCRITO")
+
+    def test_sin_overwrite_la_marca_no_se_corrige_sola(self):
+        pelado = "MasterFofo,35900,Kaiser,31100,Mon_96,30900,Tobippi,22100"
+        marcado = "MasterFofo,35900,NOTKaiser,31100,Mon_96,30900,Tobippi,22100"
+        client = FakeSheets({"'Game History A'!B2": pelado})
+        resumen = apply_writes(client, [{"key": "A-S1-M1-G1", "cell": "'Game History A'!B2",
+                                         "value": marcado}])
+        self.assertEqual((resumen["written"], resumen["skipped"]), (0, 1))
+        self.assertEqual(client.current["'Game History A'!B2"], pelado)
+
+    def test_overwrite_no_habilita_pisar_otro_resultado(self):
+        # El permiso es sólo para la marca: si los puntajes cambiaron, no se toca.
+        otra = "Tobippi,35900,Mon_96,31100,Uznaiker,30900,MasterFofo,22100"
+        client = FakeSheets({"'Game History A'!B2": otra})
+        resumen = apply_writes(client, [{"key": "A-S1-M1-G1", "cell": "'Game History A'!B2",
+                                         "value": EJEMPLO, "overwrite": True}])
+        self.assertEqual((resumen["written"], resumen["skipped"]), (0, 1))
+        self.assertEqual(client.current["'Game History A'!B2"], otra)
 
     def test_el_simulacro_no_toca_la_planilla(self):
         filas = self.filas()
