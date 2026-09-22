@@ -40,7 +40,7 @@ from scripts.majsoul import (
 from scripts.sync import (
     MIN_ROSTER_OVERLAP, TOTAL_RAW_SCORE, SyncError, align_history_with_fixtures, demote_unexpected_seats,
     download_sheet, format_history_line, history_rows, load_config, match_fixture_order, match_paipu_seats,
-    parse_history, read_calendar, read_roster,
+    parse_history, read_calendar, read_roster, split_substitute_mark,
 )
 
 
@@ -49,7 +49,7 @@ ROOT = Path(__file__).resolve().parents[1]
 # trata como suplente igual, porque lo que lo delata es no estar en el roster.
 SUBSTITUTE_NAME = "Suplente"
 # Orden de severidad para el resumen y el ordenamiento del reporte.
-STATUS_ORDER = ["PROPUESTO", "REVISAR", "CONFLICTO", "PENDIENTE", "OK"]
+STATUS_ORDER = ["PROPUESTO", "NORMALIZAR", "REVISAR", "CONFLICTO", "PENDIENTE", "OK"]
 # Lo único que el script pega solo: celda vacía y un paipu que nombra a los
 # cuatro asientos. Sin esa identidad el orden de los asientos es una conjetura.
 WRITE_STATUSES = ("PROPUESTO",)
@@ -112,7 +112,9 @@ def slots_by_table(aligned: dict[str, dict[str, Any]], fixtures: list[dict[str, 
     for key, entry in aligned.items():
         division = key.split("-", 1)[0]
         cell = (division, entry["session"], entry["table"])
-        names = {str(item["name"]).strip().lower() for item in entry["results"]}
+        # Igual que en `align_history_with_fixtures`: el asiento marcado como
+        # suplente no dice nada sobre a qué mesa pertenece el grupo.
+        names = {str(item["name"]).strip().lower() for item in entry["results"] if not item.get("suplente")}
         if len(names & rosters.get(cell, set())) >= MIN_ROSTER_OVERLAP:
             slots[cell] = entry["tableGameHistory"]
     return slots
@@ -136,48 +138,55 @@ def pick_slot(available: set[int], taken: set[int], preferred: int) -> int | Non
     return next((slot for slot in sorted(available) if slot not in taken), None)
 
 
-def resolve_seat_names(parsed: Any, fixture_players: list[str], roster: list[dict[str, Any]]) -> tuple[list[str] | None, str, str]:
-    """Nombre por asiento para la celda, más de dónde salió esa identidad.
+def resolve_seat_names(parsed: Any, fixture_players: list[str], roster: list[dict[str, Any]]) -> tuple[list[dict[str, Any]] | None, str, str]:
+    """Los cuatro asientos de la celda, más de dónde salió esa identidad.
 
-    Devuelve `(nombres, identidad, motivo)`. `identidad` es `paipu` cuando el
-    registro nombra a los asientos —único caso que el script pega solo— y
-    `revisar` cuando hubo que confiar en el orden del Calendario o algún asiento
-    quedó sin nombre: emparejar mal un puntaje con un jugador es peor que dejar
-    la celda vacía.
+    Devuelve `(asientos, identidad, motivo)`. Cada asiento es
+    `{"name": ..., "suplente": bool}`, y todo el que no sea titular de la mesa
+    sorteada va marcado: `format_history_line` le antepone `NOT` al escribirlo.
+    `identidad` es `paipu` cuando el registro nombra a los asientos —único caso
+    que el script pega solo— y `revisar` cuando hubo que confiar en el orden del
+    Calendario o algún asiento quedó sin nombre: emparejar mal un puntaje con un
+    jugador es peor que dejar la celda vacía.
     """
     seat_map = match_paipu_seats(parsed.players, roster) if len(parsed.players) == 4 else None
     identity, reason = "paipu", "El paipu nombra a los asientos"
     # Un jugador del roster sentado en una mesa ajena es suplente de la misma
-    # división: con su nombre de liga en la celda pasaría por titular, y no
-    # hay formato acordado para anotarlo. Lo decide una persona.
-    intruders: list[str] = []
+    # división. Con su nombre pelado pasaría por titular; con la marca `NOT` se
+    # anota sin ambigüedad y el ausente conserva su penalización.
+    intruders: dict[int, dict[str, Any]] = {}
     if seat_map is not None:
         expected = demote_unexpected_seats(seat_map, fixture_players)
-        intruders = [str(seat_map[seat]["name"]) for seat in seat_map if seat not in expected]
+        intruders = {seat: seat_map[seat] for seat in seat_map if seat not in expected}
         seat_map = expected
     if seat_map is None:
         seat_map = match_fixture_order(fixture_players, roster)
         identity, reason = "revisar", "El paipu no nombra a los asientos; el orden sale del Calendario"
+        # Los intrusos salían del mapa del paipu, que acá no sirvió.
+        intruders = {}
     if seat_map is None:
         return None, "revisar", "Ni el paipu ni el Calendario identifican a los cuatro asientos"
     if intruders:
-        identity = "revisar"
         reason = (
-            f"{', '.join(intruders)} es del roster pero no de esta mesa (suplente de la "
-            "misma división); decide cómo anotarlo"
+            f"{', '.join(str(player['name']) for player in intruders.values())} es del roster "
+            "pero no de esta mesa; va con la marca de suplente"
         )
-    names: list[str] = []
+    seats: list[dict[str, Any]] = []
     for seat in range(4):
         player = seat_map.get(seat)
         if player is not None:
-            names.append(str(player["name"]))
+            seats.append({"name": str(player["name"]), "suplente": False})
+            continue
+        intruder = intruders.get(seat)
+        if intruder is not None:
+            seats.append({"name": str(intruder["name"]), "suplente": True})
             continue
         nickname = str((parsed.players[seat] or {}).get("nickname") or "").strip()
-        names.append(nickname or SUBSTITUTE_NAME)
+        seats.append({"name": nickname or SUBSTITUTE_NAME, "suplente": True})
         if not nickname:
             identity = "revisar"
             reason = f"El asiento {seat + 1} no está en el roster y el paipu no lo nombra"
-    return names, identity, reason
+    return seats, identity, reason
 
 
 def score_problems(scores: list[int]) -> list[str]:
@@ -194,22 +203,43 @@ def score_problems(scores: list[int]) -> list[str]:
     return problems
 
 
-def rank_seats(names: list[str], scores: list[int]) -> list[dict[str, Any]]:
+def rank_seats(seats: list[dict[str, Any]], scores: list[int]) -> list[dict[str, Any]]:
     """Los cuatro asientos ordenados de 1º a 4º, como los lista el Game History.
 
     El orden es estable: entre dos empatados queda arriba el asiento más
     cercano al este, que es como desempata Mahjong Soul.
     """
-    ranked = sorted(zip(names, scores), key=lambda pair: pair[1], reverse=True)
-    return [{"name": name, "scoreRaw": int(score)} for name, score in ranked]
+    ranked = sorted(zip(seats, scores), key=lambda pair: pair[1], reverse=True)
+    return [{"name": str(seat["name"]), "scoreRaw": int(score), "suplente": bool(seat.get("suplente"))}
+            for seat, score in ranked]
 
 
 def same_line(existing: list[dict[str, Any]], proposed: list[dict[str, Any]]) -> bool:
-    """Si la celda ya dice lo mismo que el paipu, salvo mayúsculas y espacios."""
+    """Si la celda ya dice lo mismo que el paipu, salvo mayúsculas y espacios.
+
+    La marca de suplente queda fuera de la comparación a propósito: una celda
+    vieja escrita sin ella trae el mismo resultado, y volverla CONFLICTO taparía
+    los conflictos de verdad. Que la marca no coincida se informa aparte."""
     def shape(results: list[dict[str, Any]]) -> list[tuple[str, int]]:
         return [(str(item["name"]).strip().lower(), int(item["scoreRaw"])) for item in results]
 
     return shape(existing) == shape(proposed)
+
+
+def same_marks(existing: list[dict[str, Any]], proposed: list[dict[str, Any]]) -> bool:
+    """Si además coinciden en qué asientos van marcados como suplentes."""
+    def marks(results: list[dict[str, Any]]) -> list[bool]:
+        return [bool(item.get("suplente")) for item in results]
+
+    return marks(existing) == marks(proposed)
+
+
+def without_marks(line: str) -> str:
+    """La celda sin marcas de suplente, para comparar dos que dicen lo mismo."""
+    parts = [part.strip() for part in str(line).split(",")]
+    bare = [split_substitute_mark(part)[0] if index % 2 == 0 else part
+            for index, part in enumerate(parts)]
+    return ",".join(bare).replace(" ", "").lower()
 
 
 # ----------------------------------------------------------------- reporte
@@ -307,7 +337,20 @@ def build_report(
             }
             proposal = result.get("ranked")
             if proposal and existing and same_line(existing["results"], proposal):
-                row["status"], row["detail"] = "OK", "La celda ya tiene este resultado"
+                if same_marks(existing["results"], proposal):
+                    row["status"], row["detail"] = "OK", "La celda ya tiene este resultado"
+                else:
+                    # Mismo resultado, distinta marca de suplente: no es un
+                    # conflicto de datos, es la celda escrita con otra
+                    # convención. Se corrige sólo con --write-marcas.
+                    row["status"] = "NORMALIZAR"
+                    row["value"] = result["value"]
+                    row["overwrite"] = True
+                    row["detail"] = (
+                        f"Mismo resultado, pero la marca de suplente no coincide: la celda dice "
+                        f"«{format_history_line(existing['results'])}» y debería decir "
+                        f"«{result['value']}»"
+                    )
             elif proposal and existing:
                 row["status"] = "CONFLICTO"
                 row["detail"] = (
@@ -365,13 +408,19 @@ def sort_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     ))
 
 
-def writable_rows(report: dict[str, Any], include_review: bool) -> list[dict[str, Any]]:
+def writable_rows(report: dict[str, Any], include_review: bool, include_marks: bool = False) -> list[dict[str, Any]]:
     """Filas que el script puede pegar solo: celda vacía y paipu con identidad.
 
     `REVISAR` queda fuera por defecto porque el orden de los asientos salió del
-    Calendario y no del registro; `--write-revisar` la incluye.
+    Calendario y no del registro; `--write-revisar` la incluye. `NORMALIZAR` es
+    la única escritura sobre una celda ya escrita y por eso también es opt-in
+    (`--write-marcas`): no cambia ningún puntaje, sólo la marca de suplente.
     """
-    statuses = set(WRITE_STATUSES) | ({"REVISAR"} if include_review else set())
+    statuses = set(WRITE_STATUSES)
+    if include_review:
+        statuses.add("REVISAR")
+    if include_marks:
+        statuses.add("NORMALIZAR")
     return [row for row in sort_rows(report["proposals"]) if row["status"] in statuses and row["value"] and row["cell"]]
 
 
@@ -383,7 +432,10 @@ def apply_writes(client: Any, rows: list[dict[str, Any]]) -> dict[str, Any]:
 
     El reporte se armó sobre una copia descargada de la planilla, así que antes
     de escribir se relee cada celda: si alguien la llenó en el medio, se informa
-    y no se toca. Un resultado ya escrito nunca se sobrescribe.
+    y no se toca. Un resultado ya escrito nunca se sobrescribe; la única
+    excepción es la fila `NORMALIZAR`, que reescribe la misma celda con los
+    mismos nombres y puntajes y sólo le corrige la marca de suplente, y aun así
+    se vuelve a comprobar contra lo que la celda dice ahora.
     """
     entries: list[dict[str, Any]] = []
     current = client.read_cells([row["cell"] for row in rows])
@@ -393,11 +445,16 @@ def apply_writes(client: Any, rows: list[dict[str, Any]]) -> dict[str, Any]:
         entry = {"cell": row["cell"], "key": row["key"], "value": row["value"]}
         if existing:
             same = existing.replace(" ", "").lower() == row["value"].replace(" ", "").lower()
-            entry["outcome"] = "OK" if same else "OMITIDO"
-            entry["detail"] = (
-                "La celda ya tenía este resultado" if same
-                else f"La celda dejó de estar vacía («{existing}»); no se toca"
-            )
+            marca = row.get("overwrite") and without_marks(existing) == without_marks(row["value"])
+            if same:
+                entry["outcome"], entry["detail"] = "OK", "La celda ya tenía este resultado"
+            elif marca:
+                entry["outcome"] = "ESCRITO"
+                entry["detail"] = "Mismo resultado; se corrige sólo la marca de suplente"
+                updates[row["cell"]] = row["value"]
+            else:
+                entry["outcome"] = "OMITIDO"
+                entry["detail"] = f"La celda dejó de estar vacía («{existing}»); no se toca"
         else:
             entry["outcome"] = "ESCRITO"
             entry["detail"] = "Celda vacía; resultado pegado"
@@ -436,7 +493,7 @@ def planned_writes(rows: list[dict[str, Any]]) -> dict[str, Any]:
 
 def render_text(report: dict[str, Any]) -> str:
     lines = ["Celdas: " + ", ".join(f"{key}={value}" for key, value in report["summary"].items()), ""]
-    actionable = [row for row in sort_rows(report["proposals"]) if row["status"] in ("PROPUESTO", "REVISAR", "CONFLICTO")]
+    actionable = [row for row in sort_rows(report["proposals"]) if row["status"] in ("PROPUESTO", "NORMALIZAR", "REVISAR", "CONFLICTO")]
     if actionable:
         lines.append("Celdas a completar:")
         for row in actionable:
@@ -501,7 +558,7 @@ def render_markdown(report: dict[str, Any]) -> str:
             f"de {logs['missing']} faltantes"
         )
     lines.append("")
-    actionable = [row for row in sort_rows(report["proposals"]) if row["status"] in ("PROPUESTO", "REVISAR", "CONFLICTO")]
+    actionable = [row for row in sort_rows(report["proposals"]) if row["status"] in ("PROPUESTO", "NORMALIZAR", "REVISAR", "CONFLICTO")]
     if actionable:
         lines += [
             "| Estado | Celda | Hanchan | Fila | Escritura | Valor a pegar |",
@@ -569,6 +626,8 @@ def build_parser() -> argparse.ArgumentParser:
                         help="Escribe en el Google Sheet las celdas PROPUESTO (requiere cuenta de servicio)")
     parser.add_argument("--write-revisar", action="store_true",
                         help="Con --write, también pega las celdas REVISAR (asientos sin identidad en el paipu)")
+    parser.add_argument("--write-marcas", action="store_true",
+                        help="Con --write, corrige la marca NOT de suplente en celdas ya escritas (NORMALIZAR)")
     parser.add_argument("--credentials", type=Path,
                         help=f"JSON de la cuenta de servicio de Google (por defecto {CREDENTIALS_ENV})")
     parser.add_argument("--fetch-logs", action="store_true",
@@ -640,7 +699,7 @@ def main() -> int:
         report = build_report(tables, sheets, rosters, histories, slots, args.logs_dir, avisos)
         if args.fetch_logs:
             report["logs"] = log_report(candidates, args.logs_dir, args.max_logs, fetched, fetch_error)
-        rows = writable_rows(report, args.write_revisar)
+        rows = writable_rows(report, args.write_revisar, args.write_marcas)
         report["write"] = planned_writes(rows) if not args.write else None
 
         write_failed = False

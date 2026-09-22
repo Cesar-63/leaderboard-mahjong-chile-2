@@ -1,5 +1,7 @@
+import re
 import tempfile
 import unittest
+from importlib import import_module
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -271,3 +273,49 @@ class LogsFaltantesTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class WorkflowDePaipusTests(unittest.TestCase):
+    """El workflow y los dos scripts tienen que hablar el mismo idioma.
+
+    Los dos pasos que corren scripts arman su `ARGS` con bloques de shell
+    idénticos, así que una bandera es fácil de agregar en el paso equivocado y
+    el error no aparece hasta que el cron falla: `--write-marcas` es de
+    `fill_game_history.py` y estuvo una corrida en el de
+    `fill_calendar_paipus.py`, que salió con «unrecognized arguments».
+    """
+
+    WORKFLOW = Path(__file__).resolve().parents[1] / ".github" / "workflows" / "calendar-paipus.yml"
+
+    def pasos(self):
+        """Cada `python scripts/X.py` del workflow con las banderas que recibe.
+
+        Se corta en el `- name:` anterior para no arrastrar el `ARGS` del paso
+        de más arriba, que es otro bloque y otro script.
+        """
+        texto = self.WORKFLOW.read_text(encoding="utf-8")
+        for script in re.findall(r"python scripts/(\S+\.py)", texto):
+            bloque = texto[:texto.index(f"python scripts/{script}")]
+            inicio = bloque.rindex("- name:")
+            yield script, re.findall(r"--[\w-]+", " ".join(
+                re.findall(r'ARGS="\$ARGS ([^"]+)"', bloque[inicio:])
+            ))
+
+    def test_cada_paso_pasa_solo_banderas_que_su_script_acepta(self):
+        pasos = list(self.pasos())
+        self.assertTrue(pasos, "el workflow debería correr al menos un script")
+        for script, flags in pasos:
+            modulo = import_module(f"scripts.{script[:-3]}")
+            acepta = {
+                opcion
+                for accion in modulo.build_parser()._actions
+                for opcion in accion.option_strings
+            }
+            for flag in flags:
+                with self.subTest(script=script, flag=flag):
+                    self.assertIn(flag, acepta, f"{script} no acepta {flag}")
+
+    def test_la_normalizacion_de_marcas_corre_en_el_paso_del_game_history(self):
+        por_script = dict(self.pasos())
+        self.assertIn("--write-marcas", por_script["fill_game_history.py"])
+        self.assertNotIn("--write-marcas", por_script["fill_calendar_paipus.py"])
