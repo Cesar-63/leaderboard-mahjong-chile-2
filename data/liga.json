@@ -75189,8 +75189,8 @@
         {
           "n": 7,
           "code": "S7",
-          "date": "Por definir",
-          "weekday": "—",
+          "date": "27 sep",
+          "weekday": "dom",
           "div": "A",
           "matches": 0,
           "status": "pending"
@@ -148354,8 +148354,8 @@
         {
           "n": 7,
           "code": "S7",
-          "date": "26 sep",
-          "weekday": "sáb",
+          "date": "22 sep",
+          "weekday": "mar",
           "div": "B",
           "matches": 0,
           "status": "pending"
@@ -161207,13 +161207,13 @@
       "status": "highlight"
     },
     {
-      "date": "Por definir",
-      "day": "—",
+      "date": "27 sep",
+      "day": "dom",
       "round": "Sesión 7",
       "session": 7,
       "table": 5,
       "mesa": "División A — Mesa 5",
-      "time": "Por definir",
+      "time": "21:00",
       "div": "A",
       "players": [
         {
@@ -161381,13 +161381,13 @@
       "status": "highlight"
     },
     {
-      "date": "Por definir",
-      "day": "—",
+      "date": "22 sep",
+      "day": "mar",
       "round": "Sesión 7",
       "session": 7,
       "table": 5,
       "mesa": "División B — Mesa 5",
-      "time": "Por definir",
+      "time": "22:00",
       "div": "B",
       "players": [
         {
@@ -194275,8 +194275,8 @@
     "hanchanTotal": 144,
     "nextSession": {
       "code": "S7",
-      "date": "26 sep",
-      "day": "sáb"
+      "date": "22 sep",
+      "day": "mar"
     },
     "rules": {
       "A": {
