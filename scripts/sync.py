@@ -637,6 +637,9 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
         for match in divisions[division]["matches"]
     } | {fixture["session"] for fixture in fixtures if fixture["dateISO"]}
     current_session = max(evidenced_sessions, default=min(sessions_played + 1, int(config["sessionsTotal"])))
+    # El organizador puede confirmar el inicio antes de que haya fechas o
+    # resultados cargados en la planilla.
+    current_session = max(current_session, int(config.get("currentSessionMinimum", 1)))
     current_session = min(current_session, int(config["sessionsTotal"]))
     next_fixture = min(
         (f for f in fixtures if f["session"] == current_session and f["dateISO"]),
@@ -659,7 +662,8 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
     player_nat = {p["name"].lower(): p["nat"] for p in all_players}
     calendar = []
     for fixture in fixtures:
-        if fixture["session"] < current_session:
+        fixture_session = divisions[fixture["division"]]["sessions"][fixture["session"] - 1]
+        if fixture["session"] < current_session and fixture_session["status"] == "played":
             continue
         calendar.append({
             "date": fixture["date"], "day": fixture["weekday"],
