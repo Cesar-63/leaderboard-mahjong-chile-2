@@ -21,9 +21,9 @@ const PLAYOFF_FORMAT_FALLBACK = {
   qualifiersPerDivision: 8,
   qualifiers: 16,
   rounds: [
-    { id: 'quarters', tables: 4, hanchan: 2, advancePerTable: 2, seats: 16 },
-    { id: 'semis', tables: 2, hanchan: 2, advancePerTable: 2, seats: 8 },
-    { id: 'final', tables: 1, hanchan: 3, advancePerTable: 1, seats: 4 },
+    { id: 'quarters', tables: 4, hanchan: 2, advancePerTable: 2, rulesByTable: ['A', 'A', 'B', 'B'], seats: 16 },
+    { id: 'semis', tables: 2, hanchan: 2, advancePerTable: 2, rulesByTable: ['A', 'B'], seats: 8 },
+    { id: 'final', tables: 1, hanchan: 3, advancePerTable: 1, rulesByTable: ['A'], seats: 4 },
   ],
 };
 
@@ -32,7 +32,11 @@ const PLAYOFF_ROUND_JP = { quarters: '準々決勝', semis: '準決勝', final: 
 function playoffFormat(data) {
   const raw = (data.league && data.league.playoffs) || PLAYOFF_FORMAT_FALLBACK;
   const source = raw.rounds && raw.rounds.length ? raw.rounds : PLAYOFF_FORMAT_FALLBACK.rounds;
-  const rounds = source.map(round => ({ ...round, seats: round.seats || round.tables * 4 }));
+  const rounds = source.map(round => ({
+    ...round,
+    seats: round.seats || round.tables * 4,
+    rulesByTable: round.rulesByTable || PLAYOFF_FORMAT_FALLBACK.rounds.find(item => item.id === round.id)?.rulesByTable || [],
+  }));
   const qualifiers = raw.qualifiers || rounds[0].seats;
   return {
     qualifiers,
@@ -51,6 +55,22 @@ function playoffRoundShort(id) {
   const key = 'playoffs_short_' + id;
   const label = tr(key);
   return label === key ? playoffRoundLabel(id) : label;
+}
+
+function playoffRuleLabel(round, tableIndex) {
+  return tr('playoffs_rules_division', { div: round.rulesByTable[tableIndex] });
+}
+
+function PlayoffRulesSummary({ rounds, rules }) {
+  return <div className="playoff-rules-summary">
+    <p>{tr('playoffs_rules_intro')}</p>
+    <div className="playoff-rules-grid">{rounds.map(round => <div className="playoff-rules-round" key={round.id}>
+      <strong>{playoffRoundLabel(round.id)}</strong>
+      <span>{round.hanchan} {tr('hanchan')} · {round.id === 'final' ? tr('playoffs_champion') : tr('playoffs_advance_per_table', { n: round.advancePerTable })}</span>
+      <div>{round.rulesByTable.map((division, index) => <span className={`playoff-rule-chip div-${division}`} key={index}>{tr('playoffs_mesa', { n: index + 1 })} · {playoffRuleLabel(round, index)}</span>)}</div>
+    </div>)}</div>
+    {rules && <small>{['A', 'B'].map(division => `${playoffRuleLabel({ rulesByTable: [division] }, 0)}: ${rules[division].uma.map(value => value > 0 ? `+${value}` : String(value)).join(' / ')}`).join(' · ')}</small>}
+  </div>;
 }
 
 // Sesiones jugadas enteras en las DOS divisiones: el cuadro las mezcla, así
@@ -164,6 +184,7 @@ function PlayoffTable({ round, number, seats, isFinal, innerRef, onSelectPlayer 
         <b>{tr('playoffs_mesa', { n: number })}</b>
         <span>{round.hanchan} 半荘</span>
       </div>
+      <span className={`playoff-rule-chip div-${round.rulesByTable[number - 1]}`}>{playoffRuleLabel(round, number - 1)}</span>
       <ul className="pt-seats">
         {[0, 1, 2, 3].map(index => (
           <PlayoffSeat key={index} seat={seats && seats[index]} onSelect={onSelectPlayer} />
@@ -197,7 +218,7 @@ function PlayoffRound({ round, next, seatsByTable, registerTable, onSelectPlayer
       </div>
       <footer className="playoff-round-foot">
         {next
-          ? tr('playoffs_advance_to', { n: advancing, round: playoffRoundLabel(next.id) })
+          ? <React.Fragment>{tr('playoffs_advance_per_table', { n: round.advancePerTable })} · {tr('playoffs_advance_to', { n: advancing, round: playoffRoundLabel(next.id) })}</React.Fragment>
           : tr('playoffs_champion')}
       </footer>
     </section>
@@ -403,6 +424,8 @@ function PlayoffsView({ data, onSelectPlayer }) {
           <span>{tr('playoffs_mixed_note')}</span>
         </div>
         <p className="playoff-format-note">{seeding ? tr('playoffs_seeding_note') : tr('playoffs_format_note')}</p>
+        <p className="playoff-advance-note">{tr('playoffs_advance_rule')}</p>
+        <PlayoffRulesSummary rounds={rounds} rules={data.league.rules} />
         <PlayoffBracket rounds={rounds} seeding={seeding} onSelectPlayer={onSelectPlayer} />
         <p className="playoff-empty-note">{tr('playoffs_no_results')}</p>
       </section>
@@ -426,4 +449,4 @@ function PlayoffsView({ data, onSelectPlayer }) {
   );
 }
 
-Object.assign(window, { PlayoffsView, playoffFormat, playoffSeasonProgress, playoffSeeding });
+Object.assign(window, { PlayoffsView, PlayoffRulesSummary, playoffFormat, playoffSeasonProgress, playoffSeeding, playoffFeederSeats, playoffRoundLabel, playoffRuleLabel });

@@ -3,6 +3,7 @@
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1cQcqJkHi2tb2FrHr3n1fD7iKCTd-unMwTIVLt59nqeM/edit?usp=sharing",
   "seasonLabel": "Temporada 2026",
   "sessionsTotal": 7,
+  "currentSessionMinimum": 7,
   "minimumAdvancedStatsHands": 8,
   "absencePenaltyPerHanchan": -30,
   "playoffs": {
@@ -13,19 +14,22 @@
         "id": "quarters",
         "tables": 4,
         "hanchan": 2,
-        "advancePerTable": 2
+        "advancePerTable": 2,
+        "rulesByTable": ["A", "A", "B", "B"]
       },
       {
         "id": "semis",
         "tables": 2,
         "hanchan": 2,
-        "advancePerTable": 2
+        "advancePerTable": 2,
+        "rulesByTable": ["A", "B"]
       },
       {
         "id": "final",
         "tables": 1,
         "hanchan": 3,
-        "advancePerTable": 1
+        "advancePerTable": 1,
+        "rulesByTable": ["A"]
       }
     ]
   },

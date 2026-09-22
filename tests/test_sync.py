@@ -594,6 +594,20 @@ def _history(key, session, table, game, names, scores=(45000, 38500, 32000, 4500
 
 
 class SesionActualTests(unittest.TestCase):
+    def test_sesion_confirmada_sin_fecha_conserva_fixture_incompleto(self):
+        config = {**_division_config(), "currentSessionMinimum": 7}
+        fixtures = [
+            _fixture("B", 6, 1, ["Bodoque", "Mon_96", "Meme000", "Twining1999"], date="Por definir"),
+            _fixture("A", 7, 1, ["Bodoque", "Mon_96", "Meme000", "Twining1999"], date="Por definir"),
+        ]
+        for fixture in fixtures:
+            fixture["dateISO"] = None
+        data, _ = build_public_data(config, _rosters(), fixtures, [], {}, {})
+        self.assertEqual(data["league"]["currentSession"], 7)
+        self.assertEqual(data["league"]["nextSession"]["code"], "S7")
+        self.assertEqual([(item["session"], item["status"]) for item in data["calendar"]],
+                         [(6, "scheduled"), (7, "highlight")])
+
     def test_una_fecha_agendada_inicia_la_sesion(self):
         fixtures = [
             _fixture("B", 6, 4, ["X", "Y", "Z", "W"], date="09 sep"),
@@ -896,12 +910,21 @@ class EliminatoriasTests(unittest.TestCase):
         self.assertEqual(fmt["qualifiersPerDivision"] * len(DIVISIONS), fmt["qualifiers"])
         self.assertEqual([r["id"] for r in fmt["rounds"]], ["quarters", "semis", "final"])
         self.assertEqual([r["hanchan"] for r in fmt["rounds"]], [2, 2, 3])
+        self.assertEqual([r["advancePerTable"] for r in fmt["rounds"]], [2, 2, 1])
+        self.assertEqual([r["rulesByTable"] for r in fmt["rounds"]], [["A", "A", "B", "B"], ["A", "B"], ["A"]])
         for previa, actual in zip(fmt["rounds"], fmt["rounds"][1:]):
             self.assertEqual(previa["tables"] * previa["advancePerTable"], actual["seats"])
         self.assertEqual(fmt["rounds"][-1]["tables"], 1)
 
     def test_sin_bloque_de_eliminatorias_cae_al_default(self):
         self.assertEqual(playoff_format({}), playoff_format({"playoffs": PLAYOFF_FORMAT_DEFAULT}))
+
+    def test_cada_mesa_tiene_una_regla_de_division_valida(self):
+        for rules in (["A", "B"], ["A", "A", "B", "C"]):
+            rounds = [dict(item) for item in PLAYOFF_FORMAT_DEFAULT["rounds"]]
+            rounds[0] = {**rounds[0], "rulesByTable": rules}
+            with self.assertRaises(SyncError):
+                playoff_format({"playoffs": {**PLAYOFF_FORMAT_DEFAULT, "rounds": rounds}})
 
     def test_un_cuadro_que_no_cierra_es_error_de_configuracion(self):
         # De 4 mesas avanzan 8, pero la siguiente ronda sólo tiene 4 asientos.

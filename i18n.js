@@ -289,6 +289,15 @@ window.I18N = {
     playoffs_no_results: 'Todavía no se juega ninguna mesa de eliminatorias.',
     playoffs_not_enough: 'La división todavía no tiene {n} jugadores en la tabla.',
     playoffs_uma_note: 'Se juega con el uma de la división: {uma}.',
+    playoffs_rules_division: 'Reglas División {div}',
+    playoffs_rules_intro: 'Reglas de sala y uma por mesa. Las mesas con reglas A usan la configuración de División A; las de reglas B usan la de División B.',
+    playoffs_advance_rule: 'Avanzan los 2 mejores de cada mesa tras sumar sus hanchan; no se comparan los puntajes entre mesas. En la final, el 1.º de la mesa es campeón.',
+    playoffs_calendar_phases: 'Etapas del calendario',
+    playoffs_calendar_unscheduled: 'Las fechas y horas de estas mesas todavía no están publicadas.',
+    playoffs_calendar_date_pending: 'Fecha y hora por definir',
+    playoffs_calendar_open: 'Ver calendario',
+    playoffs_history_pending_title: '{round} · sin resultados',
+    playoffs_history_pending: 'Los hanchan de esta ronda aparecerán aquí cuando se publiquen los resultados oficiales.',
   },
 
   en: {
@@ -572,6 +581,15 @@ window.I18N = {
     playoffs_no_results: 'No playoff table has been played yet.',
     playoffs_not_enough: 'The division does not have {n} players in the table yet.',
     playoffs_uma_note: 'Played with the division uma: {uma}.',
+    playoffs_rules_division: 'Division {div} rules',
+    playoffs_rules_intro: 'Room rules and uma by table. Tables marked A use Division A settings; tables marked B use Division B settings.',
+    playoffs_advance_rule: 'The top 2 players at each table advance after their hanchan totals are added; scores are not compared across tables. The final table winner is the champion.',
+    playoffs_calendar_phases: 'Calendar stages',
+    playoffs_calendar_unscheduled: 'Dates and times for these tables have not been published.',
+    playoffs_calendar_date_pending: 'Date and time to be confirmed',
+    playoffs_calendar_open: 'View calendar',
+    playoffs_history_pending_title: '{round} · no results yet',
+    playoffs_history_pending: 'Hanchan from this round will appear here when official results are published.',
   },
 
   pt: {
@@ -855,6 +873,15 @@ window.I18N = {
     playoffs_no_results: 'Nenhuma mesa de eliminatórias foi jogada ainda.',
     playoffs_not_enough: 'A divisão ainda não tem {n} jogadores na tabela.',
     playoffs_uma_note: 'Joga-se com o uma da divisão: {uma}.',
+    playoffs_rules_division: 'Regras Divisão {div}',
+    playoffs_rules_intro: 'Regras da sala e uma por mesa. Mesas A usam a configuração da Divisão A; mesas B usam a da Divisão B.',
+    playoffs_advance_rule: 'Avançam os 2 melhores de cada mesa após somar seus hanchan; pontuações de mesas diferentes não são comparadas. Na final, o 1.º da mesa é campeão.',
+    playoffs_calendar_phases: 'Etapas do calendário',
+    playoffs_calendar_unscheduled: 'Datas e horários destas mesas ainda não foram publicados.',
+    playoffs_calendar_date_pending: 'Data e horário a definir',
+    playoffs_calendar_open: 'Ver calendário',
+    playoffs_history_pending_title: '{round} · sem resultados',
+    playoffs_history_pending: 'Os hanchan desta rodada aparecerão aqui quando os resultados oficiais forem publicados.',
   },
 };
 

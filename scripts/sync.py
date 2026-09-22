@@ -307,9 +307,9 @@ PLAYOFF_FORMAT_DEFAULT: dict[str, Any] = {
     "qualifiersPerDivision": 8,
     "qualifiers": 16,
     "rounds": [
-        {"id": "quarters", "tables": 4, "hanchan": 2, "advancePerTable": 2},
-        {"id": "semis", "tables": 2, "hanchan": 2, "advancePerTable": 2},
-        {"id": "final", "tables": 1, "hanchan": 3, "advancePerTable": 1},
+        {"id": "quarters", "tables": 4, "hanchan": 2, "advancePerTable": 2, "rulesByTable": ["A", "A", "B", "B"]},
+        {"id": "semis", "tables": 2, "hanchan": 2, "advancePerTable": 2, "rulesByTable": ["A", "B"]},
+        {"id": "final", "tables": 1, "hanchan": 3, "advancePerTable": 1, "rulesByTable": ["A"]},
     ],
 }
 
@@ -337,6 +337,13 @@ def playoff_format(config: dict[str, Any]) -> dict[str, Any]:
                 raise SyncError(f"Eliminatorias: ronda sin '{field}' en la configuración")
         if int(round_item["advancePerTable"]) > 4:
             raise SyncError(f"Eliminatorias: la ronda {round_item['id']} hace avanzar más de 4 por mesa")
+        default_round = next((item for item in PLAYOFF_FORMAT_DEFAULT["rounds"] if item["id"] == round_item["id"]), None)
+        rules_by_table = round_item.get("rulesByTable", default_round["rulesByTable"] if default_round else None)
+        if not isinstance(rules_by_table, list) or len(rules_by_table) != int(round_item["tables"]):
+            raise SyncError(f"Eliminatorias: la ronda {round_item['id']} necesita una regla por mesa")
+        if any(division not in DIVISIONS for division in rules_by_table):
+            raise SyncError(f"Eliminatorias: la ronda {round_item['id']} usa reglas de división desconocida")
+        round_item["rulesByTable"] = rules_by_table
     qualifiers = int(fmt.get("qualifiers") or int(rounds[0]["tables"]) * 4)
     if qualifiers != int(rounds[0]["tables"]) * 4:
         raise SyncError(f"Eliminatorias: {qualifiers} clasificados no llenan {rounds[0]['tables']} mesas de 4")
@@ -359,6 +366,7 @@ def playoff_format(config: dict[str, Any]) -> dict[str, Any]:
                 "tables": int(round_item["tables"]),
                 "hanchan": int(round_item["hanchan"]),
                 "advancePerTable": int(round_item["advancePerTable"]),
+                "rulesByTable": round_item["rulesByTable"],
                 "seats": int(round_item["tables"]) * 4,
             }
             for round_item in rounds
@@ -674,6 +682,7 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
         for match in divisions[division]["matches"]
     } | {fixture["session"] for fixture in fixtures if fixture["dateISO"]}
     current_session = max(evidenced_sessions, default=min(sessions_played + 1, int(config["sessionsTotal"])))
+    current_session = max(current_session, int(config.get("currentSessionMinimum", 1)))
     current_session = min(current_session, int(config["sessionsTotal"]))
     next_fixture = min(
         (f for f in fixtures if f["session"] == current_session and f["dateISO"]),
@@ -696,7 +705,8 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
     player_nat = {p["name"].lower(): p["nat"] for p in all_players}
     calendar = []
     for fixture in fixtures:
-        if fixture["session"] < current_session:
+        fixture_session = divisions[fixture["division"]]["sessions"][fixture["session"] - 1]
+        if fixture["session"] < current_session and fixture_session["status"] == "played":
             continue
         calendar.append({
             "date": fixture["date"], "day": fixture["weekday"],

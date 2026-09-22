@@ -35,7 +35,9 @@ mahjong, jugada en sala de torneo de MahjongSoul. Estático, sin backend, sin au
   scopeada por división (no entra en `DIV_SCOPED`). Se juegan en mesas de cuatro
   y cada ronda llena sus mesas con los que avanzaron de la anterior: cuartos
   (4 mesas) y semifinales (2 mesas) a **2 hanchan**, final (1 mesa) a **3**;
-  avanzan los dos primeros de cada mesa. El formato vive en `sync-config.json`
+  avanzan los dos primeros de cada mesa por la suma de sus hanchan, sin
+  comparar puntajes entre mesas. Cuartos M1-M2 usan reglas A y M3-M4 reglas B;
+  semifinales M1 usa A y M2 usa B; la final usa A. El formato vive en `sync-config.json`
   bajo `playoffs`, con `qualifiersPerDivision` (el corte que **pinta la zona de
   eliminatorias en la tabla**) y `qualifiers` (los que llenan los cuartos):
   cambiar el corte ahí lo cambia en las dos partes. `playoff_format` en
@@ -47,6 +49,12 @@ mahjong, jugada en sala de torneo de MahjongSoul. Estático, sin backend, sin au
   así que cada división muestra su grupo, su corte y su burbuja. Mientras quede
   una sesión por jugar en cualquiera de las dos, la vista los muestra como
   proyección, no como cuadro cerrado.
+- **Calendario e historial de eliminatorias:** el calendario muestra las siete
+  mesas agrupadas por ronda con reglas y hanchan de cada una. Las fechas siguen
+  pendientes hasta que haya un calendario oficial; no se generan horarios
+  ficticios ni se ofrece la coordinación de sesiones regulares para estas
+  mesas. El historial ofrece filtros por ronda y sólo muestra resultados
+  cuando exista `playoffMatches` oficial en el payload.
 - **La siembra de cuartos es cruzada y determinista, no un sorteo.** Una
   división se reparte de arriba hacia abajo y la otra al revés, dos de cada una
   por mesa: la mesa 1 junta a A1 y A2 con B7 y B8, la 2 a A3 y A4 con B5 y B6,

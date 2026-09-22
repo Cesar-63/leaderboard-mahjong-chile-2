@@ -155735,180 +155735,6 @@
   },
   "calendar": [
     {
-      "date": "11 sep",
-      "day": "vie",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 1,
-      "mesa": "División A — Mesa 1",
-      "time": "20:00",
-      "div": "A",
-      "players": [
-        {
-          "name": "asmirnov",
-          "nat": "UY"
-        },
-        {
-          "name": "Sh1rome",
-          "nat": "UY"
-        },
-        {
-          "name": "Chubi!",
-          "nat": "CL"
-        },
-        {
-          "name": "Bodoque",
-          "nat": "CL"
-        }
-      ],
-      "status": "highlight"
-    },
-    {
-      "date": "06 sep",
-      "day": "dom",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 2,
-      "mesa": "División A — Mesa 2",
-      "time": "21:00",
-      "div": "A",
-      "players": [
-        {
-          "name": "KaijuHead",
-          "nat": "CL"
-        },
-        {
-          "name": "UnChano",
-          "nat": "MX"
-        },
-        {
-          "name": "Xuxe",
-          "nat": "CL"
-        },
-        {
-          "name": "SentryPeru",
-          "nat": "PE"
-        }
-      ],
-      "status": "highlight"
-    },
-    {
-      "date": "11 sep",
-      "day": "vie",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 3,
-      "mesa": "División A — Mesa 3",
-      "time": "20:30",
-      "div": "A",
-      "players": [
-        {
-          "name": "KillerHUD",
-          "nat": "CL"
-        },
-        {
-          "name": "AuroraShine",
-          "nat": "BR"
-        },
-        {
-          "name": "Twining1999",
-          "nat": "CL"
-        },
-        {
-          "name": "YotsugiNagi",
-          "nat": "CL"
-        }
-      ],
-      "status": "highlight"
-    },
-    {
-      "date": "07 sep",
-      "day": "lun",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 4,
-      "mesa": "División A — Mesa 4",
-      "time": "22:00",
-      "div": "A",
-      "players": [
-        {
-          "name": "Tobippi",
-          "nat": "CL"
-        },
-        {
-          "name": "Mon_96",
-          "nat": "CL"
-        },
-        {
-          "name": "MasterFofo",
-          "nat": "AR"
-        },
-        {
-          "name": "Uznaiker",
-          "nat": "MX"
-        }
-      ],
-      "status": "highlight"
-    },
-    {
-      "date": "13 sep",
-      "day": "dom",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 5,
-      "mesa": "División A — Mesa 5",
-      "time": "20:00",
-      "div": "A",
-      "players": [
-        {
-          "name": "ikanajin",
-          "nat": "CL"
-        },
-        {
-          "name": "FS525",
-          "nat": "AR"
-        },
-        {
-          "name": "Haruzen",
-          "nat": "MX"
-        },
-        {
-          "name": "DiosioわTensai",
-          "nat": "MX"
-        }
-      ],
-      "status": "highlight"
-    },
-    {
-      "date": "10 sep",
-      "day": "jue",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 6,
-      "mesa": "División A — Mesa 6",
-      "time": "23:00",
-      "div": "A",
-      "players": [
-        {
-          "name": "Kychiel",
-          "nat": "AR"
-        },
-        {
-          "name": "furanchizuko2",
-          "nat": "CL"
-        },
-        {
-          "name": "Meme000",
-          "nat": "UY"
-        },
-        {
-          "name": "caballo",
-          "nat": "CL"
-        }
-      ],
-      "status": "highlight"
-    },
-    {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 7",
@@ -155935,7 +155761,7 @@
           "nat": "OT"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -155964,7 +155790,7 @@
           "nat": "OT"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -155993,7 +155819,7 @@
           "nat": "OT"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -156022,7 +155848,7 @@
           "nat": "OT"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -156051,7 +155877,7 @@
           "nat": "OT"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -156080,7 +155906,7 @@
           "nat": "OT"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -156109,7 +155935,7 @@
           "nat": "PE"
         }
       ],
-      "status": "highlight"
+      "status": "scheduled"
     },
     {
       "date": "13 sep",
@@ -156138,7 +155964,7 @@
           "nat": "CL"
         }
       ],
-      "status": "highlight"
+      "status": "scheduled"
     },
     {
       "date": "Por definir",
@@ -156167,7 +155993,7 @@
           "nat": "MX"
         }
       ],
-      "status": "highlight"
+      "status": "scheduled"
     },
     {
       "date": "09 sep",
@@ -156196,7 +156022,7 @@
           "nat": "CL"
         }
       ],
-      "status": "highlight"
+      "status": "scheduled"
     },
     {
       "date": "12 sep",
@@ -156225,7 +156051,7 @@
           "nat": "UY"
         }
       ],
-      "status": "highlight"
+      "status": "scheduled"
     },
     {
       "date": "15 sep",
@@ -156254,7 +156080,7 @@
           "nat": "CL"
         }
       ],
-      "status": "highlight"
+      "status": "scheduled"
     },
     {
       "date": "Por definir",
@@ -156283,7 +156109,7 @@
           "nat": "OT"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -156312,7 +156138,7 @@
           "nat": "OT"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -156341,7 +156167,7 @@
           "nat": "OT"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -156370,7 +156196,7 @@
           "nat": "OT"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -156399,7 +156225,7 @@
           "nat": "OT"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -156428,7 +156254,7 @@
           "nat": "OT"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     }
   ],
   "yakuHands": {
@@ -188030,7 +187856,7 @@
   },
   "league": {
     "season": "Temporada 2026",
-    "currentSession": 6,
+    "currentSession": 7,
     "sessionsPlayed": 5,
     "sessionsTotal": 7,
     "hanchanPerSession": 2,
@@ -188038,9 +187864,9 @@
     "hanchanPerDiv": 72,
     "hanchanTotal": 138,
     "nextSession": {
-      "code": "S6",
-      "date": "06 sep",
-      "day": "dom"
+      "code": "S7",
+      "date": "Por definir",
+      "day": "—"
     },
     "playoffs": {
       "qualifiers": 16,
@@ -188051,6 +187877,12 @@
           "tables": 4,
           "hanchan": 2,
           "advancePerTable": 2,
+          "rulesByTable": [
+            "A",
+            "A",
+            "B",
+            "B"
+          ],
           "seats": 16
         },
         {
@@ -188058,6 +187890,10 @@
           "tables": 2,
           "hanchan": 2,
           "advancePerTable": 2,
+          "rulesByTable": [
+            "A",
+            "B"
+          ],
           "seats": 8
         },
         {
@@ -188065,6 +187901,9 @@
           "tables": 1,
           "hanchan": 3,
           "advancePerTable": 1,
+          "rulesByTable": [
+            "A"
+          ],
           "seats": 4
         }
       ]
