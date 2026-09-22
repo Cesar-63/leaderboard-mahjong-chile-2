@@ -136,6 +136,45 @@ function playoffFeederSeats(rounds, roundIndex, table) {
   return seats;
 }
 
+function playoffBracketSeats(data, rounds, seeding) {
+  const byPlayer = new Map((data.allPlayers || []).map(player => [player.id, player]));
+  const result = [seeding];
+  for (let roundIndex = 0; roundIndex < rounds.length - 1; roundIndex++) {
+    const round = rounds[roundIndex];
+    const qualified = [];
+    for (let table = 0; table < round.tables; table++) {
+      const matches = (data.playoffMatches || []).filter(match =>
+        match.playoffRound === round.id && match.table === table + 1);
+      if (matches.length < round.hanchan) {
+        qualified.push(null);
+        continue;
+      }
+      const totals = new Map();
+      matches.forEach(match => (match.players || []).forEach(player => {
+        const key = player.id || player.name;
+        const current = totals.get(key) || { player: byPlayer.get(player.id) || player, points: 0 };
+        current.points += Number(player.delta) || 0;
+        totals.set(key, current);
+      }));
+      qualified.push([...totals.values()].sort((a, b) => b.points - a.points)
+        .slice(0, round.advancePerTable).map(item => ({ player: item.player, code: `${playoffRoundShort(round.id)} M${table + 1}` })));
+    }
+    const next = rounds[roundIndex + 1];
+    const ratio = round.tables / next.tables;
+    result.push(Array.from({ length: next.tables }, (_, table) => {
+      const seats = [];
+      for (let offset = 0; offset < ratio; offset++) {
+        const source = table * ratio + offset;
+        if (qualified[source]) seats.push(...qualified[source]);
+        else seats.push(...playoffFeederSeats(rounds, roundIndex + 1, table)
+          .slice(offset * round.advancePerTable, (offset + 1) * round.advancePerTable));
+      }
+      return seats;
+    }));
+  }
+  return result;
+}
+
 function PlayoffTrophy() {
   return (
     <svg className="playoff-cup" viewBox="0 0 64 64" width="58" height="58" aria-hidden="true">
@@ -230,7 +269,7 @@ function PlayoffRound({ round, next, seatsByTable, registerTable, onSelectPlayer
 // mesas no están en una grilla regular —cada ronda tiene su propia cabecera y
 // su propia cantidad de mesas— y las alturas cambian con el idioma, el tema y
 // el ancho de la ventana.
-function PlayoffBracket({ rounds, seeding, onSelectPlayer }) {
+function PlayoffBracket({ rounds, seatsByRound, onSelectPlayer }) {
   const wrapRef = React.useRef(null);
   const trophyRef = React.useRef(null);
   const tables = React.useRef({});
@@ -275,7 +314,7 @@ function PlayoffBracket({ rounds, seeding, onSelectPlayer }) {
     observer.observe(wrap);
     Object.values(tables.current).forEach(node => node && observer.observe(node));
     return () => observer.disconnect();
-  }, [rounds, seeding]);
+  }, [rounds, seatsByRound]);
 
   return (
     <div className="playoff-bracket" ref={wrapRef}>
@@ -289,9 +328,7 @@ function PlayoffBracket({ rounds, seeding, onSelectPlayer }) {
       {rounds.map((round, index) => (
         <React.Fragment key={round.id}>
           <PlayoffRound round={round} next={rounds[index + 1]} onSelectPlayer={onSelectPlayer}
-            seatsByTable={index === 0
-              ? seeding
-              : Array.from({ length: round.tables }, (_, table) => playoffFeederSeats(rounds, index, table))}
+            seatsByTable={seatsByRound[index]}
             registerTable={(table, node) => register(index, table, node)} />
           {index < rounds.length - 1 && (
             <div className="playoff-arrow" aria-hidden="true">
@@ -387,6 +424,7 @@ function PlayoffsView({ data, onSelectPlayer }) {
   const finalRound = rounds[rounds.length - 1];
   const totalTables = rounds.reduce((total, round) => total + round.tables, 0);
   const seeding = React.useMemo(() => playoffSeeding(data, format), [data, format.perDivision, rounds]);
+  const seatsByRound = React.useMemo(() => playoffBracketSeats(data, rounds, seeding), [data, rounds, seeding]);
 
   return (
     <div className="tab-panel playoffs-panel">
@@ -426,8 +464,8 @@ function PlayoffsView({ data, onSelectPlayer }) {
         <p className="playoff-format-note">{seeding ? tr('playoffs_seeding_note') : tr('playoffs_format_note')}</p>
         <p className="playoff-advance-note">{tr('playoffs_advance_rule')}</p>
         <PlayoffRulesSummary rounds={rounds} rules={data.league.rules} />
-        <PlayoffBracket rounds={rounds} seeding={seeding} onSelectPlayer={onSelectPlayer} />
-        <p className="playoff-empty-note">{tr('playoffs_no_results')}</p>
+        <PlayoffBracket rounds={rounds} seatsByRound={seatsByRound} onSelectPlayer={onSelectPlayer} />
+        {!(data.playoffMatches || []).length && <p className="playoff-empty-note">{tr('playoffs_no_results')}</p>}
       </section>
 
       <section className="playoff-qualified">
@@ -449,4 +487,4 @@ function PlayoffsView({ data, onSelectPlayer }) {
   );
 }
 
-Object.assign(window, { PlayoffsView, PlayoffRulesSummary, playoffFormat, playoffSeasonProgress, playoffSeeding, playoffFeederSeats, playoffRoundLabel, playoffRuleLabel });
+Object.assign(window, { PlayoffsView, PlayoffRulesSummary, playoffFormat, playoffSeasonProgress, playoffSeeding, playoffFeederSeats, playoffBracketSeats, playoffRoundLabel, playoffRuleLabel });

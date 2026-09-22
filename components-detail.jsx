@@ -1243,17 +1243,21 @@ function PlayoffCalendarPhase({ data, rounds, phase, onChange }) {
   const roundIndex = rounds.findIndex(round => round.id === phase);
   const round = rounds[roundIndex];
   const seeding = roundIndex === 0 ? playoffSeeding(data, playoffFormat(data)) : null;
+  const seatsByRound = playoffBracketSeats(data, rounds, playoffSeeding(data, playoffFormat(data)));
   const progress = playoffSeasonProgress(data);
+  const phaseHasSchedule = (data.playoffSchedule || []).some(item => item.playoffRound === round.id && item.dateISO);
   return <div className="tab-panel playoff-calendar-panel">
     <div className="section-head"><div className="h-left"><span className="num">05 / {tr('playoffs_kicker')}</span><h1>{tr('calendario_title')}</h1><span className="jp">予定</span></div><div className="section-meta">{tr('playoffs_mixed_note')}</div></div>
     <CalendarPhaseTabs rounds={rounds} phase={phase} onChange={onChange} />
-    <section className="playoff-calendar-intro"><span className="block-label">{tr('playoffs_calendar_phases')}</span><h2>{playoffRoundLabel(round.id)}</h2><p>{round.tables > 1 ? tr('playoffs_tables_n', { n: round.tables }) : tr('playoffs_table_one')} · {tr('playoffs_hanchan_each', { n: round.hanchan })} · {round.id === 'final' ? tr('playoffs_champion') : tr('playoffs_advance_per_table', { n: round.advancePerTable })}</p><small>{tr('playoffs_calendar_unscheduled')}</small></section>
+    <section className="playoff-calendar-intro"><span className="block-label">{tr('playoffs_calendar_phases')}</span><h2>{playoffRoundLabel(round.id)}</h2><p>{round.tables > 1 ? tr('playoffs_tables_n', { n: round.tables }) : tr('playoffs_table_one')} · {tr('playoffs_hanchan_each', { n: round.hanchan })} · {round.id === 'final' ? tr('playoffs_champion') : tr('playoffs_advance_per_table', { n: round.advancePerTable })}</p>{!phaseHasSchedule && <small>{tr('playoffs_calendar_unscheduled')}</small>}</section>
     <div className="playoff-calendar-grid">{Array.from({ length: round.tables }, (_, tableIndex) => {
-      const seats = roundIndex === 0 ? seeding?.[tableIndex] : playoffFeederSeats(rounds, roundIndex, tableIndex);
+      const seats = seatsByRound[roundIndex]?.[tableIndex] || (roundIndex === 0 ? seeding?.[tableIndex] : playoffFeederSeats(rounds, roundIndex, tableIndex));
       const division = round.rulesByTable[tableIndex];
+      const scheduled = (data.playoffSchedule || []).filter(item => item.playoffRound === round.id && item.table === tableIndex + 1 && item.dateISO);
+      const scheduleLabel = scheduled.length ? [...new Set(scheduled.map(item => `${item.date}${item.time ? ` · ${item.time}` : ''}`))].join(' / ') : tr('playoffs_calendar_date_pending');
       return <article className="playoff-calendar-card" key={`${phase}-${tableIndex}`}>
         <header><h3>{playoffRoundLabel(round.id)} · {tr('playoffs_mesa', { n: tableIndex + 1 })}</h3><span className={`playoff-rule-chip div-${division}`}>{playoffRuleLabel(round, tableIndex)}</span></header>
-        <div className="playoff-calendar-meta"><span>{round.hanchan} {tr('hanchan')}</span><span>{tr('playoffs_calendar_date_pending')}</span></div>
+        <div className="playoff-calendar-meta"><span>{round.hanchan} {tr('hanchan')}</span><span>{scheduleLabel}</span></div>
         <ol>{Array.from({ length: 4 }, (_, index) => <li key={index}>{seats?.[index]?.player ? <React.Fragment><Flag nat={seats[index].player.nat} size={14} /><b>{seats[index].player.name}</b><small>{seats[index].code}</small></React.Fragment> : <span>{seats?.[index]?.label || tr('playoffs_seat_pending')}</span>}</li>)}</ol>
         {roundIndex === 0 && !progress.settled && <small className="playoff-calendar-provisional">{tr('playoffs_provisional')}</small>}
         <footer>{round.id === 'final' ? tr('playoffs_champion') : tr('playoffs_advance_per_table', { n: round.advancePerTable })}</footer>

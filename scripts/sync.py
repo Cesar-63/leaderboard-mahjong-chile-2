@@ -43,6 +43,7 @@ HISTORY_FIRST_ROW = 2
 HISTORY_LAST_ROW = 85
 HISTORY_LABEL_COL = 1
 HISTORY_VALUE_COL = 2
+PLAYOFF_LABEL_RE = re.compile(r"^(QF|SF)\s+M(\d+)\s+G(\d+)$|^FINAL\s+G(\d+)$", re.IGNORECASE)
 # Sin oka: los cuatro scores crudos de un hanchan siempre suman esto.
 TOTAL_RAW_SCORE = 120000
 # Mínimo de jugadores en común para dar por equivalentes dos grupos: 3 de 4,
@@ -246,6 +247,55 @@ def parse_history(workbook: Any, division: str, sheet_name: str, rule: dict[str,
         results = parse_history_line(raw, rule, source_cell)
         key = f"{division}-S{session}-M{table}-G{game}"
         output[key] = {"key": key, "session": session, "table": table, "game": game, "results": results, "sourceCell": source_cell}
+    return output
+
+
+def parse_playoff_history(workbook: Any, config: dict[str, Any]) -> list[dict[str, Any]]:
+    """Lee los resultados oficiales de la hoja Playoffs.
+
+    La columna A identifica cada hanchan (`QF M1 G1`, `SF M2 G2`,
+    `FINAL G3`) y la B usa el mismo formato de Game History. La regla y el uma
+    salen de la configuración de cada mesa, así que una semifinal con reglas B
+    no puede calcularse accidentalmente con el uma de A.
+    """
+    sheet_name = str(config.get("playoffSheet") or "Playoffs")
+    if sheet_name not in workbook.sheetnames:
+        return []
+    ws = workbook[sheet_name]
+    rounds = {item["id"]: item for item in playoff_format(config)["rounds"]}
+    aliases = {"QF": "quarters", "SF": "semis"}
+    output: list[dict[str, Any]] = []
+    seen: set[tuple[str, int, int]] = set()
+    for row in range(1, ws.max_row + 1):
+        label = str(cell_value(ws.cell(row, 1)) or "").strip().upper()
+        match = PLAYOFF_LABEL_RE.match(label)
+        if not match:
+            continue
+        if match.group(4):
+            round_id, table, game = "final", 1, int(match.group(4))
+        else:
+            round_id, table, game = aliases[match.group(1).upper()], int(match.group(2)), int(match.group(3))
+        round_item = rounds.get(round_id)
+        where = f"{sheet_name}!A{row}"
+        if round_item is None or table < 1 or table > round_item["tables"] or game < 1 or game > round_item["hanchan"]:
+            raise SyncError(f"{where}: partida fuera del formato configurado")
+        key = (round_id, table, game)
+        if key in seen:
+            raise SyncError(f"{where}: partida de eliminatorias duplicada")
+        seen.add(key)
+        rule_division = round_item["rulesByTable"][table - 1]
+        raw = str(cell_value(ws.cell(row, 2)) or "").strip()
+        raw_date = cell_value(ws.cell(row, 3))
+        raw_time = cell_value(ws.cell(row, 4))
+        display_date, weekday, iso_date = format_date(raw_date)
+        results = parse_history_line(raw, config["divisions"][rule_division], f"{sheet_name}!B{row}") if raw else []
+        output.append({
+            "id": f"PO-{round_id}-M{table}-G{game}", "code": label,
+            "playoffRound": round_id, "table": table, "hanchan": game,
+            "ruleDivision": rule_division, "results": results,
+            "date": display_date, "weekday": weekday, "dateISO": iso_date,
+            "time": raw_time.isoformat(timespec="minutes") if isinstance(raw_time, time) else None,
+        })
     return output
 
 
@@ -506,7 +556,7 @@ def build_excel_results(official: dict[str, Any], fixture_players: list[str], pl
     return results
 
 
-def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, Any]]], fixtures: list[dict[str, Any]], submissions: list[dict[str, Any]], histories: dict[str, dict[str, Any]], parsed_games: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, Any]]], fixtures: list[dict[str, Any]], submissions: list[dict[str, Any]], histories: dict[str, dict[str, Any]], parsed_games: dict[str, Any], playoff_history: list[dict[str, Any]] | None = None) -> tuple[dict[str, Any], dict[str, Any]]:
     divisions: dict[str, Any] = {}
     all_players: list[dict[str, Any]] = []
     stats_output: dict[str, Any] = {"players": {}}
@@ -703,6 +753,32 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
         best = max(group, key=lambda p: p["points"])
         nationalities.append({"code": code, "count": len(group), "inA": sum(p["div"] == "A" for p in group), "inB": sum(p["div"] == "B" for p in group), "avgPoints": round(sum(p["points"] for p in group) / len(group), 1), "avgRank": round(sum(p["avgRank"] for p in group) / len(group), 2), "best": best})
     player_nat = {p["name"].lower(): p["nat"] for p in all_players}
+    player_by_name = {p["name"].strip().lower(): p for p in all_players}
+    playoff_matches = []
+    playoff_schedule = []
+    for match in playoff_history or []:
+        playoff_schedule.append({key: match[key] for key in (
+            "id", "code", "playoffRound", "table", "hanchan", "ruleDivision",
+            "date", "weekday", "dateISO", "time",
+        )})
+        if not match["results"]:
+            continue
+        match_players = []
+        for result in match["results"]:
+            player = player_by_name.get(result["name"].strip().lower())
+            match_players.append({
+                "id": player["id"] if player else f"playoff-{result['name']}",
+                "name": player["name"] if player else result["name"],
+                "handle": player["handle"] if player else result["name"],
+                "nat": player["nat"] if player else "OT",
+                "scoreRaw": result["scoreRaw"], "place": result["place"], "delta": result["delta"],
+            })
+        playoff_matches.append({
+            **{key: match[key] for key in ("id", "code", "playoffRound", "table", "hanchan", "ruleDivision")},
+            "sessionCode": match["code"], "date": match["date"], "dateISO": match["dateISO"],
+            "weekday": match["weekday"], "time": match["time"], "players": match_players, "verified": False,
+            "source": "excel", "paipuUrl": None, "rounds": [],
+        })
     calendar = []
     for fixture in fixtures:
         fixture_session = divisions[fixture["division"]]["sessions"][fixture["session"] - 1]
@@ -721,6 +797,8 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
     data = {
         "divisions": divisions, "allPlayers": all_players, "nationalities": nationalities,
         "iormc": iormc, "calendar": calendar, "yakuHands": won_hands,
+        "playoffMatches": playoff_matches,
+        "playoffSchedule": playoff_schedule,
         "league": {"season": config["seasonLabel"], "currentSession": current_session, "sessionsPlayed": sessions_played, "sessionsTotal": int(config["sessionsTotal"]), "hanchanPerSession": 2, "playersPerDiv": 24, "hanchanPerDiv": max(len(divisions["A"]["matches"]), len(divisions["B"]["matches"])), "hanchanTotal": len(divisions["A"]["matches"]) + len(divisions["B"]["matches"]), "nextSession": next_session, "playoffs": playoffs, "rules": {key: {"initialPoints": value["initialPoints"], "uma": value["uma"]} for key, value in config["divisions"].items()}},
     }
     add_hall_of_fame(data)
@@ -969,6 +1047,7 @@ def main() -> int:
         histories: dict[str, dict[str, Any]] = {}
         for division, rule in config["divisions"].items():
             histories.update(parse_history(workbook, division, rule["historySheet"], rule))
+        playoff_history = parse_playoff_history(workbook, config)
         histories, avisos_mesas = align_history_with_fixtures(histories, fixtures)
         for aviso in avisos_mesas:
             print(f"AVISO: {aviso}", file=sys.stderr)
@@ -991,7 +1070,7 @@ def main() -> int:
             failures = [item for item in status["submissions"] if item["status"] == "ERROR"]
             if failures:
                 raise SyncError("Paipus con error:\n" + "\n".join(f"- {item['cell']}: {item['message']}" for item in failures))
-        data, stats = build_public_data(config, rosters, fixtures, submissions, histories, parsed_games)
+        data, stats = build_public_data(config, rosters, fixtures, submissions, histories, parsed_games, playoff_history)
         health = advanced_stats_health(stats, status)
         if args.require_stats and health["submitted"] and not health["with_hands"]:
             raise SyncError("Estadísticas avanzadas ausentes: hay paipus enviados pero ninguno aportó manos (REQUIERE_AUTH/ERROR). Revisa la sesión técnica.")
@@ -1001,7 +1080,8 @@ def main() -> int:
                 print(f"  {issue['status']} en {issue['cell']}: {issue['message']}", file=sys.stderr)
         write_outputs(data, stats, status, args.output)
         counts = Counter(item["status"] for item in status["submissions"])
-        print(f"Sincronización lista: {len(histories)} resultados oficiales, {len(parsed_games)} paipus procesados")
+        playoff_results = sum(bool(item["results"]) for item in playoff_history)
+        print(f"Sincronización lista: {len(histories)} resultados regulares, {playoff_results} resultados de eliminatorias, {len(parsed_games)} paipus procesados")
         print("Estados paipu: " + ", ".join(f"{key}={value}" for key, value in sorted(counts.items())))
         print(f"Stats avanzadas: {health['summary']}")
         print(f"Salida: {args.output}")

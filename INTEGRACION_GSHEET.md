@@ -7,6 +7,32 @@ completa `scripts/fill_calendar_paipus.py --write` desde las salas de torneo.
 Los puntajes de la hoja **Game History** salen de esos mismos paipus con
 `scripts/fill_game_history.py --write`.
 
+## Hoja Playoffs
+
+La pestaña **Playoffs** es la fuente oficial de cuartos, semifinales y final.
+Cada hanchan ocupa una fila: la columna A usa `QF M1 G1`, `SF M2 G2` o
+`FINAL G3`; la B recibe `Jugador,Puntaje,...` ordenado del 1.º al 4.º; C y D
+guardan fecha y hora. El sincronizador toma la regla y el uma de la mesa desde
+`sync-config.json`, publica los resultados en Eliminatorias e Historial y usa
+la fecha y hora en el Calendario.
+
+Para migrar una copia local conservando los resultados existentes:
+
+```bash
+python scripts/setup_playoffs_sheet.py --xlsx planilla.xlsx
+```
+
+Para actualizar Google Sheets directamente se requiere la misma cuenta de
+servicio con permiso de Editor que usan las otras escrituras:
+
+```bash
+python scripts/setup_playoffs_sheet.py --write
+```
+
+La estructura contiene 15 hanchan: 8 de cuartos, 4 de semifinales y 3 de
+final. QF 1–2 usan reglas A, QF 3–4 reglas B; SF 1 usa A, SF 2 usa B; la final
+usa A.
+
 ## Ejecutar localmente
 
 ```bash

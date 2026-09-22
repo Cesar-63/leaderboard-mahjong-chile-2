@@ -2,6 +2,7 @@ import json
 import pathlib
 import unittest
 from unittest.mock import patch
+from openpyxl import Workbook
 
 from scripts.majsoul import (
     NON_YAKU_FAN_IDS, PaipuError, YAKU_NAMES, extract_record_id, extract_uuid,
@@ -11,7 +12,7 @@ from scripts.sync import (
     CALENDAR_VALUE_COLS, DIVISIONS, PLAYOFF_FORMAT_DEFAULT, PRIVATE_PLAYER_FIELDS, SESSION_G1_ROWS, SyncError, TOTAL_RAW_SCORE,
     advanced_stats_health, align_history_with_fixtures, build_excel_results, build_paipu_results, build_public_data,
     crosscheck_substitutes, date_from_paipu_uuid, demote_unexpected_seats, find_absent_player, load_config,
-    match_paipu_seats, merge_paipus, normalize_nat, playoff_format, strip_private_fields,
+    match_paipu_seats, merge_paipus, normalize_nat, parse_playoff_history, playoff_format, strip_private_fields,
 )
 
 
@@ -953,6 +954,35 @@ class EliminatoriasTests(unittest.TestCase):
     def test_el_payload_publica_el_formato_del_cuadro(self):
         data, _ = build_public_data(_division_config(), _rosters(), [], [], {}, {})
         self.assertEqual(data["league"]["playoffs"], playoff_format({}))
+
+    def test_la_hoja_playoffs_usa_la_regla_de_cada_mesa(self):
+        workbook = Workbook()
+        sheet = workbook.active
+        sheet.title = "Playoffs"
+        sheet.append(["QF M1 G1", "A-01,40000,A-02,32000,B-07,26000,B-08,22000"])
+        sheet.append(["QF M3 G1", "A-05,40000,A-06,32000,B-03,26000,B-04,22000"])
+        config = {**_division_config(), "playoffs": PLAYOFF_FORMAT_DEFAULT, "playoffSheet": "Playoffs"}
+        matches = parse_playoff_history(workbook, config)
+        self.assertEqual([match["ruleDivision"] for match in matches], ["A", "B"])
+        self.assertEqual(matches[0]["results"][0]["delta"], 25.0)
+        self.assertEqual(matches[1]["results"][0]["delta"], 45.0)
+
+    def test_resultados_de_playoffs_se_publican_para_historial(self):
+        config = {**_division_config(), "playoffs": PLAYOFF_FORMAT_DEFAULT}
+        playoff_history = [{
+            "id": "PO-quarters-M1-G1", "code": "QF M1 G1", "playoffRound": "quarters",
+            "table": 1, "hanchan": 1, "ruleDivision": "A",
+            "date": "Por definir", "weekday": "—", "dateISO": None, "time": None,
+            "results": [
+                {"name": "Bodoque", "scoreRaw": 40000, "place": 1, "delta": 25.0},
+                {"name": "Mon_96", "scoreRaw": 32000, "place": 2, "delta": 7.0},
+                {"name": "X", "scoreRaw": 26000, "place": 3, "delta": -9.0},
+                {"name": "Y", "scoreRaw": 22000, "place": 4, "delta": -23.0},
+            ],
+        }]
+        data, _ = build_public_data(config, _rosters(), [], [], {}, {}, playoff_history)
+        self.assertEqual(data["playoffMatches"][0]["playoffRound"], "quarters")
+        self.assertEqual(data["playoffMatches"][0]["players"][0]["id"], "A01")
 
     def test_la_zona_de_eliminatorias_usa_el_corte_del_formato(self):
         # 24 por división y sin resultados: el orden es alfabético y lo único
