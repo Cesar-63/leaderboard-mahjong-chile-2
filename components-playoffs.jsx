@@ -92,7 +92,10 @@ function playoffSeasonProgress(data) {
 // Devuelve null si el reparto no da un número entero por mesa; ahí la vista
 // muestra los asientos pendientes en vez de inventar un emparejamiento.
 function playoffSeeding(data, format) {
-  const tables = format.rounds[0].tables;
+  const firstRound = format.rounds && format.rounds[0];
+  if (!firstRound) return null;
+  const tables = firstRound.tables;
+  if (!Number.isInteger(tables) || tables <= 0) return null;
   const perTable = format.perDivision / tables;
   if (!Number.isInteger(perTable) || perTable < 1) return null;
   const rosters = {};
@@ -122,7 +125,9 @@ function playoffSeeding(data, format) {
 function playoffFeederSeats(rounds, roundIndex, table) {
   const round = rounds[roundIndex];
   const previous = rounds[roundIndex - 1];
+  if (!round || !previous || !Number.isInteger(round.tables) || round.tables <= 0) return [];
   const ratio = previous.tables / round.tables;
+  if (!Number.isInteger(ratio) || ratio <= 0) return [];
   const seats = [];
   for (let offset = 0; offset < ratio; offset++) {
     const source = table * ratio + offset;
@@ -160,7 +165,15 @@ function playoffBracketSeats(data, rounds, seeding) {
         .slice(0, round.advancePerTable).map(item => ({ player: item.player, code: `${playoffRoundShort(round.id)} M${table + 1}` })));
     }
     const next = rounds[roundIndex + 1];
+    if (!next || !Number.isInteger(next.tables) || next.tables <= 0) {
+      result.push([]);
+      continue;
+    }
     const ratio = round.tables / next.tables;
+    if (!Number.isInteger(ratio) || ratio <= 0) {
+      result.push(Array.from({ length: next.tables }, () => []));
+      continue;
+    }
     result.push(Array.from({ length: next.tables }, (_, table) => {
       const seats = [];
       for (let offset = 0; offset < ratio; offset++) {
@@ -295,7 +308,9 @@ function PlayoffBracket({ rounds, seatsByRound, onSelectPlayer }) {
       };
       rounds.forEach((round, roundIndex) => {
         if (roundIndex === 0) return;
+        if (!Number.isInteger(round.tables) || round.tables <= 0) return;
         const ratio = rounds[roundIndex - 1].tables / round.tables;
+        if (!Number.isInteger(ratio) || ratio <= 0) return;
         for (let table = 0; table < round.tables; table++) {
           const target = tables.current[`${roundIndex}-${table}`];
           if (!target) continue;
