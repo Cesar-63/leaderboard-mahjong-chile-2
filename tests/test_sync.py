@@ -597,6 +597,23 @@ def _history(key, session, table, game, names, scores=(45000, 38500, 32000, 4500
 
 
 class SesionActualTests(unittest.TestCase):
+    def test_inicio_confirmado_sin_resultados_conserva_fixture_anterior_pendiente(self):
+        config = _division_config()
+        config["currentSessionMinimum"] = 7
+        fixtures = [
+            _fixture("A", 6, 1, ["Bodoque", "Mon_96", "Meme000", "Twining1999"], date="Por definir"),
+            _fixture("A", 7, 1, ["Bodoque", "Mon_96", "Meme000", "Twining1999"], date="Por definir"),
+        ]
+        for fixture in fixtures:
+            fixture["dateISO"] = None
+
+        data, _ = build_public_data(config, _rosters(), fixtures, [], {}, {})
+
+        self.assertEqual(data["league"]["currentSession"], 7)
+        self.assertEqual(data["league"]["nextSession"]["code"], "S7")
+        self.assertEqual([(item["session"], item["status"]) for item in data["calendar"]],
+                         [(6, "scheduled"), (7, "highlight")])
+
     def test_una_fecha_agendada_inicia_la_sesion(self):
         fixtures = [
             _fixture("B", 6, 4, ["X", "Y", "Z", "W"], date="09 sep"),

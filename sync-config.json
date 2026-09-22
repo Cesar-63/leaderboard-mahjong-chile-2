@@ -3,6 +3,7 @@
   "spreadsheetUrl": "https://docs.google.com/spreadsheets/d/1cQcqJkHi2tb2FrHr3n1fD7iKCTd-unMwTIVLt59nqeM/edit?usp=sharing",
   "seasonLabel": "Temporada 2026",
   "sessionsTotal": 7,
+  "currentSessionMinimum": 7,
   "minimumAdvancedStatsHands": 8,
   "absencePenaltyPerHanchan": -30,
   "divisions": {

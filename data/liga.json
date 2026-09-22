@@ -161091,180 +161091,6 @@
   },
   "calendar": [
     {
-      "date": "11 sep",
-      "day": "vie",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 1,
-      "mesa": "División A — Mesa 1",
-      "time": "20:00",
-      "div": "A",
-      "players": [
-        {
-          "name": "asmirnov",
-          "nat": "UY"
-        },
-        {
-          "name": "Sh1rome",
-          "nat": "UY"
-        },
-        {
-          "name": "Chubi!",
-          "nat": "CL"
-        },
-        {
-          "name": "Bodoque",
-          "nat": "CL"
-        }
-      ],
-      "status": "highlight"
-    },
-    {
-      "date": "06 sep",
-      "day": "dom",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 2,
-      "mesa": "División A — Mesa 2",
-      "time": "21:00",
-      "div": "A",
-      "players": [
-        {
-          "name": "KaijuHead",
-          "nat": "CL"
-        },
-        {
-          "name": "UnChano",
-          "nat": "MX"
-        },
-        {
-          "name": "Xuxe",
-          "nat": "CL"
-        },
-        {
-          "name": "SentryPeru",
-          "nat": "PE"
-        }
-      ],
-      "status": "highlight"
-    },
-    {
-      "date": "11 sep",
-      "day": "vie",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 3,
-      "mesa": "División A — Mesa 3",
-      "time": "20:30",
-      "div": "A",
-      "players": [
-        {
-          "name": "KillerHUD",
-          "nat": "CL"
-        },
-        {
-          "name": "AuroraShine",
-          "nat": "BR"
-        },
-        {
-          "name": "Twining1999",
-          "nat": "CL"
-        },
-        {
-          "name": "YotsugiNagi",
-          "nat": "CL"
-        }
-      ],
-      "status": "highlight"
-    },
-    {
-      "date": "07 sep",
-      "day": "lun",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 4,
-      "mesa": "División A — Mesa 4",
-      "time": "22:00",
-      "div": "A",
-      "players": [
-        {
-          "name": "Tobippi",
-          "nat": "CL"
-        },
-        {
-          "name": "Mon_96",
-          "nat": "CL"
-        },
-        {
-          "name": "MasterFofo",
-          "nat": "AR"
-        },
-        {
-          "name": "Uznaiker",
-          "nat": "MX"
-        }
-      ],
-      "status": "highlight"
-    },
-    {
-      "date": "13 sep",
-      "day": "dom",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 5,
-      "mesa": "División A — Mesa 5",
-      "time": "20:00",
-      "div": "A",
-      "players": [
-        {
-          "name": "ikanajin",
-          "nat": "CL"
-        },
-        {
-          "name": "FS525",
-          "nat": "AR"
-        },
-        {
-          "name": "Haruzen",
-          "nat": "MX"
-        },
-        {
-          "name": "DiosioわTensai",
-          "nat": "MX"
-        }
-      ],
-      "status": "highlight"
-    },
-    {
-      "date": "10 sep",
-      "day": "jue",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 6,
-      "mesa": "División A — Mesa 6",
-      "time": "23:00",
-      "div": "A",
-      "players": [
-        {
-          "name": "Kychiel",
-          "nat": "AR"
-        },
-        {
-          "name": "furanchizuko2",
-          "nat": "CL"
-        },
-        {
-          "name": "Meme000",
-          "nat": "UY"
-        },
-        {
-          "name": "caballo",
-          "nat": "CL"
-        }
-      ],
-      "status": "highlight"
-    },
-    {
       "date": "Por definir",
       "day": "—",
       "round": "Sesión 7",
@@ -161291,7 +161117,7 @@
           "nat": "CL"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -161320,7 +161146,7 @@
           "nat": "CL"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -161349,7 +161175,7 @@
           "nat": "PE"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -161378,7 +161204,7 @@
           "nat": "MX"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -161407,7 +161233,7 @@
           "nat": "UY"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -161434,180 +161260,6 @@
         {
           "name": "Sh1rome",
           "nat": "UY"
-        }
-      ],
-      "status": "scheduled"
-    },
-    {
-      "date": "20 sep",
-      "day": "dom",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 1,
-      "mesa": "División B — Mesa 1",
-      "time": "20:00",
-      "div": "B",
-      "players": [
-        {
-          "name": "Cr1cho",
-          "nat": "CL"
-        },
-        {
-          "name": "BernyMyMen",
-          "nat": "CL"
-        },
-        {
-          "name": "Bubblyth",
-          "nat": "UY"
-        },
-        {
-          "name": "Misiwasy2",
-          "nat": "PE"
-        }
-      ],
-      "status": "highlight"
-    },
-    {
-      "date": "13 sep",
-      "day": "dom",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 2,
-      "mesa": "División B — Mesa 2",
-      "time": "22:00",
-      "div": "B",
-      "players": [
-        {
-          "name": "HOSHIGAMI",
-          "nat": "CL"
-        },
-        {
-          "name": "PrivateIdaho",
-          "nat": "AR"
-        },
-        {
-          "name": "helinder",
-          "nat": "UY"
-        },
-        {
-          "name": "Megazero158",
-          "nat": "CL"
-        }
-      ],
-      "status": "highlight"
-    },
-    {
-      "date": "16 sep",
-      "day": "mié",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 3,
-      "mesa": "División B — Mesa 3",
-      "time": "23:30",
-      "div": "B",
-      "players": [
-        {
-          "name": "andyjango",
-          "nat": "CL"
-        },
-        {
-          "name": "Luiz_Fuba",
-          "nat": "BR"
-        },
-        {
-          "name": "False_tux",
-          "nat": "UY"
-        },
-        {
-          "name": "ZAKY",
-          "nat": "MX"
-        }
-      ],
-      "status": "highlight"
-    },
-    {
-      "date": "09 sep",
-      "day": "mié",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 4,
-      "mesa": "División B — Mesa 4",
-      "time": "21:00",
-      "div": "B",
-      "players": [
-        {
-          "name": "cidoku",
-          "nat": "CL"
-        },
-        {
-          "name": "nicompleto",
-          "nat": "CL"
-        },
-        {
-          "name": "24Kakoo",
-          "nat": "CL"
-        },
-        {
-          "name": "Ponwino",
-          "nat": "CL"
-        }
-      ],
-      "status": "highlight"
-    },
-    {
-      "date": "12 sep",
-      "day": "sáb",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 5,
-      "mesa": "División B — Mesa 5",
-      "time": "22:00",
-      "div": "B",
-      "players": [
-        {
-          "name": "Mano_gu",
-          "nat": "BR"
-        },
-        {
-          "name": "OnIShadow",
-          "nat": "UY"
-        },
-        {
-          "name": "Parri",
-          "nat": "UY"
-        },
-        {
-          "name": "Cuervo_Gris",
-          "nat": "UY"
-        }
-      ],
-      "status": "highlight"
-    },
-    {
-      "date": "15 sep",
-      "day": "mar",
-      "round": "Sesión 6",
-      "session": 6,
-      "table": 6,
-      "mesa": "División B — Mesa 6",
-      "time": "21:00",
-      "div": "B",
-      "players": [
-        {
-          "name": "brenohai",
-          "nat": "BR"
-        },
-        {
-          "name": "erica_",
-          "nat": "CL"
-        },
-        {
-          "name": "JDavid",
-          "nat": "CL"
-        },
-        {
-          "name": "Sircrab",
-          "nat": "CL"
         }
       ],
       "status": "highlight"
@@ -161639,7 +161291,7 @@
           "nat": "CL"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -161668,7 +161320,7 @@
           "nat": "UY"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -161697,7 +161349,7 @@
           "nat": "CL"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -161726,7 +161378,7 @@
           "nat": "UY"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -161755,7 +161407,7 @@
           "nat": "CL"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     },
     {
       "date": "Por definir",
@@ -161784,7 +161436,7 @@
           "nat": "CL"
         }
       ],
-      "status": "scheduled"
+      "status": "highlight"
     }
   ],
   "yakuHands": {
@@ -194614,7 +194266,7 @@
   },
   "league": {
     "season": "Temporada 2026",
-    "currentSession": 6,
+    "currentSession": 7,
     "sessionsPlayed": 6,
     "sessionsTotal": 7,
     "hanchanPerSession": 2,
@@ -194622,9 +194274,9 @@
     "hanchanPerDiv": 72,
     "hanchanTotal": 144,
     "nextSession": {
-      "code": "S6",
-      "date": "06 sep",
-      "day": "dom"
+      "code": "S7",
+      "date": "Por definir",
+      "day": "—"
     },
     "rules": {
       "A": {
