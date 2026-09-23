@@ -29,8 +29,8 @@ mahjong, jugada en sala de torneo de MahjongSoul. Estático, sin backend, sin au
   mesas jugadas y mesas pendientes a la vez.
 - **Ascenso/descenso:** hay serie de promoción entre A 21-24 y B 1-4.
 - **Eliminatorias:** terminada la fase regular clasifican los **8 primeros de
-  cada división** y **el cuadro es uno solo para toda la liga**: los 16 se
-  mezclan en las mismas mesas y el campeón es de Liga Mahjong Chile, no de una
+  cada división** y **el cuadro es uno solo para toda la liga**: cuartos y semifinales se
+  juegan dentro de cada división con sus reglas; sólo la final mezcla A y B y el campeón es de Liga Mahjong Chile, no de una
   división. No existen «eliminatorias de A» y «de B», así que la vista no está
   scopeada por división (no entra en `DIV_SCOPED`). Se juegan en mesas de cuatro
   y cada ronda llena sus mesas con los que avanzaron de la anterior: cuartos
@@ -55,16 +55,13 @@ mahjong, jugada en sala de torneo de MahjongSoul. Estático, sin backend, sin au
   ficticios ni se ofrece la coordinación de sesiones regulares para estas
   mesas. El historial ofrece filtros por ronda y sólo muestra resultados
   cuando exista `playoffMatches` oficial en el payload.
-- **La siembra de cuartos es cruzada y determinista, no un sorteo.** Una
-  división se reparte de arriba hacia abajo y la otra al revés, dos de cada una
-  por mesa: la mesa 1 junta a A1 y A2 con B7 y B8, la 2 a A3 y A4 con B5 y B6,
-  la 3 a A5 y A6 con B3 y B4 y la 4 a A7 y A8 con B1 y B2. De ahí en adelante
-  cada mesa manda a sus dos primeros a la ronda siguiente **en orden** —las dos
-  primeras de cuartos alimentan la semifinal 1—, y los asientos de semis y final
-  dicen de qué mesa y con qué puesto salen. `playoffSeeding` y
-  `playoffFeederSeats` en `components-playoffs.jsx` lo derivan de la tabla; si
-  el reparto no diera un número entero por mesa, la vista vuelve a mostrar los
-  asientos pendientes en vez de inventar un emparejamiento.
+- **La siembra de cuartos es por división y determinista.** M1 reúne A1, A2,
+  A7 y A8; M2 reúne A3, A4, A5 y A6. M3 y M4 repiten ese reparto para B.
+  Los dos primeros de M1-M2 alimentan la semifinal A; los de M3-M4, la B.
+  Los dos primeros de cada semifinal se reúnen en la final con reglas A.
+  `playoffSeeding` y `playoffFeederSeats` en `components-playoffs.jsx` derivan
+  el cuadro de la tabla; si el reparto no llena mesas de cuatro, los asientos
+  quedan pendientes.
 - **Las líneas del árbol se miden en el navegador**, con
   `getBoundingClientRect` y un `ResizeObserver` sobre las tarjetas, y se pintan
   en un SVG absoluto sobre el cuadro. No salen de una grilla CSS porque las
@@ -407,7 +404,7 @@ paso a paso completo en `DISCORD_BOT.md`.
    sesiones jugadas.
 6. **Records** — Hall of Fame, 6 récords por división.
 7. **Eliminatorias** — cuadro único de la liga (cuartos → semis → final) con la
-   siembra cruzada ya resuelta en los cuartos, el árbol que conecta cada mesa
+   siembra por división ya resuelta en los cuartos, el árbol que conecta cada mesa
    con la siguiente y el nodo de campeón, más los clasificados en dos grupos
    (top 8 de A y top 8 de B) con su corte y su burbuja.
 
