@@ -1,8 +1,8 @@
 // components-playoffs.jsx — vista de eliminatorias: cuadro y clasificados.
 //
 // **El cuadro es uno solo para toda la liga.** Cada división clasifica a sus
-// mejores y los dos grupos se mezclan en las mismas mesas, así que esta vista
-// no está scopeada por división: no hay eliminatorias de A y de B.
+// mejores. Cuartos y semifinales se juegan dentro de cada división, con sus
+// reglas; los dos mejores de cada semifinal se reúnen en la final con reglas A.
 //
 // El formato (cuántos clasifican por división, mesas y hanchan por ronda)
 // viaja en `data.league.playoffs` y sale de `sync-config.json`: el mismo
@@ -73,7 +73,7 @@ function PlayoffRulesSummary({ rounds, rules }) {
   </div>;
 }
 
-// Sesiones jugadas enteras en las DOS divisiones: el cuadro las mezcla, así
+// Sesiones jugadas enteras en las DOS divisiones: comparten la final, así
 // que no está cerrado hasta que las dos terminaron. Mientras quede una, la
 // vista muestra los clasificados como proyección.
 function playoffSeasonProgress(data) {
@@ -83,38 +83,30 @@ function playoffSeasonProgress(data) {
   return { played, total, left: Math.max(0, total - played), settled: total > 0 && played >= total };
 }
 
-// Siembra de la primera ronda: A de arriba hacia abajo contra B de abajo hacia
-// arriba. Con 8 por división y 4 mesas son dos de cada una por mesa, así que
-// la mesa 1 junta a A1 y A2 con B7 y B8, la 2 a A3 y A4 con B5 y B6, y así
-// hasta la 4, que enfrenta a A7 y A8 con B1 y B2: el mejor de una división
-// siempre arranca contra los últimos que entraron de la otra.
-//
-// Devuelve null si el reparto no da un número entero por mesa; ahí la vista
-// muestra los asientos pendientes en vez de inventar un emparejamiento.
+// Siembra por división: los primeros se enfrentan a los últimos clasificados.
+// Con ocho por división: 1, 2, 7, 8 y 3, 4, 5, 6. Las mesas siguen las reglas
+// configuradas (A, A, B, B), por lo que cada semifinal conserva su división.
+// Un reparto que no llena mesas de cuatro deja los asientos pendientes.
 function playoffSeeding(data, format) {
   const firstRound = format.rounds && format.rounds[0];
-  if (!firstRound) return null;
-  const tables = firstRound.tables;
-  if (!Number.isInteger(tables) || tables <= 0) return null;
-  const perTable = format.perDivision / tables;
-  if (!Number.isInteger(perTable) || perTable < 1) return null;
+  if (!firstRound || !Number.isInteger(firstRound.tables) || firstRound.tables <= 0) return null;
+  const rules = firstRound.rulesByTable;
+  if (!rules || rules.length !== firstRound.tables || rules.some(div => !PLAYOFF_DIVISIONS.includes(div))) return null;
   const rosters = {};
   for (const division of PLAYOFF_DIVISIONS) {
+    const tables = rules.filter(div => div === division).length;
+    if (!tables || tables * 4 !== format.perDivision) return null;
     rosters[division] = data.divisions[division].players.slice(0, format.perDivision);
     if (rosters[division].length < format.perDivision) return null;
   }
-  return Array.from({ length: tables }, (_, table) => {
-    const seats = [];
-    PLAYOFF_DIVISIONS.forEach((division, index) => {
-      // La primera división se reparte de arriba hacia abajo y la segunda al
-      // revés, para que las mesas queden parejas.
-      const from = index === 0 ? table * perTable : format.perDivision - (table + 1) * perTable;
-      for (let offset = 0; offset < perTable; offset++) {
-        const seed = from + offset;
-        seats.push({ player: rosters[division][seed], code: `${division}${seed + 1}` });
-      }
-    });
-    return seats;
+  const assigned = { A: 0, B: 0 };
+  return rules.map(division => {
+    const table = assigned[division]++;
+    const first = table * 2;
+    const last = format.perDivision - (table + 1) * 2;
+    return [first, first + 1, last, last + 1].map(seed => ({
+      player: rosters[division][seed], code: `${division}${seed + 1}`,
+    }));
   });
 }
 

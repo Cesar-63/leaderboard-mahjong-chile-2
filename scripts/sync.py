@@ -394,8 +394,8 @@ def playoff_format(config: dict[str, Any]) -> dict[str, Any]:
     """Valida el formato de eliminatorias y lo deja listo para el payload.
 
     **El cuadro es uno solo para toda la liga**: cada división clasifica a sus
-    `qualifiersPerDivision` mejores y los dos grupos se mezclan en las mismas
-    mesas. Por eso el corte que pinta la tabla es el de división y el que llena
+    `qualifiersPerDivision` mejores. Cuartos y semifinales son por división;
+    los dos grupos se encuentran en la final. Por eso el corte que pinta la tabla es el de división y el que llena
     los cuartos es la suma de los dos.
 
     Se juega en mesas de cuatro, así que el cuadro sólo cierra si cada ronda
