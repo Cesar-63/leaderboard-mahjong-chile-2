@@ -75189,8 +75189,8 @@
         {
           "n": 7,
           "code": "S7",
-          "date": "27 sep",
-          "weekday": "dom",
+          "date": "23 sep",
+          "weekday": "mié",
           "div": "A",
           "matches": 0,
           "status": "pending"
@@ -161091,13 +161091,13 @@
   },
   "calendar": [
     {
-      "date": "Por definir",
-      "day": "—",
+      "date": "27 sep",
+      "day": "dom",
       "round": "Sesión 7",
       "session": 7,
       "table": 1,
       "mesa": "División A — Mesa 1",
-      "time": "Por definir",
+      "time": "01:00",
       "div": "A",
       "players": [
         {
@@ -161149,13 +161149,13 @@
       "status": "highlight"
     },
     {
-      "date": "Por definir",
-      "day": "—",
+      "date": "23 sep",
+      "day": "mié",
       "round": "Sesión 7",
       "session": 7,
       "table": 3,
       "mesa": "División A — Mesa 3",
-      "time": "Por definir",
+      "time": "21:30",
       "div": "A",
       "players": [
         {
