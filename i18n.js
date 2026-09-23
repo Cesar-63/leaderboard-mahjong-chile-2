@@ -13,6 +13,7 @@ window.I18N = {
     sesiones_noun: 'sesiones',
     hanchan_total: '{n} hanchan',
     official_data: 'DATOS OFICIALES',
+    ichihime_on: 'Modo Ichihime', ichihime_off: 'Salir del modo Ichihime', ichihime_credit: 'Arte de Mahjong Soul © Yostar / Catfood Studio · uso de fans sin fines comerciales',
     division: 'División {d}',
     leader: 'Líder {name}',
     standings_title: 'Clasificación División {div}',
@@ -253,6 +254,7 @@ window.I18N = {
     sesiones_noun: 'sessions',
     hanchan_total: '{n} hanchan',
     official_data: 'OFFICIAL DATA',
+    ichihime_on: 'Ichihime mode', ichihime_off: 'Leave Ichihime mode', ichihime_credit: 'Mahjong Soul art © Yostar / Catfood Studio · non-commercial fan use',
     division: 'Division {d}',
     leader: 'Leader {name}',
     standings_title: 'Division {div} Standings',
@@ -489,6 +491,7 @@ window.I18N = {
     sesiones_noun: 'sessões',
     hanchan_total: '{n} hanchan',
     official_data: 'DADOS OFICIAIS',
+    ichihime_on: 'Modo Ichihime', ichihime_off: 'Sair do modo Ichihime', ichihime_credit: 'Arte de Mahjong Soul © Yostar / Catfood Studio · uso de fã sem fins comerciais',
     division: 'Divisão {d}',
     leader: 'Líder {name}',
     standings_title: 'Classificação Divisão {div}',
@@ -813,6 +816,37 @@ window.setTZ = function (tz) {
   }
 })();
 
+// ── Modo Ichihime ──
+// Easter egg: el botón junto al título llena la página de Ichihime y hace que
+// las frases terminen en "nya". Es sólo presentación: los datos, los números
+// y las claves no pasan por acá. La preferencia se guarda como la del modo
+// oscuro y el atributo en <html> es lo que activa el CSS.
+window.ICHIHIME = prefGet('mjc-ichihime') === '1';
+document.documentElement.setAttribute('data-ichihime', String(window.ICHIHIME));
+window.setIchihime = function (v) {
+  window.ICHIHIME = !!v;
+  prefSet('mjc-ichihime', window.ICHIHIME ? '1' : '0');
+  document.documentElement.setAttribute('data-ichihime', String(window.ICHIHIME));
+  window.dispatchEvent(new CustomEvent('ichihimechange'));
+};
+
+// Cierra cada oración con "nya": delante del punto final ("Lo esencial para
+// jugar." → "Lo esencial para jugar nya."), y a las frases sin puntuación se
+// les agrega al final. Sólo desde 3 palabras: los rótulos cortos ("Tabla",
+// "Puesto prom.") quedan igual para no romper pestañas ni encabezados de
+// columna, y así una abreviatura no se confunde con un fin de oración. Exige
+// una letra antes del signo, así que los decimales ("3.5") y los ordinales
+// ("1.º") no se tocan.
+window.nyaify = function (s) {
+  if (typeof s !== 'string' || !s) return s;
+  if (s.trim().split(/\s+/).length < 3) return s;
+  const nya = window.LANG === 'jp' ? 'にゃ' : 'nya';
+  const out = s.replace(/(\p{L})([.!?…]+)(?=\s|$)/gu, '$1 ' + nya + '$2');
+  if (out !== s) return out;
+  if (/[\p{L}\p{N}]$/u.test(s)) return s + ' ' + nya + '~';
+  return s;
+};
+
 window.tr = function (key, vars) {
   const table = window.I18N[window.LANG] || window.I18N.es;
   let s = table[key] !== undefined ? table[key] : (window.I18N.es[key] !== undefined ? window.I18N.es[key] : key);
@@ -821,7 +855,7 @@ window.tr = function (key, vars) {
       s = s.replace(new RegExp('\\{' + k + '\\}', 'g'), String(vars[k]));
     }
   }
-  return s;
+  return window.ICHIHIME ? window.nyaify(s) : s;
 };
 
 // Convierte una hora ("23 ago", "22:00") de la base (America/Santiago) a la

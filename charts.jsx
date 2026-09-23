@@ -85,6 +85,7 @@ function RadarChart({ stats, color = 'var(--accent)', size = 280 }) {
           />
         );
       })}
+      <IchiChartBadge cx={cx} cy={cy} r={radius * 0.24} emote={0} />
       {/* data */}
       <polygon
         points={dataPolygon}
@@ -186,6 +187,7 @@ function LineChart({ values, height = 220, color = 'var(--accent)', compact = fa
         );
       })}
       <line className="axis" x1={padL} y1={zeroY} x2={width - padR} y2={zeroY} strokeWidth="1.5" />
+      {!compact && <IchiChartBadge cx={(padL + width - padR) / 2} cy={(padT + height - padB) / 2} r={(height - padT - padB) * 0.32} emote={3} />}
       {/* area */}
       <path className="area" d={area} fill={color} />
       <path ref={strokeRef} className="stroke" d={d} stroke={color} />

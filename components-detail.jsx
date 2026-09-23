@@ -716,6 +716,7 @@ function ComparisonRadar({ aStats, bStats }) {
   return <svg className="comparison-radar" viewBox={`0 0 ${size} ${size}`} role="img" aria-label={tr('compare_profiles')}>
     {[.25,.5,.75,1].map(level => <polygon key={level} points={aStats.map((_, index) => point(index, level).join(',')).join(' ')} fill="none" stroke="var(--line)" />)}
     {aStats.map((stat, index) => { const [x,y] = point(index); return <line key={stat.label} x1={center} y1={center} x2={x} y2={y} stroke="var(--line)"/>; })}
+    <IchiChartBadge cx={center} cy={center} r={radius * 0.26} emote={5} />
     <polygon points={polygon(aStats)} fill="var(--accent)" fillOpacity=".13" stroke="var(--accent)" strokeWidth="2"/>
     <polygon points={polygon(bStats)} fill="var(--accent-2)" fillOpacity=".13" stroke="var(--accent-2)" strokeWidth="2"/>
     {aStats.map((stat,index) => { const [x,y] = point(index,1.32); const anchor = x > center + 10 ? 'start' : x < center - 10 ? 'end' : 'middle'; return <g key={stat.label}><text x={x} y={y} textAnchor={anchor} fontFamily="var(--font-mono)" fontSize="11" fill="var(--ink-soft)">{stat.label.toUpperCase()}</text><text x={x} y={y+16} textAnchor={anchor} fontFamily="var(--font-mono)" fontSize="11" fontWeight="700" fill="var(--ink)">{stat.display} / {bStats[index].display}</text></g>; })}

@@ -265,7 +265,9 @@ function App() {
     window.addEventListener('langchange', bump);
     window.addEventListener('tzchange', bump);
     window.addEventListener('darkchange', bump);
-    return () => { window.removeEventListener('langchange', bump); window.removeEventListener('tzchange', bump); window.removeEventListener('darkchange', bump); };
+    // El modo Ichihime cambia los textos (nya), así que re-renderiza como un cambio de idioma.
+    window.addEventListener('ichihimechange', bump);
+    return () => { window.removeEventListener('langchange', bump); window.removeEventListener('tzchange', bump); window.removeEventListener('darkchange', bump); window.removeEventListener('ichihimechange', bump); };
   }, []);
   const [route, setRoute] = React.useState(parseRoute);
   const data = window.MJC_DATA;
@@ -302,6 +304,7 @@ function App() {
   return (
     <div className="app">
       <div className="bg-canvas"></div>
+      <IchihimeLayer />
 
       <header className="topbar">
         <div className="brand">
@@ -310,6 +313,7 @@ function App() {
             <div className="l1">{tr('app_title')}</div>
             <div className="l2">{tr('app_tagline')} · 麻雀リーグ</div>
           </div>
+          <IchihimeToggle />
         </div>
         <div className="meta">
           <span><b>2</b> {tr('divisiones')}</span>

@@ -363,6 +363,20 @@ paso a paso completo en `DISCORD_BOT.md`.
    sesiones jugadas.
 6. **Records** — Hall of Fame, 6 récords por división.
 
+## Modo Ichihime (easter egg)
+
+Botón junto al título: llena la página de Ichihime (fondo, stickers, emotes en
+pestañas y botones, centro de los radares) y hace que `tr()` cierre las frases
+con "nya". Vive en `ichihime.jsx` y en `i18n.js` (`ICHIHIME`, `setIchihime`,
+`nyaify`).
+
+- **El arte no se versiona.** Se enlaza desde `files.riichi.moe` (el espejo que
+  usa MajsoulData) y es © Yostar / Catfood; el modo muestra el crédito. Nunca
+  subir esos PNG al repo: sacarlo tiene que seguir siendo borrar un archivo.
+- Si el espejo cae, cada imagen que falla se oculta sola; el sitio no depende de él.
+- `nyaify` sólo toca texto de `tr()` con 3 o más palabras: rótulos cortos,
+  abreviaturas, números y datos no cambian.
+
 ## Reglas de trabajo
 
 - **Código completo y copy-paste-ready.** Nunca placeholders (`// tu lógica aquí`,
