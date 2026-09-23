@@ -365,7 +365,8 @@ paso a paso completo en `DISCORD_BOT.md`.
 
 ## Modo Ichihime (easter egg)
 
-Botón junto al título: llena la página de Ichihime (fondo, stickers, emotes en
+Botón junto al título: llena la página de Ichihime (un traje de fondo distinto por
+pestaña en `ICHI_SKINS`, stickers, emotes en
 pestañas y botones, centro de los radares) y hace que `tr()` cierre las frases
 con "nya". Vive en `ichihime.jsx` y en `i18n.js` (`ICHIHIME`, `setIchihime`,
 `nyaify`).

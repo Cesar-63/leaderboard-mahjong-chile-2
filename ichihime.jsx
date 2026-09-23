@@ -14,10 +14,26 @@ const ICHI_EMOTE = (n) => `${ICHI_BASE}/deco/emo/e200001/common/${n}.png`;
 // Emotes del traje por defecto (los 0–8 sin texto). 1 y 4 traen texto por
 // idioma, por eso no están. El 0 es el del botón.
 const ICHI_EMOTES = [0, 2, 3, 5, 6, 7, 8].map(ICHI_EMOTE);
+const ICHI_FULL = (skin) => `${ICHI_BASE}/deco/character/${skin}/full/full.png`;
+
+// Un traje de fondo por pestaña (son 7 y 7). La coordinación de mesas es parte
+// del calendario y usa el mismo.
+const ICHI_SKINS = {
+  standings: 'yiji',                 // traje por defecto
+  detail: 'yiji_0',                  // el del contrato
+  compare: 'yiji_kxj',               // supermercado
+  log: 'yiji_haitanpaidui',          // playa
+  iormc: 'yiji_CJ',                  // danza del león
+  calendar: 'yiji_xinnianchuzhi',    // Año Nuevo
+  coordinate: 'yiji_xinnianchuzhi',
+  hof: 'yiji_SP',                    // gato-espíritu
+};
+
 const ICHI = {
   button: ICHI_EMOTE(0),
   head: `${ICHI_BASE}/deco/character/yiji/smallhead/smallhead.png`,
-  full: `${ICHI_BASE}/deco/character/yiji/full/full.png`,
+  full: ICHI_FULL('yiji'),
+  fullFor: (tab) => ICHI_FULL(ICHI_SKINS[tab] || 'yiji'),
   emotes: ICHI_EMOTES,
 };
 
@@ -126,7 +142,7 @@ function IchihimeToggle() {
   );
 }
 
-function IchihimeLayer() {
+function IchihimeLayer({ tab }) {
   const on = useIchihime();
   const [seed, setSeed] = React.useState(() => Date.now());
   const [burst, setBurst] = React.useState(null);
@@ -147,7 +163,8 @@ function IchihimeLayer() {
   return (
     <React.Fragment>
       <div className="ichi-backdrop" aria-hidden="true">
-        <IchiImg src={ICHI.full} className="ichi-full" />
+        {/* key por pestaña: al cambiar, la imagen nueva entra con su animación */}
+        <IchiImg key={tab} src={ICHI.fullFor(tab)} className="ichi-full" />
       </div>
       <div className="ichi-stickers" aria-hidden="true">
         {stickers.map((s, i) => (

@@ -304,7 +304,7 @@ function App() {
   return (
     <div className="app">
       <div className="bg-canvas"></div>
-      <IchihimeLayer />
+      <IchihimeLayer tab={tab} />
 
       <header className="topbar">
         <div className="brand">
