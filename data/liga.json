@@ -194264,6 +194264,81 @@
       }
     ]
   },
+  "playoffMatches": [],
+  "playoffSchedule": [
+    {
+      "id": "PO-semis-M1-G1",
+      "code": "SF M1 G1",
+      "playoffRound": "semis",
+      "table": 1,
+      "hanchan": 1,
+      "ruleDivision": "A",
+      "date": "Por definir",
+      "weekday": "—",
+      "dateISO": null,
+      "time": null
+    },
+    {
+      "id": "PO-semis-M1-G2",
+      "code": "SF M1 G2",
+      "playoffRound": "semis",
+      "table": 1,
+      "hanchan": 2,
+      "ruleDivision": "A",
+      "date": "Por definir",
+      "weekday": "—",
+      "dateISO": null,
+      "time": null
+    },
+    {
+      "id": "PO-semis-M2-G1",
+      "code": "SF M2 G1",
+      "playoffRound": "semis",
+      "table": 2,
+      "hanchan": 1,
+      "ruleDivision": "B",
+      "date": "Por definir",
+      "weekday": "—",
+      "dateISO": null,
+      "time": null
+    },
+    {
+      "id": "PO-semis-M2-G2",
+      "code": "SF M2 G2",
+      "playoffRound": "semis",
+      "table": 2,
+      "hanchan": 2,
+      "ruleDivision": "B",
+      "date": "Por definir",
+      "weekday": "—",
+      "dateISO": null,
+      "time": null
+    },
+    {
+      "id": "PO-final-M1-G1",
+      "code": "FINAL G1",
+      "playoffRound": "final",
+      "table": 1,
+      "hanchan": 1,
+      "ruleDivision": "A",
+      "date": "Por definir",
+      "weekday": "—",
+      "dateISO": null,
+      "time": null
+    },
+    {
+      "id": "PO-final-M1-G2",
+      "code": "FINAL G2",
+      "playoffRound": "final",
+      "table": 1,
+      "hanchan": 2,
+      "ruleDivision": "A",
+      "date": "Por definir",
+      "weekday": "—",
+      "dateISO": null,
+      "time": null
+    }
+  ],
   "league": {
     "season": "Temporada 2026",
     "currentSession": 7,
@@ -194277,6 +194352,46 @@
       "code": "S7",
       "date": "22 sep",
       "day": "mar"
+    },
+    "playoffs": {
+      "qualifiers": 16,
+      "qualifiersPerDivision": 8,
+      "rounds": [
+        {
+          "id": "quarters",
+          "tables": 4,
+          "hanchan": 2,
+          "advancePerTable": 2,
+          "rulesByTable": [
+            "A",
+            "A",
+            "B",
+            "B"
+          ],
+          "seats": 16
+        },
+        {
+          "id": "semis",
+          "tables": 2,
+          "hanchan": 2,
+          "advancePerTable": 2,
+          "rulesByTable": [
+            "A",
+            "B"
+          ],
+          "seats": 8
+        },
+        {
+          "id": "final",
+          "tables": 1,
+          "hanchan": 3,
+          "advancePerTable": 1,
+          "rulesByTable": [
+            "A"
+          ],
+          "seats": 4
+        }
+      ]
     },
     "rules": {
       "A": {

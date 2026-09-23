@@ -193,7 +193,7 @@ class SheetsClient:
                 values[asked] = str(first[0]).strip() if first and first[0] is not None else ""
         return values
 
-    def write_cells(self, updates: dict[str, str]) -> int:
+    def write_cells(self, updates: dict[str, str], value_input_option: str = "RAW") -> int:
         """Escribe `rango A1 → valor` y devuelve cuántas celdas cambiaron.
 
         `RAW` deja el texto tal cual: el enlace del paipu se guarda como enlace,
@@ -202,7 +202,7 @@ class SheetsClient:
         if not updates:
             return 0
         payload = self._request("POST", "/values:batchUpdate", payload={
-            "valueInputOption": "RAW",
+            "valueInputOption": value_input_option,
             "data": [{"range": cell, "values": [[value]]} for cell, value in updates.items()],
         })
         return int(payload.get("totalUpdatedCells", 0))

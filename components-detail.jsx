@@ -388,8 +388,8 @@ function PlayerDetail({ playerId, data, onPick }) {
 
           {p.zone && (
             <div className={`zone-banner ${p.zone}`}>
-              {p.zone === 'playoff' && tr('zone_playoff')}
-              {p.zone === 'title' && tr('zone_playoff')}
+              {p.zone === 'playoff' && tr('zone_playoff', { n: playoffFormat(data).perDivision })}
+              {p.zone === 'title' && tr('zone_playoff', { n: playoffFormat(data).perDivision })}
               {p.zone === 'relegation' && tr('zone_releg')}
               {p.zone === 'promotion' && tr('zone_promo')}
               {p.zone === 'bottom' && tr('zone_bottom')}
@@ -883,7 +883,11 @@ function HanchanLog({ data, div }) {
   const cardRefs = React.useRef(new Map());
   const divData = data.divisions[div];
   const sessions = divData.sessions;
-  const allMatches = React.useMemo(() => [...divData.matches].reverse(), [divData.matches]);
+  const playoffRounds = playoffFormat(data).rounds;
+  const playoffFilter = playoffRounds.some(round => round.id === filter);
+  const allMatches = React.useMemo(() => playoffFilter
+    ? [...(data.playoffMatches || [])].filter(match => match.playoffRound === filter).reverse()
+    : [...divData.matches].reverse(), [divData.matches, data.playoffMatches, filter, playoffFilter]);
   const playerOptions = (() => {
     const players = new Map();
     allMatches.flatMap(match => match.players || []).forEach(player => players.set(player.name, player));
@@ -899,11 +903,11 @@ function HanchanLog({ data, div }) {
     return [{ value: '', label: tr('history_all_dates') }, ...[...dates].map(([value, label]) => ({ value, label }))];
   })();
   const matches = React.useMemo(() => {
-    return allMatches.filter(match => (filter === 'all' || match.sessionCode === filter)
+    return allMatches.filter(match => (playoffFilter || filter === 'all' || match.sessionCode === filter)
       && (!playerFilter || match.players.some(player => player.name === playerFilter))
       && (!countryFilter || match.players.some(player => player.nat === countryFilter))
       && (!dateFilter || (match.dateISO || match.date) === dateFilter));
-  }, [allMatches, filter, playerFilter, countryFilter, dateFilter]);
+  }, [allMatches, filter, playoffFilter, playerFilter, countryFilter, dateFilter]);
   const filtersActive = filter !== 'all' || playerFilter || countryFilter || dateFilter;
   const resetFilters = () => { setFilter('all'); setPlayerFilter(''); setCountryFilter(''); setDateFilter(''); };
   React.useLayoutEffect(() => {
@@ -938,11 +942,11 @@ function HanchanLog({ data, div }) {
         <div className="h-left">
           <span className="num">04 / Log</span>
           <h1>{tr('historial_title')}</h1>
-          <span className={`div-chip ${div}`}>DIV {div}</span>
+          {playoffFilter ? <span className="history-playoff-chip">{tr('playoffs_kicker')}</span> : <span className={`div-chip ${div}`}>DIV {div}</span>}
           <span className="jp" style={{ fontFamily: 'var(--font-jp)' }}>半荘記録</span>
         </div>
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-soft)' }}>
-          {tr('log_count', { shown: matches.length, total: divData.matches.length })}
+          {tr('log_count', { shown: matches.length, total: allMatches.length })}
         </div>
       </div>
 
@@ -953,6 +957,8 @@ function HanchanLog({ data, div }) {
             {s.code} <span className="sf-date">{sessionDate(s)}</span>
           </button>
         ))}
+        <span className="session-filter-divider">{tr('playoffs_kicker')}</span>
+        {playoffRounds.map(round => <button key={round.id} className={filter === round.id ? 'active' : ''} onClick={() => setFilter(round.id)}>{playoffRoundLabel(round.id)}</button>)}
       </div>
 
       <div className="history-filter-bar">
@@ -967,7 +973,7 @@ function HanchanLog({ data, div }) {
           <div ref={element => element ? cardRefs.current.set(m.id, element) : cardRefs.current.delete(m.id)} className={`hanchan-card ${expanded === m.id ? 'expanded' : ''}`} key={m.id} style={{ animation: 'rowin .35s ease both', animationDelay: `${Math.min(idx, 30) * 14}ms` }}>
             <div className="code-block">
               <div className="code">{m.code}</div>
-              <div className="date">{m.sessionCode} · H{m.hanchan}</div>
+              <div className="date">{m.playoffRound ? playoffRoundLabel(m.playoffRound) : m.sessionCode} · H{m.hanchan}</div>
               <div className="table">{tr('mesa', { n: m.table })} · {m.date}</div>
               <div className="hanchan-round-count"><strong>{m.rounds?.length || 0}</strong><span>{tr('history_hands')}</span></div>
               <div className="hanchan-outcome-summary">
@@ -991,7 +997,7 @@ function HanchanLog({ data, div }) {
             {expanded === m.id && <HanchanReplay match={m} />}
           </div>
         ))}
-        {!matches.length && <div className="history-empty"><strong>{tr('history_no_results')}</strong><span>{tr('history_no_results_detail')}</span><button onClick={resetFilters}>{tr('calendar_clear_filters')}</button></div>}
+        {!matches.length && <div className="history-empty"><strong>{playoffFilter ? tr('playoffs_history_pending_title', { round: playoffRoundLabel(filter) }) : tr('history_no_results')}</strong><span>{playoffFilter ? tr('playoffs_history_pending') : tr('history_no_results_detail')}</span>{playoffFilter ? <a href={`#/calendar/${div}/${filter}`}>{tr('playoffs_calendar_open')}</a> : <button onClick={resetFilters}>{tr('calendar_clear_filters')}</button>}</div>}
       </div>
     </div>
   );
@@ -1226,12 +1232,50 @@ function AvailabilityPage({ data, div, session, table }) {
   return <AvailabilityModal entry={entry} div={div} standalone onClose={() => { window.location.hash = `#/calendar/${div}`; }} />;
 }
 
-function CalendarView({ data, div = 'A' }) {
+function CalendarPhaseTabs({ rounds, phase, onChange }) {
+  return <nav className="calendar-phase-tabs" aria-label={tr('playoffs_calendar_phases')}>
+    <button className={phase === 'regular' ? 'active' : ''} onClick={() => onChange('regular')}>{tr('playoffs_regular_phase')}</button>
+    {rounds.map(round => <button key={round.id} className={phase === round.id ? 'active' : ''} onClick={() => onChange(round.id)}>{playoffRoundLabel(round.id)}</button>)}
+  </nav>;
+}
+
+function PlayoffCalendarPhase({ data, rounds, phase, onChange }) {
+  const roundIndex = rounds.findIndex(round => round.id === phase);
+  const round = rounds[roundIndex];
+  const seeding = roundIndex === 0 ? playoffSeeding(data, playoffFormat(data)) : null;
+  const seatsByRound = playoffBracketSeats(data, rounds, playoffSeeding(data, playoffFormat(data)));
+  const progress = playoffSeasonProgress(data);
+  const phaseHasSchedule = (data.playoffSchedule || []).some(item => item.playoffRound === round.id && item.dateISO);
+  return <div className="tab-panel playoff-calendar-panel">
+    <div className="section-head"><div className="h-left"><span className="num">05 / {tr('playoffs_kicker')}</span><h1>{tr('calendario_title')}</h1><span className="jp">予定</span></div><div className="section-meta">{tr('playoffs_mixed_note')}</div></div>
+    <CalendarPhaseTabs rounds={rounds} phase={phase} onChange={onChange} />
+    <section className="playoff-calendar-intro"><span className="block-label">{tr('playoffs_calendar_phases')}</span><h2>{playoffRoundLabel(round.id)}</h2><p>{round.tables > 1 ? tr('playoffs_tables_n', { n: round.tables }) : tr('playoffs_table_one')} · {tr('playoffs_hanchan_each', { n: round.hanchan })} · {round.id === 'final' ? tr('playoffs_champion') : tr('playoffs_advance_per_table', { n: round.advancePerTable })}</p>{!phaseHasSchedule && <small>{tr('playoffs_calendar_unscheduled')}</small>}</section>
+    <div className="playoff-calendar-grid">{Array.from({ length: round.tables }, (_, tableIndex) => {
+      const seats = seatsByRound[roundIndex]?.[tableIndex] || (roundIndex === 0 ? seeding?.[tableIndex] : playoffFeederSeats(rounds, roundIndex, tableIndex));
+      const division = round.rulesByTable[tableIndex];
+      const scheduled = (data.playoffSchedule || []).filter(item => item.playoffRound === round.id && item.table === tableIndex + 1 && item.dateISO);
+      const scheduleLabel = scheduled.length ? [...new Set(scheduled.map(item => `${item.date}${item.time ? ` · ${item.time}` : ''}`))].join(' / ') : tr('playoffs_calendar_date_pending');
+      return <article className="playoff-calendar-card" key={`${phase}-${tableIndex}`}>
+        <header><h3>{playoffRoundLabel(round.id)} · {tr('playoffs_mesa', { n: tableIndex + 1 })}</h3><span className={`playoff-rule-chip div-${division}`}>{playoffRuleLabel(round, tableIndex)}</span></header>
+        <div className="playoff-calendar-meta"><span>{round.hanchan} {tr('hanchan')}</span><span>{scheduleLabel}</span></div>
+        <ol>{Array.from({ length: 4 }, (_, index) => <li key={index}>{seats?.[index]?.player ? <React.Fragment><Flag nat={seats[index].player.nat} size={14} /><b>{seats[index].player.name}</b><small>{seats[index].code}</small></React.Fragment> : <span>{seats?.[index]?.label || tr('playoffs_seat_pending')}</span>}</li>)}</ol>
+        {roundIndex === 0 && !progress.settled && <small className="playoff-calendar-provisional">{tr('playoffs_provisional')}</small>}
+        <footer>{round.id === 'final' ? tr('playoffs_champion') : tr('playoffs_advance_per_table', { n: round.advancePerTable })}</footer>
+      </article>;
+    })}</div>
+    <a className="playoff-calendar-link" href="#/playoffs/A">{tr('playoffs_title')} ↗</a>
+  </div>;
+}
+
+function CalendarView({ data, div = 'A', phase = 'regular' }) {
   const [modal, setModal] = React.useState(null);
   const [view, setView] = React.useState('week');
   const [playerFilter, setPlayerFilter] = React.useState('');
   const [countryFilter, setCountryFilter] = React.useState('');
   const [timeFilter, setTimeFilter] = React.useState('all');
+  const playoffRounds = playoffFormat(data).rounds;
+  const setPhase = next => { window.location.hash = `#/calendar/${div}${next === 'regular' ? '' : `/${next}`}`; };
+  if (phase !== 'regular') return <PlayoffCalendarPhase data={data} rounds={playoffRounds} phase={phase} onChange={setPhase} />;
   const MONTHS = { ene: 0, feb: 1, mar: 2, abr: 3, may: 4, jun: 5, jul: 6, ago: 7, sep: 8, oct: 9, nov: 10, dic: 11 };
   const toDate = (s) => {
     const parts = String(s || '').split(' ');
@@ -1301,6 +1345,7 @@ function CalendarView({ data, div = 'A' }) {
         </div>
       </div>
 
+      <CalendarPhaseTabs rounds={playoffRounds} phase={phase} onChange={setPhase} />
       <div className="calendar-season-line">{Array.from({ length: data.league.sessionsTotal }, (_, index) => { const n = index + 1; return <div className={`calendar-season-step ${n < currentSession ? 'done' : n === currentSession ? 'current' : ''}`} key={n}><i>{n < currentSession ? '✓' : n}</i><span>{n === currentSession ? tr('calendar_current') : `S${n}`}</span></div>; })}</div>
 
       <div className="calendar-toolbar">

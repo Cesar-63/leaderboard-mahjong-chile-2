@@ -43,6 +43,7 @@ HISTORY_FIRST_ROW = 2
 HISTORY_LAST_ROW = 85
 HISTORY_LABEL_COL = 1
 HISTORY_VALUE_COL = 2
+PLAYOFF_LABEL_RE = re.compile(r"^(QF|SF)\s+M(\d+)\s+G(\d+)$|^FINAL\s+G(\d+)$", re.IGNORECASE)
 # Sin oka: los cuatro scores crudos de un hanchan siempre suman esto.
 TOTAL_RAW_SCORE = 120000
 # Mínimo de jugadores en común para dar por equivalentes dos grupos: 3 de 4,
@@ -74,6 +75,8 @@ def json_default(value: Any) -> Any:
         return value.isoformat()
     raise TypeError(type(value).__name__)
 
+
+DIVISIONS = ("A", "B")
 
 # Identidad que el pipeline necesita en memoria pero que NO se publica: el
 # account_id de Mahjong Soul permite buscar y seguir a un jugador dentro del
@@ -171,7 +174,7 @@ def read_calendar(workbook: Any) -> tuple[list[dict[str, Any]], list[dict[str, A
     fixtures: list[dict[str, Any]] = []
     submissions: list[dict[str, Any]] = []
     seen_uuids: dict[str, str] = {}
-    for division in ("A", "B"):
+    for division in DIVISIONS:
         for session, g1_row in enumerate(SESSION_G1_ROWS, start=1):
             for table_idx, (player_col, value_col) in enumerate(zip(CALENDAR_PLAYER_COLS[division], CALENDAR_VALUE_COLS[division]), start=1):
                 players = [str(cell_value(ws.cell(g1_row - 2 + offset, player_col)) or "") for offset in range(4)]
@@ -273,6 +276,55 @@ def parse_history(workbook: Any, division: str, sheet_name: str, rule: dict[str,
     return output
 
 
+def parse_playoff_history(workbook: Any, config: dict[str, Any]) -> list[dict[str, Any]]:
+    """Lee los resultados oficiales de la hoja Playoffs.
+
+    La columna A identifica cada hanchan (`QF M1 G1`, `SF M2 G2`,
+    `FINAL G3`) y la B usa el mismo formato de Game History. La regla y el uma
+    salen de la configuración de cada mesa, así que una semifinal con reglas B
+    no puede calcularse accidentalmente con el uma de A.
+    """
+    sheet_name = str(config.get("playoffSheet") or "Playoffs")
+    if sheet_name not in workbook.sheetnames:
+        return []
+    ws = workbook[sheet_name]
+    rounds = {item["id"]: item for item in playoff_format(config)["rounds"]}
+    aliases = {"QF": "quarters", "SF": "semis"}
+    output: list[dict[str, Any]] = []
+    seen: set[tuple[str, int, int]] = set()
+    for row in range(1, ws.max_row + 1):
+        label = str(cell_value(ws.cell(row, 1)) or "").strip().upper()
+        match = PLAYOFF_LABEL_RE.match(label)
+        if not match:
+            continue
+        if match.group(4):
+            round_id, table, game = "final", 1, int(match.group(4))
+        else:
+            round_id, table, game = aliases[match.group(1).upper()], int(match.group(2)), int(match.group(3))
+        round_item = rounds.get(round_id)
+        where = f"{sheet_name}!A{row}"
+        if round_item is None or table < 1 or table > round_item["tables"] or game < 1 or game > round_item["hanchan"]:
+            raise SyncError(f"{where}: partida fuera del formato configurado")
+        key = (round_id, table, game)
+        if key in seen:
+            raise SyncError(f"{where}: partida de eliminatorias duplicada")
+        seen.add(key)
+        rule_division = round_item["rulesByTable"][table - 1]
+        raw = str(cell_value(ws.cell(row, 2)) or "").strip()
+        raw_date = cell_value(ws.cell(row, 3))
+        raw_time = cell_value(ws.cell(row, 4))
+        display_date, weekday, iso_date = format_date(raw_date)
+        results = parse_history_line(raw, config["divisions"][rule_division], f"{sheet_name}!B{row}") if raw else []
+        output.append({
+            "id": f"PO-{round_id}-M{table}-G{game}", "code": label,
+            "playoffRound": round_id, "table": table, "hanchan": game,
+            "ruleDivision": rule_division, "results": results,
+            "date": display_date, "weekday": weekday, "dateISO": iso_date,
+            "time": raw_time.isoformat(timespec="minutes") if isinstance(raw_time, time) else None,
+        })
+    return output
+
+
 def merge_paipus(submissions: list[dict[str, Any]], histories: dict[str, dict[str, Any]], cache_dir: Path, offline: bool) -> tuple[dict[str, Any], dict[str, Any]]:
     status: list[dict[str, Any]] = []
     parsed_games: dict[str, Any] = {}
@@ -321,6 +373,81 @@ def merge_paipus(submissions: list[dict[str, Any]], histories: dict[str, dict[st
             message = str(exc) if isinstance(exc, PaipuError) else f"{type(exc).__name__}: {exc}"
             status.append({"key": submission["key"], "cell": submission["cell"], "uuid": uuid, "status": "ERROR", "message": message})
     return parsed_games, {"submissions": status}
+
+
+# Formato de las eliminatorias. Vive en sync-config.json y no acá porque es
+# regla de liga: el mismo número de clasificados dibuja el cuadro y pinta la
+# zona de eliminatorias en la tabla. El default es el respaldo si el archivo
+# viene de una versión anterior.
+PLAYOFF_FORMAT_DEFAULT: dict[str, Any] = {
+    "qualifiersPerDivision": 8,
+    "qualifiers": 16,
+    "rounds": [
+        {"id": "quarters", "tables": 4, "hanchan": 2, "advancePerTable": 2, "rulesByTable": ["A", "A", "B", "B"]},
+        {"id": "semis", "tables": 2, "hanchan": 2, "advancePerTable": 2, "rulesByTable": ["A", "B"]},
+        {"id": "final", "tables": 1, "hanchan": 3, "advancePerTable": 1, "rulesByTable": ["A"]},
+    ],
+}
+
+
+def playoff_format(config: dict[str, Any]) -> dict[str, Any]:
+    """Valida el formato de eliminatorias y lo deja listo para el payload.
+
+    **El cuadro es uno solo para toda la liga**: cada división clasifica a sus
+    `qualifiersPerDivision` mejores y los dos grupos se mezclan en las mismas
+    mesas. Por eso el corte que pinta la tabla es el de división y el que llena
+    los cuartos es la suma de los dos.
+
+    Se juega en mesas de cuatro, así que el cuadro sólo cierra si cada ronda
+    llena sus mesas con los que avanzaron de la anterior: 16 → 4 mesas → 8 →
+    2 mesas → 4 → 1 mesa. Un formato que no cuadre es un error de
+    configuración y se canta acá, no se maquilla en la vista.
+    """
+    fmt = config.get("playoffs") or PLAYOFF_FORMAT_DEFAULT
+    rounds = [dict(item) for item in fmt.get("rounds") or []]
+    if not rounds:
+        raise SyncError("Eliminatorias: 'rounds' está vacío en la configuración")
+    for round_item in rounds:
+        for field in ("id", "tables", "hanchan", "advancePerTable"):
+            if round_item.get(field) in (None, ""):
+                raise SyncError(f"Eliminatorias: ronda sin '{field}' en la configuración")
+        if int(round_item["advancePerTable"]) > 4:
+            raise SyncError(f"Eliminatorias: la ronda {round_item['id']} hace avanzar más de 4 por mesa")
+        default_round = next((item for item in PLAYOFF_FORMAT_DEFAULT["rounds"] if item["id"] == round_item["id"]), None)
+        rules_by_table = round_item.get("rulesByTable", default_round["rulesByTable"] if default_round else None)
+        if not isinstance(rules_by_table, list) or len(rules_by_table) != int(round_item["tables"]):
+            raise SyncError(f"Eliminatorias: la ronda {round_item['id']} necesita una regla por mesa")
+        if any(division not in DIVISIONS for division in rules_by_table):
+            raise SyncError(f"Eliminatorias: la ronda {round_item['id']} usa reglas de división desconocida")
+        round_item["rulesByTable"] = rules_by_table
+    qualifiers = int(fmt.get("qualifiers") or int(rounds[0]["tables"]) * 4)
+    if qualifiers != int(rounds[0]["tables"]) * 4:
+        raise SyncError(f"Eliminatorias: {qualifiers} clasificados no llenan {rounds[0]['tables']} mesas de 4")
+    per_division = int(fmt.get("qualifiersPerDivision") or qualifiers // len(DIVISIONS))
+    if per_division * len(DIVISIONS) != qualifiers:
+        raise SyncError(f"Eliminatorias: {per_division} por división en {len(DIVISIONS)} divisiones no dan {qualifiers} clasificados")
+    for previous, current in zip(rounds, rounds[1:]):
+        advancing = int(previous["tables"]) * int(previous["advancePerTable"])
+        seats = int(current["tables"]) * 4
+        if advancing != seats:
+            raise SyncError(f"Eliminatorias: de {previous['id']} avanzan {advancing} y {current['id']} tiene {seats} asientos")
+    if int(rounds[-1]["tables"]) != 1:
+        raise SyncError("Eliminatorias: la última ronda debe ser una sola mesa")
+    return {
+        "qualifiers": qualifiers,
+        "qualifiersPerDivision": per_division,
+        "rounds": [
+            {
+                "id": str(round_item["id"]),
+                "tables": int(round_item["tables"]),
+                "hanchan": int(round_item["hanchan"]),
+                "advancePerTable": int(round_item["advancePerTable"]),
+                "rulesByTable": round_item["rulesByTable"],
+                "seats": int(round_item["tables"]) * 4,
+            }
+            for round_item in rounds
+        ],
+    }
 
 
 def pct(value: int, total: int) -> float:
@@ -463,7 +590,7 @@ def build_excel_results(official: dict[str, Any], fixture_players: list[str], pl
     return results
 
 
-def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, Any]]], fixtures: list[dict[str, Any]], submissions: list[dict[str, Any]], histories: dict[str, dict[str, Any]], parsed_games: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, Any]]], fixtures: list[dict[str, Any]], submissions: list[dict[str, Any]], histories: dict[str, dict[str, Any]], parsed_games: dict[str, Any], playoff_history: list[dict[str, Any]] | None = None) -> tuple[dict[str, Any], dict[str, Any]]:
     divisions: dict[str, Any] = {}
     all_players: list[dict[str, Any]] = []
     stats_output: dict[str, Any] = {"players": {}}
@@ -473,7 +600,9 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
     won_hands: dict[str, list[dict[str, Any]]] = {}
     submission_by_key = {item["key"]: item for item in submissions if item.get("url")}
     absence_penalty = float(config.get("absencePenaltyPerHanchan", -30))
-    for division in ("A", "B"):
+    playoffs = playoff_format(config)
+    playoff_cut = playoffs["qualifiersPerDivision"]
+    for division in DIVISIONS:
         rule = config["divisions"][division]
         players = [{**player, "games": 0, "points": 0.0, "history": [], "cum": [], "counts": [0, 0, 0, 0], "absences": 0, "hands": 0, "wins": 0, "dealIns": 0, "riichis": 0, "openHands": 0, "damaten": 0, "kans": 0, "doras": 0, "uraDoras": 0, "maxHonba": 0, "winPoints": 0, "dealInPoints": 0, "winTurns": 0, "yakuCounts": Counter()} for player in rosters[division]]
         by_id = {player["id"]: player for player in players}
@@ -614,7 +743,7 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
         players.sort(key=lambda item: (-item["points"], item["avgRank"] if item["games"] else 99, item["name"].lower()))
         for index, player in enumerate(players, start=1):
             player["rank"] = index
-            player["zone"] = ("playoff" if index <= 8 else "relegation" if index >= 21 else None) if division == "A" else ("playoff" if index <= 8 else "bottom" if index >= 21 else None)
+            player["zone"] = ("playoff" if index <= playoff_cut else "relegation" if index >= 21 else None) if division == "A" else ("playoff" if index <= playoff_cut else "bottom" if index >= 21 else None)
         session_items = []
         for session in range(1, int(config["sessionsTotal"]) + 1):
             session_matches = [match for match in matches if match["session"] == session]
@@ -628,12 +757,12 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
         divisions[division] = {"key": division, "players": players, "matches": matches, "sessions": session_items}
         all_players.extend(players)
 
-    sessions_played = min(sum(1 for s in divisions[d]["sessions"] if s["status"] == "played") for d in ("A", "B"))
+    sessions_played = min(sum(1 for s in divisions[d]["sessions"] if s["status"] == "played") for d in DIVISIONS)
     # Una sesión ya está en curso cuando tiene al menos una partida registrada
     # o una mesa fechada; no hace falta esperar a que ambas divisiones terminen.
     evidenced_sessions = {
         match["session"]
-        for division in ("A", "B")
+        for division in DIVISIONS
         for match in divisions[division]["matches"]
     } | {fixture["session"] for fixture in fixtures if fixture["dateISO"]}
     current_session = max(evidenced_sessions, default=min(sessions_played + 1, int(config["sessionsTotal"])))
@@ -660,6 +789,32 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
         best = max(group, key=lambda p: p["points"])
         nationalities.append({"code": code, "count": len(group), "inA": sum(p["div"] == "A" for p in group), "inB": sum(p["div"] == "B" for p in group), "avgPoints": round(sum(p["points"] for p in group) / len(group), 1), "avgRank": round(sum(p["avgRank"] for p in group) / len(group), 2), "best": best})
     player_nat = {p["name"].lower(): p["nat"] for p in all_players}
+    player_by_name = {p["name"].strip().lower(): p for p in all_players}
+    playoff_matches = []
+    playoff_schedule = []
+    for match in playoff_history or []:
+        playoff_schedule.append({key: match[key] for key in (
+            "id", "code", "playoffRound", "table", "hanchan", "ruleDivision",
+            "date", "weekday", "dateISO", "time",
+        )})
+        if not match["results"]:
+            continue
+        match_players = []
+        for result in match["results"]:
+            player = player_by_name.get(result["name"].strip().lower())
+            match_players.append({
+                "id": player["id"] if player else f"playoff-{result['name']}",
+                "name": player["name"] if player else result["name"],
+                "handle": player["handle"] if player else result["name"],
+                "nat": player["nat"] if player else "OT",
+                "scoreRaw": result["scoreRaw"], "place": result["place"], "delta": result["delta"],
+            })
+        playoff_matches.append({
+            **{key: match[key] for key in ("id", "code", "playoffRound", "table", "hanchan", "ruleDivision")},
+            "sessionCode": match["code"], "date": match["date"], "dateISO": match["dateISO"],
+            "weekday": match["weekday"], "time": match["time"], "players": match_players, "verified": False,
+            "source": "excel", "paipuUrl": None, "rounds": [],
+        })
     calendar = []
     for fixture in fixtures:
         fixture_session = divisions[fixture["division"]]["sessions"][fixture["session"] - 1]
@@ -678,7 +833,9 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
     data = {
         "divisions": divisions, "allPlayers": all_players, "nationalities": nationalities,
         "iormc": iormc, "calendar": calendar, "yakuHands": won_hands,
-        "league": {"season": config["seasonLabel"], "currentSession": current_session, "sessionsPlayed": sessions_played, "sessionsTotal": int(config["sessionsTotal"]), "hanchanPerSession": 2, "playersPerDiv": 24, "hanchanPerDiv": max(len(divisions["A"]["matches"]), len(divisions["B"]["matches"])), "hanchanTotal": len(divisions["A"]["matches"]) + len(divisions["B"]["matches"]), "nextSession": next_session, "rules": {key: {"initialPoints": value["initialPoints"], "uma": value["uma"]} for key, value in config["divisions"].items()}},
+        "playoffMatches": playoff_matches,
+        "playoffSchedule": playoff_schedule,
+        "league": {"season": config["seasonLabel"], "currentSession": current_session, "sessionsPlayed": sessions_played, "sessionsTotal": int(config["sessionsTotal"]), "hanchanPerSession": 2, "playersPerDiv": 24, "hanchanPerDiv": max(len(divisions["A"]["matches"]), len(divisions["B"]["matches"])), "hanchanTotal": len(divisions["A"]["matches"]) + len(divisions["B"]["matches"]), "nextSession": next_session, "playoffs": playoffs, "rules": {key: {"initialPoints": value["initialPoints"], "uma": value["uma"]} for key, value in config["divisions"].items()}},
     }
     add_hall_of_fame(data)
     # Última parada antes de que los datos salgan de la función: lo que se
@@ -687,7 +844,7 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
 
 
 def add_hall_of_fame(data: dict[str, Any]) -> None:
-    for division in ("A", "B"):
+    for division in DIVISIONS:
         players = data["divisions"][division]["players"]
         top = players[0]
         def best(field: str, lower: bool = False) -> dict[str, Any]:
@@ -928,6 +1085,7 @@ def main() -> int:
         histories: dict[str, dict[str, Any]] = {}
         for division, rule in config["divisions"].items():
             histories.update(parse_history(workbook, division, rule["historySheet"], rule))
+        playoff_history = parse_playoff_history(workbook, config)
         histories, avisos_mesas = align_history_with_fixtures(histories, fixtures)
         for aviso in avisos_mesas:
             print(f"AVISO: {aviso}", file=sys.stderr)
@@ -950,7 +1108,7 @@ def main() -> int:
             failures = [item for item in status["submissions"] if item["status"] == "ERROR"]
             if failures:
                 raise SyncError("Paipus con error:\n" + "\n".join(f"- {item['cell']}: {item['message']}" for item in failures))
-        data, stats = build_public_data(config, rosters, fixtures, submissions, histories, parsed_games)
+        data, stats = build_public_data(config, rosters, fixtures, submissions, histories, parsed_games, playoff_history)
         health = advanced_stats_health(stats, status)
         if args.require_stats and health["submitted"] and not health["with_hands"]:
             raise SyncError("Estadísticas avanzadas ausentes: hay paipus enviados pero ninguno aportó manos (REQUIERE_AUTH/ERROR). Revisa la sesión técnica.")
@@ -960,7 +1118,8 @@ def main() -> int:
                 print(f"  {issue['status']} en {issue['cell']}: {issue['message']}", file=sys.stderr)
         write_outputs(data, stats, status, args.output)
         counts = Counter(item["status"] for item in status["submissions"])
-        print(f"Sincronización lista: {len(histories)} resultados oficiales, {len(parsed_games)} paipus procesados")
+        playoff_results = sum(bool(item["results"]) for item in playoff_history)
+        print(f"Sincronización lista: {len(histories)} resultados regulares, {playoff_results} resultados de eliminatorias, {len(parsed_games)} paipus procesados")
         print("Estados paipu: " + ", ".join(f"{key}={value}" for key, value in sorted(counts.items())))
         print(f"Stats avanzadas: {health['summary']}")
         print(f"Salida: {args.output}")

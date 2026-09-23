@@ -28,6 +28,50 @@ mahjong, jugada en sala de torneo de MahjongSoul. Estático, sin backend, sin au
   hora y no una vez al día, y por eso una sesión en curso tiene casi siempre
   mesas jugadas y mesas pendientes a la vez.
 - **Ascenso/descenso:** hay serie de promoción entre A 21-24 y B 1-4.
+- **Eliminatorias:** terminada la fase regular clasifican los **8 primeros de
+  cada división** y **el cuadro es uno solo para toda la liga**: los 16 se
+  mezclan en las mismas mesas y el campeón es de Liga Mahjong Chile, no de una
+  división. No existen «eliminatorias de A» y «de B», así que la vista no está
+  scopeada por división (no entra en `DIV_SCOPED`). Se juegan en mesas de cuatro
+  y cada ronda llena sus mesas con los que avanzaron de la anterior: cuartos
+  (4 mesas) y semifinales (2 mesas) a **2 hanchan**, final (1 mesa) a **3**;
+  avanzan los dos primeros de cada mesa por la suma de sus hanchan, sin
+  comparar puntajes entre mesas. Cuartos M1-M2 usan reglas A y M3-M4 reglas B;
+  semifinales M1 usa A y M2 usa B; la final usa A. El formato vive en `sync-config.json`
+  bajo `playoffs`, con `qualifiersPerDivision` (el corte que **pinta la zona de
+  eliminatorias en la tabla**) y `qualifiers` (los que llenan los cuartos):
+  cambiar el corte ahí lo cambia en las dos partes. `playoff_format` en
+  `sync.py` lo valida —si una ronda no llena sus mesas con los que avanzaron, o
+  si las cuotas por división no suman el cuadro, el job falla— y lo publica en
+  `league.playoffs`. **Los clasificados no van en el JSON**: se derivan de la
+  tabla en la vista, como el resto de lo calculado. **Los puntos de A y B no se
+  mezclan en una sola lista**: con uma y akadora distintos no son la misma vara,
+  así que cada división muestra su grupo, su corte y su burbuja. Mientras quede
+  una sesión por jugar en cualquiera de las dos, la vista los muestra como
+  proyección, no como cuadro cerrado.
+- **Calendario e historial de eliminatorias:** el calendario muestra las siete
+  mesas agrupadas por ronda con reglas y hanchan de cada una. Las fechas siguen
+  pendientes hasta que haya un calendario oficial; no se generan horarios
+  ficticios ni se ofrece la coordinación de sesiones regulares para estas
+  mesas. El historial ofrece filtros por ronda y sólo muestra resultados
+  cuando exista `playoffMatches` oficial en el payload.
+- **La siembra de cuartos es cruzada y determinista, no un sorteo.** Una
+  división se reparte de arriba hacia abajo y la otra al revés, dos de cada una
+  por mesa: la mesa 1 junta a A1 y A2 con B7 y B8, la 2 a A3 y A4 con B5 y B6,
+  la 3 a A5 y A6 con B3 y B4 y la 4 a A7 y A8 con B1 y B2. De ahí en adelante
+  cada mesa manda a sus dos primeros a la ronda siguiente **en orden** —las dos
+  primeras de cuartos alimentan la semifinal 1—, y los asientos de semis y final
+  dicen de qué mesa y con qué puesto salen. `playoffSeeding` y
+  `playoffFeederSeats` en `components-playoffs.jsx` lo derivan de la tabla; si
+  el reparto no diera un número entero por mesa, la vista vuelve a mostrar los
+  asientos pendientes en vez de inventar un emparejamiento.
+- **Las líneas del árbol se miden en el navegador**, con
+  `getBoundingClientRect` y un `ResizeObserver` sobre las tarjetas, y se pintan
+  en un SVG absoluto sobre el cuadro. No salen de una grilla CSS porque las
+  mesas no están en una rejilla regular: cada ronda tiene su propia cabecera y
+  su propia cantidad de mesas, y las alturas cambian con el idioma, el tema y el
+  ancho de la ventana. Apilado (bajo 900px) no hay árbol horizontal: el SVG se
+  oculta y quedan las flechas entre rondas.
 
 ## Reglas de puntaje
 
@@ -362,6 +406,10 @@ paso a paso completo en `DISCORD_BOT.md`.
 5. **Calendario** — próximos eventos por división, serie de promoción, strip de
    sesiones jugadas.
 6. **Records** — Hall of Fame, 6 récords por división.
+7. **Eliminatorias** — cuadro único de la liga (cuartos → semis → final) con la
+   siembra cruzada ya resuelta en los cuartos, el árbol que conecta cada mesa
+   con la siguiente y el nodo de campeón, más los clasificados en dos grupos
+   (top 8 de A y top 8 de B) con su corte y su burbuja.
 
 ## Reglas de trabajo
 

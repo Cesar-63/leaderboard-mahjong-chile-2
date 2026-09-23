@@ -6,6 +6,34 @@
   "currentSessionMinimum": 7,
   "minimumAdvancedStatsHands": 8,
   "absencePenaltyPerHanchan": -30,
+  "playoffSheet": "Playoffs",
+  "playoffs": {
+    "qualifiersPerDivision": 8,
+    "qualifiers": 16,
+    "rounds": [
+      {
+        "id": "quarters",
+        "tables": 4,
+        "hanchan": 2,
+        "advancePerTable": 2,
+        "rulesByTable": ["A", "A", "B", "B"]
+      },
+      {
+        "id": "semis",
+        "tables": 2,
+        "hanchan": 2,
+        "advancePerTable": 2,
+        "rulesByTable": ["A", "B"]
+      },
+      {
+        "id": "final",
+        "tables": 1,
+        "hanchan": 3,
+        "advancePerTable": 1,
+        "rulesByTable": ["A"]
+      }
+    ]
+  },
   "divisions": {
     "A": {
       "uma": [

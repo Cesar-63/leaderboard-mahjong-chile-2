@@ -15,6 +15,7 @@ const TABS = [
   { id: 'log',       jp: '半荘',   es: 'Historial', en: 'Log', pt: 'Histórico' },
   { id: 'iormc',     jp: '代表',   es: 'IORMC', en: 'IORMC', pt: 'IORMC' },
   { id: 'calendar',  jp: '予定',   es: 'Calendario', en: 'Calendar', pt: 'Calendário' },
+  { id: 'playoffs',  jp: '決勝',   es: 'Eliminatorias', en: 'Playoffs', pt: 'Eliminatórias' },
   { id: 'hof',       jp: '殿堂',   es: 'Records', en: 'Records', pt: 'Recordes' },
 ];
 
@@ -29,6 +30,8 @@ const ROUTE_RE = /^#\/([a-z]+)(?:\/([A-Za-z0-9_!.\-]+))?/;
 function parseRoute() {
   const coordination = window.location.hash.match(/^#\/coordinar\/([AB])\/(\d+)\/(\d+)$/);
   if (coordination) return { tab: 'coordinate', div: coordination[1], session: Number(coordination[2]), table: Number(coordination[3]), playerId: null };
+  const calendarPhase = window.location.hash.match(/^#\/calendar\/([AB])\/(quarters|semis|final)$/);
+  if (calendarPhase) return { tab: 'calendar', div: calendarPhase[1], phase: calendarPhase[2], playerId: null };
   const m = window.location.hash.match(ROUTE_RE);
   let tab = m && ROUTE_TABS.includes(m[1]) ? m[1] : 'standings';
   let div = 'A';
@@ -77,8 +80,9 @@ function TabBar({ active, onChange, lang }) {
   );
 }
 
-function RulesModal({ division, rules, onClose }) {
+function RulesModal({ division, rules, playoffs, onClose }) {
   const uma = rules[division].uma.map(v => v >= 0 ? `+${v}` : `−${Math.abs(v)}`).join(' / ');
+  const playoffCut = playoffFormat({ league: { playoffs } }).perDivision;
   const room = division === 'A'
     ? [tr('rules_a_red'), tr('rules_a_ron'), tr('rules_a_yakuman'), tr('rules_a_nagashi'), tr('rules_a_kokushi')]
     : [tr('rules_b_red'), tr('rules_b_ron'), tr('rules_b_yakuman'), tr('rules_b_nagashi'), tr('rules_b_kokushi')];
@@ -95,7 +99,7 @@ function RulesModal({ division, rules, onClose }) {
           <div><b>7</b><span>{tr('rules_regular_sessions')}</span></div>
           <div><b>14</b><span>{tr('rules_total_hanchan')}</span></div>
           <div><b>30.000</b><span>{tr('rules_start')}</span></div>
-          <div><b>TOP 8</b><span>{tr('rules_qualify')}</span></div>
+          <div><b>TOP {playoffCut}</b><span>{tr('rules_qualify')}</span></div>
         </div>
         <div className="rules-flow" aria-label={tr('rules_flow_title')}>
           <div className="rules-flow-step"><span className="rules-flow-icon">予</span><div><small>01</small><b>{tr('rules_flow_schedule_title')}</b><p>{tr('rules_flow_schedule_text')}</p></div></div>
@@ -105,7 +109,7 @@ function RulesModal({ division, rules, onClose }) {
         <div className="rules-grid">
           <article className="rule-card sessions"><h3><span>時</span>{tr('rules_sessions_title')}</h3><ul><li>{tr('rules_sessions_1')}</li><li>{tr('rules_sessions_3')}</li></ul></article>
           <article className="rule-card score"><h3><span>点</span>{tr('rules_score_title')}</h3><p className="rules-formula">({tr('rules_final_score')} − 30.000) / 1.000 + UMA</p><p className="rules-uma">UMA · DIV {division} <b>{uma}</b></p><p>{tr('rules_score_example')}</p></article>
-          <article className="rule-card playoffs"><h3><span>決</span>{tr('rules_playoffs_title')}</h3><div className="rule-callout"><b>8</b><small>{tr('rules_advance')}</small></div><p>{tr('rules_playoffs_text')}</p></article>
+          <article className="rule-card playoffs"><h3><span>決</span>{tr('rules_playoffs_title')}</h3><div className="rule-callout"><b>{playoffCut}</b><small>{tr('rules_advance')}</small></div><p>{tr('rules_playoffs_text', { n: playoffCut })}</p><PlayoffRulesSummary rounds={playoffFormat({ league: { playoffs } }).rounds} rules={rules} /></article>
           <article className="rule-card room"><h3><span>雀</span>{tr('rules_room_title', { div: division })}</h3><ul>{room.map(item => <li key={item}>{item}</li>)}</ul></article>
           <article className="rule-card common"><h3><span>共</span>{tr('rules_common_title')}</h3><ul><li>{tr('rules_common_1')}</li><li>{tr('rules_common_2')}</li><li>{tr('rules_common_3')}</li><li>{tr('rules_common_4')}</li></ul></article>
           <article className="rule-card league"><div><h3><span>国</span>{tr('rules_eligibility_title')}</h3><p>{tr('rules_eligibility_text')}</p></div><div><h3><span>映</span>{tr('rules_stream_title')}</h3><p>{tr('rules_stream_text')}</p></div></article>
@@ -270,7 +274,7 @@ function App() {
   const [route, setRoute] = React.useState(parseRoute);
   const data = window.MJC_DATA;
   const L = data.league;
-  const { tab, div, playerId, session, table } = route;
+  const { tab, div, playerId, session, table, phase } = route;
 
   React.useEffect(() => {
     if (!window.location.hash) window.location.hash = routeToHash(tab, div, playerId);
@@ -364,11 +368,12 @@ function App() {
         {tab === 'compare' && <Comparator data={data} />}
         {tab === 'log' && <HanchanLog data={data} div={div} />}
         {tab === 'iormc' && <IORMCView data={data} onPick={selectPlayer} />}
-        {tab === 'calendar' && <CalendarView data={data} div={div} />}
+        {tab === 'calendar' && <CalendarView data={data} div={div} phase={phase || 'regular'} />}
         {tab === 'coordinate' && <AvailabilityPage data={data} div={div} session={session} table={table} />}
+        {tab === 'playoffs' && <PlayoffsView data={data} onSelectPlayer={selectPlayer} />}
         {tab === 'hof' && <HallOfFame data={data} div={div} />}
       </main>
-      {rulesOpen && <RulesModal division={div} rules={L.rules} onClose={() => setRulesOpen(false)} />}
+      {rulesOpen && <RulesModal division={div} rules={L.rules} playoffs={L.playoffs} onClose={() => setRulesOpen(false)} />}
 
       <TweaksPanel title={tr('tweaks_title')}>
         <TweakSection label={tr('tema')} />

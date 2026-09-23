@@ -2,16 +2,20 @@ import json
 import pathlib
 import unittest
 from unittest.mock import patch
+from openpyxl import Workbook
 
 from scripts.majsoul import (
     NON_YAKU_FAN_IDS, PaipuError, YAKU_NAMES, extract_record_id, extract_uuid,
     has_yostar_credentials, parse_record,
 )
 from scripts.sync import (
-    CALENDAR_VALUE_COLS, PRIVATE_PLAYER_FIELDS, SESSION_G1_ROWS, TOTAL_RAW_SCORE, advanced_stats_health,
-    align_history_with_fixtures, build_excel_results, build_paipu_results, build_public_data,
-    crosscheck_substitutes, date_from_paipu_uuid, demote_unexpected_seats, find_absent_player, match_paipu_seats, merge_paipus,
-    normalize_nat, split_substitute_mark, strip_private_fields,
+    CALENDAR_VALUE_COLS, DIVISIONS, PLAYOFF_FORMAT_DEFAULT, PRIVATE_PLAYER_FIELDS,
+    SESSION_G1_ROWS, SyncError, TOTAL_RAW_SCORE, advanced_stats_health,
+    align_history_with_fixtures, build_excel_results, build_paipu_results,
+    build_public_data, crosscheck_substitutes, date_from_paipu_uuid,
+    demote_unexpected_seats, find_absent_player, load_config, match_paipu_seats,
+    merge_paipus, normalize_nat, parse_playoff_history, playoff_format,
+    split_substitute_mark, strip_private_fields,
 )
 
 
@@ -606,9 +610,7 @@ class SesionActualTests(unittest.TestCase):
         ]
         for fixture in fixtures:
             fixture["dateISO"] = None
-
         data, _ = build_public_data(config, _rosters(), fixtures, [], {}, {})
-
         self.assertEqual(data["league"]["currentSession"], 7)
         self.assertEqual(data["league"]["nextSession"]["code"], "S7")
         self.assertEqual([(item["session"], item["status"]) for item in data["calendar"]],
@@ -935,6 +937,114 @@ class PrivacidadTests(unittest.TestCase):
             crudo = generated.read_text(encoding="utf-8")
             cuerpo = crudo[crudo.index("window.MJC_DATA = ") + len("window.MJC_DATA = "):].rstrip().rstrip(";")
             self.assertEqual(_private_paths(json.loads(cuerpo), "generated.js"), [])
+
+
+
+class EliminatoriasTests(unittest.TestCase):
+    """El cuadro se juega en mesas de cuatro: cuartos, semis y final tienen que
+    encadenar sin dejar asientos sueltos, y el número de clasificados es el
+    mismo que pinta la zona de eliminatorias en la tabla."""
+
+    def test_el_formato_del_repo_encadena_las_tres_rondas(self):
+        raiz = pathlib.Path(__file__).resolve().parent.parent
+        fmt = playoff_format(load_config(raiz / "sync-config.json"))
+        self.assertEqual(fmt["qualifiers"], fmt["rounds"][0]["seats"])
+        # El cuadro es uno solo: las dos divisiones aportan la misma cuota.
+        self.assertEqual(fmt["qualifiersPerDivision"] * len(DIVISIONS), fmt["qualifiers"])
+        self.assertEqual([r["id"] for r in fmt["rounds"]], ["quarters", "semis", "final"])
+        self.assertEqual([r["hanchan"] for r in fmt["rounds"]], [2, 2, 3])
+        self.assertEqual([r["advancePerTable"] for r in fmt["rounds"]], [2, 2, 1])
+        self.assertEqual([r["rulesByTable"] for r in fmt["rounds"]], [["A", "A", "B", "B"], ["A", "B"], ["A"]])
+        for previa, actual in zip(fmt["rounds"], fmt["rounds"][1:]):
+            self.assertEqual(previa["tables"] * previa["advancePerTable"], actual["seats"])
+        self.assertEqual(fmt["rounds"][-1]["tables"], 1)
+
+    def test_sin_bloque_de_eliminatorias_cae_al_default(self):
+        self.assertEqual(playoff_format({}), playoff_format({"playoffs": PLAYOFF_FORMAT_DEFAULT}))
+
+    def test_cada_mesa_tiene_una_regla_de_division_valida(self):
+        for rules in (["A", "B"], ["A", "A", "B", "C"]):
+            rounds = [dict(item) for item in PLAYOFF_FORMAT_DEFAULT["rounds"]]
+            rounds[0] = {**rounds[0], "rulesByTable": rules}
+            with self.assertRaises(SyncError):
+                playoff_format({"playoffs": {**PLAYOFF_FORMAT_DEFAULT, "rounds": rounds}})
+
+    def test_un_cuadro_que_no_cierra_es_error_de_configuracion(self):
+        # De 4 mesas avanzan 8, pero la siguiente ronda sólo tiene 4 asientos.
+        roto = {"playoffs": {"qualifiers": 16, "rounds": [
+            {"id": "quarters", "tables": 4, "hanchan": 2, "advancePerTable": 2},
+            {"id": "final", "tables": 1, "hanchan": 3, "advancePerTable": 1},
+        ]}}
+        with self.assertRaises(SyncError) as ctx:
+            playoff_format(roto)
+        self.assertIn("quarters", str(ctx.exception))
+        # Y 12 clasificados no llenan 4 mesas de 4.
+        with self.assertRaises(SyncError):
+            playoff_format({"playoffs": {"qualifiers": 12, "rounds": [
+                {"id": "quarters", "tables": 4, "hanchan": 2, "advancePerTable": 2},
+                {"id": "semis", "tables": 2, "hanchan": 2, "advancePerTable": 2},
+                {"id": "final", "tables": 1, "hanchan": 3, "advancePerTable": 1},
+            ]}})
+
+    def test_el_reparto_por_division_tiene_que_sumar_el_cuadro(self):
+        # 7 por división son 14 y el cuadro pide 16: faltan dos asientos.
+        roto = {"playoffs": {**PLAYOFF_FORMAT_DEFAULT, "qualifiersPerDivision": 7}}
+        with self.assertRaises(SyncError) as ctx:
+            playoff_format(roto)
+        self.assertIn("16", str(ctx.exception))
+
+    def test_el_payload_publica_el_formato_del_cuadro(self):
+        data, _ = build_public_data(_division_config(), _rosters(), [], [], {}, {})
+        self.assertEqual(data["league"]["playoffs"], playoff_format({}))
+
+    def test_la_hoja_playoffs_usa_la_regla_de_cada_mesa(self):
+        workbook = Workbook()
+        sheet = workbook.active
+        sheet.title = "Playoffs"
+        sheet.append(["QF M1 G1", "A-01,40000,A-02,32000,B-07,26000,B-08,22000"])
+        sheet.append(["QF M3 G1", "A-05,40000,A-06,32000,B-03,26000,B-04,22000"])
+        config = {**_division_config(), "playoffs": PLAYOFF_FORMAT_DEFAULT, "playoffSheet": "Playoffs"}
+        matches = parse_playoff_history(workbook, config)
+        self.assertEqual([match["ruleDivision"] for match in matches], ["A", "B"])
+        self.assertEqual(matches[0]["results"][0]["delta"], 25.0)
+        self.assertEqual(matches[1]["results"][0]["delta"], 45.0)
+
+    def test_resultados_de_playoffs_se_publican_para_historial(self):
+        config = {**_division_config(), "playoffs": PLAYOFF_FORMAT_DEFAULT}
+        playoff_history = [{
+            "id": "PO-quarters-M1-G1", "code": "QF M1 G1", "playoffRound": "quarters",
+            "table": 1, "hanchan": 1, "ruleDivision": "A",
+            "date": "Por definir", "weekday": "—", "dateISO": None, "time": None,
+            "results": [
+                {"name": "Bodoque", "scoreRaw": 40000, "place": 1, "delta": 25.0},
+                {"name": "Mon_96", "scoreRaw": 32000, "place": 2, "delta": 7.0},
+                {"name": "X", "scoreRaw": 26000, "place": 3, "delta": -9.0},
+                {"name": "Y", "scoreRaw": 22000, "place": 4, "delta": -23.0},
+            ],
+        }]
+        data, _ = build_public_data(config, _rosters(), [], [], {}, {}, playoff_history)
+        self.assertEqual(data["playoffMatches"][0]["playoffRound"], "quarters")
+        self.assertEqual(data["playoffMatches"][0]["players"][0]["id"], "A01")
+
+    def test_la_zona_de_eliminatorias_usa_el_corte_del_formato(self):
+        # 24 por división y sin resultados: el orden es alfabético y lo único
+        # que decide la zona es el puesto contra el corte del formato.
+        def roster(division):
+            return [
+                {"id": f"{division}{n:02d}", "div": division, "num": f"{n:02d}", "name": f"{division}-{n:02d}",
+                 "shortName": f"{division}-{n:02d}", "handle": f"{division}{n:02d}", "accountId": 0, "discord": "", "nat": "CL"}
+                for n in range(1, 25)
+            ]
+        config = {**_division_config(), "playoffs": PLAYOFF_FORMAT_DEFAULT}
+        data, _ = build_public_data(config, {"A": roster("A"), "B": roster("B")}, [], [], {}, {})
+        # La zona la pinta el corte POR DIVISIÓN, no los 16 del cuadro único.
+        corte = data["league"]["playoffs"]["qualifiersPerDivision"]
+        self.assertLess(corte, data["league"]["playoffs"]["qualifiers"])
+        for division, fuera_abajo in (("A", "relegation"), ("B", "bottom")):
+            zonas = {p["rank"]: p["zone"] for p in data["divisions"][division]["players"]}
+            self.assertEqual(zonas[corte], "playoff")
+            self.assertIsNone(zonas[corte + 1])
+            self.assertEqual(zonas[21], fuera_abajo)
 
 
 if __name__ == "__main__":
