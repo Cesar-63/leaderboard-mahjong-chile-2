@@ -1001,8 +1001,8 @@ class EliminatoriasTests(unittest.TestCase):
         workbook = Workbook()
         sheet = workbook.active
         sheet.title = "Playoffs"
-        sheet.append(["QF M1 G1", "A-01,40000,A-02,32000,A-07,26000,A-08,22000"])
-        sheet.append(["QF M3 G1", "B-01,40000,B-02,32000,B-07,26000,B-08,22000"])
+        sheet.append(["QF M1 G1", "A-01,40000,A-02,32000,B-07,26000,B-08,22000"])
+        sheet.append(["QF M3 G1", "B-01,40000,B-02,32000,A-07,26000,A-08,22000"])
         config = {**_division_config(), "playoffs": PLAYOFF_FORMAT_DEFAULT, "playoffSheet": "Playoffs"}
         matches = parse_playoff_history(workbook, config)
         self.assertEqual([match["ruleDivision"] for match in matches], ["A", "B"])
