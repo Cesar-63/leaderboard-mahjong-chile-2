@@ -1095,8 +1095,9 @@
     {
       "key": "B-S7-M2-G1",
       "cell": "Calendario!Y59",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "260924-217b3722-ec7d-4639-9ba0-896fe4344b73",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado (identidad de asientos)"
     },
     {
       "key": "B-S7-M2-G2",
