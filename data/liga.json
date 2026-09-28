@@ -160964,8 +160964,8 @@
         {
           "n": 7,
           "code": "S7",
-          "date": "22 sep",
-          "weekday": "mar",
+          "date": "23 sep",
+          "weekday": "mié",
           "div": "B",
           "matches": 4,
           "status": "partial"
@@ -174219,8 +174219,8 @@
       "status": "highlight"
     },
     {
-      "date": "22 sep",
-      "day": "mar",
+      "date": "28 sep",
+      "day": "lun",
       "round": "Sesión 7",
       "session": 7,
       "table": 5,
@@ -210056,8 +210056,8 @@
     "hanchanTotal": 156,
     "nextSession": {
       "code": "S7",
-      "date": "22 sep",
-      "day": "mar"
+      "date": "23 sep",
+      "day": "mié"
     },
     "playoffs": {
       "qualifiers": 16,
