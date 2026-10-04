@@ -767,6 +767,159 @@
           "iormc": "qualified"
         },
         {
+          "id": "A01",
+          "div": "A",
+          "num": "01",
+          "name": "Bodoque",
+          "shortName": "Bodoque",
+          "handle": "Bodoque",
+          "nat": "CL",
+          "games": 14,
+          "points": 91.4,
+          "history": [
+            -21.2,
+            -21.3,
+            30.8,
+            5.0,
+            5.3,
+            -9.7,
+            -36.5,
+            43.8,
+            49.1,
+            -22.6,
+            22.7,
+            18.0,
+            12.3,
+            15.7
+          ],
+          "cum": [
+            -21.2,
+            -42.5,
+            -11.7,
+            -6.7,
+            -1.4,
+            -11.1,
+            -47.6,
+            -3.8,
+            45.3,
+            22.7,
+            45.4,
+            63.4,
+            75.7,
+            91.4
+          ],
+          "counts": [
+            4,
+            5,
+            1,
+            4
+          ],
+          "absences": 0,
+          "hands": 162,
+          "wins": 34,
+          "dealIns": 14,
+          "riichis": 22,
+          "openHands": 49,
+          "damaten": 4,
+          "kans": 4,
+          "doras": 41,
+          "uraDoras": 14,
+          "maxHonba": 4,
+          "winPoints": 215600,
+          "dealInPoints": 61800,
+          "winTurns": 385,
+          "placements": {
+            "p1": 0.29,
+            "p2": 0.36,
+            "p3": 0.07,
+            "p4": 0.29
+          },
+          "avgRank": 2.36,
+          "avgPoints": 6.5,
+          "streak": 68.7,
+          "winRate": 21.0,
+          "dealInRate": 8.6,
+          "riichiRate": 13.6,
+          "openRate": 30.2,
+          "damatenRate": 11.8,
+          "avgWinPoints": 6341,
+          "avgDealInPoints": 4414,
+          "avgWinTurn": 11.32,
+          "yakus": [
+            {
+              "name": "Riichi",
+              "count": 14
+            },
+            {
+              "name": "Tanyao",
+              "count": 8
+            },
+            {
+              "name": "Pinfu",
+              "count": 8
+            },
+            {
+              "name": "Menzen Tsumo",
+              "count": 7
+            },
+            {
+              "name": "Yakuhai Chun",
+              "count": 6
+            },
+            {
+              "name": "Ippatsu",
+              "count": 4
+            },
+            {
+              "name": "Honitsu",
+              "count": 4
+            },
+            {
+              "name": "Yakuhai Bakaze",
+              "count": 3
+            },
+            {
+              "name": "Yakuhai Haku",
+              "count": 3
+            },
+            {
+              "name": "Rinshan Kaihou",
+              "count": 2
+            },
+            {
+              "name": "Sanshoku Doujun",
+              "count": 2
+            },
+            {
+              "name": "Yakuhai Jikaze",
+              "count": 2
+            },
+            {
+              "name": "Yakuhai Hatsu",
+              "count": 2
+            },
+            {
+              "name": "Iipeiko",
+              "count": 1
+            },
+            {
+              "name": "Chinitsu",
+              "count": 1
+            },
+            {
+              "name": "Toitoi",
+              "count": 1
+            }
+          ],
+          "statsSample": 162,
+          "statsReliable": true,
+          "arch": "con datos",
+          "rank": 6,
+          "zone": "playoff",
+          "natRank": 3,
+          "iormc": "qualified"
+        },
+        {
           "id": "A16",
           "div": "A",
           "num": "16",
@@ -904,151 +1057,6 @@
             }
           ],
           "statsSample": 174,
-          "statsReliable": true,
-          "arch": "con datos",
-          "rank": 6,
-          "zone": "playoff",
-          "natRank": 3,
-          "iormc": "qualified"
-        },
-        {
-          "id": "A01",
-          "div": "A",
-          "num": "01",
-          "name": "Bodoque",
-          "shortName": "Bodoque",
-          "handle": "Bodoque",
-          "nat": "CL",
-          "games": 12,
-          "points": 63.4,
-          "history": [
-            -21.2,
-            -21.3,
-            30.8,
-            5.0,
-            5.3,
-            -9.7,
-            -36.5,
-            43.8,
-            49.1,
-            -22.6,
-            22.7,
-            18.0
-          ],
-          "cum": [
-            -21.2,
-            -42.5,
-            -11.7,
-            -6.7,
-            -1.4,
-            -11.1,
-            -47.6,
-            -3.8,
-            45.3,
-            22.7,
-            45.4,
-            63.4
-          ],
-          "counts": [
-            4,
-            3,
-            1,
-            4
-          ],
-          "absences": 0,
-          "hands": 138,
-          "wins": 30,
-          "dealIns": 14,
-          "riichis": 19,
-          "openHands": 40,
-          "damaten": 4,
-          "kans": 4,
-          "doras": 37,
-          "uraDoras": 13,
-          "maxHonba": 4,
-          "winPoints": 187500,
-          "dealInPoints": 61800,
-          "winTurns": 333,
-          "placements": {
-            "p1": 0.33,
-            "p2": 0.25,
-            "p3": 0.08,
-            "p4": 0.33
-          },
-          "avgRank": 2.42,
-          "avgPoints": 5.3,
-          "streak": 67.2,
-          "winRate": 21.7,
-          "dealInRate": 10.1,
-          "riichiRate": 13.8,
-          "openRate": 29.0,
-          "damatenRate": 13.3,
-          "avgWinPoints": 6250,
-          "avgDealInPoints": 4414,
-          "avgWinTurn": 11.1,
-          "yakus": [
-            {
-              "name": "Riichi",
-              "count": 13
-            },
-            {
-              "name": "Tanyao",
-              "count": 7
-            },
-            {
-              "name": "Menzen Tsumo",
-              "count": 7
-            },
-            {
-              "name": "Pinfu",
-              "count": 7
-            },
-            {
-              "name": "Yakuhai Chun",
-              "count": 5
-            },
-            {
-              "name": "Ippatsu",
-              "count": 4
-            },
-            {
-              "name": "Yakuhai Bakaze",
-              "count": 3
-            },
-            {
-              "name": "Honitsu",
-              "count": 3
-            },
-            {
-              "name": "Rinshan Kaihou",
-              "count": 2
-            },
-            {
-              "name": "Yakuhai Jikaze",
-              "count": 2
-            },
-            {
-              "name": "Yakuhai Haku",
-              "count": 2
-            },
-            {
-              "name": "Yakuhai Hatsu",
-              "count": 2
-            },
-            {
-              "name": "Iipeiko",
-              "count": 1
-            },
-            {
-              "name": "Sanshoku Doujun",
-              "count": 1
-            },
-            {
-              "name": "Chinitsu",
-              "count": 1
-            }
-          ],
-          "statsSample": 138,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 7,
@@ -1524,6 +1532,314 @@
           "zone": null
         },
         {
+          "id": "A10",
+          "div": "A",
+          "num": "10",
+          "name": "Haruzen",
+          "shortName": "Haruzen",
+          "handle": "Haruzen",
+          "nat": "MX",
+          "games": 14,
+          "points": 21.4,
+          "history": [
+            -25.8,
+            38.3,
+            6.8,
+            30.3,
+            -21.8,
+            -30.6,
+            21.1,
+            10.5,
+            -14.2,
+            -29.6,
+            25.1,
+            -11.7,
+            -8.9,
+            31.9
+          ],
+          "cum": [
+            -25.8,
+            12.5,
+            19.3,
+            49.6,
+            27.8,
+            -2.8,
+            18.3,
+            28.8,
+            14.6,
+            -15.0,
+            10.1,
+            -1.6,
+            -10.5,
+            21.4
+          ],
+          "counts": [
+            5,
+            2,
+            3,
+            4
+          ],
+          "absences": 0,
+          "hands": 157,
+          "wins": 35,
+          "dealIns": 29,
+          "riichis": 17,
+          "openHands": 74,
+          "damaten": 7,
+          "kans": 10,
+          "doras": 43,
+          "uraDoras": 9,
+          "maxHonba": 4,
+          "winPoints": 156300,
+          "dealInPoints": 93600,
+          "winTurns": 389,
+          "placements": {
+            "p1": 0.36,
+            "p2": 0.14,
+            "p3": 0.21,
+            "p4": 0.29
+          },
+          "avgRank": 2.43,
+          "avgPoints": 1.5,
+          "streak": 36.4,
+          "winRate": 22.3,
+          "dealInRate": 18.5,
+          "riichiRate": 10.8,
+          "openRate": 47.1,
+          "damatenRate": 20.0,
+          "avgWinPoints": 4466,
+          "avgDealInPoints": 3228,
+          "avgWinTurn": 11.11,
+          "yakus": [
+            {
+              "name": "Tanyao",
+              "count": 11
+            },
+            {
+              "name": "Riichi",
+              "count": 7
+            },
+            {
+              "name": "Menzen Tsumo",
+              "count": 6
+            },
+            {
+              "name": "Yakuhai Jikaze",
+              "count": 5
+            },
+            {
+              "name": "Pinfu",
+              "count": 5
+            },
+            {
+              "name": "Yakuhai Bakaze",
+              "count": 4
+            },
+            {
+              "name": "Yakuhai Hatsu",
+              "count": 3
+            },
+            {
+              "name": "Sanshoku Doujun",
+              "count": 2
+            },
+            {
+              "name": "Chanta",
+              "count": 2
+            },
+            {
+              "name": "Toitoi",
+              "count": 2
+            },
+            {
+              "name": "Yakuhai Haku",
+              "count": 2
+            },
+            {
+              "name": "Honitsu",
+              "count": 2
+            },
+            {
+              "name": "Ippatsu",
+              "count": 1
+            },
+            {
+              "name": "Chiitoitsu",
+              "count": 1
+            },
+            {
+              "name": "Iipeiko",
+              "count": 1
+            },
+            {
+              "name": "Houtei Raoyui",
+              "count": 1
+            }
+          ],
+          "statsSample": 157,
+          "statsReliable": true,
+          "arch": "con datos",
+          "rank": 11,
+          "zone": null
+        },
+        {
+          "id": "A08",
+          "div": "A",
+          "num": "08",
+          "name": "KillerHUD",
+          "shortName": "KillerHUD",
+          "handle": "KillerHUD",
+          "nat": "CL",
+          "games": 14,
+          "points": 17.0,
+          "history": [
+            -6.4,
+            10.1,
+            22.4,
+            11.7,
+            -51.2,
+            -5.1,
+            25.5,
+            -31.2,
+            -15.4,
+            12.4,
+            4.5,
+            6.5,
+            31.1,
+            2.1
+          ],
+          "cum": [
+            -6.4,
+            3.7,
+            26.1,
+            37.8,
+            -13.4,
+            -18.5,
+            7.0,
+            -24.2,
+            -39.6,
+            -27.2,
+            -22.7,
+            -16.2,
+            14.9,
+            17.0
+          ],
+          "counts": [
+            2,
+            6,
+            4,
+            2
+          ],
+          "absences": 0,
+          "hands": 180,
+          "wins": 37,
+          "dealIns": 26,
+          "riichis": 42,
+          "openHands": 72,
+          "damaten": 2,
+          "kans": 10,
+          "doras": 44,
+          "uraDoras": 20,
+          "maxHonba": 8,
+          "winPoints": 201900,
+          "dealInPoints": 152900,
+          "winTurns": 462,
+          "placements": {
+            "p1": 0.14,
+            "p2": 0.43,
+            "p3": 0.29,
+            "p4": 0.14
+          },
+          "avgRank": 2.43,
+          "avgPoints": 1.2,
+          "streak": 44.2,
+          "winRate": 20.6,
+          "dealInRate": 14.4,
+          "riichiRate": 23.3,
+          "openRate": 40.0,
+          "damatenRate": 5.4,
+          "avgWinPoints": 5457,
+          "avgDealInPoints": 5881,
+          "avgWinTurn": 12.49,
+          "yakus": [
+            {
+              "name": "Riichi",
+              "count": 18
+            },
+            {
+              "name": "Tanyao",
+              "count": 8
+            },
+            {
+              "name": "Yakuhai Hatsu",
+              "count": 7
+            },
+            {
+              "name": "Pinfu",
+              "count": 6
+            },
+            {
+              "name": "Menzen Tsumo",
+              "count": 5
+            },
+            {
+              "name": "Iipeiko",
+              "count": 4
+            },
+            {
+              "name": "Yakuhai Jikaze",
+              "count": 4
+            },
+            {
+              "name": "Yakuhai Chun",
+              "count": 3
+            },
+            {
+              "name": "Ippatsu",
+              "count": 3
+            },
+            {
+              "name": "Chanta",
+              "count": 3
+            },
+            {
+              "name": "Yakuhai Haku",
+              "count": 3
+            },
+            {
+              "name": "Honitsu",
+              "count": 3
+            },
+            {
+              "name": "Sanshoku Doujun",
+              "count": 2
+            },
+            {
+              "name": "Toitoi",
+              "count": 1
+            },
+            {
+              "name": "Ittsu",
+              "count": 1
+            },
+            {
+              "name": "Daburu Riichi",
+              "count": 1
+            },
+            {
+              "name": "Yakuhai Bakaze",
+              "count": 1
+            }
+          ],
+          "statsSample": 180,
+          "statsReliable": true,
+          "arch": "con datos",
+          "rank": 12,
+          "zone": null,
+          "natRank": 6,
+          "iormc": "contention"
+        },
+        {
           "id": "A15",
           "div": "A",
           "num": "15",
@@ -1671,7 +1987,7 @@
           "statsSample": 154,
           "statsReliable": true,
           "arch": "con datos",
-          "rank": 11,
+          "rank": 13,
           "zone": null
         },
         {
@@ -1814,9 +2130,9 @@
           "statsSample": 167,
           "statsReliable": true,
           "arch": "con datos",
-          "rank": 12,
+          "rank": 14,
           "zone": null,
-          "natRank": 6,
+          "natRank": 7,
           "iormc": "contention"
         },
         {
@@ -1959,154 +2275,7 @@
           "statsSample": 178,
           "statsReliable": true,
           "arch": "con datos",
-          "rank": 13,
-          "zone": null
-        },
-        {
-          "id": "A10",
-          "div": "A",
-          "num": "10",
-          "name": "Haruzen",
-          "shortName": "Haruzen",
-          "handle": "Haruzen",
-          "nat": "MX",
-          "games": 12,
-          "points": -1.6,
-          "history": [
-            -25.8,
-            38.3,
-            6.8,
-            30.3,
-            -21.8,
-            -30.6,
-            21.1,
-            10.5,
-            -14.2,
-            -29.6,
-            25.1,
-            -11.7
-          ],
-          "cum": [
-            -25.8,
-            12.5,
-            19.3,
-            49.6,
-            27.8,
-            -2.8,
-            18.3,
-            28.8,
-            14.6,
-            -15.0,
-            10.1,
-            -1.6
-          ],
-          "counts": [
-            4,
-            2,
-            2,
-            4
-          ],
-          "absences": 0,
-          "hands": 133,
-          "wins": 32,
-          "dealIns": 27,
-          "riichis": 15,
-          "openHands": 59,
-          "damaten": 6,
-          "kans": 6,
-          "doras": 40,
-          "uraDoras": 9,
-          "maxHonba": 4,
-          "winPoints": 128300,
-          "dealInPoints": 89600,
-          "winTurns": 352,
-          "placements": {
-            "p1": 0.33,
-            "p2": 0.17,
-            "p3": 0.17,
-            "p4": 0.33
-          },
-          "avgRank": 2.5,
-          "avgPoints": -0.1,
-          "streak": -30.4,
-          "winRate": 24.1,
-          "dealInRate": 20.3,
-          "riichiRate": 11.3,
-          "openRate": 44.4,
-          "damatenRate": 18.8,
-          "avgWinPoints": 4009,
-          "avgDealInPoints": 3319,
-          "avgWinTurn": 11.0,
-          "yakus": [
-            {
-              "name": "Tanyao",
-              "count": 10
-            },
-            {
-              "name": "Riichi",
-              "count": 7
-            },
-            {
-              "name": "Menzen Tsumo",
-              "count": 5
-            },
-            {
-              "name": "Pinfu",
-              "count": 5
-            },
-            {
-              "name": "Yakuhai Jikaze",
-              "count": 4
-            },
-            {
-              "name": "Yakuhai Hatsu",
-              "count": 3
-            },
-            {
-              "name": "Yakuhai Bakaze",
-              "count": 3
-            },
-            {
-              "name": "Chanta",
-              "count": 2
-            },
-            {
-              "name": "Sanshoku Doujun",
-              "count": 1
-            },
-            {
-              "name": "Ippatsu",
-              "count": 1
-            },
-            {
-              "name": "Chiitoitsu",
-              "count": 1
-            },
-            {
-              "name": "Toitoi",
-              "count": 1
-            },
-            {
-              "name": "Iipeiko",
-              "count": 1
-            },
-            {
-              "name": "Yakuhai Haku",
-              "count": 1
-            },
-            {
-              "name": "Houtei Raoyui",
-              "count": 1
-            },
-            {
-              "name": "Honitsu",
-              "count": 1
-            }
-          ],
-          "statsSample": 133,
-          "statsReliable": true,
-          "arch": "con datos",
-          "rank": 14,
+          "rank": 15,
           "zone": null
         },
         {
@@ -2255,155 +2424,6 @@
             }
           ],
           "statsSample": 177,
-          "statsReliable": true,
-          "arch": "con datos",
-          "rank": 15,
-          "zone": null,
-          "natRank": 7,
-          "iormc": "contention"
-        },
-        {
-          "id": "A08",
-          "div": "A",
-          "num": "08",
-          "name": "KillerHUD",
-          "shortName": "KillerHUD",
-          "handle": "KillerHUD",
-          "nat": "CL",
-          "games": 12,
-          "points": -16.2,
-          "history": [
-            -6.4,
-            10.1,
-            22.4,
-            11.7,
-            -51.2,
-            -5.1,
-            25.5,
-            -31.2,
-            -15.4,
-            12.4,
-            4.5,
-            6.5
-          ],
-          "cum": [
-            -6.4,
-            3.7,
-            26.1,
-            37.8,
-            -13.4,
-            -18.5,
-            7.0,
-            -24.2,
-            -39.6,
-            -27.2,
-            -22.7,
-            -16.2
-          ],
-          "counts": [
-            1,
-            6,
-            3,
-            2
-          ],
-          "absences": 0,
-          "hands": 156,
-          "wins": 29,
-          "dealIns": 25,
-          "riichis": 36,
-          "openHands": 65,
-          "damaten": 1,
-          "kans": 10,
-          "doras": 33,
-          "uraDoras": 15,
-          "maxHonba": 8,
-          "winPoints": 146800,
-          "dealInPoints": 128900,
-          "winTurns": 365,
-          "placements": {
-            "p1": 0.08,
-            "p2": 0.5,
-            "p3": 0.25,
-            "p4": 0.17
-          },
-          "avgRank": 2.5,
-          "avgPoints": -1.3,
-          "streak": 8.0,
-          "winRate": 18.6,
-          "dealInRate": 16.0,
-          "riichiRate": 23.1,
-          "openRate": 41.7,
-          "damatenRate": 3.4,
-          "avgWinPoints": 5062,
-          "avgDealInPoints": 5156,
-          "avgWinTurn": 12.59,
-          "yakus": [
-            {
-              "name": "Riichi",
-              "count": 13
-            },
-            {
-              "name": "Tanyao",
-              "count": 6
-            },
-            {
-              "name": "Yakuhai Hatsu",
-              "count": 5
-            },
-            {
-              "name": "Yakuhai Jikaze",
-              "count": 4
-            },
-            {
-              "name": "Pinfu",
-              "count": 3
-            },
-            {
-              "name": "Yakuhai Chun",
-              "count": 3
-            },
-            {
-              "name": "Ippatsu",
-              "count": 3
-            },
-            {
-              "name": "Chanta",
-              "count": 3
-            },
-            {
-              "name": "Yakuhai Haku",
-              "count": 3
-            },
-            {
-              "name": "Menzen Tsumo",
-              "count": 2
-            },
-            {
-              "name": "Honitsu",
-              "count": 2
-            },
-            {
-              "name": "Iipeiko",
-              "count": 1
-            },
-            {
-              "name": "Toitoi",
-              "count": 1
-            },
-            {
-              "name": "Sanshoku Doujun",
-              "count": 1
-            },
-            {
-              "name": "Ittsu",
-              "count": 1
-            },
-            {
-              "name": "Daburu Riichi",
-              "count": 1
-            }
-          ],
-          "statsSample": 156,
           "statsReliable": true,
           "arch": "con datos",
           "rank": 16,
@@ -2978,151 +2998,6 @@
           "zone": null
         },
         {
-          "id": "A20",
-          "div": "A",
-          "num": "20",
-          "name": "caballo",
-          "shortName": "caballo",
-          "handle": "caballo",
-          "nat": "CL",
-          "games": 12,
-          "points": -145.6,
-          "history": [
-            8.8,
-            -15.9,
-            38.2,
-            10.2,
-            -48.7,
-            -33.8,
-            9.6,
-            -26.1,
-            16.2,
-            -40.3,
-            13.0,
-            -76.8
-          ],
-          "cum": [
-            8.8,
-            -7.1,
-            31.1,
-            41.3,
-            -7.4,
-            -41.2,
-            -31.6,
-            -57.7,
-            -41.5,
-            -81.8,
-            -68.8,
-            -145.6
-          ],
-          "counts": [
-            1,
-            5,
-            1,
-            5
-          ],
-          "absences": 0,
-          "hands": 142,
-          "wins": 25,
-          "dealIns": 33,
-          "riichis": 38,
-          "openHands": 40,
-          "damaten": 1,
-          "kans": 6,
-          "doras": 28,
-          "uraDoras": 17,
-          "maxHonba": 5,
-          "winPoints": 171600,
-          "dealInPoints": 205200,
-          "winTurns": 292,
-          "placements": {
-            "p1": 0.08,
-            "p2": 0.42,
-            "p3": 0.08,
-            "p4": 0.42
-          },
-          "avgRank": 2.83,
-          "avgPoints": -12.1,
-          "streak": -87.9,
-          "winRate": 17.6,
-          "dealInRate": 23.2,
-          "riichiRate": 26.8,
-          "openRate": 28.2,
-          "damatenRate": 4.0,
-          "avgWinPoints": 6864,
-          "avgDealInPoints": 6218,
-          "avgWinTurn": 11.68,
-          "yakus": [
-            {
-              "name": "Riichi",
-              "count": 17
-            },
-            {
-              "name": "Menzen Tsumo",
-              "count": 7
-            },
-            {
-              "name": "Pinfu",
-              "count": 7
-            },
-            {
-              "name": "Honitsu",
-              "count": 4
-            },
-            {
-              "name": "Yakuhai Jikaze",
-              "count": 3
-            },
-            {
-              "name": "Tanyao",
-              "count": 2
-            },
-            {
-              "name": "Iipeiko",
-              "count": 2
-            },
-            {
-              "name": "Yakuhai Hatsu",
-              "count": 2
-            },
-            {
-              "name": "Chinitsu",
-              "count": 2
-            },
-            {
-              "name": "Ippatsu",
-              "count": 2
-            },
-            {
-              "name": "Chanta",
-              "count": 1
-            },
-            {
-              "name": "Yakuhai Haku",
-              "count": 1
-            },
-            {
-              "name": "Ryanpeikou",
-              "count": 1
-            },
-            {
-              "name": "Yakuhai Chun",
-              "count": 1
-            },
-            {
-              "name": "Chiitoitsu",
-              "count": 1
-            }
-          ],
-          "statsSample": 142,
-          "statsReliable": true,
-          "arch": "con datos",
-          "rank": 21,
-          "zone": "relegation",
-          "natRank": 10,
-          "iormc": "out"
-        },
-        {
           "id": "A13",
           "div": "A",
           "num": "13",
@@ -3274,9 +3149,9 @@
           "statsSample": 173,
           "statsReliable": true,
           "arch": "con datos",
-          "rank": 22,
+          "rank": 21,
           "zone": "relegation",
-          "natRank": 11,
+          "natRank": 10,
           "iormc": "out"
         },
         {
@@ -3431,8 +3306,157 @@
           "statsSample": 172,
           "statsReliable": true,
           "arch": "con datos",
-          "rank": 23,
+          "rank": 22,
           "zone": "relegation"
+        },
+        {
+          "id": "A20",
+          "div": "A",
+          "num": "20",
+          "name": "caballo",
+          "shortName": "caballo",
+          "handle": "caballo",
+          "nat": "CL",
+          "games": 14,
+          "points": -229.8,
+          "history": [
+            8.8,
+            -15.9,
+            38.2,
+            10.2,
+            -48.7,
+            -33.8,
+            9.6,
+            -26.1,
+            16.2,
+            -40.3,
+            13.0,
+            -76.8,
+            -34.5,
+            -49.7
+          ],
+          "cum": [
+            8.8,
+            -7.1,
+            31.1,
+            41.3,
+            -7.4,
+            -41.2,
+            -31.6,
+            -57.7,
+            -41.5,
+            -81.8,
+            -68.8,
+            -145.6,
+            -180.1,
+            -229.8
+          ],
+          "counts": [
+            1,
+            5,
+            1,
+            7
+          ],
+          "absences": 0,
+          "hands": 166,
+          "wins": 28,
+          "dealIns": 39,
+          "riichis": 44,
+          "openHands": 45,
+          "damaten": 1,
+          "kans": 7,
+          "doras": 31,
+          "uraDoras": 18,
+          "maxHonba": 5,
+          "winPoints": 183600,
+          "dealInPoints": 264000,
+          "winTurns": 328,
+          "placements": {
+            "p1": 0.07,
+            "p2": 0.36,
+            "p3": 0.07,
+            "p4": 0.5
+          },
+          "avgRank": 3.0,
+          "avgPoints": -16.4,
+          "streak": -148.0,
+          "winRate": 16.9,
+          "dealInRate": 23.5,
+          "riichiRate": 26.5,
+          "openRate": 27.1,
+          "damatenRate": 3.6,
+          "avgWinPoints": 6557,
+          "avgDealInPoints": 6769,
+          "avgWinTurn": 11.71,
+          "yakus": [
+            {
+              "name": "Riichi",
+              "count": 18
+            },
+            {
+              "name": "Menzen Tsumo",
+              "count": 8
+            },
+            {
+              "name": "Pinfu",
+              "count": 7
+            },
+            {
+              "name": "Honitsu",
+              "count": 4
+            },
+            {
+              "name": "Yakuhai Hatsu",
+              "count": 3
+            },
+            {
+              "name": "Yakuhai Jikaze",
+              "count": 3
+            },
+            {
+              "name": "Tanyao",
+              "count": 2
+            },
+            {
+              "name": "Iipeiko",
+              "count": 2
+            },
+            {
+              "name": "Yakuhai Haku",
+              "count": 2
+            },
+            {
+              "name": "Chinitsu",
+              "count": 2
+            },
+            {
+              "name": "Ippatsu",
+              "count": 2
+            },
+            {
+              "name": "Chanta",
+              "count": 1
+            },
+            {
+              "name": "Ryanpeikou",
+              "count": 1
+            },
+            {
+              "name": "Yakuhai Chun",
+              "count": 1
+            },
+            {
+              "name": "Chiitoitsu",
+              "count": 1
+            }
+          ],
+          "statsSample": 166,
+          "statsReliable": true,
+          "arch": "con datos",
+          "rank": 23,
+          "zone": "relegation",
+          "natRank": 11,
+          "iormc": "out"
         },
         {
           "id": "A11",
@@ -75267,6 +75291,1947 @@
           ]
         },
         {
+          "id": "A-S7-M1-G1",
+          "code": "A-S7-M1-G1",
+          "div": "A",
+          "session": 7,
+          "sessionCode": "S7",
+          "hanchan": 1,
+          "date": "02 oct",
+          "dateISO": "2026-10-02",
+          "weekday": "vie",
+          "table": 1,
+          "players": [
+            {
+              "id": "A08",
+              "name": "KillerHUD",
+              "handle": "KillerHUD",
+              "nat": "CL",
+              "scoreRaw": 46100,
+              "place": 1,
+              "delta": 31.1,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A01",
+              "name": "Bodoque",
+              "handle": "Bodoque",
+              "nat": "CL",
+              "scoreRaw": 37300,
+              "place": 2,
+              "delta": 12.3,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A10",
+              "name": "Haruzen",
+              "handle": "Haruzen",
+              "nat": "MX",
+              "scoreRaw": 26100,
+              "place": 3,
+              "delta": -8.9,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A20",
+              "name": "caballo",
+              "handle": "caballo",
+              "nat": "CL",
+              "scoreRaw": 10500,
+              "place": 4,
+              "delta": -34.5,
+              "sustitutoDe": null,
+              "esSuplente": false
+            }
+          ],
+          "paipuUrl": "https://mahjongsoul.game.yo-star.com/?paipu=261004-d6d419c6-9ca3-4b00-95f1-93c660f80cb1",
+          "verified": true,
+          "source": "paipu",
+          "rounds": [
+            {
+              "index": 0,
+              "chang": 0,
+              "ju": 0,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                30000,
+                30000,
+                30000,
+                30000
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 1,
+                  "loserSeat": 3,
+                  "yaku": [
+                    "Pinfu",
+                    "Riichi"
+                  ],
+                  "hand": "2m3m4m6m6m6m7m1s2s3s6s7s8s",
+                  "win": "5m",
+                  "melds": [],
+                  "dora": "1s",
+                  "points": 3900,
+                  "fu": 30,
+                  "han": 3,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": true,
+                  "turn": 11,
+                  "winner": "KillerHUD",
+                  "loser": "caballo"
+                }
+              ],
+              "endScores": [
+                30000,
+                33900,
+                30000,
+                26100
+              ],
+              "scoreDeltas": [
+                0,
+                4900,
+                0,
+                -3900
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "Haruzen",
+                  "score": 30000,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "KillerHUD",
+                  "score": 33900,
+                  "delta": 4900,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Bodoque",
+                  "score": 30000,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "caballo",
+                  "score": 26100,
+                  "delta": -3900,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 1,
+              "chang": 0,
+              "ju": 1,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                30000,
+                33900,
+                30000,
+                26100
+              ],
+              "result": "draw",
+              "outcomes": [],
+              "tenpaiSeats": [
+                0,
+                2
+              ],
+              "endScores": [
+                30500,
+                32400,
+                31500,
+                24600
+              ],
+              "scoreDeltas": [
+                1500,
+                -1500,
+                1500,
+                -1500
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "Haruzen",
+                  "score": 30500,
+                  "delta": 1500,
+                  "tenpai": true
+                },
+                {
+                  "seat": 1,
+                  "player": "KillerHUD",
+                  "score": 32400,
+                  "delta": -1500,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Bodoque",
+                  "score": 31500,
+                  "delta": 1500,
+                  "tenpai": true
+                },
+                {
+                  "seat": 3,
+                  "player": "caballo",
+                  "score": 24600,
+                  "delta": -1500,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 2,
+              "chang": 0,
+              "ju": 2,
+              "honba": 1,
+              "riichiSticks": 1,
+              "startScores": [
+                30500,
+                32400,
+                31500,
+                24600
+              ],
+              "result": "tsumo",
+              "outcomes": [
+                {
+                  "winnerSeat": 3,
+                  "loserSeat": null,
+                  "yaku": [
+                    "Menzen Tsumo",
+                    "Riichi"
+                  ],
+                  "hand": "3m3m4m5m6m7m8m9m4p4p4p4s5s",
+                  "win": "6s",
+                  "melds": [],
+                  "dora": "9p",
+                  "points": 2000,
+                  "fu": 30,
+                  "han": 2,
+                  "yakuman": false,
+                  "tsumo": true,
+                  "riichi": true,
+                  "turn": 8,
+                  "winner": "caballo",
+                  "loser": null
+                }
+              ],
+              "endScores": [
+                29900,
+                31800,
+                30400,
+                27900
+              ],
+              "scoreDeltas": [
+                -600,
+                -600,
+                -1100,
+                4300
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "Haruzen",
+                  "score": 29900,
+                  "delta": -600,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "KillerHUD",
+                  "score": 31800,
+                  "delta": -600,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Bodoque",
+                  "score": 30400,
+                  "delta": -1100,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "caballo",
+                  "score": 27900,
+                  "delta": 4300,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 3,
+              "chang": 0,
+              "ju": 3,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                29900,
+                31800,
+                30400,
+                27900
+              ],
+              "result": "draw",
+              "outcomes": [],
+              "tenpaiSeats": [
+                2
+              ],
+              "endScores": [
+                28900,
+                30800,
+                32400,
+                26900
+              ],
+              "scoreDeltas": [
+                -1000,
+                -1000,
+                3000,
+                -1000
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "Haruzen",
+                  "score": 28900,
+                  "delta": -1000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "KillerHUD",
+                  "score": 30800,
+                  "delta": -1000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Bodoque",
+                  "score": 32400,
+                  "delta": 3000,
+                  "tenpai": true
+                },
+                {
+                  "seat": 3,
+                  "player": "caballo",
+                  "score": 26900,
+                  "delta": -1000,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 4,
+              "chang": 1,
+              "ju": 0,
+              "honba": 1,
+              "riichiSticks": 1,
+              "startScores": [
+                28900,
+                30800,
+                32400,
+                26900
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 3,
+                  "loserSeat": 0,
+                  "yaku": [
+                    "Yakuhai Haku"
+                  ],
+                  "hand": "4m4m6m7m4p5p6p4s5s6s",
+                  "win": "5m",
+                  "melds": [
+                    "k5z5z5z"
+                  ],
+                  "dora": "4s",
+                  "points": 2000,
+                  "fu": 30,
+                  "han": 2,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 13,
+                  "winner": "caballo",
+                  "loser": "Haruzen"
+                }
+              ],
+              "endScores": [
+                26600,
+                30800,
+                32400,
+                30200
+              ],
+              "scoreDeltas": [
+                -2300,
+                0,
+                0,
+                3300
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "Haruzen",
+                  "score": 26600,
+                  "delta": -2300,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "KillerHUD",
+                  "score": 30800,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Bodoque",
+                  "score": 32400,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "caballo",
+                  "score": 30200,
+                  "delta": 3300,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 5,
+              "chang": 1,
+              "ju": 1,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                26600,
+                30800,
+                32400,
+                30200
+              ],
+              "result": "tsumo",
+              "outcomes": [
+                {
+                  "winnerSeat": 2,
+                  "loserSeat": null,
+                  "yaku": [
+                    "Sanshoku Doujun",
+                    "Tanyao"
+                  ],
+                  "hand": "3m3m5m6m7m4p4p5s6s7s",
+                  "win": "4p",
+                  "melds": [
+                    "s6p7p5p"
+                  ],
+                  "dora": "8p",
+                  "points": 2000,
+                  "fu": 30,
+                  "han": 2,
+                  "yakuman": false,
+                  "tsumo": true,
+                  "riichi": false,
+                  "turn": 11,
+                  "winner": "Bodoque",
+                  "loser": null
+                }
+              ],
+              "endScores": [
+                26100,
+                29800,
+                34400,
+                29700
+              ],
+              "scoreDeltas": [
+                -500,
+                -1000,
+                2000,
+                -500
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "Haruzen",
+                  "score": 26100,
+                  "delta": -500,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "KillerHUD",
+                  "score": 29800,
+                  "delta": -1000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Bodoque",
+                  "score": 34400,
+                  "delta": 2000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "caballo",
+                  "score": 29700,
+                  "delta": -500,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 6,
+              "chang": 1,
+              "ju": 2,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                26100,
+                29800,
+                34400,
+                29700
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 2,
+                  "loserSeat": 3,
+                  "yaku": [
+                    "Pinfu",
+                    "Riichi"
+                  ],
+                  "hand": "5m6m1p2p3p5p5p3s4s5s5s6s7s",
+                  "win": "7m",
+                  "melds": [],
+                  "dora": "3m",
+                  "points": 2900,
+                  "fu": 30,
+                  "han": 2,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": true,
+                  "turn": 12,
+                  "winner": "Bodoque",
+                  "loser": "caballo"
+                }
+              ],
+              "endScores": [
+                26100,
+                29800,
+                37300,
+                26800
+              ],
+              "scoreDeltas": [
+                0,
+                0,
+                3900,
+                -2900
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "Haruzen",
+                  "score": 26100,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "KillerHUD",
+                  "score": 29800,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Bodoque",
+                  "score": 37300,
+                  "delta": 3900,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "caballo",
+                  "score": 26800,
+                  "delta": -2900,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 7,
+              "chang": 1,
+              "ju": 2,
+              "honba": 1,
+              "riichiSticks": 0,
+              "startScores": [
+                26100,
+                29800,
+                37300,
+                26800
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 1,
+                  "loserSeat": 3,
+                  "yaku": [
+                    "Honitsu",
+                    "Yakuhai Hatsu",
+                    "Yakuhai Bakaze"
+                  ],
+                  "hand": "3s3s5s6s6z6z6z",
+                  "win": "4s",
+                  "melds": [
+                    "k3z3z3z",
+                    "k2z2z2z"
+                  ],
+                  "dora": "5m",
+                  "points": 8000,
+                  "fu": 40,
+                  "han": 4,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 6,
+                  "winner": "KillerHUD",
+                  "loser": "caballo"
+                }
+              ],
+              "endScores": [
+                26100,
+                38100,
+                37300,
+                18500
+              ],
+              "scoreDeltas": [
+                0,
+                8300,
+                0,
+                -8300
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "Haruzen",
+                  "score": 26100,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "KillerHUD",
+                  "score": 38100,
+                  "delta": 8300,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Bodoque",
+                  "score": 37300,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "caballo",
+                  "score": 18500,
+                  "delta": -8300,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 8,
+              "chang": 1,
+              "ju": 3,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                26100,
+                38100,
+                37300,
+                18500
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 1,
+                  "loserSeat": 3,
+                  "yaku": [
+                    "Iipeiko",
+                    "Pinfu"
+                  ],
+                  "hand": "5m6m5p6p7p5s5s6s6s7s7s9s9s",
+                  "win": "4m",
+                  "melds": [],
+                  "dora": "4s9m1z7m",
+                  "points": 8000,
+                  "fu": 30,
+                  "han": 4,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 15,
+                  "winner": "KillerHUD",
+                  "loser": "caballo"
+                }
+              ],
+              "endScores": [
+                26100,
+                46100,
+                37300,
+                10500
+              ],
+              "scoreDeltas": [
+                0,
+                8000,
+                0,
+                -8000
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "Haruzen",
+                  "score": 26100,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "KillerHUD",
+                  "score": 46100,
+                  "delta": 8000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Bodoque",
+                  "score": 37300,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "caballo",
+                  "score": 10500,
+                  "delta": -8000,
+                  "tenpai": false
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "A-S7-M1-G2",
+          "code": "A-S7-M1-G2",
+          "div": "A",
+          "session": 7,
+          "sessionCode": "S7",
+          "hanchan": 2,
+          "date": "02 oct",
+          "dateISO": "2026-10-02",
+          "weekday": "vie",
+          "table": 1,
+          "players": [
+            {
+              "id": "A10",
+              "name": "Haruzen",
+              "handle": "Haruzen",
+              "nat": "MX",
+              "scoreRaw": 46900,
+              "place": 1,
+              "delta": 31.9,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A01",
+              "name": "Bodoque",
+              "handle": "Bodoque",
+              "nat": "CL",
+              "scoreRaw": 40700,
+              "place": 2,
+              "delta": 15.7,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A08",
+              "name": "KillerHUD",
+              "handle": "KillerHUD",
+              "nat": "CL",
+              "scoreRaw": 37100,
+              "place": 3,
+              "delta": 2.1,
+              "sustitutoDe": null,
+              "esSuplente": false
+            },
+            {
+              "id": "A20",
+              "name": "caballo",
+              "handle": "caballo",
+              "nat": "CL",
+              "scoreRaw": -4700,
+              "place": 4,
+              "delta": -49.7,
+              "sustitutoDe": null,
+              "esSuplente": false
+            }
+          ],
+          "paipuUrl": "https://mahjongsoul.game.yo-star.com/?paipu=261004-e7778d8b-9039-47a4-8fb7-2bf24f7afef1",
+          "verified": true,
+          "source": "paipu",
+          "rounds": [
+            {
+              "index": 0,
+              "chang": 0,
+              "ju": 0,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                30000,
+                30000,
+                30000,
+                30000
+              ],
+              "result": "tsumo",
+              "outcomes": [
+                {
+                  "winnerSeat": 0,
+                  "loserSeat": null,
+                  "yaku": [
+                    "Iipeiko",
+                    "Menzen Tsumo",
+                    "Riichi"
+                  ],
+                  "hand": "3m3m4m4m5m7m8m9m1p2p3p7z7z",
+                  "win": "5m",
+                  "melds": [],
+                  "dora": "8p",
+                  "points": 6000,
+                  "fu": 30,
+                  "han": 3,
+                  "yakuman": false,
+                  "tsumo": true,
+                  "riichi": true,
+                  "turn": 12,
+                  "winner": "KillerHUD",
+                  "loser": null
+                }
+              ],
+              "endScores": [
+                37000,
+                27000,
+                28000,
+                28000
+              ],
+              "scoreDeltas": [
+                8000,
+                -2000,
+                -2000,
+                -2000
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "KillerHUD",
+                  "score": 37000,
+                  "delta": 8000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "caballo",
+                  "score": 27000,
+                  "delta": -2000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Haruzen",
+                  "score": 28000,
+                  "delta": -2000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Bodoque",
+                  "score": 28000,
+                  "delta": -2000,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 1,
+              "chang": 0,
+              "ju": 0,
+              "honba": 1,
+              "riichiSticks": 0,
+              "startScores": [
+                37000,
+                27000,
+                28000,
+                28000
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 0,
+                  "loserSeat": 2,
+                  "yaku": [
+                    "Yakuhai Hatsu"
+                  ],
+                  "hand": "2m2m3p4p1s2s3s6z6z6z",
+                  "win": "5p",
+                  "melds": [
+                    "k9p9p9p"
+                  ],
+                  "dora": "6p",
+                  "points": 2000,
+                  "fu": 40,
+                  "han": 1,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 10,
+                  "winner": "KillerHUD",
+                  "loser": "Haruzen"
+                }
+              ],
+              "endScores": [
+                39300,
+                27000,
+                25700,
+                28000
+              ],
+              "scoreDeltas": [
+                2300,
+                0,
+                -2300,
+                0
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "KillerHUD",
+                  "score": 39300,
+                  "delta": 2300,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "caballo",
+                  "score": 27000,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Haruzen",
+                  "score": 25700,
+                  "delta": -2300,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Bodoque",
+                  "score": 28000,
+                  "delta": 0,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 2,
+              "chang": 0,
+              "ju": 0,
+              "honba": 2,
+              "riichiSticks": 0,
+              "startScores": [
+                39300,
+                27000,
+                25700,
+                28000
+              ],
+              "result": "tsumo",
+              "outcomes": [
+                {
+                  "winnerSeat": 1,
+                  "loserSeat": null,
+                  "yaku": [
+                    "Yakuhai Hatsu"
+                  ],
+                  "hand": "3p4p5p6p7p1s2s3s4s4s",
+                  "win": "8p",
+                  "melds": [
+                    "k6z6z6z"
+                  ],
+                  "dora": "5z",
+                  "points": 8000,
+                  "fu": 30,
+                  "han": 4,
+                  "yakuman": false,
+                  "tsumo": true,
+                  "riichi": false,
+                  "turn": 15,
+                  "winner": "caballo",
+                  "loser": null
+                }
+              ],
+              "endScores": [
+                35100,
+                36600,
+                22500,
+                25800
+              ],
+              "scoreDeltas": [
+                -4200,
+                9600,
+                -2200,
+                -2200
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "KillerHUD",
+                  "score": 35100,
+                  "delta": -4200,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "caballo",
+                  "score": 36600,
+                  "delta": 9600,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Haruzen",
+                  "score": 22500,
+                  "delta": -2200,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Bodoque",
+                  "score": 25800,
+                  "delta": -2200,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 3,
+              "chang": 0,
+              "ju": 1,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                35100,
+                36600,
+                22500,
+                25800
+              ],
+              "result": "draw",
+              "outcomes": [],
+              "tenpaiSeats": [
+                0
+              ],
+              "endScores": [
+                38100,
+                35600,
+                21500,
+                24800
+              ],
+              "scoreDeltas": [
+                3000,
+                -1000,
+                -1000,
+                -1000
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "KillerHUD",
+                  "score": 38100,
+                  "delta": 3000,
+                  "tenpai": true
+                },
+                {
+                  "seat": 1,
+                  "player": "caballo",
+                  "score": 35600,
+                  "delta": -1000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Haruzen",
+                  "score": 21500,
+                  "delta": -1000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Bodoque",
+                  "score": 24800,
+                  "delta": -1000,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 4,
+              "chang": 0,
+              "ju": 2,
+              "honba": 1,
+              "riichiSticks": 0,
+              "startScores": [
+                38100,
+                35600,
+                21500,
+                24800
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 2,
+                  "loserSeat": 0,
+                  "yaku": [
+                    "Toitoi",
+                    "Honitsu",
+                    "Yakuhai Bakaze",
+                    "Yakuhai Jikaze",
+                    "Yakuhai Haku"
+                  ],
+                  "hand": "2s2s9s9s",
+                  "win": "9s",
+                  "melds": [
+                    "k1z1z1z",
+                    "k2z2z2z",
+                    "k5z5z5z"
+                  ],
+                  "dora": "1s",
+                  "points": 24000,
+                  "fu": 40,
+                  "han": 9,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 13,
+                  "winner": "Haruzen",
+                  "loser": "KillerHUD"
+                }
+              ],
+              "endScores": [
+                13800,
+                35600,
+                45800,
+                24800
+              ],
+              "scoreDeltas": [
+                -24300,
+                0,
+                24300,
+                0
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "KillerHUD",
+                  "score": 13800,
+                  "delta": -24300,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "caballo",
+                  "score": 35600,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Haruzen",
+                  "score": 45800,
+                  "delta": 24300,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Bodoque",
+                  "score": 24800,
+                  "delta": 0,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 5,
+              "chang": 0,
+              "ju": 2,
+              "honba": 2,
+              "riichiSticks": 0,
+              "startScores": [
+                13800,
+                35600,
+                45800,
+                24800
+              ],
+              "result": "draw",
+              "outcomes": [],
+              "tenpaiSeats": [
+                1,
+                2
+              ],
+              "endScores": [
+                12300,
+                37100,
+                47300,
+                23300
+              ],
+              "scoreDeltas": [
+                -1500,
+                1500,
+                1500,
+                -1500
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "KillerHUD",
+                  "score": 12300,
+                  "delta": -1500,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "caballo",
+                  "score": 37100,
+                  "delta": 1500,
+                  "tenpai": true
+                },
+                {
+                  "seat": 2,
+                  "player": "Haruzen",
+                  "score": 47300,
+                  "delta": 1500,
+                  "tenpai": true
+                },
+                {
+                  "seat": 3,
+                  "player": "Bodoque",
+                  "score": 23300,
+                  "delta": -1500,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 6,
+              "chang": 0,
+              "ju": 2,
+              "honba": 3,
+              "riichiSticks": 0,
+              "startScores": [
+                12300,
+                37100,
+                47300,
+                23300
+              ],
+              "result": "tsumo",
+              "outcomes": [
+                {
+                  "winnerSeat": 0,
+                  "loserSeat": null,
+                  "yaku": [
+                    "Iipeiko",
+                    "Menzen Tsumo",
+                    "Riichi"
+                  ],
+                  "hand": "1m2m3m4m5m5m6m6m7m7m4p5p6p",
+                  "win": "1m",
+                  "melds": [],
+                  "dora": "8s",
+                  "points": 4000,
+                  "fu": 30,
+                  "han": 3,
+                  "yakuman": false,
+                  "tsumo": true,
+                  "riichi": true,
+                  "turn": 17,
+                  "winner": "KillerHUD",
+                  "loser": null
+                }
+              ],
+              "endScores": [
+                17200,
+                35800,
+                45000,
+                22000
+              ],
+              "scoreDeltas": [
+                5900,
+                -1300,
+                -2300,
+                -1300
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "KillerHUD",
+                  "score": 17200,
+                  "delta": 5900,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "caballo",
+                  "score": 35800,
+                  "delta": -1300,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Haruzen",
+                  "score": 45000,
+                  "delta": -2300,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Bodoque",
+                  "score": 22000,
+                  "delta": -1300,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 7,
+              "chang": 0,
+              "ju": 3,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                17200,
+                35800,
+                45000,
+                22000
+              ],
+              "result": "draw",
+              "outcomes": [],
+              "tenpaiSeats": [
+                0,
+                1,
+                3
+              ],
+              "endScores": [
+                17200,
+                35800,
+                42000,
+                22000
+              ],
+              "scoreDeltas": [
+                1000,
+                1000,
+                -3000,
+                1000
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "KillerHUD",
+                  "score": 17200,
+                  "delta": 1000,
+                  "tenpai": true
+                },
+                {
+                  "seat": 1,
+                  "player": "caballo",
+                  "score": 35800,
+                  "delta": 1000,
+                  "tenpai": true
+                },
+                {
+                  "seat": 2,
+                  "player": "Haruzen",
+                  "score": 42000,
+                  "delta": -3000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Bodoque",
+                  "score": 22000,
+                  "delta": 1000,
+                  "tenpai": true
+                }
+              ]
+            },
+            {
+              "index": 8,
+              "chang": 0,
+              "ju": 3,
+              "honba": 1,
+              "riichiSticks": 3,
+              "startScores": [
+                17200,
+                35800,
+                42000,
+                22000
+              ],
+              "result": "tsumo",
+              "outcomes": [
+                {
+                  "winnerSeat": 2,
+                  "loserSeat": null,
+                  "yaku": [
+                    "Sanshoku Doujun",
+                    "Tanyao"
+                  ],
+                  "hand": "3m4m7p7p2s3s4s5s5s5s",
+                  "win": "2m",
+                  "melds": [
+                    "s2p4p3p"
+                  ],
+                  "dora": "4z",
+                  "points": 2000,
+                  "fu": 30,
+                  "han": 2,
+                  "yakuman": false,
+                  "tsumo": true,
+                  "riichi": false,
+                  "turn": 12,
+                  "winner": "Haruzen",
+                  "loser": null
+                }
+              ],
+              "endScores": [
+                16600,
+                34200,
+                48300,
+                20900
+              ],
+              "scoreDeltas": [
+                -600,
+                -600,
+                6300,
+                -1100
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "KillerHUD",
+                  "score": 16600,
+                  "delta": -600,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "caballo",
+                  "score": 34200,
+                  "delta": -600,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Haruzen",
+                  "score": 48300,
+                  "delta": 6300,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Bodoque",
+                  "score": 20900,
+                  "delta": -1100,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 9,
+              "chang": 1,
+              "ju": 0,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                16600,
+                34200,
+                48300,
+                20900
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 0,
+                  "loserSeat": 1,
+                  "yaku": [
+                    "Sanshoku Doujun",
+                    "Tanyao",
+                    "Riichi"
+                  ],
+                  "hand": "4m5m8m8m3p4p5p3s4s5s6s6s6s",
+                  "win": "3m",
+                  "melds": [],
+                  "dora": "3m",
+                  "points": 18000,
+                  "fu": 40,
+                  "han": 6,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": true,
+                  "turn": 16,
+                  "winner": "KillerHUD",
+                  "loser": "caballo"
+                }
+              ],
+              "endScores": [
+                34600,
+                16200,
+                48300,
+                20900
+              ],
+              "scoreDeltas": [
+                19000,
+                -18000,
+                0,
+                0
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "KillerHUD",
+                  "score": 34600,
+                  "delta": 19000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "caballo",
+                  "score": 16200,
+                  "delta": -18000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Haruzen",
+                  "score": 48300,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Bodoque",
+                  "score": 20900,
+                  "delta": 0,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 10,
+              "chang": 1,
+              "ju": 0,
+              "honba": 1,
+              "riichiSticks": 0,
+              "startScores": [
+                34600,
+                16200,
+                48300,
+                20900
+              ],
+              "result": "draw",
+              "outcomes": [],
+              "tenpaiSeats": [
+                1
+              ],
+              "endScores": [
+                33600,
+                18200,
+                47300,
+                19900
+              ],
+              "scoreDeltas": [
+                -1000,
+                3000,
+                -1000,
+                -1000
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "KillerHUD",
+                  "score": 33600,
+                  "delta": -1000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "caballo",
+                  "score": 18200,
+                  "delta": 3000,
+                  "tenpai": true
+                },
+                {
+                  "seat": 2,
+                  "player": "Haruzen",
+                  "score": 47300,
+                  "delta": -1000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Bodoque",
+                  "score": 19900,
+                  "delta": -1000,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 11,
+              "chang": 1,
+              "ju": 1,
+              "honba": 2,
+              "riichiSticks": 1,
+              "startScores": [
+                33600,
+                18200,
+                47300,
+                19900
+              ],
+              "result": "tsumo",
+              "outcomes": [
+                {
+                  "winnerSeat": 2,
+                  "loserSeat": null,
+                  "yaku": [
+                    "Menzen Tsumo"
+                  ],
+                  "hand": "1m2m5m6m7m7p8p9p1s2s3s4z4z",
+                  "win": "3m",
+                  "melds": [],
+                  "dora": "7p",
+                  "points": 2000,
+                  "fu": 30,
+                  "han": 2,
+                  "yakuman": false,
+                  "tsumo": true,
+                  "riichi": false,
+                  "turn": 12,
+                  "winner": "Haruzen",
+                  "loser": null
+                }
+              ],
+              "endScores": [
+                32900,
+                17000,
+                50900,
+                19200
+              ],
+              "scoreDeltas": [
+                -700,
+                -1200,
+                3600,
+                -700
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "KillerHUD",
+                  "score": 32900,
+                  "delta": -700,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "caballo",
+                  "score": 17000,
+                  "delta": -1200,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Haruzen",
+                  "score": 50900,
+                  "delta": 3600,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Bodoque",
+                  "score": 19200,
+                  "delta": -700,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 12,
+              "chang": 1,
+              "ju": 2,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                32900,
+                17000,
+                50900,
+                19200
+              ],
+              "result": "tsumo",
+              "outcomes": [
+                {
+                  "winnerSeat": 3,
+                  "loserSeat": null,
+                  "yaku": [
+                    "Honitsu",
+                    "Yakuhai Chun"
+                  ],
+                  "hand": "2p3p4p5p7z7z7z",
+                  "win": "5p",
+                  "melds": [
+                    "s7p8p9p",
+                    "s5p7p6p"
+                  ],
+                  "dora": "5s",
+                  "points": 5200,
+                  "fu": 40,
+                  "han": 3,
+                  "yakuman": false,
+                  "tsumo": true,
+                  "riichi": false,
+                  "turn": 13,
+                  "winner": "Bodoque",
+                  "loser": null
+                }
+              ],
+              "endScores": [
+                31600,
+                14700,
+                48300,
+                25400
+              ],
+              "scoreDeltas": [
+                -1300,
+                -1300,
+                -2600,
+                6200
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "KillerHUD",
+                  "score": 31600,
+                  "delta": -1300,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "caballo",
+                  "score": 14700,
+                  "delta": -1300,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Haruzen",
+                  "score": 48300,
+                  "delta": -2600,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Bodoque",
+                  "score": 25400,
+                  "delta": 6200,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 13,
+              "chang": 1,
+              "ju": 3,
+              "honba": 0,
+              "riichiSticks": 0,
+              "startScores": [
+                31600,
+                14700,
+                48300,
+                25400
+              ],
+              "result": "ron",
+              "outcomes": [
+                {
+                  "winnerSeat": 3,
+                  "loserSeat": 1,
+                  "yaku": [
+                    "Toitoi",
+                    "Yakuhai Haku"
+                  ],
+                  "hand": "5m5m3s3s",
+                  "win": "5m",
+                  "melds": [
+                    "k5z5z5z",
+                    "k7s7s7s",
+                    "k2p2p2p"
+                  ],
+                  "dora": "4m",
+                  "points": 18000,
+                  "fu": 30,
+                  "han": 6,
+                  "yakuman": false,
+                  "tsumo": false,
+                  "riichi": false,
+                  "turn": 16,
+                  "winner": "Bodoque",
+                  "loser": "caballo"
+                }
+              ],
+              "endScores": [
+                31600,
+                -3300,
+                48300,
+                43400
+              ],
+              "scoreDeltas": [
+                0,
+                -18000,
+                0,
+                18000
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "KillerHUD",
+                  "score": 31600,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "caballo",
+                  "score": -3300,
+                  "delta": -18000,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Haruzen",
+                  "score": 48300,
+                  "delta": 0,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Bodoque",
+                  "score": 43400,
+                  "delta": 18000,
+                  "tenpai": false
+                }
+              ]
+            },
+            {
+              "index": 14,
+              "chang": 1,
+              "ju": 3,
+              "honba": 1,
+              "riichiSticks": 0,
+              "startScores": [
+                31600,
+                -3300,
+                48300,
+                43400
+              ],
+              "result": "tsumo",
+              "outcomes": [
+                {
+                  "winnerSeat": 0,
+                  "loserSeat": null,
+                  "yaku": [
+                    "Tanyao",
+                    "Menzen Tsumo",
+                    "Pinfu",
+                    "Riichi"
+                  ],
+                  "hand": "5m6m7m2p3p4p4p5p2s2s3s4s5s",
+                  "win": "6p",
+                  "melds": [],
+                  "dora": "6s",
+                  "points": 5200,
+                  "fu": 20,
+                  "han": 4,
+                  "yakuman": false,
+                  "tsumo": true,
+                  "riichi": true,
+                  "turn": 10,
+                  "winner": "KillerHUD",
+                  "loser": null
+                }
+              ],
+              "endScores": [
+                37100,
+                -4700,
+                46900,
+                40700
+              ],
+              "scoreDeltas": [
+                6500,
+                -1400,
+                -1400,
+                -2700
+              ],
+              "settlement": [
+                {
+                  "seat": 0,
+                  "player": "KillerHUD",
+                  "score": 37100,
+                  "delta": 6500,
+                  "tenpai": false
+                },
+                {
+                  "seat": 1,
+                  "player": "caballo",
+                  "score": -4700,
+                  "delta": -1400,
+                  "tenpai": false
+                },
+                {
+                  "seat": 2,
+                  "player": "Haruzen",
+                  "score": 46900,
+                  "delta": -1400,
+                  "tenpai": false
+                },
+                {
+                  "seat": 3,
+                  "player": "Bodoque",
+                  "score": 40700,
+                  "delta": -2700,
+                  "tenpai": false
+                }
+              ]
+            }
+          ]
+        },
+        {
           "id": "A-S7-M2-G1",
           "code": "A-S7-M2-G1",
           "div": "A",
@@ -86010,8 +87975,8 @@
           "date": "23 sep",
           "weekday": "mié",
           "div": "A",
-          "matches": 10,
-          "status": "partial"
+          "matches": 12,
+          "status": "played"
         }
       ],
       "hallOfFame": [
@@ -86618,9 +88583,9 @@
             "statsSample": 174,
             "statsReliable": true,
             "arch": "con datos",
-            "rank": 6,
+            "rank": 7,
             "zone": "playoff",
-            "natRank": 3,
+            "natRank": 4,
             "iormc": "qualified"
           },
           "jp": "立直"
@@ -86783,7 +88748,7 @@
         },
         {
           "key": "recent",
-          "value": "+67.2",
+          "value": "+68.7",
           "player": {
             "id": "A01",
             "div": "A",
@@ -86792,8 +88757,8 @@
             "shortName": "Bodoque",
             "handle": "Bodoque",
             "nat": "CL",
-            "games": 12,
-            "points": 63.4,
+            "games": 14,
+            "points": 91.4,
             "history": [
               -21.2,
               -21.3,
@@ -86806,7 +88771,9 @@
               49.1,
               -22.6,
               22.7,
-              18.0
+              18.0,
+              12.3,
+              15.7
             ],
             "cum": [
               -21.2,
@@ -86820,68 +88787,74 @@
               45.3,
               22.7,
               45.4,
-              63.4
+              63.4,
+              75.7,
+              91.4
             ],
             "counts": [
               4,
-              3,
+              5,
               1,
               4
             ],
             "absences": 0,
-            "hands": 138,
-            "wins": 30,
+            "hands": 162,
+            "wins": 34,
             "dealIns": 14,
-            "riichis": 19,
-            "openHands": 40,
+            "riichis": 22,
+            "openHands": 49,
             "damaten": 4,
             "kans": 4,
-            "doras": 37,
-            "uraDoras": 13,
+            "doras": 41,
+            "uraDoras": 14,
             "maxHonba": 4,
-            "winPoints": 187500,
+            "winPoints": 215600,
             "dealInPoints": 61800,
-            "winTurns": 333,
+            "winTurns": 385,
             "placements": {
-              "p1": 0.33,
-              "p2": 0.25,
-              "p3": 0.08,
-              "p4": 0.33
+              "p1": 0.29,
+              "p2": 0.36,
+              "p3": 0.07,
+              "p4": 0.29
             },
-            "avgRank": 2.42,
-            "avgPoints": 5.3,
-            "streak": 67.2,
-            "winRate": 21.7,
-            "dealInRate": 10.1,
-            "riichiRate": 13.8,
-            "openRate": 29.0,
-            "damatenRate": 13.3,
-            "avgWinPoints": 6250,
+            "avgRank": 2.36,
+            "avgPoints": 6.5,
+            "streak": 68.7,
+            "winRate": 21.0,
+            "dealInRate": 8.6,
+            "riichiRate": 13.6,
+            "openRate": 30.2,
+            "damatenRate": 11.8,
+            "avgWinPoints": 6341,
             "avgDealInPoints": 4414,
-            "avgWinTurn": 11.1,
+            "avgWinTurn": 11.32,
             "yakus": [
               {
                 "name": "Riichi",
-                "count": 13
+                "count": 14
               },
               {
                 "name": "Tanyao",
-                "count": 7
+                "count": 8
+              },
+              {
+                "name": "Pinfu",
+                "count": 8
               },
               {
                 "name": "Menzen Tsumo",
                 "count": 7
               },
               {
-                "name": "Pinfu",
-                "count": 7
-              },
-              {
                 "name": "Yakuhai Chun",
-                "count": 5
+                "count": 6
               },
               {
                 "name": "Ippatsu",
+                "count": 4
+              },
+              {
+                "name": "Honitsu",
                 "count": 4
               },
               {
@@ -86889,7 +88862,7 @@
                 "count": 3
               },
               {
-                "name": "Honitsu",
+                "name": "Yakuhai Haku",
                 "count": 3
               },
               {
@@ -86897,11 +88870,11 @@
                 "count": 2
               },
               {
-                "name": "Yakuhai Jikaze",
+                "name": "Sanshoku Doujun",
                 "count": 2
               },
               {
-                "name": "Yakuhai Haku",
+                "name": "Yakuhai Jikaze",
                 "count": 2
               },
               {
@@ -86913,20 +88886,20 @@
                 "count": 1
               },
               {
-                "name": "Sanshoku Doujun",
+                "name": "Chinitsu",
                 "count": 1
               },
               {
-                "name": "Chinitsu",
+                "name": "Toitoi",
                 "count": 1
               }
             ],
-            "statsSample": 138,
+            "statsSample": 162,
             "statsReliable": true,
             "arch": "con datos",
-            "rank": 7,
+            "rank": 6,
             "zone": "playoff",
-            "natRank": 4,
+            "natRank": 3,
             "iormc": "qualified"
           },
           "jp": "連勝"
@@ -87408,9 +89381,9 @@
             "statsSample": 174,
             "statsReliable": true,
             "arch": "con datos",
-            "rank": 6,
+            "rank": 7,
             "zone": "playoff",
-            "natRank": 3,
+            "natRank": 4,
             "iormc": "qualified"
           },
           "jp": "裏ドラ"
@@ -169854,6 +171827,159 @@
       "iormc": "qualified"
     },
     {
+      "id": "A01",
+      "div": "A",
+      "num": "01",
+      "name": "Bodoque",
+      "shortName": "Bodoque",
+      "handle": "Bodoque",
+      "nat": "CL",
+      "games": 14,
+      "points": 91.4,
+      "history": [
+        -21.2,
+        -21.3,
+        30.8,
+        5.0,
+        5.3,
+        -9.7,
+        -36.5,
+        43.8,
+        49.1,
+        -22.6,
+        22.7,
+        18.0,
+        12.3,
+        15.7
+      ],
+      "cum": [
+        -21.2,
+        -42.5,
+        -11.7,
+        -6.7,
+        -1.4,
+        -11.1,
+        -47.6,
+        -3.8,
+        45.3,
+        22.7,
+        45.4,
+        63.4,
+        75.7,
+        91.4
+      ],
+      "counts": [
+        4,
+        5,
+        1,
+        4
+      ],
+      "absences": 0,
+      "hands": 162,
+      "wins": 34,
+      "dealIns": 14,
+      "riichis": 22,
+      "openHands": 49,
+      "damaten": 4,
+      "kans": 4,
+      "doras": 41,
+      "uraDoras": 14,
+      "maxHonba": 4,
+      "winPoints": 215600,
+      "dealInPoints": 61800,
+      "winTurns": 385,
+      "placements": {
+        "p1": 0.29,
+        "p2": 0.36,
+        "p3": 0.07,
+        "p4": 0.29
+      },
+      "avgRank": 2.36,
+      "avgPoints": 6.5,
+      "streak": 68.7,
+      "winRate": 21.0,
+      "dealInRate": 8.6,
+      "riichiRate": 13.6,
+      "openRate": 30.2,
+      "damatenRate": 11.8,
+      "avgWinPoints": 6341,
+      "avgDealInPoints": 4414,
+      "avgWinTurn": 11.32,
+      "yakus": [
+        {
+          "name": "Riichi",
+          "count": 14
+        },
+        {
+          "name": "Tanyao",
+          "count": 8
+        },
+        {
+          "name": "Pinfu",
+          "count": 8
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 7
+        },
+        {
+          "name": "Yakuhai Chun",
+          "count": 6
+        },
+        {
+          "name": "Ippatsu",
+          "count": 4
+        },
+        {
+          "name": "Honitsu",
+          "count": 4
+        },
+        {
+          "name": "Yakuhai Bakaze",
+          "count": 3
+        },
+        {
+          "name": "Yakuhai Haku",
+          "count": 3
+        },
+        {
+          "name": "Rinshan Kaihou",
+          "count": 2
+        },
+        {
+          "name": "Sanshoku Doujun",
+          "count": 2
+        },
+        {
+          "name": "Yakuhai Jikaze",
+          "count": 2
+        },
+        {
+          "name": "Yakuhai Hatsu",
+          "count": 2
+        },
+        {
+          "name": "Iipeiko",
+          "count": 1
+        },
+        {
+          "name": "Chinitsu",
+          "count": 1
+        },
+        {
+          "name": "Toitoi",
+          "count": 1
+        }
+      ],
+      "statsSample": 162,
+      "statsReliable": true,
+      "arch": "con datos",
+      "rank": 6,
+      "zone": "playoff",
+      "natRank": 3,
+      "iormc": "qualified"
+    },
+    {
       "id": "A16",
       "div": "A",
       "num": "16",
@@ -169991,151 +172117,6 @@
         }
       ],
       "statsSample": 174,
-      "statsReliable": true,
-      "arch": "con datos",
-      "rank": 6,
-      "zone": "playoff",
-      "natRank": 3,
-      "iormc": "qualified"
-    },
-    {
-      "id": "A01",
-      "div": "A",
-      "num": "01",
-      "name": "Bodoque",
-      "shortName": "Bodoque",
-      "handle": "Bodoque",
-      "nat": "CL",
-      "games": 12,
-      "points": 63.4,
-      "history": [
-        -21.2,
-        -21.3,
-        30.8,
-        5.0,
-        5.3,
-        -9.7,
-        -36.5,
-        43.8,
-        49.1,
-        -22.6,
-        22.7,
-        18.0
-      ],
-      "cum": [
-        -21.2,
-        -42.5,
-        -11.7,
-        -6.7,
-        -1.4,
-        -11.1,
-        -47.6,
-        -3.8,
-        45.3,
-        22.7,
-        45.4,
-        63.4
-      ],
-      "counts": [
-        4,
-        3,
-        1,
-        4
-      ],
-      "absences": 0,
-      "hands": 138,
-      "wins": 30,
-      "dealIns": 14,
-      "riichis": 19,
-      "openHands": 40,
-      "damaten": 4,
-      "kans": 4,
-      "doras": 37,
-      "uraDoras": 13,
-      "maxHonba": 4,
-      "winPoints": 187500,
-      "dealInPoints": 61800,
-      "winTurns": 333,
-      "placements": {
-        "p1": 0.33,
-        "p2": 0.25,
-        "p3": 0.08,
-        "p4": 0.33
-      },
-      "avgRank": 2.42,
-      "avgPoints": 5.3,
-      "streak": 67.2,
-      "winRate": 21.7,
-      "dealInRate": 10.1,
-      "riichiRate": 13.8,
-      "openRate": 29.0,
-      "damatenRate": 13.3,
-      "avgWinPoints": 6250,
-      "avgDealInPoints": 4414,
-      "avgWinTurn": 11.1,
-      "yakus": [
-        {
-          "name": "Riichi",
-          "count": 13
-        },
-        {
-          "name": "Tanyao",
-          "count": 7
-        },
-        {
-          "name": "Menzen Tsumo",
-          "count": 7
-        },
-        {
-          "name": "Pinfu",
-          "count": 7
-        },
-        {
-          "name": "Yakuhai Chun",
-          "count": 5
-        },
-        {
-          "name": "Ippatsu",
-          "count": 4
-        },
-        {
-          "name": "Yakuhai Bakaze",
-          "count": 3
-        },
-        {
-          "name": "Honitsu",
-          "count": 3
-        },
-        {
-          "name": "Rinshan Kaihou",
-          "count": 2
-        },
-        {
-          "name": "Yakuhai Jikaze",
-          "count": 2
-        },
-        {
-          "name": "Yakuhai Haku",
-          "count": 2
-        },
-        {
-          "name": "Yakuhai Hatsu",
-          "count": 2
-        },
-        {
-          "name": "Iipeiko",
-          "count": 1
-        },
-        {
-          "name": "Sanshoku Doujun",
-          "count": 1
-        },
-        {
-          "name": "Chinitsu",
-          "count": 1
-        }
-      ],
-      "statsSample": 138,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 7,
@@ -170611,6 +172592,314 @@
       "zone": null
     },
     {
+      "id": "A10",
+      "div": "A",
+      "num": "10",
+      "name": "Haruzen",
+      "shortName": "Haruzen",
+      "handle": "Haruzen",
+      "nat": "MX",
+      "games": 14,
+      "points": 21.4,
+      "history": [
+        -25.8,
+        38.3,
+        6.8,
+        30.3,
+        -21.8,
+        -30.6,
+        21.1,
+        10.5,
+        -14.2,
+        -29.6,
+        25.1,
+        -11.7,
+        -8.9,
+        31.9
+      ],
+      "cum": [
+        -25.8,
+        12.5,
+        19.3,
+        49.6,
+        27.8,
+        -2.8,
+        18.3,
+        28.8,
+        14.6,
+        -15.0,
+        10.1,
+        -1.6,
+        -10.5,
+        21.4
+      ],
+      "counts": [
+        5,
+        2,
+        3,
+        4
+      ],
+      "absences": 0,
+      "hands": 157,
+      "wins": 35,
+      "dealIns": 29,
+      "riichis": 17,
+      "openHands": 74,
+      "damaten": 7,
+      "kans": 10,
+      "doras": 43,
+      "uraDoras": 9,
+      "maxHonba": 4,
+      "winPoints": 156300,
+      "dealInPoints": 93600,
+      "winTurns": 389,
+      "placements": {
+        "p1": 0.36,
+        "p2": 0.14,
+        "p3": 0.21,
+        "p4": 0.29
+      },
+      "avgRank": 2.43,
+      "avgPoints": 1.5,
+      "streak": 36.4,
+      "winRate": 22.3,
+      "dealInRate": 18.5,
+      "riichiRate": 10.8,
+      "openRate": 47.1,
+      "damatenRate": 20.0,
+      "avgWinPoints": 4466,
+      "avgDealInPoints": 3228,
+      "avgWinTurn": 11.11,
+      "yakus": [
+        {
+          "name": "Tanyao",
+          "count": 11
+        },
+        {
+          "name": "Riichi",
+          "count": 7
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 6
+        },
+        {
+          "name": "Yakuhai Jikaze",
+          "count": 5
+        },
+        {
+          "name": "Pinfu",
+          "count": 5
+        },
+        {
+          "name": "Yakuhai Bakaze",
+          "count": 4
+        },
+        {
+          "name": "Yakuhai Hatsu",
+          "count": 3
+        },
+        {
+          "name": "Sanshoku Doujun",
+          "count": 2
+        },
+        {
+          "name": "Chanta",
+          "count": 2
+        },
+        {
+          "name": "Toitoi",
+          "count": 2
+        },
+        {
+          "name": "Yakuhai Haku",
+          "count": 2
+        },
+        {
+          "name": "Honitsu",
+          "count": 2
+        },
+        {
+          "name": "Ippatsu",
+          "count": 1
+        },
+        {
+          "name": "Chiitoitsu",
+          "count": 1
+        },
+        {
+          "name": "Iipeiko",
+          "count": 1
+        },
+        {
+          "name": "Houtei Raoyui",
+          "count": 1
+        }
+      ],
+      "statsSample": 157,
+      "statsReliable": true,
+      "arch": "con datos",
+      "rank": 11,
+      "zone": null
+    },
+    {
+      "id": "A08",
+      "div": "A",
+      "num": "08",
+      "name": "KillerHUD",
+      "shortName": "KillerHUD",
+      "handle": "KillerHUD",
+      "nat": "CL",
+      "games": 14,
+      "points": 17.0,
+      "history": [
+        -6.4,
+        10.1,
+        22.4,
+        11.7,
+        -51.2,
+        -5.1,
+        25.5,
+        -31.2,
+        -15.4,
+        12.4,
+        4.5,
+        6.5,
+        31.1,
+        2.1
+      ],
+      "cum": [
+        -6.4,
+        3.7,
+        26.1,
+        37.8,
+        -13.4,
+        -18.5,
+        7.0,
+        -24.2,
+        -39.6,
+        -27.2,
+        -22.7,
+        -16.2,
+        14.9,
+        17.0
+      ],
+      "counts": [
+        2,
+        6,
+        4,
+        2
+      ],
+      "absences": 0,
+      "hands": 180,
+      "wins": 37,
+      "dealIns": 26,
+      "riichis": 42,
+      "openHands": 72,
+      "damaten": 2,
+      "kans": 10,
+      "doras": 44,
+      "uraDoras": 20,
+      "maxHonba": 8,
+      "winPoints": 201900,
+      "dealInPoints": 152900,
+      "winTurns": 462,
+      "placements": {
+        "p1": 0.14,
+        "p2": 0.43,
+        "p3": 0.29,
+        "p4": 0.14
+      },
+      "avgRank": 2.43,
+      "avgPoints": 1.2,
+      "streak": 44.2,
+      "winRate": 20.6,
+      "dealInRate": 14.4,
+      "riichiRate": 23.3,
+      "openRate": 40.0,
+      "damatenRate": 5.4,
+      "avgWinPoints": 5457,
+      "avgDealInPoints": 5881,
+      "avgWinTurn": 12.49,
+      "yakus": [
+        {
+          "name": "Riichi",
+          "count": 18
+        },
+        {
+          "name": "Tanyao",
+          "count": 8
+        },
+        {
+          "name": "Yakuhai Hatsu",
+          "count": 7
+        },
+        {
+          "name": "Pinfu",
+          "count": 6
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 5
+        },
+        {
+          "name": "Iipeiko",
+          "count": 4
+        },
+        {
+          "name": "Yakuhai Jikaze",
+          "count": 4
+        },
+        {
+          "name": "Yakuhai Chun",
+          "count": 3
+        },
+        {
+          "name": "Ippatsu",
+          "count": 3
+        },
+        {
+          "name": "Chanta",
+          "count": 3
+        },
+        {
+          "name": "Yakuhai Haku",
+          "count": 3
+        },
+        {
+          "name": "Honitsu",
+          "count": 3
+        },
+        {
+          "name": "Sanshoku Doujun",
+          "count": 2
+        },
+        {
+          "name": "Toitoi",
+          "count": 1
+        },
+        {
+          "name": "Ittsu",
+          "count": 1
+        },
+        {
+          "name": "Daburu Riichi",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Bakaze",
+          "count": 1
+        }
+      ],
+      "statsSample": 180,
+      "statsReliable": true,
+      "arch": "con datos",
+      "rank": 12,
+      "zone": null,
+      "natRank": 6,
+      "iormc": "contention"
+    },
+    {
       "id": "A15",
       "div": "A",
       "num": "15",
@@ -170758,7 +173047,7 @@
       "statsSample": 154,
       "statsReliable": true,
       "arch": "con datos",
-      "rank": 11,
+      "rank": 13,
       "zone": null
     },
     {
@@ -170901,9 +173190,9 @@
       "statsSample": 167,
       "statsReliable": true,
       "arch": "con datos",
-      "rank": 12,
+      "rank": 14,
       "zone": null,
-      "natRank": 6,
+      "natRank": 7,
       "iormc": "contention"
     },
     {
@@ -171046,154 +173335,7 @@
       "statsSample": 178,
       "statsReliable": true,
       "arch": "con datos",
-      "rank": 13,
-      "zone": null
-    },
-    {
-      "id": "A10",
-      "div": "A",
-      "num": "10",
-      "name": "Haruzen",
-      "shortName": "Haruzen",
-      "handle": "Haruzen",
-      "nat": "MX",
-      "games": 12,
-      "points": -1.6,
-      "history": [
-        -25.8,
-        38.3,
-        6.8,
-        30.3,
-        -21.8,
-        -30.6,
-        21.1,
-        10.5,
-        -14.2,
-        -29.6,
-        25.1,
-        -11.7
-      ],
-      "cum": [
-        -25.8,
-        12.5,
-        19.3,
-        49.6,
-        27.8,
-        -2.8,
-        18.3,
-        28.8,
-        14.6,
-        -15.0,
-        10.1,
-        -1.6
-      ],
-      "counts": [
-        4,
-        2,
-        2,
-        4
-      ],
-      "absences": 0,
-      "hands": 133,
-      "wins": 32,
-      "dealIns": 27,
-      "riichis": 15,
-      "openHands": 59,
-      "damaten": 6,
-      "kans": 6,
-      "doras": 40,
-      "uraDoras": 9,
-      "maxHonba": 4,
-      "winPoints": 128300,
-      "dealInPoints": 89600,
-      "winTurns": 352,
-      "placements": {
-        "p1": 0.33,
-        "p2": 0.17,
-        "p3": 0.17,
-        "p4": 0.33
-      },
-      "avgRank": 2.5,
-      "avgPoints": -0.1,
-      "streak": -30.4,
-      "winRate": 24.1,
-      "dealInRate": 20.3,
-      "riichiRate": 11.3,
-      "openRate": 44.4,
-      "damatenRate": 18.8,
-      "avgWinPoints": 4009,
-      "avgDealInPoints": 3319,
-      "avgWinTurn": 11.0,
-      "yakus": [
-        {
-          "name": "Tanyao",
-          "count": 10
-        },
-        {
-          "name": "Riichi",
-          "count": 7
-        },
-        {
-          "name": "Menzen Tsumo",
-          "count": 5
-        },
-        {
-          "name": "Pinfu",
-          "count": 5
-        },
-        {
-          "name": "Yakuhai Jikaze",
-          "count": 4
-        },
-        {
-          "name": "Yakuhai Hatsu",
-          "count": 3
-        },
-        {
-          "name": "Yakuhai Bakaze",
-          "count": 3
-        },
-        {
-          "name": "Chanta",
-          "count": 2
-        },
-        {
-          "name": "Sanshoku Doujun",
-          "count": 1
-        },
-        {
-          "name": "Ippatsu",
-          "count": 1
-        },
-        {
-          "name": "Chiitoitsu",
-          "count": 1
-        },
-        {
-          "name": "Toitoi",
-          "count": 1
-        },
-        {
-          "name": "Iipeiko",
-          "count": 1
-        },
-        {
-          "name": "Yakuhai Haku",
-          "count": 1
-        },
-        {
-          "name": "Houtei Raoyui",
-          "count": 1
-        },
-        {
-          "name": "Honitsu",
-          "count": 1
-        }
-      ],
-      "statsSample": 133,
-      "statsReliable": true,
-      "arch": "con datos",
-      "rank": 14,
+      "rank": 15,
       "zone": null
     },
     {
@@ -171342,155 +173484,6 @@
         }
       ],
       "statsSample": 177,
-      "statsReliable": true,
-      "arch": "con datos",
-      "rank": 15,
-      "zone": null,
-      "natRank": 7,
-      "iormc": "contention"
-    },
-    {
-      "id": "A08",
-      "div": "A",
-      "num": "08",
-      "name": "KillerHUD",
-      "shortName": "KillerHUD",
-      "handle": "KillerHUD",
-      "nat": "CL",
-      "games": 12,
-      "points": -16.2,
-      "history": [
-        -6.4,
-        10.1,
-        22.4,
-        11.7,
-        -51.2,
-        -5.1,
-        25.5,
-        -31.2,
-        -15.4,
-        12.4,
-        4.5,
-        6.5
-      ],
-      "cum": [
-        -6.4,
-        3.7,
-        26.1,
-        37.8,
-        -13.4,
-        -18.5,
-        7.0,
-        -24.2,
-        -39.6,
-        -27.2,
-        -22.7,
-        -16.2
-      ],
-      "counts": [
-        1,
-        6,
-        3,
-        2
-      ],
-      "absences": 0,
-      "hands": 156,
-      "wins": 29,
-      "dealIns": 25,
-      "riichis": 36,
-      "openHands": 65,
-      "damaten": 1,
-      "kans": 10,
-      "doras": 33,
-      "uraDoras": 15,
-      "maxHonba": 8,
-      "winPoints": 146800,
-      "dealInPoints": 128900,
-      "winTurns": 365,
-      "placements": {
-        "p1": 0.08,
-        "p2": 0.5,
-        "p3": 0.25,
-        "p4": 0.17
-      },
-      "avgRank": 2.5,
-      "avgPoints": -1.3,
-      "streak": 8.0,
-      "winRate": 18.6,
-      "dealInRate": 16.0,
-      "riichiRate": 23.1,
-      "openRate": 41.7,
-      "damatenRate": 3.4,
-      "avgWinPoints": 5062,
-      "avgDealInPoints": 5156,
-      "avgWinTurn": 12.59,
-      "yakus": [
-        {
-          "name": "Riichi",
-          "count": 13
-        },
-        {
-          "name": "Tanyao",
-          "count": 6
-        },
-        {
-          "name": "Yakuhai Hatsu",
-          "count": 5
-        },
-        {
-          "name": "Yakuhai Jikaze",
-          "count": 4
-        },
-        {
-          "name": "Pinfu",
-          "count": 3
-        },
-        {
-          "name": "Yakuhai Chun",
-          "count": 3
-        },
-        {
-          "name": "Ippatsu",
-          "count": 3
-        },
-        {
-          "name": "Chanta",
-          "count": 3
-        },
-        {
-          "name": "Yakuhai Haku",
-          "count": 3
-        },
-        {
-          "name": "Menzen Tsumo",
-          "count": 2
-        },
-        {
-          "name": "Honitsu",
-          "count": 2
-        },
-        {
-          "name": "Iipeiko",
-          "count": 1
-        },
-        {
-          "name": "Toitoi",
-          "count": 1
-        },
-        {
-          "name": "Sanshoku Doujun",
-          "count": 1
-        },
-        {
-          "name": "Ittsu",
-          "count": 1
-        },
-        {
-          "name": "Daburu Riichi",
-          "count": 1
-        }
-      ],
-      "statsSample": 156,
       "statsReliable": true,
       "arch": "con datos",
       "rank": 16,
@@ -172065,151 +174058,6 @@
       "zone": null
     },
     {
-      "id": "A20",
-      "div": "A",
-      "num": "20",
-      "name": "caballo",
-      "shortName": "caballo",
-      "handle": "caballo",
-      "nat": "CL",
-      "games": 12,
-      "points": -145.6,
-      "history": [
-        8.8,
-        -15.9,
-        38.2,
-        10.2,
-        -48.7,
-        -33.8,
-        9.6,
-        -26.1,
-        16.2,
-        -40.3,
-        13.0,
-        -76.8
-      ],
-      "cum": [
-        8.8,
-        -7.1,
-        31.1,
-        41.3,
-        -7.4,
-        -41.2,
-        -31.6,
-        -57.7,
-        -41.5,
-        -81.8,
-        -68.8,
-        -145.6
-      ],
-      "counts": [
-        1,
-        5,
-        1,
-        5
-      ],
-      "absences": 0,
-      "hands": 142,
-      "wins": 25,
-      "dealIns": 33,
-      "riichis": 38,
-      "openHands": 40,
-      "damaten": 1,
-      "kans": 6,
-      "doras": 28,
-      "uraDoras": 17,
-      "maxHonba": 5,
-      "winPoints": 171600,
-      "dealInPoints": 205200,
-      "winTurns": 292,
-      "placements": {
-        "p1": 0.08,
-        "p2": 0.42,
-        "p3": 0.08,
-        "p4": 0.42
-      },
-      "avgRank": 2.83,
-      "avgPoints": -12.1,
-      "streak": -87.9,
-      "winRate": 17.6,
-      "dealInRate": 23.2,
-      "riichiRate": 26.8,
-      "openRate": 28.2,
-      "damatenRate": 4.0,
-      "avgWinPoints": 6864,
-      "avgDealInPoints": 6218,
-      "avgWinTurn": 11.68,
-      "yakus": [
-        {
-          "name": "Riichi",
-          "count": 17
-        },
-        {
-          "name": "Menzen Tsumo",
-          "count": 7
-        },
-        {
-          "name": "Pinfu",
-          "count": 7
-        },
-        {
-          "name": "Honitsu",
-          "count": 4
-        },
-        {
-          "name": "Yakuhai Jikaze",
-          "count": 3
-        },
-        {
-          "name": "Tanyao",
-          "count": 2
-        },
-        {
-          "name": "Iipeiko",
-          "count": 2
-        },
-        {
-          "name": "Yakuhai Hatsu",
-          "count": 2
-        },
-        {
-          "name": "Chinitsu",
-          "count": 2
-        },
-        {
-          "name": "Ippatsu",
-          "count": 2
-        },
-        {
-          "name": "Chanta",
-          "count": 1
-        },
-        {
-          "name": "Yakuhai Haku",
-          "count": 1
-        },
-        {
-          "name": "Ryanpeikou",
-          "count": 1
-        },
-        {
-          "name": "Yakuhai Chun",
-          "count": 1
-        },
-        {
-          "name": "Chiitoitsu",
-          "count": 1
-        }
-      ],
-      "statsSample": 142,
-      "statsReliable": true,
-      "arch": "con datos",
-      "rank": 21,
-      "zone": "relegation",
-      "natRank": 10,
-      "iormc": "out"
-    },
-    {
       "id": "A13",
       "div": "A",
       "num": "13",
@@ -172361,9 +174209,9 @@
       "statsSample": 173,
       "statsReliable": true,
       "arch": "con datos",
-      "rank": 22,
+      "rank": 21,
       "zone": "relegation",
-      "natRank": 11,
+      "natRank": 10,
       "iormc": "out"
     },
     {
@@ -172518,8 +174366,157 @@
       "statsSample": 172,
       "statsReliable": true,
       "arch": "con datos",
-      "rank": 23,
+      "rank": 22,
       "zone": "relegation"
+    },
+    {
+      "id": "A20",
+      "div": "A",
+      "num": "20",
+      "name": "caballo",
+      "shortName": "caballo",
+      "handle": "caballo",
+      "nat": "CL",
+      "games": 14,
+      "points": -229.8,
+      "history": [
+        8.8,
+        -15.9,
+        38.2,
+        10.2,
+        -48.7,
+        -33.8,
+        9.6,
+        -26.1,
+        16.2,
+        -40.3,
+        13.0,
+        -76.8,
+        -34.5,
+        -49.7
+      ],
+      "cum": [
+        8.8,
+        -7.1,
+        31.1,
+        41.3,
+        -7.4,
+        -41.2,
+        -31.6,
+        -57.7,
+        -41.5,
+        -81.8,
+        -68.8,
+        -145.6,
+        -180.1,
+        -229.8
+      ],
+      "counts": [
+        1,
+        5,
+        1,
+        7
+      ],
+      "absences": 0,
+      "hands": 166,
+      "wins": 28,
+      "dealIns": 39,
+      "riichis": 44,
+      "openHands": 45,
+      "damaten": 1,
+      "kans": 7,
+      "doras": 31,
+      "uraDoras": 18,
+      "maxHonba": 5,
+      "winPoints": 183600,
+      "dealInPoints": 264000,
+      "winTurns": 328,
+      "placements": {
+        "p1": 0.07,
+        "p2": 0.36,
+        "p3": 0.07,
+        "p4": 0.5
+      },
+      "avgRank": 3.0,
+      "avgPoints": -16.4,
+      "streak": -148.0,
+      "winRate": 16.9,
+      "dealInRate": 23.5,
+      "riichiRate": 26.5,
+      "openRate": 27.1,
+      "damatenRate": 3.6,
+      "avgWinPoints": 6557,
+      "avgDealInPoints": 6769,
+      "avgWinTurn": 11.71,
+      "yakus": [
+        {
+          "name": "Riichi",
+          "count": 18
+        },
+        {
+          "name": "Menzen Tsumo",
+          "count": 8
+        },
+        {
+          "name": "Pinfu",
+          "count": 7
+        },
+        {
+          "name": "Honitsu",
+          "count": 4
+        },
+        {
+          "name": "Yakuhai Hatsu",
+          "count": 3
+        },
+        {
+          "name": "Yakuhai Jikaze",
+          "count": 3
+        },
+        {
+          "name": "Tanyao",
+          "count": 2
+        },
+        {
+          "name": "Iipeiko",
+          "count": 2
+        },
+        {
+          "name": "Yakuhai Haku",
+          "count": 2
+        },
+        {
+          "name": "Chinitsu",
+          "count": 2
+        },
+        {
+          "name": "Ippatsu",
+          "count": 2
+        },
+        {
+          "name": "Chanta",
+          "count": 1
+        },
+        {
+          "name": "Ryanpeikou",
+          "count": 1
+        },
+        {
+          "name": "Yakuhai Chun",
+          "count": 1
+        },
+        {
+          "name": "Chiitoitsu",
+          "count": 1
+        }
+      ],
+      "statsSample": 166,
+      "statsReliable": true,
+      "arch": "con datos",
+      "rank": 23,
+      "zone": "relegation",
+      "natRank": 11,
+      "iormc": "out"
     },
     {
       "id": "A11",
@@ -176407,8 +178404,8 @@
       "count": 24,
       "inA": 12,
       "inB": 12,
-      "avgPoints": 9.9,
-      "avgRank": 2.5,
+      "avgPoints": 8.9,
+      "avgRank": 2.51,
       "best": {
         "id": "B04",
         "div": "B",
@@ -176570,115 +178567,123 @@
       "count": 5,
       "inA": 4,
       "inB": 1,
-      "avgPoints": -124.1,
-      "avgRank": 2.81,
+      "avgPoints": -119.5,
+      "avgRank": 2.79,
       "best": {
-        "id": "A15",
+        "id": "A10",
         "div": "A",
-        "num": "15",
-        "name": "UnChano",
-        "shortName": "UnChano",
-        "handle": "UnChano",
+        "num": "10",
+        "name": "Haruzen",
+        "shortName": "Haruzen",
+        "handle": "Haruzen",
         "nat": "MX",
         "games": 14,
-        "points": 8.5,
+        "points": 21.4,
         "history": [
-          3.9,
-          -4.8,
-          20.9,
-          10.6,
-          20.6,
-          23.0,
-          -6.5,
-          28.2,
-          -3.0,
-          26.8,
-          -39.3,
-          -44.9,
-          2.6,
-          -29.6
+          -25.8,
+          38.3,
+          6.8,
+          30.3,
+          -21.8,
+          -30.6,
+          21.1,
+          10.5,
+          -14.2,
+          -29.6,
+          25.1,
+          -11.7,
+          -8.9,
+          31.9
         ],
         "cum": [
-          3.9,
-          -0.9,
-          20.0,
-          30.6,
-          51.2,
-          74.2,
-          67.7,
-          95.9,
-          92.9,
-          119.7,
-          80.4,
-          35.5,
-          38.1,
-          8.5
+          -25.8,
+          12.5,
+          19.3,
+          49.6,
+          27.8,
+          -2.8,
+          18.3,
+          28.8,
+          14.6,
+          -15.0,
+          10.1,
+          -1.6,
+          -10.5,
+          21.4
         ],
         "counts": [
-          3,
           5,
+          2,
           3,
-          3
+          4
         ],
         "absences": 0,
-        "hands": 154,
-        "wins": 39,
-        "dealIns": 30,
-        "riichis": 37,
-        "openHands": 70,
-        "damaten": 2,
-        "kans": 12,
-        "doras": 50,
-        "uraDoras": 21,
-        "maxHonba": 3,
-        "winPoints": 190200,
-        "dealInPoints": 140900,
-        "winTurns": 431,
+        "hands": 157,
+        "wins": 35,
+        "dealIns": 29,
+        "riichis": 17,
+        "openHands": 74,
+        "damaten": 7,
+        "kans": 10,
+        "doras": 43,
+        "uraDoras": 9,
+        "maxHonba": 4,
+        "winPoints": 156300,
+        "dealInPoints": 93600,
+        "winTurns": 389,
         "placements": {
-          "p1": 0.21,
-          "p2": 0.36,
+          "p1": 0.36,
+          "p2": 0.14,
           "p3": 0.21,
-          "p4": 0.21
+          "p4": 0.29
         },
         "avgRank": 2.43,
-        "avgPoints": 0.6,
-        "streak": -111.2,
-        "winRate": 25.3,
-        "dealInRate": 19.5,
-        "riichiRate": 24.0,
-        "openRate": 45.5,
-        "damatenRate": 5.1,
-        "avgWinPoints": 4877,
-        "avgDealInPoints": 4697,
-        "avgWinTurn": 11.05,
+        "avgPoints": 1.5,
+        "streak": 36.4,
+        "winRate": 22.3,
+        "dealInRate": 18.5,
+        "riichiRate": 10.8,
+        "openRate": 47.1,
+        "damatenRate": 20.0,
+        "avgWinPoints": 4466,
+        "avgDealInPoints": 3228,
+        "avgWinTurn": 11.11,
         "yakus": [
-          {
-            "name": "Riichi",
-            "count": 18
-          },
           {
             "name": "Tanyao",
             "count": 11
           },
           {
+            "name": "Riichi",
+            "count": 7
+          },
+          {
             "name": "Menzen Tsumo",
-            "count": 8
+            "count": 6
+          },
+          {
+            "name": "Yakuhai Jikaze",
+            "count": 5
           },
           {
             "name": "Pinfu",
             "count": 5
           },
           {
+            "name": "Yakuhai Bakaze",
+            "count": 4
+          },
+          {
             "name": "Yakuhai Hatsu",
             "count": 3
           },
           {
-            "name": "Yakuhai Bakaze",
-            "count": 3
+            "name": "Sanshoku Doujun",
+            "count": 2
           },
           {
-            "name": "Yakuhai Chun",
-            "count": 3
+            "name": "Chanta",
+            "count": 2
           },
           {
             "name": "Toitoi",
@@ -176689,35 +178694,27 @@
             "count": 2
           },
           {
-            "name": "Iipeiko",
-            "count": 2
-          },
-          {
-            "name": "Yakuhai Jikaze",
-            "count": 2
-          },
-          {
-            "name": "Ittsu",
-            "count": 2
-          },
-          {
             "name": "Honitsu",
             "count": 2
-          },
-          {
-            "name": "Sanankou",
-            "count": 1
           },
           {
             "name": "Ippatsu",
             "count": 1
           },
           {
-            "name": "Sanshoku Doujun",
+            "name": "Chiitoitsu",
+            "count": 1
+          },
+          {
+            "name": "Iipeiko",
+            "count": 1
+          },
+          {
+            "name": "Houtei Raoyui",
             "count": 1
           }
         ],
-        "statsSample": 154,
+        "statsSample": 157,
         "statsReliable": true,
         "arch": "con datos",
         "rank": 11,
@@ -177366,6 +179363,159 @@
         "iormc": "qualified"
       },
       {
+        "id": "A01",
+        "div": "A",
+        "num": "01",
+        "name": "Bodoque",
+        "shortName": "Bodoque",
+        "handle": "Bodoque",
+        "nat": "CL",
+        "games": 14,
+        "points": 91.4,
+        "history": [
+          -21.2,
+          -21.3,
+          30.8,
+          5.0,
+          5.3,
+          -9.7,
+          -36.5,
+          43.8,
+          49.1,
+          -22.6,
+          22.7,
+          18.0,
+          12.3,
+          15.7
+        ],
+        "cum": [
+          -21.2,
+          -42.5,
+          -11.7,
+          -6.7,
+          -1.4,
+          -11.1,
+          -47.6,
+          -3.8,
+          45.3,
+          22.7,
+          45.4,
+          63.4,
+          75.7,
+          91.4
+        ],
+        "counts": [
+          4,
+          5,
+          1,
+          4
+        ],
+        "absences": 0,
+        "hands": 162,
+        "wins": 34,
+        "dealIns": 14,
+        "riichis": 22,
+        "openHands": 49,
+        "damaten": 4,
+        "kans": 4,
+        "doras": 41,
+        "uraDoras": 14,
+        "maxHonba": 4,
+        "winPoints": 215600,
+        "dealInPoints": 61800,
+        "winTurns": 385,
+        "placements": {
+          "p1": 0.29,
+          "p2": 0.36,
+          "p3": 0.07,
+          "p4": 0.29
+        },
+        "avgRank": 2.36,
+        "avgPoints": 6.5,
+        "streak": 68.7,
+        "winRate": 21.0,
+        "dealInRate": 8.6,
+        "riichiRate": 13.6,
+        "openRate": 30.2,
+        "damatenRate": 11.8,
+        "avgWinPoints": 6341,
+        "avgDealInPoints": 4414,
+        "avgWinTurn": 11.32,
+        "yakus": [
+          {
+            "name": "Riichi",
+            "count": 14
+          },
+          {
+            "name": "Tanyao",
+            "count": 8
+          },
+          {
+            "name": "Pinfu",
+            "count": 8
+          },
+          {
+            "name": "Menzen Tsumo",
+            "count": 7
+          },
+          {
+            "name": "Yakuhai Chun",
+            "count": 6
+          },
+          {
+            "name": "Ippatsu",
+            "count": 4
+          },
+          {
+            "name": "Honitsu",
+            "count": 4
+          },
+          {
+            "name": "Yakuhai Bakaze",
+            "count": 3
+          },
+          {
+            "name": "Yakuhai Haku",
+            "count": 3
+          },
+          {
+            "name": "Rinshan Kaihou",
+            "count": 2
+          },
+          {
+            "name": "Sanshoku Doujun",
+            "count": 2
+          },
+          {
+            "name": "Yakuhai Jikaze",
+            "count": 2
+          },
+          {
+            "name": "Yakuhai Hatsu",
+            "count": 2
+          },
+          {
+            "name": "Iipeiko",
+            "count": 1
+          },
+          {
+            "name": "Chinitsu",
+            "count": 1
+          },
+          {
+            "name": "Toitoi",
+            "count": 1
+          }
+        ],
+        "statsSample": 162,
+        "statsReliable": true,
+        "arch": "con datos",
+        "rank": 6,
+        "zone": "playoff",
+        "natRank": 3,
+        "iormc": "qualified"
+      },
+      {
         "id": "A16",
         "div": "A",
         "num": "16",
@@ -177503,151 +179653,6 @@
           }
         ],
         "statsSample": 174,
-        "statsReliable": true,
-        "arch": "con datos",
-        "rank": 6,
-        "zone": "playoff",
-        "natRank": 3,
-        "iormc": "qualified"
-      },
-      {
-        "id": "A01",
-        "div": "A",
-        "num": "01",
-        "name": "Bodoque",
-        "shortName": "Bodoque",
-        "handle": "Bodoque",
-        "nat": "CL",
-        "games": 12,
-        "points": 63.4,
-        "history": [
-          -21.2,
-          -21.3,
-          30.8,
-          5.0,
-          5.3,
-          -9.7,
-          -36.5,
-          43.8,
-          49.1,
-          -22.6,
-          22.7,
-          18.0
-        ],
-        "cum": [
-          -21.2,
-          -42.5,
-          -11.7,
-          -6.7,
-          -1.4,
-          -11.1,
-          -47.6,
-          -3.8,
-          45.3,
-          22.7,
-          45.4,
-          63.4
-        ],
-        "counts": [
-          4,
-          3,
-          1,
-          4
-        ],
-        "absences": 0,
-        "hands": 138,
-        "wins": 30,
-        "dealIns": 14,
-        "riichis": 19,
-        "openHands": 40,
-        "damaten": 4,
-        "kans": 4,
-        "doras": 37,
-        "uraDoras": 13,
-        "maxHonba": 4,
-        "winPoints": 187500,
-        "dealInPoints": 61800,
-        "winTurns": 333,
-        "placements": {
-          "p1": 0.33,
-          "p2": 0.25,
-          "p3": 0.08,
-          "p4": 0.33
-        },
-        "avgRank": 2.42,
-        "avgPoints": 5.3,
-        "streak": 67.2,
-        "winRate": 21.7,
-        "dealInRate": 10.1,
-        "riichiRate": 13.8,
-        "openRate": 29.0,
-        "damatenRate": 13.3,
-        "avgWinPoints": 6250,
-        "avgDealInPoints": 4414,
-        "avgWinTurn": 11.1,
-        "yakus": [
-          {
-            "name": "Riichi",
-            "count": 13
-          },
-          {
-            "name": "Tanyao",
-            "count": 7
-          },
-          {
-            "name": "Menzen Tsumo",
-            "count": 7
-          },
-          {
-            "name": "Pinfu",
-            "count": 7
-          },
-          {
-            "name": "Yakuhai Chun",
-            "count": 5
-          },
-          {
-            "name": "Ippatsu",
-            "count": 4
-          },
-          {
-            "name": "Yakuhai Bakaze",
-            "count": 3
-          },
-          {
-            "name": "Honitsu",
-            "count": 3
-          },
-          {
-            "name": "Rinshan Kaihou",
-            "count": 2
-          },
-          {
-            "name": "Yakuhai Jikaze",
-            "count": 2
-          },
-          {
-            "name": "Yakuhai Haku",
-            "count": 2
-          },
-          {
-            "name": "Yakuhai Hatsu",
-            "count": 2
-          },
-          {
-            "name": "Iipeiko",
-            "count": 1
-          },
-          {
-            "name": "Sanshoku Doujun",
-            "count": 1
-          },
-          {
-            "name": "Chinitsu",
-            "count": 1
-          }
-        ],
-        "statsSample": 138,
         "statsReliable": true,
         "arch": "con datos",
         "rank": 7,
@@ -177831,6 +179836,163 @@
         "iormc": "contention"
       },
       {
+        "id": "A08",
+        "div": "A",
+        "num": "08",
+        "name": "KillerHUD",
+        "shortName": "KillerHUD",
+        "handle": "KillerHUD",
+        "nat": "CL",
+        "games": 14,
+        "points": 17.0,
+        "history": [
+          -6.4,
+          10.1,
+          22.4,
+          11.7,
+          -51.2,
+          -5.1,
+          25.5,
+          -31.2,
+          -15.4,
+          12.4,
+          4.5,
+          6.5,
+          31.1,
+          2.1
+        ],
+        "cum": [
+          -6.4,
+          3.7,
+          26.1,
+          37.8,
+          -13.4,
+          -18.5,
+          7.0,
+          -24.2,
+          -39.6,
+          -27.2,
+          -22.7,
+          -16.2,
+          14.9,
+          17.0
+        ],
+        "counts": [
+          2,
+          6,
+          4,
+          2
+        ],
+        "absences": 0,
+        "hands": 180,
+        "wins": 37,
+        "dealIns": 26,
+        "riichis": 42,
+        "openHands": 72,
+        "damaten": 2,
+        "kans": 10,
+        "doras": 44,
+        "uraDoras": 20,
+        "maxHonba": 8,
+        "winPoints": 201900,
+        "dealInPoints": 152900,
+        "winTurns": 462,
+        "placements": {
+          "p1": 0.14,
+          "p2": 0.43,
+          "p3": 0.29,
+          "p4": 0.14
+        },
+        "avgRank": 2.43,
+        "avgPoints": 1.2,
+        "streak": 44.2,
+        "winRate": 20.6,
+        "dealInRate": 14.4,
+        "riichiRate": 23.3,
+        "openRate": 40.0,
+        "damatenRate": 5.4,
+        "avgWinPoints": 5457,
+        "avgDealInPoints": 5881,
+        "avgWinTurn": 12.49,
+        "yakus": [
+          {
+            "name": "Riichi",
+            "count": 18
+          },
+          {
+            "name": "Tanyao",
+            "count": 8
+          },
+          {
+            "name": "Yakuhai Hatsu",
+            "count": 7
+          },
+          {
+            "name": "Pinfu",
+            "count": 6
+          },
+          {
+            "name": "Menzen Tsumo",
+            "count": 5
+          },
+          {
+            "name": "Iipeiko",
+            "count": 4
+          },
+          {
+            "name": "Yakuhai Jikaze",
+            "count": 4
+          },
+          {
+            "name": "Yakuhai Chun",
+            "count": 3
+          },
+          {
+            "name": "Ippatsu",
+            "count": 3
+          },
+          {
+            "name": "Chanta",
+            "count": 3
+          },
+          {
+            "name": "Yakuhai Haku",
+            "count": 3
+          },
+          {
+            "name": "Honitsu",
+            "count": 3
+          },
+          {
+            "name": "Sanshoku Doujun",
+            "count": 2
+          },
+          {
+            "name": "Toitoi",
+            "count": 1
+          },
+          {
+            "name": "Ittsu",
+            "count": 1
+          },
+          {
+            "name": "Daburu Riichi",
+            "count": 1
+          },
+          {
+            "name": "Yakuhai Bakaze",
+            "count": 1
+          }
+        ],
+        "statsSample": 180,
+        "statsReliable": true,
+        "arch": "con datos",
+        "rank": 12,
+        "zone": null,
+        "natRank": 6,
+        "iormc": "contention"
+      },
+      {
         "id": "A02",
         "div": "A",
         "num": "02",
@@ -177970,11 +180132,13 @@
         "statsSample": 167,
         "statsReliable": true,
         "arch": "con datos",
-        "rank": 12,
+        "rank": 14,
         "zone": null,
-        "natRank": 6,
+        "natRank": 7,
         "iormc": "contention"
-      },
+      }
+    ],
+    "rest": [
       {
         "id": "A23",
         "div": "A",
@@ -178121,157 +180285,6 @@
           }
         ],
         "statsSample": 177,
-        "statsReliable": true,
-        "arch": "con datos",
-        "rank": 15,
-        "zone": null,
-        "natRank": 7,
-        "iormc": "contention"
-      }
-    ],
-    "rest": [
-      {
-        "id": "A08",
-        "div": "A",
-        "num": "08",
-        "name": "KillerHUD",
-        "shortName": "KillerHUD",
-        "handle": "KillerHUD",
-        "nat": "CL",
-        "games": 12,
-        "points": -16.2,
-        "history": [
-          -6.4,
-          10.1,
-          22.4,
-          11.7,
-          -51.2,
-          -5.1,
-          25.5,
-          -31.2,
-          -15.4,
-          12.4,
-          4.5,
-          6.5
-        ],
-        "cum": [
-          -6.4,
-          3.7,
-          26.1,
-          37.8,
-          -13.4,
-          -18.5,
-          7.0,
-          -24.2,
-          -39.6,
-          -27.2,
-          -22.7,
-          -16.2
-        ],
-        "counts": [
-          1,
-          6,
-          3,
-          2
-        ],
-        "absences": 0,
-        "hands": 156,
-        "wins": 29,
-        "dealIns": 25,
-        "riichis": 36,
-        "openHands": 65,
-        "damaten": 1,
-        "kans": 10,
-        "doras": 33,
-        "uraDoras": 15,
-        "maxHonba": 8,
-        "winPoints": 146800,
-        "dealInPoints": 128900,
-        "winTurns": 365,
-        "placements": {
-          "p1": 0.08,
-          "p2": 0.5,
-          "p3": 0.25,
-          "p4": 0.17
-        },
-        "avgRank": 2.5,
-        "avgPoints": -1.3,
-        "streak": 8.0,
-        "winRate": 18.6,
-        "dealInRate": 16.0,
-        "riichiRate": 23.1,
-        "openRate": 41.7,
-        "damatenRate": 3.4,
-        "avgWinPoints": 5062,
-        "avgDealInPoints": 5156,
-        "avgWinTurn": 12.59,
-        "yakus": [
-          {
-            "name": "Riichi",
-            "count": 13
-          },
-          {
-            "name": "Tanyao",
-            "count": 6
-          },
-          {
-            "name": "Yakuhai Hatsu",
-            "count": 5
-          },
-          {
-            "name": "Yakuhai Jikaze",
-            "count": 4
-          },
-          {
-            "name": "Pinfu",
-            "count": 3
-          },
-          {
-            "name": "Yakuhai Chun",
-            "count": 3
-          },
-          {
-            "name": "Ippatsu",
-            "count": 3
-          },
-          {
-            "name": "Chanta",
-            "count": 3
-          },
-          {
-            "name": "Yakuhai Haku",
-            "count": 3
-          },
-          {
-            "name": "Menzen Tsumo",
-            "count": 2
-          },
-          {
-            "name": "Honitsu",
-            "count": 2
-          },
-          {
-            "name": "Iipeiko",
-            "count": 1
-          },
-          {
-            "name": "Toitoi",
-            "count": 1
-          },
-          {
-            "name": "Sanshoku Doujun",
-            "count": 1
-          },
-          {
-            "name": "Ittsu",
-            "count": 1
-          },
-          {
-            "name": "Daburu Riichi",
-            "count": 1
-          }
-        ],
-        "statsSample": 156,
         "statsReliable": true,
         "arch": "con datos",
         "rank": 16,
@@ -178422,151 +180435,6 @@
         "rank": 17,
         "zone": null,
         "natRank": 9,
-        "iormc": "out"
-      },
-      {
-        "id": "A20",
-        "div": "A",
-        "num": "20",
-        "name": "caballo",
-        "shortName": "caballo",
-        "handle": "caballo",
-        "nat": "CL",
-        "games": 12,
-        "points": -145.6,
-        "history": [
-          8.8,
-          -15.9,
-          38.2,
-          10.2,
-          -48.7,
-          -33.8,
-          9.6,
-          -26.1,
-          16.2,
-          -40.3,
-          13.0,
-          -76.8
-        ],
-        "cum": [
-          8.8,
-          -7.1,
-          31.1,
-          41.3,
-          -7.4,
-          -41.2,
-          -31.6,
-          -57.7,
-          -41.5,
-          -81.8,
-          -68.8,
-          -145.6
-        ],
-        "counts": [
-          1,
-          5,
-          1,
-          5
-        ],
-        "absences": 0,
-        "hands": 142,
-        "wins": 25,
-        "dealIns": 33,
-        "riichis": 38,
-        "openHands": 40,
-        "damaten": 1,
-        "kans": 6,
-        "doras": 28,
-        "uraDoras": 17,
-        "maxHonba": 5,
-        "winPoints": 171600,
-        "dealInPoints": 205200,
-        "winTurns": 292,
-        "placements": {
-          "p1": 0.08,
-          "p2": 0.42,
-          "p3": 0.08,
-          "p4": 0.42
-        },
-        "avgRank": 2.83,
-        "avgPoints": -12.1,
-        "streak": -87.9,
-        "winRate": 17.6,
-        "dealInRate": 23.2,
-        "riichiRate": 26.8,
-        "openRate": 28.2,
-        "damatenRate": 4.0,
-        "avgWinPoints": 6864,
-        "avgDealInPoints": 6218,
-        "avgWinTurn": 11.68,
-        "yakus": [
-          {
-            "name": "Riichi",
-            "count": 17
-          },
-          {
-            "name": "Menzen Tsumo",
-            "count": 7
-          },
-          {
-            "name": "Pinfu",
-            "count": 7
-          },
-          {
-            "name": "Honitsu",
-            "count": 4
-          },
-          {
-            "name": "Yakuhai Jikaze",
-            "count": 3
-          },
-          {
-            "name": "Tanyao",
-            "count": 2
-          },
-          {
-            "name": "Iipeiko",
-            "count": 2
-          },
-          {
-            "name": "Yakuhai Hatsu",
-            "count": 2
-          },
-          {
-            "name": "Chinitsu",
-            "count": 2
-          },
-          {
-            "name": "Ippatsu",
-            "count": 2
-          },
-          {
-            "name": "Chanta",
-            "count": 1
-          },
-          {
-            "name": "Yakuhai Haku",
-            "count": 1
-          },
-          {
-            "name": "Ryanpeikou",
-            "count": 1
-          },
-          {
-            "name": "Yakuhai Chun",
-            "count": 1
-          },
-          {
-            "name": "Chiitoitsu",
-            "count": 1
-          }
-        ],
-        "statsSample": 142,
-        "statsReliable": true,
-        "arch": "con datos",
-        "rank": 21,
-        "zone": "relegation",
-        "natRank": 10,
         "iormc": "out"
       },
       {
@@ -178721,7 +180589,156 @@
         "statsSample": 173,
         "statsReliable": true,
         "arch": "con datos",
-        "rank": 22,
+        "rank": 21,
+        "zone": "relegation",
+        "natRank": 10,
+        "iormc": "out"
+      },
+      {
+        "id": "A20",
+        "div": "A",
+        "num": "20",
+        "name": "caballo",
+        "shortName": "caballo",
+        "handle": "caballo",
+        "nat": "CL",
+        "games": 14,
+        "points": -229.8,
+        "history": [
+          8.8,
+          -15.9,
+          38.2,
+          10.2,
+          -48.7,
+          -33.8,
+          9.6,
+          -26.1,
+          16.2,
+          -40.3,
+          13.0,
+          -76.8,
+          -34.5,
+          -49.7
+        ],
+        "cum": [
+          8.8,
+          -7.1,
+          31.1,
+          41.3,
+          -7.4,
+          -41.2,
+          -31.6,
+          -57.7,
+          -41.5,
+          -81.8,
+          -68.8,
+          -145.6,
+          -180.1,
+          -229.8
+        ],
+        "counts": [
+          1,
+          5,
+          1,
+          7
+        ],
+        "absences": 0,
+        "hands": 166,
+        "wins": 28,
+        "dealIns": 39,
+        "riichis": 44,
+        "openHands": 45,
+        "damaten": 1,
+        "kans": 7,
+        "doras": 31,
+        "uraDoras": 18,
+        "maxHonba": 5,
+        "winPoints": 183600,
+        "dealInPoints": 264000,
+        "winTurns": 328,
+        "placements": {
+          "p1": 0.07,
+          "p2": 0.36,
+          "p3": 0.07,
+          "p4": 0.5
+        },
+        "avgRank": 3.0,
+        "avgPoints": -16.4,
+        "streak": -148.0,
+        "winRate": 16.9,
+        "dealInRate": 23.5,
+        "riichiRate": 26.5,
+        "openRate": 27.1,
+        "damatenRate": 3.6,
+        "avgWinPoints": 6557,
+        "avgDealInPoints": 6769,
+        "avgWinTurn": 11.71,
+        "yakus": [
+          {
+            "name": "Riichi",
+            "count": 18
+          },
+          {
+            "name": "Menzen Tsumo",
+            "count": 8
+          },
+          {
+            "name": "Pinfu",
+            "count": 7
+          },
+          {
+            "name": "Honitsu",
+            "count": 4
+          },
+          {
+            "name": "Yakuhai Hatsu",
+            "count": 3
+          },
+          {
+            "name": "Yakuhai Jikaze",
+            "count": 3
+          },
+          {
+            "name": "Tanyao",
+            "count": 2
+          },
+          {
+            "name": "Iipeiko",
+            "count": 2
+          },
+          {
+            "name": "Yakuhai Haku",
+            "count": 2
+          },
+          {
+            "name": "Chinitsu",
+            "count": 2
+          },
+          {
+            "name": "Ippatsu",
+            "count": 2
+          },
+          {
+            "name": "Chanta",
+            "count": 1
+          },
+          {
+            "name": "Ryanpeikou",
+            "count": 1
+          },
+          {
+            "name": "Yakuhai Chun",
+            "count": 1
+          },
+          {
+            "name": "Chiitoitsu",
+            "count": 1
+          }
+        ],
+        "statsSample": 166,
+        "statsReliable": true,
+        "arch": "con datos",
+        "rank": 23,
         "zone": "relegation",
         "natRank": 11,
         "iormc": "out"
@@ -179192,6 +181209,159 @@
         "iormc": "qualified"
       },
       {
+        "id": "A01",
+        "div": "A",
+        "num": "01",
+        "name": "Bodoque",
+        "shortName": "Bodoque",
+        "handle": "Bodoque",
+        "nat": "CL",
+        "games": 14,
+        "points": 91.4,
+        "history": [
+          -21.2,
+          -21.3,
+          30.8,
+          5.0,
+          5.3,
+          -9.7,
+          -36.5,
+          43.8,
+          49.1,
+          -22.6,
+          22.7,
+          18.0,
+          12.3,
+          15.7
+        ],
+        "cum": [
+          -21.2,
+          -42.5,
+          -11.7,
+          -6.7,
+          -1.4,
+          -11.1,
+          -47.6,
+          -3.8,
+          45.3,
+          22.7,
+          45.4,
+          63.4,
+          75.7,
+          91.4
+        ],
+        "counts": [
+          4,
+          5,
+          1,
+          4
+        ],
+        "absences": 0,
+        "hands": 162,
+        "wins": 34,
+        "dealIns": 14,
+        "riichis": 22,
+        "openHands": 49,
+        "damaten": 4,
+        "kans": 4,
+        "doras": 41,
+        "uraDoras": 14,
+        "maxHonba": 4,
+        "winPoints": 215600,
+        "dealInPoints": 61800,
+        "winTurns": 385,
+        "placements": {
+          "p1": 0.29,
+          "p2": 0.36,
+          "p3": 0.07,
+          "p4": 0.29
+        },
+        "avgRank": 2.36,
+        "avgPoints": 6.5,
+        "streak": 68.7,
+        "winRate": 21.0,
+        "dealInRate": 8.6,
+        "riichiRate": 13.6,
+        "openRate": 30.2,
+        "damatenRate": 11.8,
+        "avgWinPoints": 6341,
+        "avgDealInPoints": 4414,
+        "avgWinTurn": 11.32,
+        "yakus": [
+          {
+            "name": "Riichi",
+            "count": 14
+          },
+          {
+            "name": "Tanyao",
+            "count": 8
+          },
+          {
+            "name": "Pinfu",
+            "count": 8
+          },
+          {
+            "name": "Menzen Tsumo",
+            "count": 7
+          },
+          {
+            "name": "Yakuhai Chun",
+            "count": 6
+          },
+          {
+            "name": "Ippatsu",
+            "count": 4
+          },
+          {
+            "name": "Honitsu",
+            "count": 4
+          },
+          {
+            "name": "Yakuhai Bakaze",
+            "count": 3
+          },
+          {
+            "name": "Yakuhai Haku",
+            "count": 3
+          },
+          {
+            "name": "Rinshan Kaihou",
+            "count": 2
+          },
+          {
+            "name": "Sanshoku Doujun",
+            "count": 2
+          },
+          {
+            "name": "Yakuhai Jikaze",
+            "count": 2
+          },
+          {
+            "name": "Yakuhai Hatsu",
+            "count": 2
+          },
+          {
+            "name": "Iipeiko",
+            "count": 1
+          },
+          {
+            "name": "Chinitsu",
+            "count": 1
+          },
+          {
+            "name": "Toitoi",
+            "count": 1
+          }
+        ],
+        "statsSample": 162,
+        "statsReliable": true,
+        "arch": "con datos",
+        "rank": 6,
+        "zone": "playoff",
+        "natRank": 3,
+        "iormc": "qualified"
+      },
+      {
         "id": "A16",
         "div": "A",
         "num": "16",
@@ -179329,151 +181499,6 @@
           }
         ],
         "statsSample": 174,
-        "statsReliable": true,
-        "arch": "con datos",
-        "rank": 6,
-        "zone": "playoff",
-        "natRank": 3,
-        "iormc": "qualified"
-      },
-      {
-        "id": "A01",
-        "div": "A",
-        "num": "01",
-        "name": "Bodoque",
-        "shortName": "Bodoque",
-        "handle": "Bodoque",
-        "nat": "CL",
-        "games": 12,
-        "points": 63.4,
-        "history": [
-          -21.2,
-          -21.3,
-          30.8,
-          5.0,
-          5.3,
-          -9.7,
-          -36.5,
-          43.8,
-          49.1,
-          -22.6,
-          22.7,
-          18.0
-        ],
-        "cum": [
-          -21.2,
-          -42.5,
-          -11.7,
-          -6.7,
-          -1.4,
-          -11.1,
-          -47.6,
-          -3.8,
-          45.3,
-          22.7,
-          45.4,
-          63.4
-        ],
-        "counts": [
-          4,
-          3,
-          1,
-          4
-        ],
-        "absences": 0,
-        "hands": 138,
-        "wins": 30,
-        "dealIns": 14,
-        "riichis": 19,
-        "openHands": 40,
-        "damaten": 4,
-        "kans": 4,
-        "doras": 37,
-        "uraDoras": 13,
-        "maxHonba": 4,
-        "winPoints": 187500,
-        "dealInPoints": 61800,
-        "winTurns": 333,
-        "placements": {
-          "p1": 0.33,
-          "p2": 0.25,
-          "p3": 0.08,
-          "p4": 0.33
-        },
-        "avgRank": 2.42,
-        "avgPoints": 5.3,
-        "streak": 67.2,
-        "winRate": 21.7,
-        "dealInRate": 10.1,
-        "riichiRate": 13.8,
-        "openRate": 29.0,
-        "damatenRate": 13.3,
-        "avgWinPoints": 6250,
-        "avgDealInPoints": 4414,
-        "avgWinTurn": 11.1,
-        "yakus": [
-          {
-            "name": "Riichi",
-            "count": 13
-          },
-          {
-            "name": "Tanyao",
-            "count": 7
-          },
-          {
-            "name": "Menzen Tsumo",
-            "count": 7
-          },
-          {
-            "name": "Pinfu",
-            "count": 7
-          },
-          {
-            "name": "Yakuhai Chun",
-            "count": 5
-          },
-          {
-            "name": "Ippatsu",
-            "count": 4
-          },
-          {
-            "name": "Yakuhai Bakaze",
-            "count": 3
-          },
-          {
-            "name": "Honitsu",
-            "count": 3
-          },
-          {
-            "name": "Rinshan Kaihou",
-            "count": 2
-          },
-          {
-            "name": "Yakuhai Jikaze",
-            "count": 2
-          },
-          {
-            "name": "Yakuhai Haku",
-            "count": 2
-          },
-          {
-            "name": "Yakuhai Hatsu",
-            "count": 2
-          },
-          {
-            "name": "Iipeiko",
-            "count": 1
-          },
-          {
-            "name": "Sanshoku Doujun",
-            "count": 1
-          },
-          {
-            "name": "Chinitsu",
-            "count": 1
-          }
-        ],
-        "statsSample": 138,
         "statsReliable": true,
         "arch": "con datos",
         "rank": 7,
@@ -179655,6 +181680,163 @@
         "iormc": "contention"
       },
       {
+        "id": "A08",
+        "div": "A",
+        "num": "08",
+        "name": "KillerHUD",
+        "shortName": "KillerHUD",
+        "handle": "KillerHUD",
+        "nat": "CL",
+        "games": 14,
+        "points": 17.0,
+        "history": [
+          -6.4,
+          10.1,
+          22.4,
+          11.7,
+          -51.2,
+          -5.1,
+          25.5,
+          -31.2,
+          -15.4,
+          12.4,
+          4.5,
+          6.5,
+          31.1,
+          2.1
+        ],
+        "cum": [
+          -6.4,
+          3.7,
+          26.1,
+          37.8,
+          -13.4,
+          -18.5,
+          7.0,
+          -24.2,
+          -39.6,
+          -27.2,
+          -22.7,
+          -16.2,
+          14.9,
+          17.0
+        ],
+        "counts": [
+          2,
+          6,
+          4,
+          2
+        ],
+        "absences": 0,
+        "hands": 180,
+        "wins": 37,
+        "dealIns": 26,
+        "riichis": 42,
+        "openHands": 72,
+        "damaten": 2,
+        "kans": 10,
+        "doras": 44,
+        "uraDoras": 20,
+        "maxHonba": 8,
+        "winPoints": 201900,
+        "dealInPoints": 152900,
+        "winTurns": 462,
+        "placements": {
+          "p1": 0.14,
+          "p2": 0.43,
+          "p3": 0.29,
+          "p4": 0.14
+        },
+        "avgRank": 2.43,
+        "avgPoints": 1.2,
+        "streak": 44.2,
+        "winRate": 20.6,
+        "dealInRate": 14.4,
+        "riichiRate": 23.3,
+        "openRate": 40.0,
+        "damatenRate": 5.4,
+        "avgWinPoints": 5457,
+        "avgDealInPoints": 5881,
+        "avgWinTurn": 12.49,
+        "yakus": [
+          {
+            "name": "Riichi",
+            "count": 18
+          },
+          {
+            "name": "Tanyao",
+            "count": 8
+          },
+          {
+            "name": "Yakuhai Hatsu",
+            "count": 7
+          },
+          {
+            "name": "Pinfu",
+            "count": 6
+          },
+          {
+            "name": "Menzen Tsumo",
+            "count": 5
+          },
+          {
+            "name": "Iipeiko",
+            "count": 4
+          },
+          {
+            "name": "Yakuhai Jikaze",
+            "count": 4
+          },
+          {
+            "name": "Yakuhai Chun",
+            "count": 3
+          },
+          {
+            "name": "Ippatsu",
+            "count": 3
+          },
+          {
+            "name": "Chanta",
+            "count": 3
+          },
+          {
+            "name": "Yakuhai Haku",
+            "count": 3
+          },
+          {
+            "name": "Honitsu",
+            "count": 3
+          },
+          {
+            "name": "Sanshoku Doujun",
+            "count": 2
+          },
+          {
+            "name": "Toitoi",
+            "count": 1
+          },
+          {
+            "name": "Ittsu",
+            "count": 1
+          },
+          {
+            "name": "Daburu Riichi",
+            "count": 1
+          },
+          {
+            "name": "Yakuhai Bakaze",
+            "count": 1
+          }
+        ],
+        "statsSample": 180,
+        "statsReliable": true,
+        "arch": "con datos",
+        "rank": 12,
+        "zone": null,
+        "natRank": 6,
+        "iormc": "contention"
+      },
+      {
         "id": "A02",
         "div": "A",
         "num": "02",
@@ -179794,9 +181976,9 @@
         "statsSample": 167,
         "statsReliable": true,
         "arch": "con datos",
-        "rank": 12,
+        "rank": 14,
         "zone": null,
-        "natRank": 6,
+        "natRank": 7,
         "iormc": "contention"
       },
       {
@@ -179947,155 +182129,6 @@
         "statsSample": 177,
         "statsReliable": true,
         "arch": "con datos",
-        "rank": 15,
-        "zone": null,
-        "natRank": 7,
-        "iormc": "contention"
-      },
-      {
-        "id": "A08",
-        "div": "A",
-        "num": "08",
-        "name": "KillerHUD",
-        "shortName": "KillerHUD",
-        "handle": "KillerHUD",
-        "nat": "CL",
-        "games": 12,
-        "points": -16.2,
-        "history": [
-          -6.4,
-          10.1,
-          22.4,
-          11.7,
-          -51.2,
-          -5.1,
-          25.5,
-          -31.2,
-          -15.4,
-          12.4,
-          4.5,
-          6.5
-        ],
-        "cum": [
-          -6.4,
-          3.7,
-          26.1,
-          37.8,
-          -13.4,
-          -18.5,
-          7.0,
-          -24.2,
-          -39.6,
-          -27.2,
-          -22.7,
-          -16.2
-        ],
-        "counts": [
-          1,
-          6,
-          3,
-          2
-        ],
-        "absences": 0,
-        "hands": 156,
-        "wins": 29,
-        "dealIns": 25,
-        "riichis": 36,
-        "openHands": 65,
-        "damaten": 1,
-        "kans": 10,
-        "doras": 33,
-        "uraDoras": 15,
-        "maxHonba": 8,
-        "winPoints": 146800,
-        "dealInPoints": 128900,
-        "winTurns": 365,
-        "placements": {
-          "p1": 0.08,
-          "p2": 0.5,
-          "p3": 0.25,
-          "p4": 0.17
-        },
-        "avgRank": 2.5,
-        "avgPoints": -1.3,
-        "streak": 8.0,
-        "winRate": 18.6,
-        "dealInRate": 16.0,
-        "riichiRate": 23.1,
-        "openRate": 41.7,
-        "damatenRate": 3.4,
-        "avgWinPoints": 5062,
-        "avgDealInPoints": 5156,
-        "avgWinTurn": 12.59,
-        "yakus": [
-          {
-            "name": "Riichi",
-            "count": 13
-          },
-          {
-            "name": "Tanyao",
-            "count": 6
-          },
-          {
-            "name": "Yakuhai Hatsu",
-            "count": 5
-          },
-          {
-            "name": "Yakuhai Jikaze",
-            "count": 4
-          },
-          {
-            "name": "Pinfu",
-            "count": 3
-          },
-          {
-            "name": "Yakuhai Chun",
-            "count": 3
-          },
-          {
-            "name": "Ippatsu",
-            "count": 3
-          },
-          {
-            "name": "Chanta",
-            "count": 3
-          },
-          {
-            "name": "Yakuhai Haku",
-            "count": 3
-          },
-          {
-            "name": "Menzen Tsumo",
-            "count": 2
-          },
-          {
-            "name": "Honitsu",
-            "count": 2
-          },
-          {
-            "name": "Iipeiko",
-            "count": 1
-          },
-          {
-            "name": "Toitoi",
-            "count": 1
-          },
-          {
-            "name": "Sanshoku Doujun",
-            "count": 1
-          },
-          {
-            "name": "Ittsu",
-            "count": 1
-          },
-          {
-            "name": "Daburu Riichi",
-            "count": 1
-          }
-        ],
-        "statsSample": 156,
-        "statsReliable": true,
-        "arch": "con datos",
         "rank": 16,
         "zone": null,
         "natRank": 8,
@@ -180244,151 +182277,6 @@
         "rank": 17,
         "zone": null,
         "natRank": 9,
-        "iormc": "out"
-      },
-      {
-        "id": "A20",
-        "div": "A",
-        "num": "20",
-        "name": "caballo",
-        "shortName": "caballo",
-        "handle": "caballo",
-        "nat": "CL",
-        "games": 12,
-        "points": -145.6,
-        "history": [
-          8.8,
-          -15.9,
-          38.2,
-          10.2,
-          -48.7,
-          -33.8,
-          9.6,
-          -26.1,
-          16.2,
-          -40.3,
-          13.0,
-          -76.8
-        ],
-        "cum": [
-          8.8,
-          -7.1,
-          31.1,
-          41.3,
-          -7.4,
-          -41.2,
-          -31.6,
-          -57.7,
-          -41.5,
-          -81.8,
-          -68.8,
-          -145.6
-        ],
-        "counts": [
-          1,
-          5,
-          1,
-          5
-        ],
-        "absences": 0,
-        "hands": 142,
-        "wins": 25,
-        "dealIns": 33,
-        "riichis": 38,
-        "openHands": 40,
-        "damaten": 1,
-        "kans": 6,
-        "doras": 28,
-        "uraDoras": 17,
-        "maxHonba": 5,
-        "winPoints": 171600,
-        "dealInPoints": 205200,
-        "winTurns": 292,
-        "placements": {
-          "p1": 0.08,
-          "p2": 0.42,
-          "p3": 0.08,
-          "p4": 0.42
-        },
-        "avgRank": 2.83,
-        "avgPoints": -12.1,
-        "streak": -87.9,
-        "winRate": 17.6,
-        "dealInRate": 23.2,
-        "riichiRate": 26.8,
-        "openRate": 28.2,
-        "damatenRate": 4.0,
-        "avgWinPoints": 6864,
-        "avgDealInPoints": 6218,
-        "avgWinTurn": 11.68,
-        "yakus": [
-          {
-            "name": "Riichi",
-            "count": 17
-          },
-          {
-            "name": "Menzen Tsumo",
-            "count": 7
-          },
-          {
-            "name": "Pinfu",
-            "count": 7
-          },
-          {
-            "name": "Honitsu",
-            "count": 4
-          },
-          {
-            "name": "Yakuhai Jikaze",
-            "count": 3
-          },
-          {
-            "name": "Tanyao",
-            "count": 2
-          },
-          {
-            "name": "Iipeiko",
-            "count": 2
-          },
-          {
-            "name": "Yakuhai Hatsu",
-            "count": 2
-          },
-          {
-            "name": "Chinitsu",
-            "count": 2
-          },
-          {
-            "name": "Ippatsu",
-            "count": 2
-          },
-          {
-            "name": "Chanta",
-            "count": 1
-          },
-          {
-            "name": "Yakuhai Haku",
-            "count": 1
-          },
-          {
-            "name": "Ryanpeikou",
-            "count": 1
-          },
-          {
-            "name": "Yakuhai Chun",
-            "count": 1
-          },
-          {
-            "name": "Chiitoitsu",
-            "count": 1
-          }
-        ],
-        "statsSample": 142,
-        "statsReliable": true,
-        "arch": "con datos",
-        "rank": 21,
-        "zone": "relegation",
-        "natRank": 10,
         "iormc": "out"
       },
       {
@@ -180543,7 +182431,156 @@
         "statsSample": 173,
         "statsReliable": true,
         "arch": "con datos",
-        "rank": 22,
+        "rank": 21,
+        "zone": "relegation",
+        "natRank": 10,
+        "iormc": "out"
+      },
+      {
+        "id": "A20",
+        "div": "A",
+        "num": "20",
+        "name": "caballo",
+        "shortName": "caballo",
+        "handle": "caballo",
+        "nat": "CL",
+        "games": 14,
+        "points": -229.8,
+        "history": [
+          8.8,
+          -15.9,
+          38.2,
+          10.2,
+          -48.7,
+          -33.8,
+          9.6,
+          -26.1,
+          16.2,
+          -40.3,
+          13.0,
+          -76.8,
+          -34.5,
+          -49.7
+        ],
+        "cum": [
+          8.8,
+          -7.1,
+          31.1,
+          41.3,
+          -7.4,
+          -41.2,
+          -31.6,
+          -57.7,
+          -41.5,
+          -81.8,
+          -68.8,
+          -145.6,
+          -180.1,
+          -229.8
+        ],
+        "counts": [
+          1,
+          5,
+          1,
+          7
+        ],
+        "absences": 0,
+        "hands": 166,
+        "wins": 28,
+        "dealIns": 39,
+        "riichis": 44,
+        "openHands": 45,
+        "damaten": 1,
+        "kans": 7,
+        "doras": 31,
+        "uraDoras": 18,
+        "maxHonba": 5,
+        "winPoints": 183600,
+        "dealInPoints": 264000,
+        "winTurns": 328,
+        "placements": {
+          "p1": 0.07,
+          "p2": 0.36,
+          "p3": 0.07,
+          "p4": 0.5
+        },
+        "avgRank": 3.0,
+        "avgPoints": -16.4,
+        "streak": -148.0,
+        "winRate": 16.9,
+        "dealInRate": 23.5,
+        "riichiRate": 26.5,
+        "openRate": 27.1,
+        "damatenRate": 3.6,
+        "avgWinPoints": 6557,
+        "avgDealInPoints": 6769,
+        "avgWinTurn": 11.71,
+        "yakus": [
+          {
+            "name": "Riichi",
+            "count": 18
+          },
+          {
+            "name": "Menzen Tsumo",
+            "count": 8
+          },
+          {
+            "name": "Pinfu",
+            "count": 7
+          },
+          {
+            "name": "Honitsu",
+            "count": 4
+          },
+          {
+            "name": "Yakuhai Hatsu",
+            "count": 3
+          },
+          {
+            "name": "Yakuhai Jikaze",
+            "count": 3
+          },
+          {
+            "name": "Tanyao",
+            "count": 2
+          },
+          {
+            "name": "Iipeiko",
+            "count": 2
+          },
+          {
+            "name": "Yakuhai Haku",
+            "count": 2
+          },
+          {
+            "name": "Chinitsu",
+            "count": 2
+          },
+          {
+            "name": "Ippatsu",
+            "count": 2
+          },
+          {
+            "name": "Chanta",
+            "count": 1
+          },
+          {
+            "name": "Ryanpeikou",
+            "count": 1
+          },
+          {
+            "name": "Yakuhai Chun",
+            "count": 1
+          },
+          {
+            "name": "Chiitoitsu",
+            "count": 1
+          }
+        ],
+        "statsSample": 166,
+        "statsReliable": true,
+        "arch": "con datos",
+        "rank": 23,
         "zone": "relegation",
         "natRank": 11,
         "iormc": "out"
@@ -180694,8 +182731,8 @@
         "iormc": "out"
       }
     ],
-    "cutPoints": 63.4,
-    "gap": 7.8
+    "cutPoints": 90.6,
+    "gap": 35.0
   },
   "calendar": [
     {
@@ -184237,6 +186274,99 @@
         "riichi": false,
         "turn": 6,
         "loser": "Sh1rome"
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 1,
+        "yaku": [
+          "Sanshoku Doujun",
+          "Tanyao"
+        ],
+        "hand": "3m3m5m6m7m4p4p5s6s7s",
+        "win": "4p",
+        "melds": [
+          "s6p7p5p"
+        ],
+        "dora": "8p",
+        "points": 2000,
+        "fu": 30,
+        "han": 2,
+        "yakuman": false,
+        "tsumo": true,
+        "riichi": false,
+        "turn": 11,
+        "loser": null
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 1,
+        "yaku": [
+          "Pinfu",
+          "Riichi"
+        ],
+        "hand": "5m6m1p2p3p5p5p3s4s5s5s6s7s",
+        "win": "7m",
+        "melds": [],
+        "dora": "3m",
+        "points": 2900,
+        "fu": 30,
+        "han": 2,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": true,
+        "turn": 12,
+        "loser": "caballo"
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 2,
+        "yaku": [
+          "Honitsu",
+          "Yakuhai Chun"
+        ],
+        "hand": "2p3p4p5p7z7z7z",
+        "win": "5p",
+        "melds": [
+          "s7p8p9p",
+          "s5p7p6p"
+        ],
+        "dora": "5s",
+        "points": 5200,
+        "fu": 40,
+        "han": 3,
+        "yakuman": false,
+        "tsumo": true,
+        "riichi": false,
+        "turn": 13,
+        "loser": null
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 2,
+        "yaku": [
+          "Toitoi",
+          "Yakuhai Haku"
+        ],
+        "hand": "5m5m3s3s",
+        "win": "5m",
+        "melds": [
+          "k5z5z5z",
+          "k7s7s7s",
+          "k2p2p2p"
+        ],
+        "dora": "4m",
+        "points": 18000,
+        "fu": 30,
+        "han": 6,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 16,
+        "loser": "caballo"
       }
     ],
     "A10": [
@@ -184943,6 +187073,77 @@
         "riichi": false,
         "turn": 9,
         "loser": "ikanajin"
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 2,
+        "yaku": [
+          "Toitoi",
+          "Honitsu",
+          "Yakuhai Bakaze",
+          "Yakuhai Jikaze",
+          "Yakuhai Haku"
+        ],
+        "hand": "2s2s9s9s",
+        "win": "9s",
+        "melds": [
+          "k1z1z1z",
+          "k2z2z2z",
+          "k5z5z5z"
+        ],
+        "dora": "1s",
+        "points": 24000,
+        "fu": 40,
+        "han": 9,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 13,
+        "loser": "KillerHUD"
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 2,
+        "yaku": [
+          "Sanshoku Doujun",
+          "Tanyao"
+        ],
+        "hand": "3m4m7p7p2s3s4s5s5s5s",
+        "win": "2m",
+        "melds": [
+          "s2p4p3p"
+        ],
+        "dora": "4z",
+        "points": 2000,
+        "fu": 30,
+        "han": 2,
+        "yakuman": false,
+        "tsumo": true,
+        "riichi": false,
+        "turn": 12,
+        "loser": null
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 2,
+        "yaku": [
+          "Menzen Tsumo"
+        ],
+        "hand": "1m2m5m6m7m7p8p9p1s2s3s4z4z",
+        "win": "3m",
+        "melds": [],
+        "dora": "7p",
+        "points": 2000,
+        "fu": 30,
+        "han": 2,
+        "yakuman": false,
+        "tsumo": true,
+        "riichi": false,
+        "turn": 12,
+        "loser": null
       }
     ],
     "A05": [
@@ -196494,6 +198695,184 @@
         "riichi": false,
         "turn": 12,
         "loser": null
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 1,
+        "yaku": [
+          "Pinfu",
+          "Riichi"
+        ],
+        "hand": "2m3m4m6m6m6m7m1s2s3s6s7s8s",
+        "win": "5m",
+        "melds": [],
+        "dora": "1s",
+        "points": 3900,
+        "fu": 30,
+        "han": 3,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": true,
+        "turn": 11,
+        "loser": "caballo"
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 1,
+        "yaku": [
+          "Honitsu",
+          "Yakuhai Hatsu",
+          "Yakuhai Bakaze"
+        ],
+        "hand": "3s3s5s6s6z6z6z",
+        "win": "4s",
+        "melds": [
+          "k3z3z3z",
+          "k2z2z2z"
+        ],
+        "dora": "5m",
+        "points": 8000,
+        "fu": 40,
+        "han": 4,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 6,
+        "loser": "caballo"
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 1,
+        "yaku": [
+          "Iipeiko",
+          "Pinfu"
+        ],
+        "hand": "5m6m5p6p7p5s5s6s6s7s7s9s9s",
+        "win": "4m",
+        "melds": [],
+        "dora": "4s9m1z7m",
+        "points": 8000,
+        "fu": 30,
+        "han": 4,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 15,
+        "loser": "caballo"
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 2,
+        "yaku": [
+          "Iipeiko",
+          "Menzen Tsumo",
+          "Riichi"
+        ],
+        "hand": "3m3m4m4m5m7m8m9m1p2p3p7z7z",
+        "win": "5m",
+        "melds": [],
+        "dora": "8p",
+        "points": 6000,
+        "fu": 30,
+        "han": 3,
+        "yakuman": false,
+        "tsumo": true,
+        "riichi": true,
+        "turn": 12,
+        "loser": null
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 2,
+        "yaku": [
+          "Yakuhai Hatsu"
+        ],
+        "hand": "2m2m3p4p1s2s3s6z6z6z",
+        "win": "5p",
+        "melds": [
+          "k9p9p9p"
+        ],
+        "dora": "6p",
+        "points": 2000,
+        "fu": 40,
+        "han": 1,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 10,
+        "loser": "Haruzen"
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 2,
+        "yaku": [
+          "Iipeiko",
+          "Menzen Tsumo",
+          "Riichi"
+        ],
+        "hand": "1m2m3m4m5m5m6m6m7m7m4p5p6p",
+        "win": "1m",
+        "melds": [],
+        "dora": "8s",
+        "points": 4000,
+        "fu": 30,
+        "han": 3,
+        "yakuman": false,
+        "tsumo": true,
+        "riichi": true,
+        "turn": 17,
+        "loser": null
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 2,
+        "yaku": [
+          "Sanshoku Doujun",
+          "Tanyao",
+          "Riichi"
+        ],
+        "hand": "4m5m8m8m3p4p5p3s4s5s6s6s6s",
+        "win": "3m",
+        "melds": [],
+        "dora": "3m",
+        "points": 18000,
+        "fu": 40,
+        "han": 6,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": true,
+        "turn": 16,
+        "loser": "caballo"
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 2,
+        "yaku": [
+          "Tanyao",
+          "Menzen Tsumo",
+          "Pinfu",
+          "Riichi"
+        ],
+        "hand": "5m6m7m2p3p4p4p5p2s2s3s4s5s",
+        "win": "6p",
+        "melds": [],
+        "dora": "6s",
+        "points": 5200,
+        "fu": 20,
+        "han": 4,
+        "yakuman": false,
+        "tsumo": true,
+        "riichi": true,
+        "turn": 10,
+        "loser": null
       }
     ],
     "A23": [
@@ -198689,6 +201068,71 @@
         "riichi": true,
         "turn": 18,
         "loser": "furanchizuko2"
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 1,
+        "yaku": [
+          "Menzen Tsumo",
+          "Riichi"
+        ],
+        "hand": "3m3m4m5m6m7m8m9m4p4p4p4s5s",
+        "win": "6s",
+        "melds": [],
+        "dora": "9p",
+        "points": 2000,
+        "fu": 30,
+        "han": 2,
+        "yakuman": false,
+        "tsumo": true,
+        "riichi": true,
+        "turn": 8,
+        "loser": null
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 1,
+        "yaku": [
+          "Yakuhai Haku"
+        ],
+        "hand": "4m4m6m7m4p5p6p4s5s6s",
+        "win": "5m",
+        "melds": [
+          "k5z5z5z"
+        ],
+        "dora": "4s",
+        "points": 2000,
+        "fu": 30,
+        "han": 2,
+        "yakuman": false,
+        "tsumo": false,
+        "riichi": false,
+        "turn": 13,
+        "loser": "Haruzen"
+      },
+      {
+        "session": 7,
+        "table": 1,
+        "hanchan": 2,
+        "yaku": [
+          "Yakuhai Hatsu"
+        ],
+        "hand": "3p4p5p6p7p1s2s3s4s4s",
+        "win": "8p",
+        "melds": [
+          "k6z6z6z"
+        ],
+        "dora": "5z",
+        "points": 8000,
+        "fu": 30,
+        "han": 4,
+        "yakuman": false,
+        "tsumo": true,
+        "riichi": false,
+        "turn": 15,
+        "loser": null
       }
     ],
     "A16": [
@@ -218377,8 +220821,8 @@
     "sessionsTotal": 7,
     "hanchanPerSession": 2,
     "playersPerDiv": 24,
-    "hanchanPerDiv": 82,
-    "hanchanTotal": 162,
+    "hanchanPerDiv": 84,
+    "hanchanTotal": 164,
     "nextSession": {
       "code": "S7",
       "date": "23 sep",
