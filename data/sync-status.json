@@ -1137,14 +1137,16 @@
     {
       "key": "B-S7-M4-G1",
       "cell": "Calendario!AE59",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "261008-34e9788f-92ba-418b-9e67-cce9a868a344",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado (identidad de asientos)"
     },
     {
       "key": "B-S7-M4-G2",
       "cell": "Calendario!AE60",
-      "status": "PENDIENTE",
-      "message": "Falta paipu"
+      "uuid": "261008-948d4a79-1197-4367-a717-164fa5c3c855",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado (identidad de asientos)"
     },
     {
       "key": "B-S7-M5-G1",
