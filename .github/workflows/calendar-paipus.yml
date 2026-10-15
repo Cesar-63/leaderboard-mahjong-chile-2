@@ -15,12 +15,17 @@ on:
         description: "Falla el job si hay conflictos o partidas sin mesa"
         type: boolean
         default: false
-  schedule:
-    # Cada hora: una sesión tiene 2 semanas de plazo y cada mesa elige su
-    # horario, así que las partidas caen de a dos en cualquier momento del día
-    # y de la quincena. Una pasada diaria dejaba cada mesa hasta 24 h sin
-    # puntaje; por hora, se registra dentro de la hora de haberse jugado.
-    - cron: "0 * * * *"
+  # Pausado: terminó la fase regular y desde el 14 de octubre Mahjong Soul ya no
+  # encuentra la sala de División A (código 2538). Queda sólo a mano. Para
+  # reactivarlo, con salas nuevas y sus IDs en MAJSOUL_CONTEST_ID_A/B,
+  # devolver el bloque de abajo.
+  #
+  # schedule:
+  #   # Cada hora: una sesión tiene 2 semanas de plazo y cada mesa elige su
+  #   # horario, así que las partidas caen de a dos en cualquier momento del día
+  #   # y de la quincena. Una pasada diaria dejaba cada mesa hasta 24 h sin
+  #   # puntaje; por hora, se registra dentro de la hora de haberse jugado.
+  #   - cron: "0 * * * *"
 
 # Escribir: los paipus descargados se versionan igual que en sync-data.yml.
 permissions:
