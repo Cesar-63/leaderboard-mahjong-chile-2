@@ -1,11 +1,15 @@
+import asyncio
+import io
 import re
 import tempfile
 import unittest
+from contextlib import redirect_stderr
 from importlib import import_module
 from datetime import datetime, timezone
 from pathlib import Path
+from types import SimpleNamespace
 
-from scripts.majsoul import ContestGame, pending_record_uuids
+from scripts.majsoul import ContestGame, PaipuError, _collect_contest_games, pending_record_uuids
 from scripts.fill_calendar_paipus import (
     MIN_PLAYER_OVERLAP, apply_writes, build_report, build_tables, index_roster, log_candidates,
     match_games, paipu_url, planned_writes, writable_rows,
@@ -269,6 +273,57 @@ class LogsFaltantesTests(unittest.TestCase):
                 ["260710-aaaa", "260710-bbbb", "260710-cccc", "260710-cccc", ""], cache
             )
         self.assertEqual(faltantes, ["260710-bbbb", "260710-cccc"])
+
+
+class SalaCerradaTests(unittest.TestCase):
+    """Una sala de torneo que Mahjong Soul ya no encuentra no bota a la otra.
+
+    La de A empezó a responder 2538 el 14 de octubre y el cron quedó en rojo
+    cada hora sin leer tampoco las partidas de B.
+    """
+
+    class Respuesta(SimpleNamespace):
+        def HasField(self, name):
+            return getattr(self, name, None) is not None
+
+    class Lobby:
+        def __init__(self, cerradas):
+            self.cerradas = cerradas
+
+        async def fetch_customized_contest_by_contest_id(self, req):
+            Respuesta = SalaCerradaTests.Respuesta
+            if req.contest_id in self.cerradas:
+                return Respuesta(error=SimpleNamespace(code=2538, json_param=""))
+            return Respuesta(error=None, contest_info=SimpleNamespace(unique_id=req.contest_id * 10))
+
+        async def enter_customized_contest(self, req):
+            return SalaCerradaTests.Respuesta(error=None)
+
+        async def fetch_customized_contest_game_records(self, req):
+            record = SimpleNamespace(
+                uuid=f"partida-{req.unique_id}", start_time=1, end_time=2, accounts=[],
+                result=SimpleNamespace(players=[]),
+            )
+            return SalaCerradaTests.Respuesta(error=None, record_list=[record], next_index=0)
+
+    PB = SimpleNamespace(
+        ReqFetchCustomizedContestByContestId=SimpleNamespace,
+        ReqEnterCustomizedContest=SimpleNamespace,
+        ReqFetchCustomizedContestGameRecords=SimpleNamespace,
+    )
+
+    def leer(self, cerradas):
+        lobby = self.Lobby(cerradas)
+        with redirect_stderr(io.StringIO()):
+            return asyncio.run(_collect_contest_games(self.PB, lobby, {"A": "11", "B": "22"}))
+
+    def test_una_sala_cerrada_deja_leer_la_otra(self):
+        games = self.leer({11})
+        self.assertEqual([(game.division, game.uuid) for game in games], [("B", "partida-220")])
+
+    def test_sin_ninguna_sala_legible_falla(self):
+        with self.assertRaisesRegex(PaipuError, "2538"):
+            self.leer({11, 22})
 
 
 if __name__ == "__main__":

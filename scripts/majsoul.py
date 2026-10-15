@@ -817,16 +817,29 @@ def _contest_game_from_record(record: Any, contest_id: str, division: str) -> Co
 
 
 async def _collect_contest_games(pb: Any, lobby: Any, contests: dict[str, str]) -> list[ContestGame]:
-    """Historial de las salas de torneo, sobre un lobby ya autenticado."""
+    """Historial de las salas de torneo, sobre un lobby ya autenticado.
+
+    Una sala que Mahjong Soul ya no encuentra se salta con un aviso: terminada
+    la fase regular las salas se cierran de a una (la de A dejó de responder el
+    14 de octubre con código 2538), y sin esto la sala cerrada botaba también
+    la lectura de la otra división. Si no queda ninguna sala legible, falla.
+    """
     games: list[ContestGame] = []
+    missing: list[str] = []
     for division, contest_id in contests.items():
         info = await lobby.fetch_customized_contest_by_contest_id(
             pb.ReqFetchCustomizedContestByContestId(contest_id=int(contest_id), lang="en")
         )
         if info.HasField("error") and info.error.code:
-            raise PaipuError(
-                f"No se encontró el torneo {contest_id} de División {division} ({_rpc_error_detail(info.error)})"
+            detail = (
+                f"No se encontró el torneo {contest_id} de División {division} "
+                f"({_rpc_error_detail(info.error)})"
             )
+            missing.append(detail)
+            print(f"AVISO: {detail}; se sigue con las otras divisiones.", file=sys.stderr)
+            if os.environ.get("GITHUB_ACTIONS") == "true":
+                print(f"::warning::{detail}. ¿Se cerró la sala? Revisa MAJSOUL_CONTEST_ID_{division}.")
+            continue
         unique_id = int(info.contest_info.unique_id)
         # Las salas son públicas: entrar suele bastar para ver el historial,
         # pero si el lobby lo rechaza igual se intenta leer las partidas y
@@ -871,6 +884,8 @@ async def _collect_contest_games(pb: Any, lobby: Any, contests: dict[str, str]) 
                 f"puede faltar historial antiguo.",
                 file=sys.stderr,
             )
+    if missing and len(missing) == len(contests):
+        raise PaipuError("; ".join(missing))
     return games
 
 
