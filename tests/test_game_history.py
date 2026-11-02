@@ -12,8 +12,8 @@ from scripts.sync import (
 )
 from scripts.fill_game_history import (
     apply_writes, build_report, pick_slot, planned_writes, rank_seats, resolve_seat_names,
-    same_line, same_marks, score_problems, slots_by_table, slots_in_use, usable_slots,
-    without_marks, writable_rows,
+    render_text, same_line, same_marks, score_problems, slots_by_table, slots_in_use,
+    usable_slots, without_marks, writable_rows,
 )
 from scripts.fill_calendar_paipus import build_tables
 
@@ -379,6 +379,38 @@ class ReporteTests(unittest.TestCase):
         self.assertEqual(rows["A-S1-M1-G2"]["status"], "REVISAR")
         self.assertIn("conflicto", rows["A-S1-M1-G2"]["detail"])
         self.assertEqual(writable_rows(report, include_review=False), [])
+
+    def test_g1_y_g2_al_reves_es_cruzado_y_no_conflicto(self):
+        # Los dos hanchan de la mesa están, pero en orden distinto entre el
+        # Calendario y el Game History: cada celda trae el resultado del otro.
+        otra = "Tobippi,35900,Mon_96,31100,Uznaiker,30900,MasterFofo,22100"
+        submissions = self.mesa_1()
+        self.paipus["260710-bbbb"] = (parsed_paipu(
+            [(104, "Tobippi"), (103, "Mon_96"), (102, "Uznaiker"), (101, "MasterFofo")],
+            [35900, 31100, 30900, 22100], "260710-bbbb"), None)
+        histories = dict([history_entry(1, 1, 1, results_from(otra)),
+                          history_entry(1, 1, 2, results_from(EJEMPLO))])
+        report = self.report(submissions, histories)
+        rows = self.rows_by_key(report)
+        self.assertEqual(rows["A-S1-M1-G1"]["status"], "CRUZADO")
+        self.assertEqual(rows["A-S1-M1-G2"]["status"], "CRUZADO")
+        self.assertEqual(report["summary"]["CONFLICTO"], 0)
+        self.assertEqual(writable_rows(report, include_review=True, include_marks=True), [])
+        self.assertIn("1 mesas (A-S1-M1)", render_text(report))
+
+    def test_cruzado_exige_que_las_dos_celdas_calcen_al_reves(self):
+        # G2 sí coincide al revés, pero G1 trae un puntaje que ningún paipu da:
+        # eso es un conflicto de verdad y no se esconde como cruzado.
+        rara = "Tobippi,36000,Mon_96,31000,Uznaiker,30900,MasterFofo,22100"
+        submissions = self.mesa_1()
+        self.paipus["260710-bbbb"] = (parsed_paipu(
+            [(104, "Tobippi"), (103, "Mon_96"), (102, "Uznaiker"), (101, "MasterFofo")],
+            [35900, 31100, 30900, 22100], "260710-bbbb"), None)
+        histories = dict([history_entry(1, 1, 1, results_from(rara)),
+                          history_entry(1, 1, 2, results_from(EJEMPLO))])
+        rows = self.rows_by_key(self.report(submissions, histories))
+        self.assertEqual(rows["A-S1-M1-G1"]["status"], "CONFLICTO")
+        self.assertNotIn("CRUZADO", {row["status"] for row in rows.values()})
 
     def test_el_segundo_hanchan_va_a_la_mesa_que_ya_ocupa_el_grupo(self):
         # G1 del grupo está en la mesa 4 del historial; G2 tiene que ir ahí.
