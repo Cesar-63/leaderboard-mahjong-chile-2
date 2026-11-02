@@ -286,6 +286,15 @@ def parse_history(workbook: Any, division: str, sheet_name: str, rule: dict[str,
     return output
 
 
+def is_formula(value: Any) -> bool:
+    """Una celda que la planilla calcula, no un dato que alguien escribió.
+
+    La hoja Playoffs vieja traía fórmulas en las columnas que hoy son fecha,
+    hora y paipu; leídas sin calcular son texto `=…` y no pueden pasar por un
+    resultado ni por un enlace."""
+    return isinstance(value, str) and value.startswith("=")
+
+
 def playoff_label(round_id: str, table: int, game: int) -> str:
     """Rótulo de la columna A de la hoja Playoffs: `QF M1 G2`, `FINAL G3`.
 
@@ -334,6 +343,11 @@ def parse_playoff_history(workbook: Any, config: dict[str, Any]) -> list[dict[st
         raw_date = cell_value(ws.cell(row, PLAYOFF_DATE_COL))
         raw_time = cell_value(ws.cell(row, PLAYOFF_TIME_COL))
         paipu = str(cell_value(ws.cell(row, PLAYOFF_PAIPU_COL)) or "").strip()
+        # Una celda que no es dato no bota la publicación entera —la tabla de
+        # la fase regular no depende de esta hoja—: se avisa y se ignora.
+        if is_formula(raw):
+            print(f"AVISO: {sheet_name}!B{row} tiene una fórmula, no un resultado; se ignora.", file=sys.stderr)
+            raw = ""
         display_date, weekday, iso_date = format_date(raw_date)
         results = parse_history_line(raw, config["divisions"][rule_division], f"{sheet_name}!B{row}") if raw else []
         entry = {
@@ -349,8 +363,13 @@ def parse_playoff_history(workbook: Any, config: dict[str, Any]) -> list[dict[st
             try:
                 entry["uuid"] = extract_uuid(paipu)
                 entry["recordId"] = extract_record_id(paipu)
-            except PaipuError as exc:
-                raise SyncError(f"{entry['paipuCell']}: {exc}") from exc
+            except PaipuError:
+                print(
+                    f"AVISO: {entry['paipuCell']} dice «{paipu[:60]}», que no es un enlace de paipu; "
+                    "se ignora. Corre el workflow de paipus con «Preparar hoja Playoffs» para limpiarla.",
+                    file=sys.stderr,
+                )
+                entry["url"] = ""
         output.append(entry)
     return output
 
