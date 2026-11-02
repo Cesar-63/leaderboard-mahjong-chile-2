@@ -119,21 +119,74 @@ def update_xlsx(source: Path, destination: Path) -> None:
     workbook.save(destination)
 
 
-def update_google(config: dict, credentials: Path | None) -> None:
-    client = SheetsClient(config["spreadsheetId"], load_service_account(credentials))
+# Lo que se limpia al rehacer la hoja en Google: valores y formato de A1:Z100.
+# La hoja vieja tenía celdas combinadas (franjas de título en las filas 22,
+# 29…), fórmulas en J:O y fórmulas en C, D y F. Una celda tapada por una
+# combinación no guarda lo que se le escribe: el job «escribió» QF M4 G1 en la
+# fila 22 y se perdió. Por eso la hoja se descombina y se limpia entera antes.
+CLEAR_ROWS = 100
+CLEAR_COLUMNS = 26
+HEADER_ROWS = (1, 4, 15, 33)
+HEADER_COLOR = {"red": 0x33 / 255, "green": 0x41 / 255, "blue": 0x55 / 255}
+FIRST_MATCH_ROW = 16
+
+
+def grid(sheet_id: int, rows: tuple[int, int], columns: tuple[int, int]) -> dict[str, int]:
+    """Rango de la API (0-indexado, fin exclusivo) desde filas y columnas 1-indexadas."""
+    return {"sheetId": sheet_id, "startRowIndex": rows[0] - 1, "endRowIndex": rows[1],
+            "startColumnIndex": columns[0] - 1, "endColumnIndex": columns[1]}
+
+
+def layout_requests(sheet_id: int, merges: list[dict[str, int]]) -> list[dict[str, object]]:
+    """Descombinar, limpiar y dar formato: todo lo que no son valores."""
+    last_row = max([CLEAR_ROWS] + [int(m.get("endRowIndex", 0)) for m in merges])
+    last_column = max([CLEAR_COLUMNS] + [int(m.get("endColumnIndex", 0)) for m in merges])
+    last_match = FIRST_MATCH_ROW + len(MATCHES) - 1
+    requests: list[dict[str, object]] = [{"unmergeCells": {"range": merge}} for merge in merges]
+    requests.append({"updateCells": {
+        "range": grid(sheet_id, (1, last_row), (1, last_column)),
+        "fields": "userEnteredValue,userEnteredFormat",
+    }})
+    for row in HEADER_ROWS:
+        requests.append({"repeatCell": {
+            "range": grid(sheet_id, (row, row), (1, 9)),
+            "cell": {"userEnteredFormat": {
+                "backgroundColor": HEADER_COLOR,
+                "textFormat": {"bold": True, "foregroundColor": {"red": 1, "green": 1, "blue": 1}},
+            }},
+            "fields": "userEnteredFormat(backgroundColor,textFormat)",
+        }})
+    for column, kind, pattern in ((3, "DATE", "yyyy-mm-dd"), (4, "TIME", "hh:mm")):
+        requests.append({"repeatCell": {
+            "range": grid(sheet_id, (FIRST_MATCH_ROW, last_match), (column, column)),
+            "cell": {"userEnteredFormat": {"numberFormat": {"type": kind, "pattern": pattern}}},
+            "fields": "userEnteredFormat.numberFormat",
+        }})
+    return requests
+
+
+def rebuild_google(client: SheetsClient) -> int:
+    """Rehace la hoja en Google conservando, por rótulo, lo que es dato."""
     quoted = quote_sheet(SHEET)
-    labels = [f"{quoted}!A{row}" for row in range(1, 101)]
-    kept = [f"{quoted}!{column}{row}" for row in range(1, 101) for column in KEPT_COLUMNS]
+    labels = [f"{quoted}!A{row}" for row in range(1, CLEAR_ROWS + 1)]
+    kept = [f"{quoted}!{column}{row}" for row in range(1, CLEAR_ROWS + 1) for column in KEPT_COLUMNS]
+    # Primero se lee: limpiar antes borraría lo que hay que conservar.
     current = client.read_cells(labels + kept)
     previous: dict[str, dict[str, object]] = {}
-    for row in range(1, 101):
+    for row in range(1, CLEAR_ROWS + 1):
         label = " ".join(current.get(f"{quoted}!A{row}", "").split()).upper()
         if label:
             previous[label] = {column: current.get(f"{quoted}!{column}{row}", "") for column in KEPT_COLUMNS}
-    updates = {f"{quoted}!{column}{row}": "" for row in range(1, 101) for column in "ABCDEFGHI"}
-    updates.update({f"{quoted}!{address}": value for address, value in cells(previous).items()})
-    client.write_cells(updates, value_input_option="USER_ENTERED")
-    print(f"Hoja {SHEET} actualizada con {client.account_email}")
+    layout = client.sheet_layout(SHEET)
+    client.batch_update(layout_requests(layout["sheetId"], layout["merges"]))
+    values = {f"{quoted}!{address}": value for address, value in cells(previous).items() if value != ""}
+    return client.write_cells(values, value_input_option="USER_ENTERED")
+
+
+def update_google(config: dict, credentials: Path | None) -> None:
+    client = SheetsClient(config["spreadsheetId"], load_service_account(credentials))
+    rebuild_google(client)
+    print(f"Hoja {SHEET} rehecha con {client.account_email}: sin celdas combinadas ni fórmulas viejas")
 
 
 def build_parser() -> argparse.ArgumentParser:

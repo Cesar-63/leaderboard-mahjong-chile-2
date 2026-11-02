@@ -193,6 +193,20 @@ class SheetsClient:
                 values[asked] = str(first[0]).strip() if first and first[0] is not None else ""
         return values
 
+    def sheet_layout(self, title: str) -> dict[str, Any]:
+        """`sheetId` y celdas combinadas de una hoja, para pedir cambios de formato."""
+        payload = self._request("GET", "", query={"fields": "sheets(properties(sheetId,title),merges)"})
+        for sheet in payload.get("sheets", []):
+            if sheet.get("properties", {}).get("title") == title:
+                return {"sheetId": sheet["properties"]["sheetId"], "merges": sheet.get("merges", [])}
+        raise SheetsError(f"La planilla no tiene la hoja «{title}»")
+
+    def batch_update(self, requests: list[dict[str, Any]]) -> dict[str, Any]:
+        """Cambios de estructura y formato (descombinar, limpiar, formatos)."""
+        if not requests:
+            return {}
+        return self._request("POST", ":batchUpdate", payload={"requests": requests})
+
     def write_cells(self, updates: dict[str, str], value_input_option: str = "RAW") -> int:
         """Escribe `rango A1 → valor` y devuelve cuántas celdas cambiaron.
 

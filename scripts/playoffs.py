@@ -149,6 +149,14 @@ def read_playoff_sheet(workbook: Any, sheet_name: str) -> dict[str, dict[str, An
     if sheet_name not in workbook.sheetnames:
         return None
     ws = workbook[sheet_name]
+    # Celdas tapadas por una combinación: Google descarta lo que se escribe
+    # ahí, así que el job las trata como ocupadas y las reporta.
+    hidden: set[tuple[int, int]] = set()
+    for merged in ws.merged_cells.ranges:
+        for merged_row in range(merged.min_row, merged.max_row + 1):
+            for merged_col in range(merged.min_col, merged.max_col + 1):
+                if (merged_row, merged_col) != (merged.min_row, merged.min_col):
+                    hidden.add((merged_row, merged_col))
     rows: dict[str, dict[str, Any]] = {}
     for row in range(1, ws.max_row + 1):
         label = str(cell_value(ws.cell(row, PLAYOFF_LABEL_COL)) or "").strip().upper()
@@ -173,7 +181,7 @@ def read_playoff_sheet(workbook: Any, sheet_name: str) -> dict[str, dict[str, An
                 (PLAYOFF_TIME_COL, time_value, is_formula(time_value)),
                 (PLAYOFF_PAIPU_COL, paipu, bool(paipu) and uuid is None),
             )
-            if bad
+            if bad or (row, column) in hidden
         ]
         rows[label] = {
             "row": row,
@@ -451,8 +459,18 @@ def build_row(sheet_name: str, sheet: dict[str, dict[str, Any]], round_id: str, 
     if moment:
         proposed[cell_ref(sheet_name, PLAYOFF_DATE_COL, current["row"])] = (moment.strftime("%Y-%m-%d"), current["date"] not in (None, ""))
         proposed[cell_ref(sheet_name, PLAYOFF_TIME_COL, current["row"])] = (moment.strftime("%H:%M"), current["time"] not in (None, ""))
+    blocked = {f"{quote_sheet(sheet_name)}!{ref}" for ref in current.get("invalid", [])} & set(proposed)
     row["writes"] = {cell: value for cell, (value, filled) in proposed.items() if not filled}
-    if not row["writes"]:
+    if blocked:
+        # Escribir la fila a medias sería peor que no escribirla: queda entera
+        # para cuando se limpie la hoja.
+        row["writes"] = {}
+        row["status"] = "REVISAR"
+        row["detail"] = (
+            f"La partida {game.uuid} es de esta fila, pero {', '.join(sorted(c.split('!')[1] for c in blocked))} "
+            "no son celdas escribibles (combinadas o con fórmulas viejas). Corre «Preparar hoja Playoffs»."
+        )
+    elif not row["writes"]:
         row["status"], row["detail"] = "OK", "La hoja ya tiene esta partida"
     elif has_extras:
         row["status"], row["detail"] = "REVISAR", "La mesa tiene partidas de más en la sala"
