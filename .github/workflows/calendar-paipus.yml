@@ -15,6 +15,10 @@ on:
         description: "Falla el job si hay conflictos o partidas sin mesa"
         type: boolean
         default: false
+      setup_playoffs:
+        description: "Preparar hoja Playoffs (cuadro de 16; conserva resultado, fecha, hora y paipu)"
+        type: boolean
+        default: false
   schedule:
     # Cada hora: una sesión tiene 2 semanas de plazo y cada mesa elige su
     # horario, así que las partidas caen de a dos en cualquier momento del día
@@ -43,13 +47,22 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r requirements.txt
-      - name: Leer las salas de torneo y completar el Calendario
+      - name: Preparar la hoja Playoffs
+        if: ${{ inputs.setup_playoffs }}
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+        run: python scripts/setup_playoffs_sheet.py --write
+      - name: Leer las salas de torneo y completar Calendario y Playoffs
         env:
           MAJSOUL_UID: ${{ secrets.MAJSOUL_UID }}
           MAJSOUL_TOKEN: ${{ secrets.MAJSOUL_TOKEN }}
           MAJSOUL_DEVICE_ID: ${{ secrets.MAJSOUL_DEVICE_ID }}
           MAJSOUL_CONTEST_ID_A: ${{ secrets.MAJSOUL_CONTEST_ID_A }}
           MAJSOUL_CONTEST_ID_B: ${{ secrets.MAJSOUL_CONTEST_ID_B }}
+          # Opcionales: si las eliminatorias se juegan en otras salas. Vacíos,
+          # se usan las de la fase regular, cada mesa en la sala de su regla.
+          MAJSOUL_PLAYOFF_CONTEST_ID_A: ${{ secrets.MAJSOUL_PLAYOFF_CONTEST_ID_A }}
+          MAJSOUL_PLAYOFF_CONTEST_ID_B: ${{ secrets.MAJSOUL_PLAYOFF_CONTEST_ID_B }}
           GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
           # El cron corre sin inputs: por defecto pega y descarga.
           ESCRIBIR: ${{ inputs.write == null && 'true' || inputs.write }}

@@ -11,12 +11,28 @@ Los puntajes de la hoja **Game History** salen de esos mismos paipus con
 
 La pestaña **Playoffs** es la fuente oficial de cuartos, semifinales y final.
 Cada hanchan ocupa una fila: la columna A usa `QF M1 G1`, `SF M2 G2` o
-`FINAL G3`; la B recibe `Jugador,Puntaje,...` ordenado del 1.º al 4.º; C y D
-guardan fecha y hora. El sincronizador toma la regla y el uma de la mesa desde
-`sync-config.json`, publica los resultados en Eliminatorias e Historial y usa
-la fecha y hora en el Calendario.
+`FINAL G3`; la B recibe `Jugador,Puntaje,...` ordenado del 1.º al 4.º (con
+`NOT` delante del suplente, como en el Game History); C y D guardan fecha y
+hora, y F el enlace al paipu. El sincronizador toma la regla y el uma de la mesa
+desde `sync-config.json` y publica en Eliminatorias e Historial: si la fila
+tiene paipu, el resultado sale del paipu (con replay mano a mano y enlace); si
+no, de la columna B.
 
-Para migrar una copia local conservando los resultados existentes:
+**Las filas se llenan solas.** El job horario `calendar-paipus.yml`
+(`fill_calendar_paipus.py`) lee las salas de torneo y empareja cada partida con
+su mesa del cuadro por jugadores (3 de 4). Los cuartos salen de la tabla final
+publicada con la siembra cruzada del sitio; cada ronda siguiente, de los dos
+primeros de cada mesa de la anterior. Escribe B, C, D y F sólo en celdas
+vacías: si una celda dice otra cosa, la fila queda en CONFLICTO y la decide una
+persona. Un empate en el corte de una mesa no lo resuelve el script: la ronda
+siguiente queda pendiente hasta que alguien escriba el desempate.
+
+Las mesas se buscan en la sala de su regla. Por defecto son las mismas salas de
+la fase regular (`MAJSOUL_CONTEST_ID_A` / `_B`); si las eliminatorias se juegan
+en otras, se definen `MAJSOUL_PLAYOFF_CONTEST_ID_A` / `_B` en los secrets del
+repo. Con el Calendario completo, la sala regular ya no se pide.
+
+Para migrar una copia local conservando lo ya escrito (B, C, D y F):
 
 ```bash
 python scripts/setup_playoffs_sheet.py --xlsx planilla.xlsx
@@ -28,6 +44,9 @@ servicio con permiso de Editor que usan las otras escrituras:
 ```bash
 python scripts/setup_playoffs_sheet.py --write
 ```
+
+O desde GitHub: Actions → «Paipus del torneo hacia el Calendario» → Run
+workflow, con **Preparar hoja Playoffs** marcado.
 
 La estructura contiene 15 hanchan: 8 de cuartos, 4 de semifinales y 3 de
 final. QF 1–2 usan reglas A, QF 3–4 reglas B; SF 1 usa A, SF 2 usa B; la final

@@ -73,6 +73,24 @@ mahjong, jugada en sala de torneo de MahjongSoul. Estático, sin backend, sin au
   su propia cantidad de mesas, y las alturas cambian con el idioma, el tema y el
   ancho de la ventana. Apilado (bajo 900px) no hay árbol horizontal: el SVG se
   oculta y quedan las flechas entre rondas.
+- **Los resultados de eliminatorias llegan solos desde las salas.** Se juegan
+  en las mismas salas de torneo que la fase regular, cada mesa en la de su
+  regla, pero no están en el Calendario. `scripts/playoffs.py` (lo corre
+  `fill_calendar_paipus.py`, el job horario) arma las mesas esperadas —cuartos
+  desde `data/liga.json` con la siembra de arriba (`quarter_tables`, gemela de
+  `playoffSeeding`), cada ronda siguiente desde los dos primeros de cada mesa—,
+  empareja cada partida con 3 de 4 jugadores y escribe en la hoja Playoffs
+  resultado (B), fecha (C), hora (D) y paipu (F), sólo en celdas vacías. Un
+  empate en el corte no lo decide el script: la ronda siguiente queda
+  pendiente. `sync.py` publica la fila desde el paipu cuando lo tiene
+  (`merge_playoff_paipus`: verificada, con replay) y si no desde B; esas manos
+  no entran a la tabla ni a las estadísticas avanzadas. Salas distintas de las
+  regulares: secrets `MAJSOUL_PLAYOFF_CONTEST_ID_A/B`.
+- **Terminada la fase regular, el job deja de pedir sus salas.** Mahjong Soul
+  cierra la sala al acabar la liga y la búsqueda devuelve 2538; antes eso
+  tumbaba el job entero cada hora. `select_contests` sólo lee la sala regular
+  mientras al Calendario le falte un paipu, y una sala que no aparece es un
+  aviso (`TORNEO_NO_ENCONTRADO`), no un error, salvo que no aparezca ninguna.
 
 ## Reglas de puntaje
 
@@ -124,7 +142,11 @@ rótulo `S# M# G#` de la columna A, y la mesa del historial, del mismo
 emparejamiento por jugadores de arriba: un grupo ya registrado en la mesa 4
 conserva la 4. **Nunca sobrescribe una celda escrita**; si el paipu dice otra
 cosa es CONFLICTO, y eso baja a REVISAR el otro hanchan de la mesa, porque la
-causa típica es tener los dos paipus cruzados en el Calendario. Un paipu que no
+causa típica es tener los dos paipus cruzados en el Calendario. Cuando las dos
+celdas de la mesa calzan exactamente al revés (cada una trae lo que el paipu da
+para el otro hanchan) no es conflicto sino CRUZADO: mismos jugadores, puntajes
+y puntos, sin efecto en ningún total, y se informa en una sola línea. Eran 80
+de los avisos del job. Un paipu que no
 declara la identidad de los asientos deja la celda en REVISAR en vez de confiar
 en el orden del Calendario: emparejar mal un puntaje con un jugador es peor que
 no escribir nada. **El formato de la celda vive en un solo lugar:**
@@ -361,9 +383,9 @@ paso a paso completo en `DISCORD_BOT.md`.
   cuenta de servicio y variable (`GOOGLE_SERVICE_ACCOUNT_JSON`), pero no el
   almacén: la de los workflows vive en GitHub Actions Secrets y la del bot en las
   variables de entorno de Vercel, que son sistemas separados. **No se pisan:** el
-  primero escribe las celdas de paipu del Calendario (filas `G1` y `G1 + 1`), el
-  segundo sólo la columna B de `Game History A/B`, y el bot sólo fecha y hora
-  (`G1 − 2` y `G1 − 1`).
+  primero escribe las celdas de paipu del Calendario (filas `G1` y `G1 + 1`) y
+  las columnas B, C, D y F de la hoja Playoffs, el segundo sólo la columna B de
+  `Game History A/B`, y el bot sólo fecha y hora (`G1 − 2` y `G1 − 1`).
 - La firma del JWT está implementada dos veces, en `scripts/gsheets.py` para el
   pipeline y en `api/_lib/sheets.mjs` para el bot, porque corren en runtimes
   distintos. Es duplicación deliberada; lo que no puede divergir es a qué celdas
