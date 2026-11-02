@@ -1176,5 +1176,42 @@
       "status": "PUBLICADO",
       "message": "Paipu decodificado (identidad de asientos)"
     }
+  ],
+  "playoffSubmissions": [
+    {
+      "key": "QF M2 G1",
+      "cell": "Playoffs!F18",
+      "uuid": "261102-d2db9ab6-31a3-4862-b760-5efc1020a772",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado"
+    },
+    {
+      "key": "QF M2 G2",
+      "cell": "Playoffs!F19",
+      "uuid": "261102-73375b73-b882-491a-b3c9-bc0f33b26130",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado"
+    },
+    {
+      "key": "QF M3 G1",
+      "cell": "Playoffs!F20",
+      "uuid": "261102-9d2be455-7d2a-4de7-b3be-af600305b400",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado"
+    },
+    {
+      "key": "QF M3 G2",
+      "cell": "Playoffs!F21",
+      "uuid": "261102-59faf8c1-5061-4218-9c3a-e8e806b61e94",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado"
+    },
+    {
+      "key": "QF M4 G2",
+      "cell": "Playoffs!F23",
+      "uuid": "261030-9d181a21-1e2b-4bd0-83a1-50ec955eb9e4",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado"
+    }
   ]
 }
