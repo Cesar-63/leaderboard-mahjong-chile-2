@@ -10,8 +10,9 @@ from scripts.fill_calendar_paipus import index_roster, select_contests
 from scripts.majsoul import ContestGame
 from scripts.playoffs import (
     advancers, apply_playoff_writes, build_playoff_report, feeder_tables, quarter_tables,
-    season_settled, standings, writable_playoff_rows,
+    read_playoff_sheet, season_settled, standings, writable_playoff_rows,
 )
+from scripts.setup_playoffs_sheet import cells as setup_cells, kept_value
 from scripts.sync import (
     PLAYOFF_FORMAT_DEFAULT, build_public_data, merge_playoff_paipus, parse_playoff_history,
     playoff_format, playoff_label,
@@ -306,6 +307,42 @@ class PublishTests(unittest.TestCase):
         ws.title = "Playoffs"
         ws["A16"], ws["B16"], ws["F16"] = "QF M1 G1", result, paipu
         return workbook
+
+    def test_una_formula_en_paipu_no_bota_la_publicacion(self):
+        # Lo que pasó en producción: la migración dejó en F24 una fórmula de
+        # la hoja vieja y sync.py abortó todo con «no contiene un UUID».
+        wb = self.workbook("=IFERROR(SPLIT(B16,\",\"),\"\")", "=IFERROR(INDEX(SPLIT(B16,\",\"),4),\"\")")
+        history = parse_playoff_history(wb, config())
+        self.assertNotIn("uuid", history[0])
+        self.assertEqual(history[0]["url"], "")
+        self.assertEqual(history[0]["results"], [])
+
+    def test_el_job_reporta_las_celdas_que_no_son_dato_y_no_las_pisa(self):
+        wb = self.workbook("", "=INDEX(SPLIT(B16,\",\"),4)")
+        wb["Playoffs"]["C16"] = "=INDEX(SPLIT(B16,\",\"),1)"
+        rows = read_playoff_sheet(wb, "Playoffs")
+        self.assertEqual(rows["QF M1 G1"]["invalid"], ["C16", "F16"])
+        result = report([game("261025-aaaa", START, [("A1", 40000), ("A2", 32000), ("B7", 26000), ("B8", 22000)])],
+                        {**sheet(), "QF M1 G1": rows["QF M1 G1"]})
+        self.assertIn("CELDA_INVALIDA", [issue["type"] for issue in result["issues"]])
+        writes = rows_by_label(result)["QF M1 G1"]["writes"]
+        self.assertNotIn("'Playoffs'!C16", writes)
+        self.assertNotIn("'Playoffs'!F16", writes)
+
+    def test_la_migracion_no_conserva_formulas_ni_un_paipu_falso(self):
+        self.assertEqual(kept_value("F", "=INDEX(SPLIT(B24,\",\"),4)"), "")
+        self.assertEqual(kept_value("F", "Puntaje"), "")
+        self.assertEqual(kept_value("F", 22000), "")
+        self.assertEqual(kept_value("C", "=INDEX(SPLIT(B24,\",\"),1)"), "")
+        link = "https://mahjongsoul.game.yo-star.com/?paipu=261102-59faf8c1-5061-4218-9c3a-e8e806b61e94"
+        self.assertEqual(kept_value("F", link), link)
+        self.assertEqual(kept_value("C", 46327), 46327)
+        valores = setup_cells({"SF M1 G1": {"B": "", "C": "=X", "D": "=Y", "F": "=Z"},
+                               "QF M2 G1": {"B": "MasterFofo,44100,24Kakoo,43100,KaijuHead,16700,PrivateIdaho,16100",
+                                            "C": 46327, "D": 0.934, "F": link}})
+        self.assertEqual([valores[f"{c}24"] for c in "BCDF"], ["", "", "", ""])
+        self.assertEqual(valores["F18"], link)
+        self.assertEqual(valores["C18"], 46327)
 
     def test_la_hoja_lee_la_columna_paipu(self):
         history = parse_playoff_history(

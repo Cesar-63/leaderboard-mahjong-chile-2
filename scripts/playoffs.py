@@ -35,7 +35,7 @@ from scripts.majsoul import ContestGame, PaipuError, extract_uuid
 from scripts.sync import (
     DIVISIONS, PLAYOFF_DATE_COL, PLAYOFF_LABEL_COL, PLAYOFF_LABEL_RE, PLAYOFF_PAIPU_COL,
     PLAYOFF_RESULT_COL, PLAYOFF_TIME_COL, SyncError, TOTAL_RAW_SCORE, cell_value,
-    format_history_line, parse_history_line, playoff_format, playoff_label,
+    format_history_line, is_formula, parse_history_line, playoff_format, playoff_label,
 )
 
 MIN_PLAYER_OVERLAP = 3
@@ -160,12 +160,26 @@ def read_playoff_sheet(workbook: Any, sheet_name: str) -> dict[str, dict[str, An
             uuid = extract_uuid(paipu) if paipu else None
         except PaipuError:
             uuid = None
+        result = str(cell_value(ws.cell(row, PLAYOFF_RESULT_COL)) or "").strip()
+        date_value = cell_value(ws.cell(row, PLAYOFF_DATE_COL))
+        time_value = cell_value(ws.cell(row, PLAYOFF_TIME_COL))
+        # Celdas ocupadas por algo que no es dato (fórmulas de la hoja vieja,
+        # un texto en Paipu): el job no las pisa, pero las reporta.
+        invalid = [
+            f"{get_column_letter(column)}{row}"
+            for column, value, bad in (
+                (PLAYOFF_RESULT_COL, result, is_formula(result)),
+                (PLAYOFF_DATE_COL, date_value, is_formula(date_value)),
+                (PLAYOFF_TIME_COL, time_value, is_formula(time_value)),
+                (PLAYOFF_PAIPU_COL, paipu, bool(paipu) and uuid is None),
+            )
+            if bad
+        ]
         rows[label] = {
             "row": row,
-            "result": str(cell_value(ws.cell(row, PLAYOFF_RESULT_COL)) or "").strip(),
-            "date": cell_value(ws.cell(row, PLAYOFF_DATE_COL)),
-            "time": cell_value(ws.cell(row, PLAYOFF_TIME_COL)),
-            "paipu": paipu, "uuid": uuid,
+            "result": "" if is_formula(result) else result,
+            "date": date_value, "time": time_value,
+            "paipu": paipu, "uuid": uuid, "invalid": invalid,
         }
     return rows
 
@@ -263,6 +277,17 @@ def build_playoff_report(
                 f"La hoja «{sheet_name}» no tiene las filas {', '.join(missing[:6])}"
                 f"{', …' if len(missing) > 6 else ''}. Corre el workflow con «Preparar hoja "
                 "Playoffs» (scripts/setup_playoffs_sheet.py --write): conserva lo ya escrito."
+            ),
+        })
+
+    invalid = [cell for row in sheet.values() for cell in row.get("invalid", [])]
+    if invalid:
+        issues.append({
+            "type": "CELDA_INVALIDA",
+            "message": (
+                f"En «{sheet_name}» hay celdas ocupadas que no son resultado, fecha, hora ni enlace "
+                f"de paipu ({', '.join(invalid[:8])}{', …' if len(invalid) > 8 else ''}); el job no "
+                "las pisa. Corre el workflow con «Preparar hoja Playoffs» para limpiarlas."
             ),
         })
 

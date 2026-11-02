@@ -20,6 +20,7 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scripts.gsheets import SheetsClient, load_service_account, quote_sheet
+from scripts.majsoul import PAIPU_RE
 
 ROOT = Path(__file__).resolve().parents[1]
 SHEET = "Playoffs"
@@ -35,6 +36,27 @@ MATCHES = [
     *[(f"SF M{table} G{game}", "A" if table == 1 else "B") for table in range(1, 3) for game in range(1, 3)],
     *[(f"FINAL G{game}", "A") for game in range(1, 4)],
 ]
+
+
+def kept_value(column: str, value: object) -> object:
+    """Lo que vale la pena conservar de una celda al rehacer la hoja.
+
+    La hoja vieja usaba esas columnas para otra cosa (fórmulas que partían el
+    resultado en jugador y puntaje). Conservarlas tal cual dejó una fórmula en
+    F24, que `sync.py` leyó como enlace de paipu. Por eso una fórmula no se
+    conserva nunca, y en Paipu sólo un valor que traiga un UUID de paipu."""
+    if value is None:
+        return ""
+    if isinstance(value, str):
+        text = value.strip()
+        if text.startswith("="):
+            return ""
+        if column == "F" and not PAIPU_RE.search(text):
+            return ""
+        return text
+    if column == "F":
+        return ""
+    return value
 
 
 def cells(previous: dict[str, dict[str, object]] | None = None) -> dict[str, object]:
@@ -61,7 +83,7 @@ def cells(previous: dict[str, dict[str, object]] | None = None) -> dict[str, obj
     for offset, (label, division) in enumerate(MATCHES, start=16):
         values[f"A{offset}"] = label
         for column in KEPT_COLUMNS:
-            values[f"{column}{offset}"] = previous.get(label, {}).get(column, "")
+            values[f"{column}{offset}"] = kept_value(column, previous.get(label, {}).get(column, ""))
         values[f"E{offset}"] = f"División {division}"
     values["A33"] = "Carga oficial"
     values["A34"] = "El job de paipus completa B, C, D y F solo con las partidas de las salas; nunca pisa una celda escrita."
