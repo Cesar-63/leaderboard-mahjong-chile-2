@@ -44,6 +44,16 @@ HISTORY_LAST_ROW = 85
 HISTORY_LABEL_COL = 1
 HISTORY_VALUE_COL = 2
 PLAYOFF_LABEL_RE = re.compile(r"^(QF|SF)\s+M(\d+)\s+G(\d+)$|^FINAL\s+G(\d+)$", re.IGNORECASE)
+# Columnas de la hoja Playoffs. La A rotula el hanchan y la B lleva el
+# resultado con el formato del Game History; C y D son fecha y hora, E la
+# regla, y F el enlace al paipu. `fill_calendar_paipus.py` escribe B, C, D y
+# F de las partidas que encuentra en las salas; nunca pisa una celda escrita.
+PLAYOFF_LABEL_COL = 1
+PLAYOFF_RESULT_COL = 2
+PLAYOFF_DATE_COL = 3
+PLAYOFF_TIME_COL = 4
+PLAYOFF_PAIPU_COL = 6
+PLAYOFF_ROUND_PREFIX = {"quarters": "QF", "semis": "SF"}
 # Sin oka: los cuatro scores crudos de un hanchan siempre suman esto.
 TOTAL_RAW_SCORE = 120000
 # Mínimo de jugadores en común para dar por equivalentes dos grupos: 3 de 4,
@@ -276,6 +286,16 @@ def parse_history(workbook: Any, division: str, sheet_name: str, rule: dict[str,
     return output
 
 
+def playoff_label(round_id: str, table: int, game: int) -> str:
+    """Rótulo de la columna A de la hoja Playoffs: `QF M1 G2`, `FINAL G3`.
+
+    Es el gemelo de `PLAYOFF_LABEL_RE`: el que lee y el que escribe tienen que
+    moverse juntos, igual que `parse_history_line` y `format_history_line`."""
+    if round_id == "final":
+        return f"FINAL G{game}"
+    return f"{PLAYOFF_ROUND_PREFIX[round_id]} M{table} G{game}"
+
+
 def parse_playoff_history(workbook: Any, config: dict[str, Any]) -> list[dict[str, Any]]:
     """Lee los resultados oficiales de la hoja Playoffs.
 
@@ -310,18 +330,28 @@ def parse_playoff_history(workbook: Any, config: dict[str, Any]) -> list[dict[st
             raise SyncError(f"{where}: partida de eliminatorias duplicada")
         seen.add(key)
         rule_division = round_item["rulesByTable"][table - 1]
-        raw = str(cell_value(ws.cell(row, 2)) or "").strip()
-        raw_date = cell_value(ws.cell(row, 3))
-        raw_time = cell_value(ws.cell(row, 4))
+        raw = str(cell_value(ws.cell(row, PLAYOFF_RESULT_COL)) or "").strip()
+        raw_date = cell_value(ws.cell(row, PLAYOFF_DATE_COL))
+        raw_time = cell_value(ws.cell(row, PLAYOFF_TIME_COL))
+        paipu = str(cell_value(ws.cell(row, PLAYOFF_PAIPU_COL)) or "").strip()
         display_date, weekday, iso_date = format_date(raw_date)
         results = parse_history_line(raw, config["divisions"][rule_division], f"{sheet_name}!B{row}") if raw else []
-        output.append({
-            "id": f"PO-{round_id}-M{table}-G{game}", "code": label,
+        entry = {
+            "id": f"PO-{round_id}-M{table}-G{game}", "code": playoff_label(round_id, table, game),
             "playoffRound": round_id, "table": table, "hanchan": game,
             "ruleDivision": rule_division, "results": results,
             "date": display_date, "weekday": weekday, "dateISO": iso_date,
             "time": raw_time.isoformat(timespec="minutes") if isinstance(raw_time, time) else None,
-        })
+            "paipuCell": f"{sheet_name}!{get_column_letter(PLAYOFF_PAIPU_COL)}{row}",
+            "url": paipu,
+        }
+        if paipu:
+            try:
+                entry["uuid"] = extract_uuid(paipu)
+                entry["recordId"] = extract_record_id(paipu)
+            except PaipuError as exc:
+                raise SyncError(f"{entry['paipuCell']}: {exc}") from exc
+        output.append(entry)
     return output
 
 
@@ -373,6 +403,60 @@ def merge_paipus(submissions: list[dict[str, Any]], histories: dict[str, dict[st
             message = str(exc) if isinstance(exc, PaipuError) else f"{type(exc).__name__}: {exc}"
             status.append({"key": submission["key"], "cell": submission["cell"], "uuid": uuid, "status": "ERROR", "message": message})
     return parsed_games, {"submissions": status}
+
+
+def merge_playoff_paipus(playoff_history: list[dict[str, Any]], rosters: dict[str, list[dict[str, Any]]], config: dict[str, Any], cache_dir: Path, offline: bool) -> list[dict[str, Any]]:
+    """Decodifica el paipu de cada partida de eliminatorias que lo tenga en la hoja.
+
+    Como en la fase regular, el paipu manda sobre la celda escrita: el
+    resultado publicado sale de la liquidación del registro y la celda queda
+    como respaldo. Las mesas mezclan A y B, así que los asientos se buscan en
+    los dos rosters. Un nombre que la celda marca `NOT` es suplente aunque
+    esté en el roster, igual que en el Game History. Cada partida que se
+    publica desde el paipu queda con `paipu` adentro; las demás, como estaban.
+    """
+    players = [player for division in DIVISIONS for player in rosters[division]]
+    status: list[dict[str, Any]] = []
+    for match in playoff_history:
+        uuid = match.get("uuid")
+        if not uuid:
+            continue
+        entry = {"key": match["code"], "cell": match["paipuCell"], "uuid": uuid}
+        try:
+            cache_file = cache_dir / f"{uuid}.pb"
+            if offline and not cache_file.exists():
+                raise PaipuError("Sin caché local; omite --offline para descargarlo")
+            raw = cache_file.read_bytes() if cache_file.exists() else fetch_record(match["recordId"], cache_dir, uuid)
+            parsed = parse_record(uuid, raw)
+            if sum(parsed.final_scores) != TOTAL_RAW_SCORE:
+                raise PaipuError(
+                    f"Los puntajes finales suman {sum(parsed.final_scores):,} y no "
+                    f"{TOTAL_RAW_SCORE:,}".replace(",", ".")
+                )
+            seat_map = match_paipu_seats(parsed.players, players) if len(parsed.players) == 4 else None
+            if seat_map is None:
+                raise PaipuError("El paipu no identifica al menos 3 asientos del roster")
+            marked = {item["name"].strip().lower() for item in match["results"] if item.get("suplente")}
+            seat_map = {seat: player for seat, player in seat_map.items() if player["name"].strip().lower() not in marked}
+            rule = config["divisions"][match["ruleDivision"]]
+            results = build_paipu_results(f"PO-{match['code']}", seat_map, parsed.players, parsed.final_scores, rule, None)
+            if match["results"]:
+                written = [(item["name"].strip().lower(), item["scoreRaw"]) for item in match["results"]]
+                decoded = [(item["name"].strip().lower(), item["scoreRaw"]) for item in results]
+                if written != decoded:
+                    print(
+                        f"AVISO: {match['code']}: la hoja dice «{format_history_line(match['results'])}» "
+                        f"y el paipu {uuid} dice otra cosa; se publica el paipu.",
+                        file=sys.stderr,
+                    )
+            match["paipu"] = {"results": results, "rounds": public_rounds({"rounds": parsed.rounds}, seat_map)}
+            entry.update(status="PUBLICADO", message="Paipu decodificado")
+        except PaipuAuthRequired as exc:
+            entry.update(status="REQUIERE_AUTH", message=str(exc))
+        except Exception as exc:
+            entry.update(status="ERROR", message=str(exc) if isinstance(exc, PaipuError) else f"{type(exc).__name__}: {exc}")
+        status.append(entry)
+    return status
 
 
 # Formato de las eliminatorias. Vive en sync-config.json y no acá porque es
@@ -591,6 +675,38 @@ def build_excel_results(official: dict[str, Any], fixture_players: list[str], pl
     return results
 
 
+def public_rounds(parsed: dict[str, Any] | None, seat_map: dict[int, dict[str, Any]] | None) -> list[dict[str, Any]]:
+    """Las manos del paipu para el replay del Historial, con nombres de liga.
+
+    La misma forma sirve para la fase regular y para las eliminatorias: la
+    vista no distingue de dónde vino la partida."""
+    seats = seat_map or {}
+    return [
+        {
+            **round_item,
+            "outcomes": [
+                {
+                    **outcome,
+                    "winner": seats.get(outcome.get("winnerSeat"), {}).get("name"),
+                    "loser": seats.get(outcome.get("loserSeat"), {}).get("name") if outcome.get("loserSeat") is not None else None,
+                }
+                for outcome in round_item.get("outcomes", [])
+            ],
+            "settlement": [
+                {
+                    "seat": seat,
+                    "player": seats.get(seat, {}).get("name"),
+                    "score": score,
+                    "delta": (round_item.get("scoreDeltas") or [0, 0, 0, 0])[seat],
+                    "tenpai": seat in round_item.get("tenpaiSeats", []),
+                }
+                for seat, score in enumerate(round_item.get("endScores", []))
+            ],
+        }
+        for round_item in (parsed.get("rounds", []) if parsed else [])
+    ]
+
+
 def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, Any]]], fixtures: list[dict[str, Any]], submissions: list[dict[str, Any]], histories: dict[str, dict[str, Any]], parsed_games: dict[str, Any], playoff_history: list[dict[str, Any]] | None = None) -> tuple[dict[str, Any], dict[str, Any]]:
     divisions: dict[str, Any] = {}
     all_players: list[dict[str, Any]] = []
@@ -679,30 +795,7 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
                 "table": table, "players": match_players,
                 "paipuUrl": submission["url"] if submission else None,
                 "verified": source == "paipu", "source": source,
-                "rounds": [
-                    {
-                        **round_item,
-                        "outcomes": [
-                            {
-                                **outcome,
-                                "winner": (seat_map or {}).get(outcome.get("winnerSeat"), {}).get("name"),
-                                "loser": (seat_map or {}).get(outcome.get("loserSeat"), {}).get("name") if outcome.get("loserSeat") is not None else None,
-                            }
-                            for outcome in round_item.get("outcomes", [])
-                        ],
-                        "settlement": [
-                            {
-                                "seat": seat,
-                                "player": (seat_map or {}).get(seat, {}).get("name"),
-                                "score": score,
-                                "delta": (round_item.get("scoreDeltas") or [0, 0, 0, 0])[seat],
-                                "tenpai": seat in round_item.get("tenpaiSeats", []),
-                            }
-                            for seat, score in enumerate(round_item.get("endScores", []))
-                        ],
-                    }
-                    for round_item in (parsed.get("rounds", []) if parsed else [])
-                ],
+                "rounds": public_rounds(parsed, seat_map),
             })
         for player in players:
             running = 0.0
@@ -794,27 +887,39 @@ def build_public_data(config: dict[str, Any], rosters: dict[str, list[dict[str, 
     playoff_matches = []
     playoff_schedule = []
     for match in playoff_history or []:
+        paipu = match.get("paipu")
+        if not match["dateISO"] and match.get("uuid"):
+            # Sin fecha escrita en la hoja, la del paipu: el UUID la trae.
+            match["date"], match["weekday"], match["dateISO"] = date_from_paipu_uuid(match["uuid"])
         playoff_schedule.append({key: match[key] for key in (
             "id", "code", "playoffRound", "table", "hanchan", "ruleDivision",
             "date", "weekday", "dateISO", "time",
         )})
-        if not match["results"]:
+        if not match["results"] and not paipu:
             continue
         match_players = []
-        for result in match["results"]:
-            player = player_by_name.get(result["name"].strip().lower())
-            match_players.append({
-                "id": player["id"] if player else f"playoff-{result['name']}",
-                "name": player["name"] if player else result["name"],
-                "handle": player["handle"] if player else result["name"],
-                "nat": player["nat"] if player else "OT",
-                "scoreRaw": result["scoreRaw"], "place": result["place"], "delta": result["delta"],
-            })
+        if paipu:
+            for result in paipu["results"]:
+                match_players.append({key: result[key] for key in ("id", "name", "handle", "nat", "scoreRaw", "place", "delta")})
+        else:
+            for result in match["results"]:
+                # Un `NOT` en la celda es suplente aunque el nombre esté en el
+                # roster: no puede avanzar en el cuadro con el id del titular.
+                player = None if result.get("suplente") else player_by_name.get(result["name"].strip().lower())
+                match_players.append({
+                    "id": player["id"] if player else f"playoff-{result['name']}",
+                    "name": player["name"] if player else result["name"],
+                    "handle": player["handle"] if player else result["name"],
+                    "nat": player["nat"] if player else "OT",
+                    "scoreRaw": result["scoreRaw"], "place": result["place"], "delta": result["delta"],
+                })
         playoff_matches.append({
             **{key: match[key] for key in ("id", "code", "playoffRound", "table", "hanchan", "ruleDivision")},
             "sessionCode": match["code"], "date": match["date"], "dateISO": match["dateISO"],
-            "weekday": match["weekday"], "time": match["time"], "players": match_players, "verified": False,
-            "source": "excel", "paipuUrl": None, "rounds": [],
+            "weekday": match["weekday"], "time": match["time"], "players": match_players,
+            "verified": bool(paipu), "source": "paipu" if paipu else "excel",
+            "paipuUrl": match["url"] if paipu else None,
+            "rounds": paipu["rounds"] if paipu else [],
         })
     calendar = []
     for fixture in fixtures:
@@ -1097,12 +1202,16 @@ def main() -> int:
             if submitted and not has_yostar_credentials():
                 print("AVISO: hay paipus que requieren sesión técnica pero no hay credenciales MAJSOUL_UID/TOKEN/DEVICE_ID. Las estadísticas avanzadas quedarán como pendientes.", file=sys.stderr)
             try:
-                downloaded = prefetch_authenticated_records(submissions, ROOT / "data" / "raw-paipu")
+                playoff_submissions = [item for item in playoff_history if item.get("uuid")]
+                downloaded = prefetch_authenticated_records(submissions + playoff_submissions, ROOT / "data" / "raw-paipu")
                 if downloaded:
                     print(f"Paipus descargados con la sesión técnica: {downloaded}")
             except PaipuError as exc:
                 print(f"AVISO: la descarga autenticada de paipus falló: {exc}", file=sys.stderr)
         parsed_games, status = merge_paipus(submissions, histories, ROOT / "data" / "raw-paipu", args.offline)
+        # Aparte de `submissions`: las eliminatorias no cuentan para la tabla
+        # ni para las estadísticas avanzadas de la fase regular.
+        status["playoffSubmissions"] = merge_playoff_paipus(playoff_history, rosters, config, ROOT / "data" / "raw-paipu", args.offline)
         for aviso in crosscheck_substitutes(histories, parsed_games, rosters, fixtures):
             print(f"AVISO: {aviso}", file=sys.stderr)
         if args.strict_paipu:
@@ -1119,7 +1228,7 @@ def main() -> int:
                 print(f"  {issue['status']} en {issue['cell']}: {issue['message']}", file=sys.stderr)
         write_outputs(data, stats, status, args.output)
         counts = Counter(item["status"] for item in status["submissions"])
-        playoff_results = sum(bool(item["results"]) for item in playoff_history)
+        playoff_results = sum(bool(item["results"] or item.get("paipu")) for item in playoff_history)
         print(f"Sincronización lista: {len(histories)} resultados regulares, {playoff_results} resultados de eliminatorias, {len(parsed_games)} paipus procesados")
         print("Estados paipu: " + ", ".join(f"{key}={value}" for key, value in sorted(counts.items())))
         print(f"Stats avanzadas: {health['summary']}")
