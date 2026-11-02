@@ -600,6 +600,49 @@ def _history(key, session, table, game, names, scores=(45000, 38500, 32000, 4500
                   "sourceCell": "X!B2"}}
 
 
+class DescargaPlanillaTests(unittest.TestCase):
+    """Un timeout de Google no tumba la corrida: se reintenta."""
+
+    class Respuesta:
+        def __init__(self, data):
+            self.data = data
+
+        def __enter__(self):
+            import io
+            return io.BytesIO(self.data)
+
+        def __exit__(self, *exc):
+            return False
+
+    def test_un_timeout_se_reintenta_y_la_descarga_sigue(self):
+        import tempfile
+        from scripts import sync
+        intentos = []
+
+        def urlopen(request, timeout):
+            intentos.append(timeout)
+            if len(intentos) == 1:
+                raise TimeoutError("The read operation timed out")
+            return self.Respuesta(b"xlsx")
+
+        esperas = []
+        with tempfile.TemporaryDirectory() as tmp, patch("scripts.sync.urllib.request.urlopen", side_effect=urlopen):
+            destino = pathlib.Path(tmp) / "planilla.xlsx"
+            sync.download_sheet("id", destino, sleep=esperas.append)
+            self.assertEqual(destino.read_bytes(), b"xlsx")
+        self.assertEqual(intentos, list(sync.SHEET_DOWNLOAD_TIMEOUTS[:2]))
+        self.assertEqual(esperas, [sync.SHEET_DOWNLOAD_BACKOFF_SECONDS])
+
+    def test_tres_fallos_seguidos_son_error_con_cada_intento(self):
+        import tempfile
+        from scripts import sync
+        with tempfile.TemporaryDirectory() as tmp, \
+                patch("scripts.sync.urllib.request.urlopen", side_effect=TimeoutError("timed out")):
+            with self.assertRaises(SyncError) as error:
+                sync.download_sheet("id", pathlib.Path(tmp) / "x.xlsx", sleep=lambda _s: None)
+        self.assertIn("intento 3", str(error.exception))
+
+
 class SesionActualTests(unittest.TestCase):
     def test_inicio_confirmado_sin_resultados_conserva_fixture_anterior_pendiente(self):
         config = _division_config()
