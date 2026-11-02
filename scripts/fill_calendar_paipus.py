@@ -10,6 +10,12 @@ Google Sheet mediante una cuenta de servicio, y con `--fetch-logs` aprovecha la
 misma sesión técnica para bajar a `data/raw-paipu` los paipus que falten. Nunca
 sobrescribe una celda con un paipu ya cargado: CONFLICTO y REVISAR siguen siendo
 decisión humana.
+
+Terminada la fase regular, el mismo job sigue las eliminatorias: lee las salas
+de eliminatorias (por defecto, las mismas de A y B), empareja cada partida con
+su mesa del cuadro y completa la hoja Playoffs (ver `scripts/playoffs.py`). Una
+sala del Calendario ya completo no se vuelve a leer: es la que Mahjong Soul
+cierra al terminar la liga, y pedirla tumbaba el job entero.
 """
 from __future__ import annotations
 
@@ -34,6 +40,10 @@ from scripts.gsheets import CREDENTIALS_ENV, SheetsClient, SheetsError, has_cred
 from scripts.majsoul import (
     MAX_RECORDS_PER_RUN, ContestGame, PaipuError, RecordFetchResult,
     fetch_contest_games_and_records, fetch_missing_records, pending_record_uuids,
+)
+from scripts.playoffs import (
+    apply_playoff_writes, build_playoff_report, planned_playoff_writes, read_playoff_sheet,
+    render_playoff_markdown, render_playoff_text, season_settled, writable_playoff_rows,
 )
 from scripts.sync import SyncError, download_sheet, load_config, read_calendar, read_roster
 
@@ -456,6 +466,7 @@ def render_text(report: dict[str, Any]) -> str:
         lines.append("Avisos:")
         for issue in report["issues"]:
             lines.append(f"  [{issue['type']}] {issue['message']}")
+    lines += render_playoff_text(report.get("playoffs") or {})
     return "\n".join(lines)
 
 
@@ -465,7 +476,9 @@ def render_markdown(report: dict[str, Any]) -> str:
         "",
         f"- Partidas leídas: **{report['gamesFound']}** (emparejadas: {report['gamesMatched']})",
         "- Celdas: " + ", ".join(f"`{key}` {value}" for key, value in report["summary"].items()),
-        "- Torneos: " + ", ".join(f"División {div} = `{cid}`" for div, cid in report["contests"].items()),
+        "- Torneos: " + (", ".join(
+            f"{'División ' if div in ('A', 'B') else ''}{div} = `{cid}`" for div, cid in report["contests"].items()
+        ) or "ninguno (Calendario completo y sin eliminatorias en curso)"),
     ]
     write = report.get("write")
     if write:
@@ -504,6 +517,7 @@ def render_markdown(report: dict[str, Any]) -> str:
         lines += ["", "### Avisos", ""]
         for issue in report["issues"]:
             lines.append(f"- **{issue['type']}**: {issue['message']}")
+    lines += render_playoff_markdown(report.get("playoffs") or {})
     return "\n".join(lines) + "\n"
 
 
@@ -538,13 +552,16 @@ def load_games(
     args: argparse.Namespace,
     contests: dict[str, str],
     plan: Callable[[list[ContestGame]], list[str]],
+    errors: list[str] | None = None,
 ) -> tuple[list[ContestGame], RecordFetchResult | None]:
     """Partidas del torneo y, si se pidieron, los paipus bajados en ese mismo login."""
     if args.games_json:
         payload = json.loads(Path(args.games_json).read_text(encoding="utf-8"))
         return [ContestGame.from_dict(item) for item in payload], None
+    if not contests:
+        return [], None
     games, fetched = fetch_contest_games_and_records(
-        contests, plan, args.logs_dir if args.fetch_logs else None, args.max_logs,
+        contests, plan, args.logs_dir if args.fetch_logs else None, args.max_logs, errors,
     )
     if args.dump_games:
         Path(args.dump_games).write_text(
@@ -552,6 +569,43 @@ def load_games(
             encoding="utf-8",
         )
     return games, fetched
+
+
+def select_contests(
+    regular: dict[str, str], playoff: dict[str, str], regular_pending: bool, playoffs_active: bool,
+) -> tuple[dict[str, str], set[str], set[str]]:
+    """Qué salas leer en esta corrida, y cuáles cuentan para cada fase.
+
+    Las del Calendario sólo mientras le falte algún paipu: terminada la fase
+    regular, Mahjong Soul puede cerrar esas salas y pedirlas falla. Las de
+    eliminatorias, sólo con la tabla cerrada. Una sala que sirve a las dos se
+    lee una vez. Devuelve `{rótulo: id}` y los ids de cada fase."""
+    contests: dict[str, str] = {}
+    regular_ids: set[str] = set()
+    playoff_ids: set[str] = set()
+    if regular_pending:
+        for division, contest_id in regular.items():
+            contests[division] = contest_id
+            regular_ids.add(contest_id)
+    if playoffs_active:
+        for division, contest_id in playoff.items():
+            playoff_ids.add(contest_id)
+            if contest_id not in contests.values():
+                contests[f"Eliminatorias {division}"] = contest_id
+    return contests, regular_ids, playoff_ids
+
+
+def load_public_data(path: Path) -> dict[str, Any]:
+    """La tabla publicada, de donde sale la siembra de cuartos.
+
+    Es la misma que dibuja la vista, así que el script y el sitio no pueden
+    sembrar distinto. Si falta, no hay eliminatorias que seguir."""
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        return {}
+    except Exception as exc:
+        raise SyncError(f"No se pudo leer {path}: {exc}") from exc
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -564,6 +618,14 @@ def build_parser() -> argparse.ArgumentParser:
                         help="ID de la sala de torneo de División A (por defecto MAJSOUL_CONTEST_ID_A)")
     parser.add_argument("--contest-b", default=os.environ.get("MAJSOUL_CONTEST_ID_B", ""),
                         help="ID de la sala de torneo de División B (por defecto MAJSOUL_CONTEST_ID_B)")
+    parser.add_argument("--playoff-contest-a", default=os.environ.get("MAJSOUL_PLAYOFF_CONTEST_ID_A", ""),
+                        help="Sala de las mesas de eliminatorias con reglas A (por defecto MAJSOUL_PLAYOFF_CONTEST_ID_A, "
+                             "y si no, la misma de la fase regular)")
+    parser.add_argument("--playoff-contest-b", default=os.environ.get("MAJSOUL_PLAYOFF_CONTEST_ID_B", ""),
+                        help="Sala de las mesas de eliminatorias con reglas B (por defecto MAJSOUL_PLAYOFF_CONTEST_ID_B, "
+                             "y si no, la misma de la fase regular)")
+    parser.add_argument("--data", type=Path, default=ROOT / "data" / "liga.json",
+                        help="Tabla publicada; de ahí sale la siembra de cuartos")
     parser.add_argument("--games-json", type=Path, help="Lee las partidas de un JSON en vez de Mahjong Soul")
     parser.add_argument("--dump-games", type=Path, help="Guarda las partidas leídas del torneo en un JSON")
     parser.add_argument("--output", type=Path, default=ROOT / "reports")
@@ -593,12 +655,15 @@ def main() -> int:
         except Exception:
             pass
 
-    contests = {division: str(value).strip()
-                for division, value in (("A", args.contest_a), ("B", args.contest_b))
-                if str(value).strip()}
+    regular_contests = {division: str(value).strip()
+                        for division, value in (("A", args.contest_a), ("B", args.contest_b))
+                        if str(value).strip()}
+    playoff_contests = {division: str(own).strip() or regular_contests.get(division, "")
+                        for division, own in (("A", args.playoff_contest_a), ("B", args.playoff_contest_b))}
+    playoff_contests = {division: value for division, value in playoff_contests.items() if value}
     temp_path: Path | None = None
     try:
-        if not contests and not args.games_json:
+        if not (regular_contests or playoff_contests) and not args.games_json:
             raise SyncError(
                 "Faltan los IDs de las salas de torneo: define MAJSOUL_CONTEST_ID_A y "
                 "MAJSOUL_CONTEST_ID_B (o pasa --contest-a/--contest-b)"
@@ -626,41 +691,87 @@ def main() -> int:
         rosters = {division: read_roster(workbook, division, rule["rosterSheet"])
                    for division, rule in config["divisions"].items()}
         indexes = {division: index_roster(players) for division, players in rosters.items()}
+        # Las mesas de eliminatorias mezclan A y B: un solo índice con los dos.
+        league_index = index_roster([player for players in rosters.values() for player in players])
         _fixtures, submissions = read_calendar(workbook)
         tables = build_tables(submissions)
+        calendar_uuids = {str(item["uuid"]).lower() for item in submissions if item.get("uuid")}
+        public_data = load_public_data(args.data)
+        playoff_sheet = read_playoff_sheet(workbook, str(config.get("playoffSheet") or "Playoffs"))
+        regular_pending = any(not item.get("uuid") for item in submissions)
+        playoffs_active = playoff_sheet is not None and bool(public_data) and season_settled(public_data)
+        contests, regular_ids, playoff_ids = select_contests(
+            regular_contests, playoff_contests, regular_pending, playoffs_active,
+        )
+        if args.games_json:
+            # Las partidas vienen de un archivo: todas cuentan para las dos fases.
+            regular_ids = playoff_ids = None
+        if not contests and not args.games_json:
+            print("La fase regular está completa y las eliminatorias todavía no empiezan: "
+                  "no hay salas que leer.")
 
         tz = league_timezone()
         state: dict[str, Any] = {}
 
         def analyze(games: list[ContestGame]) -> dict[str, Any]:
-            matched, issues = match_games(tables, games, indexes, tz)
-            report = build_report(tables, matched, issues, contests, games, indexes, tz)
+            playoff_games = [game for game in games if playoff_ids is None or game.contestId in playoff_ids]
+            playoff_report = (
+                build_playoff_report(config, public_data, playoff_sheet, playoff_games,
+                                     league_index, calendar_uuids, tz)
+                if playoffs_active else {"rows": [], "issues": [], "gamesMatched": 0}
+            )
+            taken = {row["uuid"] for row in playoff_report["rows"] if row.get("uuid")}
+            regular_games = [game for game in games
+                             if (regular_ids is None or game.contestId in regular_ids) and game.uuid not in taken]
+            matched, issues = match_games(tables, regular_games, indexes, tz)
+            report = build_report(tables, matched, issues, contests, regular_games, indexes, tz)
+            report["playoffs"] = playoff_report
             rows = writable_rows(report, args.write_revisar)
+            playoff_rows = writable_playoff_rows(playoff_report)
             # Sin --write el reporte deja anotado qué pegaría; con --write lo
             # llena `apply_writes` con lo que la planilla haya aceptado.
             report["write"] = planned_writes(rows) if not args.write else None
-            state.update(report=report, rows=rows)
+            playoff_report["write"] = planned_playoff_writes(playoff_rows) if not args.write else None
+            state.update(report=report, rows=rows, playoffRows=playoff_rows)
             return report
 
         def plan(games: list[ContestGame]) -> list[str]:
             report = analyze(games)
             if not args.fetch_logs:
                 return []
-            candidates = log_candidates(state["rows"], submissions)
+            # Primero los paipus de eliminatorias: son la novedad, y sin ellos
+            # el sitio no tiene replay de esas mesas.
+            playoff_uuids = [str(row["uuid"]).lower() for row in report["playoffs"]["rows"] if row.get("uuid")]
+            candidates = list(dict.fromkeys(playoff_uuids + log_candidates(state["rows"], submissions)))
             state["logCandidates"] = candidates
             return candidates
 
-        games, fetched = load_games(args, contests, plan)
+        contest_errors: list[str] = []
+        games, fetched = load_games(args, contests, plan, contest_errors)
         if "report" not in state:
-            # Con --games-json no hubo sesión de torneo: el análisis corre acá.
+            # Con --games-json, o sin salas que leer, no hubo sesión de torneo:
+            # el análisis corre acá.
             analyze(games)
         report = state["report"]
+        for message in contest_errors:
+            report["issues"].append({
+                "type": "TORNEO_NO_ENCONTRADO", "division": None, "uuid": None, "start": None,
+                "message": (
+                    f"{message}. Si las eliminatorias se juegan en otra sala, define "
+                    "MAJSOUL_PLAYOFF_CONTEST_ID_A / MAJSOUL_PLAYOFF_CONTEST_ID_B con su ID."
+                ),
+                "players": [],
+            })
 
         if args.fetch_logs and fetched is None:
             candidates = state.get("logCandidates") or log_candidates(state["rows"], submissions)
             state["logCandidates"] = candidates
             try:
-                fetched = fetch_missing_records(candidates, args.logs_dir, args.max_logs)
+                # Sin nada que bajar no se abre sesión: Mahjong Soul admite una
+                # sola por cuenta y el sync de cada 15 minutos también la usa.
+                fetched = (fetch_missing_records(candidates, args.logs_dir, args.max_logs)
+                           if pending_record_uuids(candidates, args.logs_dir)
+                           else RecordFetchResult(pending=[], downloaded=[], deferred=[], failures=[]))
             except PaipuError as exc:
                 print(f"AVISO: no se pudieron descargar los paipus faltantes: {exc}", file=sys.stderr)
                 report["logs"] = log_report(candidates, args.logs_dir, args.max_logs, None, str(exc))
@@ -672,6 +783,16 @@ def main() -> int:
         write_failed = False
         if args.write:
             client = SheetsClient(config["spreadsheetId"], credentials or {})
+            playoff_report = report["playoffs"]
+            try:
+                playoff_report["write"] = apply_playoff_writes(client, state["playoffRows"])
+            except SheetsError as exc:
+                write_failed = True
+                playoff_report["write"] = {
+                    "mode": "aplicado", "account": client.account_email, "attempted": 0,
+                    "written": 0, "updatedCells": 0, "skipped": 0, "error": str(exc),
+                }
+                print(f"ERROR al escribir en la hoja Playoffs: {exc}", file=sys.stderr)
             try:
                 report["write"] = apply_writes(client, state["rows"])
             except SheetsError as exc:
@@ -692,8 +813,13 @@ def main() -> int:
         append_step_summary(render_markdown(report))
         if write_failed:
             return 1
+        if contests and len(contest_errors) == len(contests):
+            # Ninguna sala respondió: no es un aviso, el job no vio nada.
+            print("ERROR: ninguna de las salas de torneo configuradas existe en Mahjong Soul", file=sys.stderr)
+            return 1
         blocking = [row for row in report["proposals"] if row["status"] == "CONFLICTO"]
-        if args.fail_on_issues and (blocking or report["issues"]):
+        blocking += [row for row in report["playoffs"]["rows"] if row["status"] == "CONFLICTO"]
+        if args.fail_on_issues and (blocking or report["issues"] or report["playoffs"]["issues"]):
             raise SyncError(
                 f"{len(blocking)} conflictos y {len(report['issues'])} avisos; revisa el reporte"
             )

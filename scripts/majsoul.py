@@ -816,17 +816,27 @@ def _contest_game_from_record(record: Any, contest_id: str, division: str) -> Co
     )
 
 
-async def _collect_contest_games(pb: Any, lobby: Any, contests: dict[str, str]) -> list[ContestGame]:
-    """Historial de las salas de torneo, sobre un lobby ya autenticado."""
+async def _collect_contest_games(
+    pb: Any, lobby: Any, contests: dict[str, str], errors: list[str] | None = None,
+) -> list[ContestGame]:
+    """Historial de las salas de torneo, sobre un lobby ya autenticado.
+
+    Con `errors`, una sala que Mahjong Soul ya no encuentra (una sala cerrada
+    al terminar la fase regular devuelve 2538) se anota ahí y se sigue con las
+    demás, en vez de tumbar la corrida entera."""
     games: list[ContestGame] = []
     for division, contest_id in contests.items():
         info = await lobby.fetch_customized_contest_by_contest_id(
             pb.ReqFetchCustomizedContestByContestId(contest_id=int(contest_id), lang="en")
         )
         if info.HasField("error") and info.error.code:
-            raise PaipuError(
-                f"No se encontró el torneo {contest_id} de División {division} ({_rpc_error_detail(info.error)})"
+            message = (
+                f"No se encontró el torneo {contest_id} de {division} ({_rpc_error_detail(info.error)})"
             )
+            if errors is None:
+                raise PaipuError(message)
+            errors.append(message)
+            continue
         unique_id = int(info.contest_info.unique_id)
         # Las salas son públicas: entrar suele bastar para ver el historial,
         # pero si el lobby lo rechaza igual se intenta leer las partidas y
@@ -879,9 +889,10 @@ async def _contest_session_async(
     plan_records: Callable[[list[ContestGame]], Iterable[str]] | None,
     cache_dir: Path | None,
     limit: int,
+    errors: list[str] | None = None,
 ) -> tuple[list[ContestGame], RecordFetchResult]:
     async with majsoul_lobby() as (pb, lobby, client_version):
-        games = await _collect_contest_games(pb, lobby, contests) if contests else []
+        games = await _collect_contest_games(pb, lobby, contests, errors) if contests else []
         uuids = list(plan_records(games)) if plan_records else []
         if not uuids or cache_dir is None:
             return games, RecordFetchResult(pending=[], downloaded=[], deferred=[], failures=[])
@@ -898,15 +909,17 @@ def fetch_contest_games_and_records(
     plan_records: Callable[[list[ContestGame]], Iterable[str]] | None = None,
     cache_dir: Path | None = None,
     limit: int = MAX_RECORDS_PER_RUN,
+    errors: list[str] | None = None,
 ) -> tuple[list[ContestGame], RecordFetchResult]:
     """Lee las salas de torneo y, si se pide, baja los paipus que falten.
 
     Mahjong Soul admite una sola sesión por cuenta, así que las dos cosas van
     en un mismo login: `plan_records` recibe las partidas recién leídas y
-    devuelve los UUID a descargar, sin cerrar el lobby en el medio.
+    devuelve los UUID a descargar, sin cerrar el lobby en el medio. Con
+    `errors`, las salas que no se encuentran se anotan ahí en vez de fallar.
     """
     if not has_yostar_credentials():
         raise PaipuAuthRequired(
             "Faltan MAJSOUL_UID, MAJSOUL_TOKEN y MAJSOUL_DEVICE_ID para leer el torneo"
         )
-    return asyncio.run(_contest_session_async(contests, plan_records, cache_dir, limit))
+    return asyncio.run(_contest_session_async(contests, plan_records, cache_dir, limit, errors))

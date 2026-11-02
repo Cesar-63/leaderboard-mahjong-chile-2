@@ -49,7 +49,10 @@ ROOT = Path(__file__).resolve().parents[1]
 # trata como suplente igual, porque lo que lo delata es no estar en el roster.
 SUBSTITUTE_NAME = "Suplente"
 # Orden de severidad para el resumen y el ordenamiento del reporte.
-STATUS_ORDER = ["PROPUESTO", "NORMALIZAR", "REVISAR", "CONFLICTO", "PENDIENTE", "OK"]
+# CRUZADO no es una decisión pendiente: los dos hanchan de la mesa dicen lo
+# mismo en el paipu y en la celda, sólo que G1 y G2 quedaron al revés entre el
+# Calendario y el Game History. No cambia ningún total, así que va al final.
+STATUS_ORDER = ["PROPUESTO", "NORMALIZAR", "REVISAR", "CONFLICTO", "PENDIENTE", "CRUZADO", "OK"]
 # Lo único que el script pega solo: celda vacía y un paipu que nombra a los
 # cuatro asientos. Sin esa identidad el orden de los asientos es una conjetura.
 WRITE_STATUSES = ("PROPUESTO",)
@@ -242,6 +245,32 @@ def without_marks(line: str) -> str:
     return ",".join(bare).replace(" ", "").lower()
 
 
+def mark_crossed(table_rows: list[dict[str, Any]]) -> None:
+    """Baja a CRUZADO el par de conflictos que es sólo G1 y G2 al revés.
+
+    Pasa cuando el Calendario y el Game History anotaron los dos hanchan de
+    la mesa en orden distinto: cada celda trae el resultado que el paipu da
+    para el otro. No es un dato malo —los cuatro jugadores, puntajes y puntos
+    de la mesa son los mismos— y reportarlo como CONFLICTO llenaba el job con
+    80 avisos que nadie tenía que resolver. Un conflicto de verdad (un
+    puntaje distinto, otro jugador) no calza cruzado y sigue siendo CONFLICTO.
+    """
+    if len(table_rows) != GAMES_PER_TABLE or any(row["status"] != "CONFLICTO" for row in table_rows):
+        return
+    first, second = table_rows
+    if not (first["seats"] and second["seats"] and first["existing"] and second["existing"]):
+        return
+    if not (same_line(first["existing"], second["seats"]) and same_line(second["existing"], first["seats"])):
+        return
+    for row, other in ((first, second), (second, first)):
+        row["status"] = "CRUZADO"
+        row["detail"] = (
+            f"La celda {row['label']} trae el resultado que el paipu da para {other['label']}: "
+            "G1 y G2 están en orden distinto en el Calendario y en el Game History. "
+            "Mismos resultados; no se toca."
+        )
+
+
 # ----------------------------------------------------------------- reporte
 
 
@@ -381,6 +410,7 @@ def build_report(
                 row["detail"] = result.get("detail") or "Sin paipu y sin resultado escrito"
             table_rows.append(row)
 
+        mark_crossed(table_rows)
         # Un hanchan en conflicto deja a toda la mesa para revisión: la causa
         # típica es tener los dos paipus cruzados en el Calendario, y ahí pegar
         # el otro hanchan escribiría el resultado equivocado en la fila buena.
@@ -491,6 +521,16 @@ def planned_writes(rows: list[dict[str, Any]]) -> dict[str, Any]:
 # ----------------------------------------------------------------- salidas
 
 
+def crossed_summary(report: dict[str, Any]) -> list[str]:
+    """Una línea para todas las mesas con G1/G2 cruzados, en vez de una por celda."""
+    tables = sorted({row["key"].rsplit("-G", 1)[0] for row in report["proposals"] if row["status"] == "CRUZADO"})
+    if not tables:
+        return []
+    shown = ", ".join(tables[:12]) + (", …" if len(tables) > 12 else "")
+    return ["", f"G1/G2 en orden distinto entre Calendario y Game History (sin efecto en puntajes): "
+                f"{len(tables)} mesas ({shown})"]
+
+
 def render_text(report: dict[str, Any]) -> str:
     lines = ["Celdas: " + ", ".join(f"{key}={value}" for key, value in report["summary"].items()), ""]
     actionable = [row for row in sort_rows(report["proposals"]) if row["status"] in ("PROPUESTO", "NORMALIZAR", "REVISAR", "CONFLICTO")]
@@ -502,6 +542,7 @@ def render_text(report: dict[str, Any]) -> str:
             lines.append(f"      {row['value'] or row['detail']}")
     else:
         lines.append("No hay celdas nuevas que completar.")
+    lines += crossed_summary(report)
     pendientes = [row for row in report["proposals"] if row["status"] == "PENDIENTE"]
     if pendientes:
         lines += ["", f"Sin resultado utilizable: {len(pendientes)} celdas "
@@ -571,6 +612,7 @@ def render_markdown(report: dict[str, Any]) -> str:
             )
     else:
         lines.append("No hay celdas nuevas que completar.")
+    lines += crossed_summary(report)
     if write and write.get("error"):
         lines += ["", f"> **Error de escritura:** {write['error']}"]
     if report["issues"]:
