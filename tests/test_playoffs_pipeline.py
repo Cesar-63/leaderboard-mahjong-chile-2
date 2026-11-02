@@ -12,7 +12,7 @@ from scripts.playoffs import (
     advancers, apply_playoff_writes, build_playoff_report, feeder_tables, quarter_tables,
     read_playoff_sheet, season_settled, standings, writable_playoff_rows,
 )
-from scripts.setup_playoffs_sheet import cells as setup_cells, kept_value
+from scripts.setup_playoffs_sheet import cells as setup_cells, kept_value, rebuild_google
 from scripts.sync import (
     PLAYOFF_FORMAT_DEFAULT, build_public_data, merge_playoff_paipus, parse_playoff_history,
     playoff_format, playoff_label,
@@ -344,6 +344,23 @@ class PublishTests(unittest.TestCase):
         self.assertEqual(valores["F18"], link)
         self.assertEqual(valores["C18"], 46327)
 
+    def test_una_fila_combinada_no_se_escribe_a_ciegas(self):
+        # La hoja real: la fila 22 (QF M4 G1) quedó como franja combinada de
+        # la hoja vieja; el job «escribió» ahí y Google descartó los valores.
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Playoffs"
+        ws["A22"] = "QF M4 G1"
+        ws.merge_cells("A22:F22")
+        rows = read_playoff_sheet(wb, "Playoffs")
+        self.assertEqual(rows["QF M4 G1"]["invalid"], ["B22", "C22", "D22", "F22"])
+        partida = game("261029-m4g1", START, [("B3", 48900), ("B4", 41600), ("A5", 33400), ("A6", -3900)])
+        result = report([partida], {**sheet(), "QF M4 G1": rows["QF M4 G1"]})
+        row = rows_by_label(result)["QF M4 G1"]
+        self.assertEqual(row["status"], "REVISAR")
+        self.assertEqual(row["writes"], {})
+        self.assertNotIn(row, writable_playoff_rows(result))
+
     def test_la_hoja_lee_la_columna_paipu(self):
         history = parse_playoff_history(
             self.workbook("", "https://mahjongsoul.game.yo-star.com/?paipu=261025-0d302d99-6b53-44eb-b444-c56301f7258e"),
@@ -389,3 +406,52 @@ class PublishTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class FakeGoogle:
+    """La hoja real tal como quedó: franjas combinadas y fórmulas viejas."""
+
+    def __init__(self, current):
+        self.current = current
+        self.requests = []
+        self.written = {}
+        self.account_email = "bot@liga.iam.gserviceaccount.com"
+
+    def read_cells(self, ranges):
+        return {cell: self.current.get(cell, "") for cell in ranges}
+
+    def sheet_layout(self, title):
+        merge = {"sheetId": 7, "startRowIndex": 21, "endRowIndex": 22, "startColumnIndex": 0, "endColumnIndex": 6}
+        return {"sheetId": 7, "merges": [merge]}
+
+    def batch_update(self, requests):
+        self.requests.extend(requests)
+
+    def write_cells(self, updates, value_input_option="RAW"):
+        self.written.update(updates)
+        return len(updates)
+
+
+class RebuildGoogleTests(unittest.TestCase):
+    def test_rehacer_la_hoja_descombina_limpia_y_conserva_solo_datos(self):
+        link = "https://mahjongsoul.game.yo-star.com/?paipu=261102-59faf8c1-5061-4218-9c3a-e8e806b61e94"
+        client = FakeGoogle({
+            "'Playoffs'!A21": "QF M3 G2", "'Playoffs'!B21": "Chubi!,49600,cidoku,39700,Sircrab,22200,SentryPeru,8500",
+            "'Playoffs'!C21": "46327", "'Playoffs'!D21": "0.8930555556", "'Playoffs'!F21": link,
+            "'Playoffs'!A22": "QF M4 G1",
+            "'Playoffs'!A24": "SF M1 G1", "'Playoffs'!C24": "=IF($B15=\"\",\"\",1)", "'Playoffs'!F24": "=IF($B15=\"\",\"\",2)",
+        })
+        rebuild_google(client)
+        kinds = [next(iter(request)) for request in client.requests]
+        self.assertEqual(kinds[0], "unmergeCells")
+        clear = client.requests[1]["updateCells"]
+        self.assertEqual((clear["range"]["endRowIndex"], clear["range"]["endColumnIndex"]), (100, 26))
+        self.assertEqual(clear["fields"], "userEnteredValue,userEnteredFormat")
+        # Lo escrito por el job se conserva; las fórmulas viejas no vuelven.
+        self.assertEqual(client.written["'Playoffs'!B21"], "Chubi!,49600,cidoku,39700,Sircrab,22200,SentryPeru,8500")
+        self.assertEqual(client.written["'Playoffs'!F21"], link)
+        self.assertEqual(client.written["'Playoffs'!C21"], "46327")
+        self.assertNotIn("'Playoffs'!C24", client.written)
+        self.assertNotIn("'Playoffs'!F24", client.written)
+        self.assertEqual(client.written["'Playoffs'!A22"], "QF M4 G1")
+        self.assertEqual(client.written["'Playoffs'!F15"], "Paipu")

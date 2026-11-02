@@ -12,6 +12,7 @@ import urllib.request
 from collections import Counter, defaultdict
 from dataclasses import asdict
 from datetime import date, datetime, time
+from time import sleep as pause
 from pathlib import Path
 from typing import Any
 
@@ -135,14 +136,30 @@ def normalize_nat(value: Any) -> str:
     return "OT"
 
 
-def download_sheet(spreadsheet_id: str, destination: Path) -> None:
+# La exportación a xlsx de Google a veces tarda o se corta (el 2 de noviembre
+# un «read operation timed out» tumbó el sync entero). Un intento más, con
+# más paciencia, suele bastar; tres fallos seguidos ya no son mala suerte.
+SHEET_DOWNLOAD_TIMEOUTS = (60, 90, 120)
+SHEET_DOWNLOAD_BACKOFF_SECONDS = 10
+
+
+def download_sheet(spreadsheet_id: str, destination: Path, sleep: Any = None) -> None:
     url = f"https://docs.google.com/spreadsheets/d/{spreadsheet_id}/export?format=xlsx"
     request = urllib.request.Request(url, headers={"User-Agent": "LigaMahjongChile/1.0"})
-    try:
-        with urllib.request.urlopen(request, timeout=45) as response, destination.open("wb") as output:
-            shutil.copyfileobj(response, output)
-    except Exception as exc:
-        raise SyncError(f"No se pudo descargar Google Sheets: {exc}") from exc
+    wait = sleep or pause
+    errors: list[str] = []
+    for attempt, timeout in enumerate(SHEET_DOWNLOAD_TIMEOUTS, start=1):
+        try:
+            with urllib.request.urlopen(request, timeout=timeout) as response, destination.open("wb") as output:
+                shutil.copyfileobj(response, output)
+            return
+        except Exception as exc:
+            errors.append(f"intento {attempt}: {exc}")
+            if attempt < len(SHEET_DOWNLOAD_TIMEOUTS):
+                print(f"AVISO: la descarga de Google Sheets falló ({exc}); reintento {attempt + 1} de "
+                      f"{len(SHEET_DOWNLOAD_TIMEOUTS)}.", file=sys.stderr)
+                wait(SHEET_DOWNLOAD_BACKOFF_SECONDS * attempt)
+    raise SyncError("No se pudo descargar Google Sheets: " + "; ".join(errors))
 
 
 def load_config(path: Path) -> dict[str, Any]:
