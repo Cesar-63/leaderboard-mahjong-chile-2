@@ -225573,10 +225573,10 @@
       "hanchan": 1,
       "ruleDivision": "A",
       "sessionCode": "QF M2 G1",
-      "date": "01 nov",
-      "dateISO": "2026-11-01",
-      "weekday": "dom",
-      "time": "22:25",
+      "date": "02 nov",
+      "dateISO": "2026-11-02",
+      "weekday": "lun",
+      "time": null,
       "players": [
         {
           "id": "A22",
@@ -226346,10 +226346,10 @@
       "hanchan": 2,
       "ruleDivision": "A",
       "sessionCode": "QF M2 G2",
-      "date": "01 nov",
-      "dateISO": "2026-11-01",
-      "weekday": "dom",
-      "time": "22:49",
+      "date": "02 nov",
+      "dateISO": "2026-11-02",
+      "weekday": "lun",
+      "time": null,
       "players": [
         {
           "id": "B22",
@@ -227176,10 +227176,10 @@
       "hanchan": 1,
       "ruleDivision": "B",
       "sessionCode": "QF M3 G1",
-      "date": "01 nov",
-      "dateISO": "2026-11-01",
-      "weekday": "dom",
-      "time": "20:33",
+      "date": "02 nov",
+      "dateISO": "2026-11-02",
+      "weekday": "lun",
+      "time": null,
       "players": [
         {
           "id": "A16",
@@ -228172,10 +228172,10 @@
       "hanchan": 2,
       "ruleDivision": "B",
       "sessionCode": "QF M3 G2",
-      "date": "01 nov",
-      "dateISO": "2026-11-01",
-      "weekday": "dom",
-      "time": "21:26",
+      "date": "02 nov",
+      "dateISO": "2026-11-02",
+      "weekday": "lun",
+      "time": null,
       "players": [
         {
           "id": "A16",
@@ -228916,6 +228916,1133 @@
       ]
     },
     {
+      "id": "PO-quarters-M4-G1",
+      "code": "QF M4 G1",
+      "playoffRound": "quarters",
+      "table": 4,
+      "hanchan": 1,
+      "ruleDivision": "B",
+      "sessionCode": "QF M4 G1",
+      "date": "29 oct",
+      "dateISO": "2026-10-29",
+      "weekday": "jue",
+      "time": "22:16",
+      "players": [
+        {
+          "id": "A01",
+          "name": "Bodoque",
+          "handle": "Bodoque",
+          "nat": "CL",
+          "scoreRaw": 48900,
+          "place": 1,
+          "delta": 53.9
+        },
+        {
+          "id": "B08",
+          "name": "andyjango",
+          "handle": "andyjango",
+          "nat": "CL",
+          "scoreRaw": 41600,
+          "place": 2,
+          "delta": 16.6
+        },
+        {
+          "id": "B13",
+          "name": "Mano_gu",
+          "handle": "Mano_gu",
+          "nat": "BR",
+          "scoreRaw": 33400,
+          "place": 3,
+          "delta": -6.6
+        },
+        {
+          "id": "A04",
+          "name": "Tobippi",
+          "handle": "Tobippi",
+          "nat": "CL",
+          "scoreRaw": -3900,
+          "place": 4,
+          "delta": -63.9
+        }
+      ],
+      "verified": true,
+      "source": "paipu",
+      "paipuUrl": "https://mahjongsoul.game.yo-star.com/?paipu=261030-e2e5f75e-553f-43fb-bf32-e1000fa586e6",
+      "rounds": [
+        {
+          "index": 0,
+          "chang": 0,
+          "ju": 0,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            30000,
+            30000,
+            30000,
+            30000
+          ],
+          "result": "tsumo",
+          "outcomes": [
+            {
+              "winnerSeat": 3,
+              "loserSeat": null,
+              "yaku": [
+                "Yakuhai Hatsu"
+              ],
+              "hand": "4p0p6p2s2s3s4s",
+              "win": "0s",
+              "melds": [
+                "k6z6z6z",
+                "k3z3z3z"
+              ],
+              "dora": "0m",
+              "points": 4000,
+              "fu": 30,
+              "han": 3,
+              "yakuman": false,
+              "tsumo": true,
+              "riichi": false,
+              "turn": 4,
+              "winner": "Bodoque",
+              "loser": null
+            }
+          ],
+          "endScores": [
+            28000,
+            29000,
+            29000,
+            34000
+          ],
+          "scoreDeltas": [
+            -2000,
+            -1000,
+            -1000,
+            4000
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "Tobippi",
+              "score": 28000,
+              "delta": -2000,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "Mano_gu",
+              "score": 29000,
+              "delta": -1000,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "andyjango",
+              "score": 29000,
+              "delta": -1000,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "Bodoque",
+              "score": 34000,
+              "delta": 4000,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "chang": 0,
+          "ju": 1,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            28000,
+            29000,
+            29000,
+            34000
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 0,
+              "loserSeat": 1,
+              "yaku": [
+                "Sanshoku Doujun",
+                "Tanyao"
+              ],
+              "hand": "6m8m5s5s6s7s8s",
+              "win": "7m",
+              "melds": [
+                "s7p8p6p",
+                "s4p0p6p"
+              ],
+              "dora": "1s",
+              "points": 3900,
+              "fu": 30,
+              "han": 3,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": false,
+              "turn": 4,
+              "winner": "Tobippi",
+              "loser": "Mano_gu"
+            }
+          ],
+          "endScores": [
+            31900,
+            25100,
+            29000,
+            34000
+          ],
+          "scoreDeltas": [
+            3900,
+            -3900,
+            0,
+            0
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "Tobippi",
+              "score": 31900,
+              "delta": 3900,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "Mano_gu",
+              "score": 25100,
+              "delta": -3900,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "andyjango",
+              "score": 29000,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "Bodoque",
+              "score": 34000,
+              "delta": 0,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "chang": 0,
+          "ju": 2,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            31900,
+            25100,
+            29000,
+            34000
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 1,
+              "loserSeat": 0,
+              "yaku": [
+                "Riichi"
+              ],
+              "hand": "9m9m9m2p3p4p6p6p6p5s6s9s9s",
+              "win": "4s",
+              "melds": [],
+              "dora": "8m",
+              "points": 8000,
+              "fu": 50,
+              "han": 4,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": true,
+              "turn": 13,
+              "winner": "Mano_gu",
+              "loser": "Tobippi"
+            }
+          ],
+          "endScores": [
+            22900,
+            35100,
+            29000,
+            33000
+          ],
+          "scoreDeltas": [
+            -8000,
+            11000,
+            0,
+            0
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "Tobippi",
+              "score": 22900,
+              "delta": -8000,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "Mano_gu",
+              "score": 35100,
+              "delta": 11000,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "andyjango",
+              "score": 29000,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "Bodoque",
+              "score": 33000,
+              "delta": 0,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "chang": 0,
+          "ju": 3,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            22900,
+            35100,
+            29000,
+            33000
+          ],
+          "result": "tsumo",
+          "outcomes": [
+            {
+              "winnerSeat": 2,
+              "loserSeat": null,
+              "yaku": [
+                "Menzen Tsumo",
+                "Pinfu",
+                "Riichi",
+                "Ippatsu"
+              ],
+              "hand": "1m2m3m4m5m6m8p8p4s5s7s8s9s",
+              "win": "6s",
+              "melds": [],
+              "dora": "6s",
+              "points": 12000,
+              "fu": 20,
+              "han": 6,
+              "yakuman": false,
+              "tsumo": true,
+              "riichi": true,
+              "turn": 8,
+              "winner": "andyjango",
+              "loser": null
+            }
+          ],
+          "endScores": [
+            19900,
+            32100,
+            41000,
+            27000
+          ],
+          "scoreDeltas": [
+            -3000,
+            -3000,
+            13000,
+            -6000
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "Tobippi",
+              "score": 19900,
+              "delta": -3000,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "Mano_gu",
+              "score": 32100,
+              "delta": -3000,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "andyjango",
+              "score": 41000,
+              "delta": 13000,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "Bodoque",
+              "score": 27000,
+              "delta": -6000,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "chang": 1,
+          "ju": 0,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            19900,
+            32100,
+            41000,
+            27000
+          ],
+          "result": "draw",
+          "outcomes": [],
+          "tenpaiSeats": [
+            0,
+            3
+          ],
+          "endScores": [
+            21400,
+            30600,
+            39500,
+            27500
+          ],
+          "scoreDeltas": [
+            1500,
+            -1500,
+            -1500,
+            1500
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "Tobippi",
+              "score": 21400,
+              "delta": 1500,
+              "tenpai": true
+            },
+            {
+              "seat": 1,
+              "player": "Mano_gu",
+              "score": 30600,
+              "delta": -1500,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "andyjango",
+              "score": 39500,
+              "delta": -1500,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "Bodoque",
+              "score": 27500,
+              "delta": 1500,
+              "tenpai": true
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "chang": 1,
+          "ju": 0,
+          "honba": 1,
+          "riichiSticks": 1,
+          "startScores": [
+            21400,
+            30600,
+            39500,
+            27500
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 1,
+              "loserSeat": 0,
+              "yaku": [
+                "Yakuhai Bakaze",
+                "Yakuhai Jikaze"
+              ],
+              "hand": "4m5m6m3p4p0p6p7p7s7s",
+              "win": "2p",
+              "melds": [
+                "k2z2z2z"
+              ],
+              "dora": "2s",
+              "points": 3900,
+              "fu": 30,
+              "han": 3,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": false,
+              "turn": 16,
+              "winner": "Mano_gu",
+              "loser": "Tobippi"
+            }
+          ],
+          "endScores": [
+            16200,
+            36800,
+            39500,
+            27500
+          ],
+          "scoreDeltas": [
+            -4200,
+            6200,
+            0,
+            0
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "Tobippi",
+              "score": 16200,
+              "delta": -4200,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "Mano_gu",
+              "score": 36800,
+              "delta": 6200,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "andyjango",
+              "score": 39500,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "Bodoque",
+              "score": 27500,
+              "delta": 0,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "chang": 1,
+          "ju": 1,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            16200,
+            36800,
+            39500,
+            27500
+          ],
+          "result": "draw",
+          "outcomes": [],
+          "tenpaiSeats": [
+            1
+          ],
+          "endScores": [
+            15200,
+            38800,
+            38500,
+            26500
+          ],
+          "scoreDeltas": [
+            -1000,
+            3000,
+            -1000,
+            -1000
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "Tobippi",
+              "score": 15200,
+              "delta": -1000,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "Mano_gu",
+              "score": 38800,
+              "delta": 3000,
+              "tenpai": true
+            },
+            {
+              "seat": 2,
+              "player": "andyjango",
+              "score": 38500,
+              "delta": -1000,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "Bodoque",
+              "score": 26500,
+              "delta": -1000,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "chang": 1,
+          "ju": 1,
+          "honba": 1,
+          "riichiSticks": 1,
+          "startScores": [
+            15200,
+            38800,
+            38500,
+            26500
+          ],
+          "result": "tsumo",
+          "outcomes": [
+            {
+              "winnerSeat": 2,
+              "loserSeat": null,
+              "yaku": [
+                "Yakuhai Chun"
+              ],
+              "hand": "7m8m9m4p4p3s4s5s6s7s",
+              "win": "0s",
+              "melds": [
+                "k7z7z7z"
+              ],
+              "dora": "7z",
+              "points": 2000,
+              "fu": 30,
+              "han": 2,
+              "yakuman": false,
+              "tsumo": true,
+              "riichi": false,
+              "turn": 11,
+              "winner": "andyjango",
+              "loser": null
+            }
+          ],
+          "endScores": [
+            14600,
+            37700,
+            41800,
+            25900
+          ],
+          "scoreDeltas": [
+            -600,
+            -1100,
+            3300,
+            -600
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "Tobippi",
+              "score": 14600,
+              "delta": -600,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "Mano_gu",
+              "score": 37700,
+              "delta": -1100,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "andyjango",
+              "score": 41800,
+              "delta": 3300,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "Bodoque",
+              "score": 25900,
+              "delta": -600,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "chang": 1,
+          "ju": 2,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            14600,
+            37700,
+            41800,
+            25900
+          ],
+          "result": "tsumo",
+          "outcomes": [
+            {
+              "winnerSeat": 2,
+              "loserSeat": null,
+              "yaku": [
+                "Yakuhai Haku"
+              ],
+              "hand": "5m6m2s3s4s6s7s8s8s8s",
+              "win": "7m",
+              "melds": [
+                "k5z5z5z"
+              ],
+              "dora": "4s",
+              "points": 1500,
+              "fu": 30,
+              "han": 1,
+              "yakuman": false,
+              "tsumo": true,
+              "riichi": false,
+              "turn": 14,
+              "winner": "andyjango",
+              "loser": null
+            }
+          ],
+          "endScores": [
+            13100,
+            37200,
+            44300,
+            25400
+          ],
+          "scoreDeltas": [
+            -500,
+            -500,
+            2500,
+            -500
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "Tobippi",
+              "score": 13100,
+              "delta": -500,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "Mano_gu",
+              "score": 37200,
+              "delta": -500,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "andyjango",
+              "score": 44300,
+              "delta": 2500,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "Bodoque",
+              "score": 25400,
+              "delta": -500,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "chang": 1,
+          "ju": 2,
+          "honba": 1,
+          "riichiSticks": 0,
+          "startScores": [
+            13100,
+            37200,
+            44300,
+            25400
+          ],
+          "result": "draw",
+          "outcomes": [],
+          "tenpaiSeats": [
+            0,
+            1
+          ],
+          "endScores": [
+            13600,
+            37700,
+            42800,
+            23900
+          ],
+          "scoreDeltas": [
+            1500,
+            1500,
+            -1500,
+            -1500
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "Tobippi",
+              "score": 13600,
+              "delta": 1500,
+              "tenpai": true
+            },
+            {
+              "seat": 1,
+              "player": "Mano_gu",
+              "score": 37700,
+              "delta": 1500,
+              "tenpai": true
+            },
+            {
+              "seat": 2,
+              "player": "andyjango",
+              "score": 42800,
+              "delta": -1500,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "Bodoque",
+              "score": 23900,
+              "delta": -1500,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "chang": 1,
+          "ju": 3,
+          "honba": 2,
+          "riichiSticks": 2,
+          "startScores": [
+            13600,
+            37700,
+            42800,
+            23900
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 3,
+              "loserSeat": 2,
+              "yaku": [
+                "Yakuhai Chun"
+              ],
+              "hand": "2p2p4p0p6p4s5s",
+              "win": "6s",
+              "melds": [
+                "k7z7z7z",
+                "s2m3m1m"
+              ],
+              "dora": "0p",
+              "points": 5800,
+              "fu": 30,
+              "han": 3,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": false,
+              "turn": 8,
+              "winner": "Bodoque",
+              "loser": "andyjango"
+            }
+          ],
+          "endScores": [
+            13600,
+            37700,
+            36400,
+            32300
+          ],
+          "scoreDeltas": [
+            0,
+            0,
+            -6400,
+            8400
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "Tobippi",
+              "score": 13600,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "Mano_gu",
+              "score": 37700,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "andyjango",
+              "score": 36400,
+              "delta": -6400,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "Bodoque",
+              "score": 32300,
+              "delta": 8400,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "chang": 1,
+          "ju": 3,
+          "honba": 3,
+          "riichiSticks": 0,
+          "startScores": [
+            13600,
+            37700,
+            36400,
+            32300
+          ],
+          "result": "tsumo",
+          "outcomes": [
+            {
+              "winnerSeat": 3,
+              "loserSeat": null,
+              "yaku": [
+                "Toitoi"
+              ],
+              "hand": "4m4m6p6p",
+              "win": "6p",
+              "melds": [
+                "k8m8m8m",
+                "k1s1s1s",
+                "k1p1p1p"
+              ],
+              "dora": "5p4z",
+              "points": 12000,
+              "fu": 40,
+              "han": 5,
+              "yakuman": false,
+              "tsumo": true,
+              "riichi": false,
+              "turn": 9,
+              "winner": "Bodoque",
+              "loser": null
+            }
+          ],
+          "endScores": [
+            9300,
+            33400,
+            32100,
+            45200
+          ],
+          "scoreDeltas": [
+            -4300,
+            -4300,
+            -4300,
+            12900
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "Tobippi",
+              "score": 9300,
+              "delta": -4300,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "Mano_gu",
+              "score": 33400,
+              "delta": -4300,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "andyjango",
+              "score": 32100,
+              "delta": -4300,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "Bodoque",
+              "score": 45200,
+              "delta": 12900,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 12,
+          "chang": 1,
+          "ju": 3,
+          "honba": 4,
+          "riichiSticks": 0,
+          "startScores": [
+            9300,
+            33400,
+            32100,
+            45200
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 3,
+              "loserSeat": 0,
+              "yaku": [
+                "Tanyao",
+                "Pinfu",
+                "Riichi"
+              ],
+              "hand": "5m6m7m3p4p6p7p8p3s3s4s0s6s",
+              "win": "2p",
+              "melds": [],
+              "dora": "5s",
+              "points": 12000,
+              "fu": 30,
+              "han": 5,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": true,
+              "turn": 7,
+              "winner": "Bodoque",
+              "loser": "Tobippi"
+            }
+          ],
+          "endScores": [
+            -3900,
+            33400,
+            32100,
+            58400
+          ],
+          "scoreDeltas": [
+            -13200,
+            0,
+            0,
+            14200
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "Tobippi",
+              "score": -3900,
+              "delta": -13200,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "Mano_gu",
+              "score": 33400,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "andyjango",
+              "score": 32100,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "Bodoque",
+              "score": 58400,
+              "delta": 14200,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 13,
+          "chang": 1,
+          "ju": 3,
+          "honba": 5,
+          "riichiSticks": 0,
+          "startScores": [
+            -3900,
+            33400,
+            32100,
+            58400
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 2,
+              "loserSeat": 3,
+              "yaku": [
+                "Toitoi",
+                "Yakuhai Hatsu"
+              ],
+              "hand": "4m4m4m4s",
+              "win": "4s",
+              "melds": [
+                "a6z6z6z6z",
+                "k5m5m5m",
+                "k0s5s5s"
+              ],
+              "dora": "8s9p",
+              "points": 8000,
+              "fu": 70,
+              "han": 4,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": false,
+              "turn": 10,
+              "winner": "andyjango",
+              "loser": "Bodoque"
+            }
+          ],
+          "endScores": [
+            -3900,
+            33400,
+            41600,
+            48900
+          ],
+          "scoreDeltas": [
+            0,
+            0,
+            9500,
+            -9500
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "Tobippi",
+              "score": -3900,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "Mano_gu",
+              "score": 33400,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "andyjango",
+              "score": 41600,
+              "delta": 9500,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "Bodoque",
+              "score": 48900,
+              "delta": -9500,
+              "tenpai": false
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "PO-quarters-M4-G2",
       "code": "QF M4 G2",
       "playoffRound": "quarters",
@@ -228923,10 +230050,10 @@
       "hanchan": 2,
       "ruleDivision": "B",
       "sessionCode": "QF M4 G2",
-      "date": "29 oct",
-      "dateISO": "2026-10-29",
-      "weekday": "jue",
-      "time": "23:08",
+      "date": "30 oct",
+      "dateISO": "2026-10-30",
+      "weekday": "vie",
+      "time": null,
       "players": [
         {
           "id": "A04",
@@ -229948,10 +231075,10 @@
       "table": 2,
       "hanchan": 1,
       "ruleDivision": "A",
-      "date": "01 nov",
-      "weekday": "dom",
-      "dateISO": "2026-11-01",
-      "time": "22:25"
+      "date": "02 nov",
+      "weekday": "lun",
+      "dateISO": "2026-11-02",
+      "time": null
     },
     {
       "id": "PO-quarters-M2-G2",
@@ -229960,10 +231087,10 @@
       "table": 2,
       "hanchan": 2,
       "ruleDivision": "A",
-      "date": "01 nov",
-      "weekday": "dom",
-      "dateISO": "2026-11-01",
-      "time": "22:49"
+      "date": "02 nov",
+      "weekday": "lun",
+      "dateISO": "2026-11-02",
+      "time": null
     },
     {
       "id": "PO-quarters-M3-G1",
@@ -229972,10 +231099,10 @@
       "table": 3,
       "hanchan": 1,
       "ruleDivision": "B",
-      "date": "01 nov",
-      "weekday": "dom",
-      "dateISO": "2026-11-01",
-      "time": "20:33"
+      "date": "02 nov",
+      "weekday": "lun",
+      "dateISO": "2026-11-02",
+      "time": null
     },
     {
       "id": "PO-quarters-M3-G2",
@@ -229984,10 +231111,10 @@
       "table": 3,
       "hanchan": 2,
       "ruleDivision": "B",
-      "date": "01 nov",
-      "weekday": "dom",
-      "dateISO": "2026-11-01",
-      "time": "21:26"
+      "date": "02 nov",
+      "weekday": "lun",
+      "dateISO": "2026-11-02",
+      "time": null
     },
     {
       "id": "PO-quarters-M4-G1",
@@ -229996,10 +231123,10 @@
       "table": 4,
       "hanchan": 1,
       "ruleDivision": "B",
-      "date": "Por definir",
-      "weekday": "—",
-      "dateISO": null,
-      "time": null
+      "date": "29 oct",
+      "weekday": "jue",
+      "dateISO": "2026-10-29",
+      "time": "22:16"
     },
     {
       "id": "PO-quarters-M4-G2",
@@ -230008,10 +231135,10 @@
       "table": 4,
       "hanchan": 2,
       "ruleDivision": "B",
-      "date": "29 oct",
-      "weekday": "jue",
-      "dateISO": "2026-10-29",
-      "time": "23:08"
+      "date": "30 oct",
+      "weekday": "vie",
+      "dateISO": "2026-10-30",
+      "time": null
     },
     {
       "id": "PO-semis-M1-G1",
