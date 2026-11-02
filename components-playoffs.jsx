@@ -59,6 +59,16 @@ function playoffRoundShort(id) {
   return label === key ? playoffRoundLabel(id) : label;
 }
 
+// Código corto del asiento que llega de una ronda anterior: `QF2`, `SF1`.
+// Es el mismo prefijo que la hoja Playoffs (`QF M2 G1`) y, como `A1`/`B7` en
+// cuartos, no depende del idioma: «Cuartos M2» no cabe en la casilla del
+// código y se montaba sobre el avatar. El nombre largo va en el tooltip.
+const PLAYOFF_SEAT_CODE = { quarters: 'QF', semis: 'SF', final: 'F' };
+
+function playoffSeatCode(roundId, table) {
+  return `${PLAYOFF_SEAT_CODE[roundId] || roundId}${table}`;
+}
+
 function playoffRuleLabel(round, tableIndex) {
   return tr('playoffs_rules_division', { div: round.rulesByTable[tableIndex] });
 }
@@ -160,7 +170,11 @@ function playoffBracketSeats(data, rounds, seeding) {
         totals.set(key, current);
       }));
       qualified.push([...totals.values()].sort((a, b) => b.points - a.points)
-        .slice(0, round.advancePerTable).map(item => ({ player: item.player, code: `${playoffRoundShort(round.id)} M${table + 1}` })));
+        .slice(0, round.advancePerTable).map(item => ({
+          player: item.player,
+          code: playoffSeatCode(round.id, table + 1),
+          title: `${playoffRoundLabel(round.id)} · ${tr('playoffs_mesa', { n: table + 1 })}`,
+        })));
     }
     const next = rounds[roundIndex + 1];
     if (!next || !Number.isInteger(next.tables) || next.tables <= 0) {
@@ -217,7 +231,7 @@ function PlayoffSeat({ seat, onSelect }) {
   const player = seat.player;
   return (
     <li className="pt-seat filled">
-      <b className={`pt-code div-${player.div}`}>{seat.code}</b>
+      <b className={`pt-code div-${player.div}`} title={seat.title || undefined}>{seat.code}</b>
       <span className={`avatar div-${player.div}`}>{initials(player.handle)}</span>
       <button onClick={() => onSelect && onSelect(player)}>
         <Flag nat={player.nat} size={11} />
@@ -500,4 +514,4 @@ function PlayoffsView({ data, onSelectPlayer }) {
   );
 }
 
-Object.assign(window, { PlayoffsView, PlayoffRulesSummary, playoffFormat, playoffSeasonProgress, playoffSeeding, playoffFeederSeats, playoffBracketSeats, playoffRoundLabel, playoffRuleLabel });
+Object.assign(window, { PlayoffsView, PlayoffRulesSummary, playoffFormat, playoffSeasonProgress, playoffSeeding, playoffFeederSeats, playoffBracketSeats, playoffSeatCode, playoffRoundLabel, playoffRuleLabel });
