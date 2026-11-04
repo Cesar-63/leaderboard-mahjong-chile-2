@@ -54,9 +54,14 @@ test('semifinal 1 takes quarterfinal tables 1-2 and semifinal 2 takes tables 3-4
   assert.deepEqual(plain(bracket[1].map(seats => seats.map(s => s.player.id))), [
     ['B8', 'B7', 'B6', 'B5'], ['A8', 'A7', 'A6', 'A5'],
   ]);
+  // Código corto, como la hoja: «Cuartos M2» no cabía en la casilla.
+  assert.deepEqual(plain(bracket[1].map(seats => seats.map(s => s.code))), [
+    ['QF1', 'QF1', 'QF2', 'QF2'], ['QF3', 'QF3', 'QF4', 'QF4'],
+  ]);
   recordRound(data, format.rounds[1], bracket[1]);
   bracket = context.playoffBracketSeats(data, format.rounds, seeding);
   assert.deepEqual(plain(bracket[2][0].map(s => s.player.id)), ['B8', 'B7', 'A8', 'A7']);
+  assert.deepEqual(plain(bracket[2][0].map(s => s.code)), ['SF1', 'SF1', 'SF2', 'SF2']);
   assert.equal(format.rounds[2].rulesByTable[0], 'A');
 });
 

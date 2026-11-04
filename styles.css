@@ -1429,8 +1429,8 @@ select{font:inherit;color:inherit}
 .pt-seats li{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:6px;min-height:22px}
 .pt-seat>i{width:15px;height:15px;border:1px dashed var(--line-strong);border-radius:50%}
 .pt-seat:not(.filled)>span{overflow:hidden;font-family:var(--font-mono);font-size:8px;color:var(--ink-faint);text-overflow:ellipsis;white-space:nowrap}
-.pt-seat.filled{grid-template-columns:26px 22px minmax(0,1fr);gap:7px}
-.pt-code{padding:2px 0;border-radius:4px;font-family:var(--font-mono);font-size:8px;font-weight:700;text-align:center}
+.pt-seat.filled{grid-template-columns:minmax(26px,max-content) 22px minmax(0,1fr);gap:7px}
+.pt-code{padding:2px 4px;border-radius:4px;font-family:var(--font-mono);font-size:8px;font-weight:700;line-height:1.2;text-align:center;white-space:nowrap}
 .pt-code.div-A{background:color-mix(in oklab,var(--accent) 12%,transparent);color:var(--accent)}
 .pt-code.div-B{background:color-mix(in oklab,var(--accent-2) 14%,transparent);color:var(--accent-2)}
 .pt-seat.filled .avatar{width:22px;height:22px;font-size:8px}
