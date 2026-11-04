@@ -1179,6 +1179,20 @@
   ],
   "playoffSubmissions": [
     {
+      "key": "QF M1 G1",
+      "cell": "Playoffs!F16",
+      "uuid": "261104-46703eed-65d6-4607-b3d9-f7e381640b1f",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado"
+    },
+    {
+      "key": "QF M1 G2",
+      "cell": "Playoffs!F17",
+      "uuid": "261104-0d4a1752-110a-4cd4-bfdf-fc7eea84aacb",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado"
+    },
+    {
       "key": "QF M2 G1",
       "cell": "Playoffs!F18",
       "uuid": "261102-d2db9ab6-31a3-4862-b760-5efc1020a772",

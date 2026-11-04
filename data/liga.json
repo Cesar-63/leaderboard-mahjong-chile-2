@@ -225566,6 +225566,1960 @@
   },
   "playoffMatches": [
     {
+      "id": "PO-quarters-M1-G1",
+      "code": "QF M1 G1",
+      "playoffRound": "quarters",
+      "table": 1,
+      "hanchan": 1,
+      "ruleDivision": "A",
+      "sessionCode": "QF M1 G1",
+      "date": "03 nov",
+      "dateISO": "2026-11-03",
+      "weekday": "mar",
+      "time": "21:11",
+      "players": [
+        {
+          "id": "A17",
+          "name": "AuroraShine",
+          "handle": "AuroraShine",
+          "nat": "BR",
+          "scoreRaw": 38000,
+          "place": 1,
+          "delta": 23.0
+        },
+        {
+          "id": "A07",
+          "name": "asmirnov",
+          "handle": "asmirnov",
+          "nat": "UY",
+          "scoreRaw": 36600,
+          "place": 2,
+          "delta": 11.6
+        },
+        {
+          "id": "B03",
+          "name": "HOSHIGAMI",
+          "handle": "HOSHIGAMI",
+          "nat": "CL",
+          "scoreRaw": 30300,
+          "place": 3,
+          "delta": -4.7
+        },
+        {
+          "id": "B14",
+          "name": "brenohai",
+          "handle": "brenohai",
+          "nat": "BR",
+          "scoreRaw": 15100,
+          "place": 4,
+          "delta": -29.9
+        }
+      ],
+      "verified": true,
+      "source": "paipu",
+      "paipuUrl": "https://mahjongsoul.game.yo-star.com/?paipu=261104-46703eed-65d6-4607-b3d9-f7e381640b1f",
+      "rounds": [
+        {
+          "index": 0,
+          "chang": 0,
+          "ju": 0,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            30000,
+            30000,
+            30000,
+            30000
+          ],
+          "result": "tsumo",
+          "outcomes": [
+            {
+              "winnerSeat": 1,
+              "loserSeat": null,
+              "yaku": [
+                "Menzen Tsumo",
+                "Pinfu",
+                "Riichi"
+              ],
+              "hand": "7m8m9m3p4p5p6p7p5s6s7s3z3z",
+              "win": "2p",
+              "melds": [],
+              "dora": "3z",
+              "points": 5200,
+              "fu": 20,
+              "han": 4,
+              "yakuman": false,
+              "tsumo": true,
+              "riichi": true,
+              "turn": 5,
+              "winner": "AuroraShine",
+              "loser": null
+            }
+          ],
+          "endScores": [
+            27400,
+            35200,
+            28700,
+            28700
+          ],
+          "scoreDeltas": [
+            -2600,
+            6200,
+            -1300,
+            -1300
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "asmirnov",
+              "score": 27400,
+              "delta": -2600,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "AuroraShine",
+              "score": 35200,
+              "delta": 6200,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "HOSHIGAMI",
+              "score": 28700,
+              "delta": -1300,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "brenohai",
+              "score": 28700,
+              "delta": -1300,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "chang": 0,
+          "ju": 1,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            27400,
+            35200,
+            28700,
+            28700
+          ],
+          "result": "tsumo",
+          "outcomes": [
+            {
+              "winnerSeat": 1,
+              "loserSeat": null,
+              "yaku": [
+                "Yakuhai Bakaze",
+                "Yakuhai Jikaze"
+              ],
+              "hand": "6m7m9p9p5s6s7s7s8s9s",
+              "win": "8m",
+              "melds": [
+                "k1z1z1z"
+              ],
+              "dora": "6m",
+              "points": 6000,
+              "fu": 30,
+              "han": 3,
+              "yakuman": false,
+              "tsumo": true,
+              "riichi": false,
+              "turn": 6,
+              "winner": "AuroraShine",
+              "loser": null
+            }
+          ],
+          "endScores": [
+            25400,
+            41200,
+            26700,
+            26700
+          ],
+          "scoreDeltas": [
+            -2000,
+            6000,
+            -2000,
+            -2000
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "asmirnov",
+              "score": 25400,
+              "delta": -2000,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "AuroraShine",
+              "score": 41200,
+              "delta": 6000,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "HOSHIGAMI",
+              "score": 26700,
+              "delta": -2000,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "brenohai",
+              "score": 26700,
+              "delta": -2000,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "chang": 0,
+          "ju": 1,
+          "honba": 1,
+          "riichiSticks": 0,
+          "startScores": [
+            25400,
+            41200,
+            26700,
+            26700
+          ],
+          "result": "tsumo",
+          "outcomes": [
+            {
+              "winnerSeat": 2,
+              "loserSeat": null,
+              "yaku": [
+                "Menzen Tsumo",
+                "Riichi"
+              ],
+              "hand": "3m3m4m5m6p6p6p7p8p9p1s1s1s",
+              "win": "6m",
+              "melds": [],
+              "dora": "5s",
+              "points": 2700,
+              "fu": 40,
+              "han": 2,
+              "yakuman": false,
+              "tsumo": true,
+              "riichi": true,
+              "turn": 12,
+              "winner": "HOSHIGAMI",
+              "loser": null
+            }
+          ],
+          "endScores": [
+            24600,
+            39800,
+            29700,
+            25900
+          ],
+          "scoreDeltas": [
+            -800,
+            -1400,
+            4000,
+            -800
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "asmirnov",
+              "score": 24600,
+              "delta": -800,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "AuroraShine",
+              "score": 39800,
+              "delta": -1400,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "HOSHIGAMI",
+              "score": 29700,
+              "delta": 4000,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "brenohai",
+              "score": 25900,
+              "delta": -800,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "chang": 0,
+          "ju": 2,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            24600,
+            39800,
+            29700,
+            25900
+          ],
+          "result": "tsumo",
+          "outcomes": [
+            {
+              "winnerSeat": 0,
+              "loserSeat": null,
+              "yaku": [
+                "Menzen Tsumo",
+                "Yakuhai Jikaze",
+                "Riichi"
+              ],
+              "hand": "6m8m2p3p4p4s5s5s5s6s3z3z3z",
+              "win": "7m",
+              "melds": [],
+              "dora": "6s",
+              "points": 5200,
+              "fu": 40,
+              "han": 3,
+              "yakuman": false,
+              "tsumo": true,
+              "riichi": true,
+              "turn": 11,
+              "winner": "asmirnov",
+              "loser": null
+            }
+          ],
+          "endScores": [
+            29800,
+            38500,
+            27100,
+            24600
+          ],
+          "scoreDeltas": [
+            6200,
+            -1300,
+            -2600,
+            -1300
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "asmirnov",
+              "score": 29800,
+              "delta": 6200,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "AuroraShine",
+              "score": 38500,
+              "delta": -1300,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "HOSHIGAMI",
+              "score": 27100,
+              "delta": -2600,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "brenohai",
+              "score": 24600,
+              "delta": -1300,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "chang": 0,
+          "ju": 3,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            29800,
+            38500,
+            27100,
+            24600
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 0,
+              "loserSeat": 3,
+              "yaku": [
+                "Riichi",
+                "Ippatsu"
+              ],
+              "hand": "3m4m5m1p1p1p7p7p7p2s2s6s6s",
+              "win": "2s",
+              "melds": [],
+              "dora": "1z",
+              "points": 8000,
+              "fu": 50,
+              "han": 5,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": true,
+              "turn": 9,
+              "winner": "asmirnov",
+              "loser": "brenohai"
+            }
+          ],
+          "endScores": [
+            38800,
+            38500,
+            26100,
+            16600
+          ],
+          "scoreDeltas": [
+            10000,
+            0,
+            0,
+            -8000
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "asmirnov",
+              "score": 38800,
+              "delta": 10000,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "AuroraShine",
+              "score": 38500,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "HOSHIGAMI",
+              "score": 26100,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "brenohai",
+              "score": 16600,
+              "delta": -8000,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "chang": 1,
+          "ju": 0,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            38800,
+            38500,
+            26100,
+            16600
+          ],
+          "result": "tsumo",
+          "outcomes": [
+            {
+              "winnerSeat": 3,
+              "loserSeat": null,
+              "yaku": [
+                "Tanyao",
+                "Menzen Tsumo",
+                "Pinfu",
+                "Riichi"
+              ],
+              "hand": "2m3m4m6m6m4p5p5p6p7p3s4s5s",
+              "win": "6p",
+              "melds": [],
+              "dora": "6z",
+              "points": 8000,
+              "fu": 20,
+              "han": 5,
+              "yakuman": false,
+              "tsumo": true,
+              "riichi": true,
+              "turn": 14,
+              "winner": "brenohai",
+              "loser": null
+            }
+          ],
+          "endScores": [
+            34800,
+            36500,
+            23100,
+            25600
+          ],
+          "scoreDeltas": [
+            -4000,
+            -2000,
+            -2000,
+            10000
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "asmirnov",
+              "score": 34800,
+              "delta": -4000,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "AuroraShine",
+              "score": 36500,
+              "delta": -2000,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "HOSHIGAMI",
+              "score": 23100,
+              "delta": -2000,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "brenohai",
+              "score": 25600,
+              "delta": 10000,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "chang": 1,
+          "ju": 1,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            34800,
+            36500,
+            23100,
+            25600
+          ],
+          "result": "tsumo",
+          "outcomes": [
+            {
+              "winnerSeat": 3,
+              "loserSeat": null,
+              "yaku": [
+                "Menzen Tsumo",
+                "Riichi"
+              ],
+              "hand": "7m8m4p5p6p2s2s3s4s5s4z4z4z",
+              "win": "9m",
+              "melds": [],
+              "dora": "3s",
+              "points": 4000,
+              "fu": 30,
+              "han": 3,
+              "yakuman": false,
+              "tsumo": true,
+              "riichi": true,
+              "turn": 12,
+              "winner": "brenohai",
+              "loser": null
+            }
+          ],
+          "endScores": [
+            33800,
+            34500,
+            22100,
+            29600
+          ],
+          "scoreDeltas": [
+            -1000,
+            -2000,
+            -1000,
+            5000
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "asmirnov",
+              "score": 33800,
+              "delta": -1000,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "AuroraShine",
+              "score": 34500,
+              "delta": -2000,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "HOSHIGAMI",
+              "score": 22100,
+              "delta": -1000,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "brenohai",
+              "score": 29600,
+              "delta": 5000,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "chang": 1,
+          "ju": 2,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            33800,
+            34500,
+            22100,
+            29600
+          ],
+          "result": "tsumo",
+          "outcomes": [
+            {
+              "winnerSeat": 2,
+              "loserSeat": null,
+              "yaku": [
+                "Yakuhai Haku"
+              ],
+              "hand": "5m5m6m6m4p5p6p",
+              "win": "5m",
+              "melds": [
+                "k5z5z5z",
+                "k2s2s2s"
+              ],
+              "dora": "2p",
+              "points": 2100,
+              "fu": 40,
+              "han": 1,
+              "yakuman": false,
+              "tsumo": true,
+              "riichi": false,
+              "turn": 12,
+              "winner": "HOSHIGAMI",
+              "loser": null
+            }
+          ],
+          "endScores": [
+            32100,
+            33800,
+            25200,
+            28900
+          ],
+          "scoreDeltas": [
+            -700,
+            -700,
+            3100,
+            -700
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "asmirnov",
+              "score": 32100,
+              "delta": -700,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "AuroraShine",
+              "score": 33800,
+              "delta": -700,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "HOSHIGAMI",
+              "score": 25200,
+              "delta": 3100,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "brenohai",
+              "score": 28900,
+              "delta": -700,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "chang": 1,
+          "ju": 2,
+          "honba": 1,
+          "riichiSticks": 0,
+          "startScores": [
+            32100,
+            33800,
+            25200,
+            28900
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 2,
+              "loserSeat": 3,
+              "yaku": [
+                "Toitoi",
+                "Yakuhai Hatsu"
+              ],
+              "hand": "4m4m8s8s",
+              "win": "4m",
+              "melds": [
+                "k6z6z6z",
+                "k8p8p8p",
+                "k9p9p9p"
+              ],
+              "dora": "8s",
+              "points": 7700,
+              "fu": 40,
+              "han": 3,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": false,
+              "turn": 3,
+              "winner": "HOSHIGAMI",
+              "loser": "brenohai"
+            }
+          ],
+          "endScores": [
+            32100,
+            33800,
+            33200,
+            20900
+          ],
+          "scoreDeltas": [
+            0,
+            0,
+            8000,
+            -8000
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "asmirnov",
+              "score": 32100,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "AuroraShine",
+              "score": 33800,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "HOSHIGAMI",
+              "score": 33200,
+              "delta": 8000,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "brenohai",
+              "score": 20900,
+              "delta": -8000,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "chang": 1,
+          "ju": 2,
+          "honba": 2,
+          "riichiSticks": 0,
+          "startScores": [
+            32100,
+            33800,
+            33200,
+            20900
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 0,
+              "loserSeat": 3,
+              "yaku": [
+                "Honitsu"
+              ],
+              "hand": "2m2m3m4m5m2z2z",
+              "win": "2m",
+              "melds": [
+                "k9m9m9m",
+                "s6m7m8m"
+              ],
+              "dora": "4m",
+              "points": 3900,
+              "fu": 30,
+              "han": 3,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": false,
+              "turn": 6,
+              "winner": "asmirnov",
+              "loser": "brenohai"
+            }
+          ],
+          "endScores": [
+            36600,
+            33800,
+            33200,
+            16400
+          ],
+          "scoreDeltas": [
+            4500,
+            0,
+            0,
+            -4500
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "asmirnov",
+              "score": 36600,
+              "delta": 4500,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "AuroraShine",
+              "score": 33800,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "HOSHIGAMI",
+              "score": 33200,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "brenohai",
+              "score": 16400,
+              "delta": -4500,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "chang": 1,
+          "ju": 3,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            36600,
+            33800,
+            33200,
+            16400
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 3,
+              "loserSeat": 2,
+              "yaku": [
+                "Yakuhai Haku"
+              ],
+              "hand": "2p3p4p5s6s6s7s8s4z4z",
+              "win": "4s",
+              "melds": [
+                "k5z5z5z"
+              ],
+              "dora": "4s",
+              "points": 2900,
+              "fu": 30,
+              "han": 2,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": false,
+              "turn": 13,
+              "winner": "brenohai",
+              "loser": "HOSHIGAMI"
+            }
+          ],
+          "endScores": [
+            36600,
+            33800,
+            30300,
+            19300
+          ],
+          "scoreDeltas": [
+            0,
+            0,
+            -2900,
+            2900
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "asmirnov",
+              "score": 36600,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "AuroraShine",
+              "score": 33800,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "HOSHIGAMI",
+              "score": 30300,
+              "delta": -2900,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "brenohai",
+              "score": 19300,
+              "delta": 2900,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 11,
+          "chang": 1,
+          "ju": 3,
+          "honba": 1,
+          "riichiSticks": 0,
+          "startScores": [
+            36600,
+            33800,
+            30300,
+            19300
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 1,
+              "loserSeat": 3,
+              "yaku": [
+                "Tanyao",
+                "Pinfu",
+                "Riichi"
+              ],
+              "hand": "2m3m4m5m5m5p6p2s3s4s6s7s8s",
+              "win": "4p",
+              "melds": [],
+              "dora": "7p",
+              "points": 3900,
+              "fu": 30,
+              "han": 3,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": true,
+              "turn": 13,
+              "winner": "AuroraShine",
+              "loser": "brenohai"
+            }
+          ],
+          "endScores": [
+            36600,
+            38000,
+            30300,
+            15100
+          ],
+          "scoreDeltas": [
+            0,
+            5200,
+            0,
+            -4200
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "asmirnov",
+              "score": 36600,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "AuroraShine",
+              "score": 38000,
+              "delta": 5200,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "HOSHIGAMI",
+              "score": 30300,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "brenohai",
+              "score": 15100,
+              "delta": -4200,
+              "tenpai": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "PO-quarters-M1-G2",
+      "code": "QF M1 G2",
+      "playoffRound": "quarters",
+      "table": 1,
+      "hanchan": 2,
+      "ruleDivision": "A",
+      "sessionCode": "QF M1 G2",
+      "date": "03 nov",
+      "dateISO": "2026-11-03",
+      "weekday": "mar",
+      "time": "21:53",
+      "players": [
+        {
+          "id": "B03",
+          "name": "HOSHIGAMI",
+          "handle": "HOSHIGAMI",
+          "nat": "CL",
+          "scoreRaw": 37200,
+          "place": 1,
+          "delta": 22.2
+        },
+        {
+          "id": "A17",
+          "name": "AuroraShine",
+          "handle": "AuroraShine",
+          "nat": "BR",
+          "scoreRaw": 30400,
+          "place": 2,
+          "delta": 5.4
+        },
+        {
+          "id": "A07",
+          "name": "asmirnov",
+          "handle": "asmirnov",
+          "nat": "UY",
+          "scoreRaw": 30000,
+          "place": 3,
+          "delta": -5.0
+        },
+        {
+          "id": "B14",
+          "name": "brenohai",
+          "handle": "brenohai",
+          "nat": "BR",
+          "scoreRaw": 22400,
+          "place": 4,
+          "delta": -22.6
+        }
+      ],
+      "verified": true,
+      "source": "paipu",
+      "paipuUrl": "https://mahjongsoul.game.yo-star.com/?paipu=261104-0d4a1752-110a-4cd4-bfdf-fc7eea84aacb",
+      "rounds": [
+        {
+          "index": 0,
+          "chang": 0,
+          "ju": 0,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            30000,
+            30000,
+            30000,
+            30000
+          ],
+          "result": "tsumo",
+          "outcomes": [
+            {
+              "winnerSeat": 1,
+              "loserSeat": null,
+              "yaku": [
+                "Menzen Tsumo",
+                "Yakuhai Chun",
+                "Riichi"
+              ],
+              "hand": "9m9m4p5p6p6p7p8p4s5s6s7z7z",
+              "win": "7z",
+              "melds": [],
+              "dora": "7s",
+              "points": 4000,
+              "fu": 30,
+              "han": 3,
+              "yakuman": false,
+              "tsumo": true,
+              "riichi": true,
+              "turn": 14,
+              "winner": "HOSHIGAMI",
+              "loser": null
+            }
+          ],
+          "endScores": [
+            28000,
+            34000,
+            29000,
+            29000
+          ],
+          "scoreDeltas": [
+            -2000,
+            5000,
+            -1000,
+            -1000
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "AuroraShine",
+              "score": 28000,
+              "delta": -2000,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "HOSHIGAMI",
+              "score": 34000,
+              "delta": 5000,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "brenohai",
+              "score": 29000,
+              "delta": -1000,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "asmirnov",
+              "score": 29000,
+              "delta": -1000,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "chang": 0,
+          "ju": 1,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            28000,
+            34000,
+            29000,
+            29000
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 0,
+              "loserSeat": 1,
+              "yaku": [
+                "Yakuhai Hatsu"
+              ],
+              "hand": "4p5p7p8p8p8p9p5s6s7s",
+              "win": "6p",
+              "melds": [
+                "k6z6z6z"
+              ],
+              "dora": "5m",
+              "points": 1000,
+              "fu": 30,
+              "han": 1,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": false,
+              "turn": 6,
+              "winner": "AuroraShine",
+              "loser": "HOSHIGAMI"
+            }
+          ],
+          "endScores": [
+            29000,
+            33000,
+            29000,
+            29000
+          ],
+          "scoreDeltas": [
+            1000,
+            -1000,
+            0,
+            0
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "AuroraShine",
+              "score": 29000,
+              "delta": 1000,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "HOSHIGAMI",
+              "score": 33000,
+              "delta": -1000,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "brenohai",
+              "score": 29000,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "asmirnov",
+              "score": 29000,
+              "delta": 0,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "chang": 0,
+          "ju": 2,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            29000,
+            33000,
+            29000,
+            29000
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 0,
+              "loserSeat": 3,
+              "yaku": [
+                "Yakuhai Bakaze"
+              ],
+              "hand": "3m4m5m6m7m8m4p5p5p6p1z1z1z",
+              "win": "5p",
+              "melds": [],
+              "dora": "2p",
+              "points": 1300,
+              "fu": 40,
+              "han": 1,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": false,
+              "turn": 16,
+              "winner": "AuroraShine",
+              "loser": "asmirnov"
+            }
+          ],
+          "endScores": [
+            31300,
+            33000,
+            28000,
+            27700
+          ],
+          "scoreDeltas": [
+            2300,
+            0,
+            0,
+            -1300
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "AuroraShine",
+              "score": 31300,
+              "delta": 2300,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "HOSHIGAMI",
+              "score": 33000,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "brenohai",
+              "score": 28000,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "asmirnov",
+              "score": 27700,
+              "delta": -1300,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "chang": 0,
+          "ju": 3,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            31300,
+            33000,
+            28000,
+            27700
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 3,
+              "loserSeat": 2,
+              "yaku": [
+                "Yakuhai Bakaze",
+                "Yakuhai Jikaze"
+              ],
+              "hand": "7m7m4s5s6s7s8s",
+              "win": "9s",
+              "melds": [
+                "k1z1z1z",
+                "k6p6p6p"
+              ],
+              "dora": "3z",
+              "points": 2900,
+              "fu": 30,
+              "han": 2,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": false,
+              "turn": 9,
+              "winner": "asmirnov",
+              "loser": "brenohai"
+            }
+          ],
+          "endScores": [
+            31300,
+            33000,
+            25100,
+            30600
+          ],
+          "scoreDeltas": [
+            0,
+            0,
+            -2900,
+            2900
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "AuroraShine",
+              "score": 31300,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "HOSHIGAMI",
+              "score": 33000,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "brenohai",
+              "score": 25100,
+              "delta": -2900,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "asmirnov",
+              "score": 30600,
+              "delta": 2900,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "chang": 0,
+          "ju": 3,
+          "honba": 1,
+          "riichiSticks": 0,
+          "startScores": [
+            31300,
+            33000,
+            25100,
+            30600
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 0,
+              "loserSeat": 3,
+              "yaku": [
+                "Riichi"
+              ],
+              "hand": "6m6m7m7m8m5p6p7p8p8p9p9p9p",
+              "win": "5m",
+              "melds": [],
+              "dora": "4z",
+              "points": 2600,
+              "fu": 40,
+              "han": 2,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": true,
+              "turn": 15,
+              "winner": "AuroraShine",
+              "loser": "asmirnov"
+            }
+          ],
+          "endScores": [
+            34200,
+            33000,
+            25100,
+            27700
+          ],
+          "scoreDeltas": [
+            3900,
+            0,
+            0,
+            -2900
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "AuroraShine",
+              "score": 34200,
+              "delta": 3900,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "HOSHIGAMI",
+              "score": 33000,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "brenohai",
+              "score": 25100,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "asmirnov",
+              "score": 27700,
+              "delta": -2900,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "chang": 1,
+          "ju": 0,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            34200,
+            33000,
+            25100,
+            27700
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 2,
+              "loserSeat": 3,
+              "yaku": [
+                "Iipeiko",
+                "Tanyao"
+              ],
+              "hand": "3m3m4m4m5m5m4p4p6p6p6p2s2s",
+              "win": "4p",
+              "melds": [],
+              "dora": "9p",
+              "points": 2600,
+              "fu": 40,
+              "han": 2,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": false,
+              "turn": 18,
+              "winner": "brenohai",
+              "loser": "asmirnov"
+            }
+          ],
+          "endScores": [
+            34200,
+            33000,
+            28700,
+            24100
+          ],
+          "scoreDeltas": [
+            0,
+            0,
+            3600,
+            -2600
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "AuroraShine",
+              "score": 34200,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "HOSHIGAMI",
+              "score": 33000,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "brenohai",
+              "score": 28700,
+              "delta": 3600,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "asmirnov",
+              "score": 24100,
+              "delta": -2600,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "chang": 1,
+          "ju": 1,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            34200,
+            33000,
+            28700,
+            24100
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 3,
+              "loserSeat": 2,
+              "yaku": [
+                "Pinfu",
+                "Riichi"
+              ],
+              "hand": "4m5m1p2p3p5p5p6p7p8p5s6s7s",
+              "win": "6m",
+              "melds": [],
+              "dora": "7p",
+              "points": 3900,
+              "fu": 30,
+              "han": 3,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": true,
+              "turn": 11,
+              "winner": "asmirnov",
+              "loser": "brenohai"
+            }
+          ],
+          "endScores": [
+            34200,
+            33000,
+            24800,
+            28000
+          ],
+          "scoreDeltas": [
+            0,
+            0,
+            -3900,
+            4900
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "AuroraShine",
+              "score": 34200,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "HOSHIGAMI",
+              "score": 33000,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "brenohai",
+              "score": 24800,
+              "delta": -3900,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "asmirnov",
+              "score": 28000,
+              "delta": 4900,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "chang": 1,
+          "ju": 2,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            34200,
+            33000,
+            24800,
+            28000
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 2,
+              "loserSeat": 0,
+              "yaku": [
+                "Tanyao"
+              ],
+              "hand": "3m5m6m6m5s5s5s",
+              "win": "4m",
+              "melds": [
+                "s3p4p2p",
+                "s5p6p7p"
+              ],
+              "dora": "9s1s",
+              "points": 1500,
+              "fu": 30,
+              "han": 1,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": false,
+              "turn": 14,
+              "winner": "brenohai",
+              "loser": "AuroraShine"
+            }
+          ],
+          "endScores": [
+            32700,
+            33000,
+            26300,
+            28000
+          ],
+          "scoreDeltas": [
+            -1500,
+            0,
+            1500,
+            0
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "AuroraShine",
+              "score": 32700,
+              "delta": -1500,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "HOSHIGAMI",
+              "score": 33000,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "brenohai",
+              "score": 26300,
+              "delta": 1500,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "asmirnov",
+              "score": 28000,
+              "delta": 0,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "chang": 1,
+          "ju": 2,
+          "honba": 1,
+          "riichiSticks": 0,
+          "startScores": [
+            32700,
+            33000,
+            26300,
+            28000
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 1,
+              "loserSeat": 2,
+              "yaku": [
+                "Yakuhai Haku",
+                "Yakuhai Jikaze"
+              ],
+              "hand": "4m4m6p8p7s8s9s5z5z5z",
+              "win": "7p",
+              "melds": [
+                "k4z4z4z"
+              ],
+              "dora": "6m",
+              "points": 2600,
+              "fu": 40,
+              "han": 2,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": false,
+              "turn": 8,
+              "winner": "HOSHIGAMI",
+              "loser": "brenohai"
+            }
+          ],
+          "endScores": [
+            32700,
+            36900,
+            23400,
+            27000
+          ],
+          "scoreDeltas": [
+            0,
+            3900,
+            -2900,
+            0
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "AuroraShine",
+              "score": 32700,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "HOSHIGAMI",
+              "score": 36900,
+              "delta": 3900,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "brenohai",
+              "score": 23400,
+              "delta": -2900,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "asmirnov",
+              "score": 27000,
+              "delta": 0,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 9,
+          "chang": 1,
+          "ju": 3,
+          "honba": 0,
+          "riichiSticks": 0,
+          "startScores": [
+            32700,
+            36900,
+            23400,
+            27000
+          ],
+          "result": "tsumo",
+          "outcomes": [
+            {
+              "winnerSeat": 3,
+              "loserSeat": null,
+              "yaku": [
+                "Menzen Tsumo",
+                "Riichi"
+              ],
+              "hand": "3m4m5m7m8m9m1p1p3p3p7p7p7p",
+              "win": "3p",
+              "melds": [],
+              "dora": "3z",
+              "points": 3000,
+              "fu": 30,
+              "han": 2,
+              "yakuman": false,
+              "tsumo": true,
+              "riichi": true,
+              "turn": 16,
+              "winner": "asmirnov",
+              "loser": null
+            }
+          ],
+          "endScores": [
+            31700,
+            35900,
+            22400,
+            30000
+          ],
+          "scoreDeltas": [
+            -1000,
+            -1000,
+            -1000,
+            4000
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "AuroraShine",
+              "score": 31700,
+              "delta": -1000,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "HOSHIGAMI",
+              "score": 35900,
+              "delta": -1000,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "brenohai",
+              "score": 22400,
+              "delta": -1000,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "asmirnov",
+              "score": 30000,
+              "delta": 4000,
+              "tenpai": false
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "chang": 1,
+          "ju": 3,
+          "honba": 1,
+          "riichiSticks": 0,
+          "startScores": [
+            31700,
+            35900,
+            22400,
+            30000
+          ],
+          "result": "ron",
+          "outcomes": [
+            {
+              "winnerSeat": 1,
+              "loserSeat": 0,
+              "yaku": [
+                "Yakuhai Hatsu"
+              ],
+              "hand": "2m2m5p6p7p3s4s",
+              "win": "2s",
+              "melds": [
+                "k6z6z6z",
+                "k9p9p9p"
+              ],
+              "dora": "6z",
+              "points": 1000,
+              "fu": 30,
+              "han": 1,
+              "yakuman": false,
+              "tsumo": false,
+              "riichi": false,
+              "turn": 12,
+              "winner": "HOSHIGAMI",
+              "loser": "AuroraShine"
+            }
+          ],
+          "endScores": [
+            30400,
+            37200,
+            22400,
+            30000
+          ],
+          "scoreDeltas": [
+            -1300,
+            1300,
+            0,
+            0
+          ],
+          "settlement": [
+            {
+              "seat": 0,
+              "player": "AuroraShine",
+              "score": 30400,
+              "delta": -1300,
+              "tenpai": false
+            },
+            {
+              "seat": 1,
+              "player": "HOSHIGAMI",
+              "score": 37200,
+              "delta": 1300,
+              "tenpai": false
+            },
+            {
+              "seat": 2,
+              "player": "brenohai",
+              "score": 22400,
+              "delta": 0,
+              "tenpai": false
+            },
+            {
+              "seat": 3,
+              "player": "asmirnov",
+              "score": 30000,
+              "delta": 0,
+              "tenpai": false
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "PO-quarters-M2-G1",
       "code": "QF M2 G1",
       "playoffRound": "quarters",
@@ -231051,10 +233005,10 @@
       "table": 1,
       "hanchan": 1,
       "ruleDivision": "A",
-      "date": "Por definir",
-      "weekday": "—",
-      "dateISO": null,
-      "time": null
+      "date": "03 nov",
+      "weekday": "mar",
+      "dateISO": "2026-11-03",
+      "time": "21:11"
     },
     {
       "id": "PO-quarters-M1-G2",
@@ -231063,10 +233017,10 @@
       "table": 1,
       "hanchan": 2,
       "ruleDivision": "A",
-      "date": "Por definir",
-      "weekday": "—",
-      "dateISO": null,
-      "time": null
+      "date": "03 nov",
+      "weekday": "mar",
+      "dateISO": "2026-11-03",
+      "time": "21:53"
     },
     {
       "id": "PO-quarters-M2-G1",
