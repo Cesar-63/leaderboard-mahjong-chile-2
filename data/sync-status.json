@@ -1261,6 +1261,27 @@
       "uuid": "261113-92c3cb0a-59f8-400a-8a6f-5e590a452a9d",
       "status": "PUBLICADO",
       "message": "Paipu decodificado"
+    },
+    {
+      "key": "FINAL G1",
+      "cell": "Playoffs!F28",
+      "uuid": "261125-12d43428-45e7-4a7d-a88d-f5364121a15f",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado"
+    },
+    {
+      "key": "FINAL G2",
+      "cell": "Playoffs!F29",
+      "uuid": "261125-7c725693-db03-4007-835d-0bd99a5a44f9",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado"
+    },
+    {
+      "key": "FINAL G3",
+      "cell": "Playoffs!F30",
+      "uuid": "261125-896d4dfb-0c9b-4593-9d2a-96664f0b0634",
+      "status": "PUBLICADO",
+      "message": "Paipu decodificado"
     }
   ]
 }
